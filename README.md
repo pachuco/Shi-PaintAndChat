@@ -1,2 +1,2 @@
 # Shi-PaintAndChat
-Amalgamation of ShiPainter and PaintChat 3.66
+Amalgamation of ShiPainter and PaintChat Client 3.66
