@@ -22,11 +22,7 @@ import java.awt.Point;
 import java.awt.TextField;
 import java.awt.Toolkit;
 import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.image.ImageObserver;
 import java.awt.image.IndexColorModel;
 import java.awt.image.MemoryImageSource;
@@ -86,10 +82,8 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
                     case 0:
                         this.f(this.tPanel, true);
                         break;
+                        //case 1: f(this, false);
                     case 1:
-                        this.f(this, false);
-                        break;
-                    case 2:
                         this.mExit();
                 }
             } else {
@@ -176,7 +170,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
 
     }
 
-    private void f(Component var1, boolean var2) {
+    private void f(final Component var1, boolean var2) {
         try {
             boolean var3 = false;
             Object var4 = var2 ? this : this.applet;
@@ -198,6 +192,9 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
 
                 this.pack();
                 Frame var9 = new Frame("PaintChatClient v3.66");
+                var9.addWindowListener(new WindowAdapter() {
+                    public void windowClosing(WindowEvent we) { f(var1, true); }
+                });
                 var9.setLayout(new BorderLayout());
                 var9.add((Component) var1, (Object) "Center");
                 var9.pack();
@@ -372,7 +369,6 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
             String[] var1 = new String[]{"tp.au", "talk.au", "in.au", "out.au"};
 
             for (int i = 0; i < 4; ++i) {
-                try {
                 String var2 = this.dd.config.res(var1[i]);
                 if (var2 != null && var2.length() > 0 && var2.charAt(0) != '_') {
                     URL url = getClass().getResource("/snd/" + var1[i]);
@@ -387,7 +383,6 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
                     sounds[i] = snd;
                 }
             }
-
         }
     }
 
@@ -402,11 +397,11 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
             var4.add((Component) this.tField, (Object) var1);
             this.tLabel = new Label(this.dd.res.res("input"));
             var4.add((Component) this.tLabel, (Object) var3);
-            String[] var5 = new String[]{"F", "FAll", "leave"};
+            String[] var5 = new String[]{"F", "leave"};
             Panel var6 = new Panel(new FlowLayout(0, 2, 1));
             this.tPanelB = var6;
 
-            for (int var8 = 0; var8 < 3; ++var8) {
+            for (int var8 = 0; var8 < var5.length; ++var8) {
                 LButton var7 = new LButton(this.res.res(var5[var8]));
                 var7.addActionListener(this);
                 var7.setName(String.valueOf(var8));
