@@ -70,7 +70,7 @@ public class TPen extends LComponent implements Runnable {
       String var6 = String.valueOf(var1);
 
       int var7;
-      for(var7 = 0; var2.get(String.valueOf('t') + var6 + var7) != null; ++var7) {
+      for(var7 = 0; var2.get((Object)(String.valueOf('t') + var6 + var7)) != null; ++var7) {
          ;
       }
 

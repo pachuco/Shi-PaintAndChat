@@ -2488,7 +2488,7 @@ public class M {
          var5.set((M)null);
          if (var3 != null) {
             for(var6 = 0; var6 < 16; ++var6) {
-               for(var9 = 0; var3.get("pm" + var6 + '/' + var9 + ".gif") != null; ++var9) {
+               for(var9 = 0; var3.get((Object)("pm" + var6 + '/' + var9 + ".gif")) != null; ++var9) {
                   ;
                }
 
