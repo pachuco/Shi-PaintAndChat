@@ -63,36 +63,33 @@ public class Data {
         }
     }
 
+    private InetAddress getInet(String addr) {
+        InetAddress ret = null;
+        if (addr != null && addr.length() > 0) {
+            try {
+                ret = InetAddress.getByName(addr);
+            } catch (UnknownHostException var4) {
+                ret = null;
+            }
+        }
+        return ret;
+    }
+
     private Socket getSocket() {
         if (this.address == null) {
-            InetAddress var1 = null;
-            String var2 = this.config.getP("Connection_Host", (String) null);
+            InetAddress inet = null;
+            String conhost = this.config.getP("Connection_Host", (String) null);
 
-            try {
-                if (var2 != null) {
-                    var1 = InetAddress.getByName(var2);
-                }
-            } catch (UnknownHostException var4) {
-                var1 = null;
-            }
+            if (inet == null) inet = getInet(conhost);
+            if (inet == null) inet = getInet(this.pl.applet.getCodeBase().getHost());
+            if (inet == null) inet = getInet("localhost");
 
-            try {
-                var2 = this.pl.applet.getCodeBase().getHost();
-                if (var2 == null || var2.length() <= 0) {
-                    var2 = "localhost";
-                }
-
-                var1 = InetAddress.getByName(var2);
-            } catch (UnknownHostException var7) {
-                var1 = null;
-            }
-
-            if (var1 == null) {
+            if (inet == null) {
                 this.destroy();
                 return null;
             }
 
-            this.address = var1;
+            this.address = inet;
             String var3 = "Connection_Port_PaintChat";
             this.Port = this.config.getP(var3, 41411);
         }
