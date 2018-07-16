@@ -107,11 +107,11 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
     protected void addInOut(String var1, boolean var2) {
         if (var2) {
             this.tList.addText(var1);
-            var1 = var1 + " " + this.res.res("entered");
+            var1 = var1 + this.res.res("entered");
             this.dSound(2);
         } else {
             this.tList.remove(var1);
-            var1 = var1 + " " + this.res.res("left");
+            var1 = var1 + this.res.res("leaved");
             this.dSound(3);
         }
 
