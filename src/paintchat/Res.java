@@ -1,6 +1,6 @@
 package paintchat;
 
-import java.applet.Applet;
+import jaba.applet.Applet;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.CharArrayWriter;

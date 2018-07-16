@@ -1,6 +1,6 @@
 package paintchat_client;
 
-import java.applet.Applet;
+import jaba.applet.Applet;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import syi.util.ThreadPool;

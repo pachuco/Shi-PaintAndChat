@@ -1,6 +1,6 @@
 package paintchat_client;
 
-import java.applet.Applet;
+import jaba.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.AWTEvent;
 import java.awt.BorderLayout;

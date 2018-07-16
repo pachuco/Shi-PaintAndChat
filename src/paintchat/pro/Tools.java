@@ -1,6 +1,6 @@
 package paintchat.pro;
 
-import java.applet.Applet;
+import jaba.applet.Applet;
 import java.awt.CheckboxMenuItem;
 import java.awt.Component;
 import java.awt.Container;

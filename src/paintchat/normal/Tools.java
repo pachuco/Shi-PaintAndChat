@@ -1,6 +1,6 @@
 package paintchat.normal;
 
-import java.applet.Applet;
+import jaba.applet.Applet;
 import java.awt.AWTEvent;
 import java.awt.CheckboxMenuItem;
 import java.awt.Color;

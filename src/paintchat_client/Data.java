@@ -1,6 +1,6 @@
 package paintchat_client;
 
-import java.applet.Applet;
+import jaba.applet.Applet;
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.InetAddress;

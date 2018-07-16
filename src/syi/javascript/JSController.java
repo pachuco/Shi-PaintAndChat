@@ -1,6 +1,6 @@
 package syi.javascript;
 
-import java.applet.Applet;
+import jaba.applet.Applet;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;

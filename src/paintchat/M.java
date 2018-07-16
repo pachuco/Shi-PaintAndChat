@@ -1,6 +1,6 @@
 package paintchat;
 
-import java.applet.Applet;
+import jaba.applet.Applet;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;

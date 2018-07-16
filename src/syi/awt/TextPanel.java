@@ -1,6 +1,6 @@
 package syi.awt;
 
-import java.applet.Applet;
+import jaba.applet.Applet;
 import java.awt.AWTEvent;
 import java.awt.Canvas;
 import java.awt.CheckboxMenuItem;
