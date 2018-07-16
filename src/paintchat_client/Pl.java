@@ -113,11 +113,11 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
     protected void addInOut(String var1, boolean var2) {
         if (var2) {
             this.tList.addText(var1);
-            var1 = var1 + this.res.res("entered");
+            var1 = var1 + " " + this.res.res("entered");
             this.dSound(2);
         } else {
             this.tList.remove(var1);
-            var1 = var1 + this.res.res("leaved");
+            var1 = var1 + " " + this.res.res("left");
             this.dSound(3);
         }
 
@@ -132,7 +132,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
         if (var2 == null) {
             this.tText.repaint();
         } else {
-            this.tText.addText(var1 == null ? var2 : var1 + '>' + var2, var3);
+            this.tText.addText(var1 == null ? var2 : "<" + var1 + "> " + var2, var3);
         }
 
     }
@@ -140,7 +140,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
     protected void addTextInfo(String var1, boolean var2) {
         Color var3 = this.tText.getForeground();
         this.tText.setForeground(Color.red);
-        this.addText((String) null, "PaintChat>" + var1, var2);
+        this.addText((String) null, "PaintChat: " + var1, var2);
         this.tText.setForeground(var3);
     }
 
@@ -709,24 +709,24 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
 
     private void typed() {
         try {
-            String var1 = this.tField.getText();
-            if (var1 == null || var1.length() <= 0) {
+            String msg = this.tField.getText();
+            if (msg == null || msg.length() <= 0) {
                 return;
             }
 
             this.tField.setText("");
-            if (var1.length() > 256) {
+            if (msg.length() > 256) {
                 this.mi.alert("longer it", false);
                 return;
             }
 
             if (this.mi.info.m.isText()) {
-                this.mi.addText(var1);
+                this.mi.addText(msg);
             } else {
-                this.mgText.setData(0, (byte) 0, (String) var1);
+                this.mgText.setData(0, (byte) 0, (String) msg);
                 this.dd.send(this.mgText);
-                var1 = this.dd.strName + '>' + var1;
-                this.tText.addText(var1, true);
+                msg = '<' + this.dd.strName + "> " + msg;
+                this.tText.addText(msg, true);
                 this.dSound(1);
             }
         } catch (Throwable var2) {
