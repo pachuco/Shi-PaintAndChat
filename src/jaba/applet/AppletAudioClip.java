@@ -90,7 +90,7 @@ public class AppletAudioClip implements AudioClip {
             }
         }
     }
-    
+
     /**
      * Constructs an AppletAudioClip from a URLConnection.
      */
@@ -113,7 +113,7 @@ public class AppletAudioClip implements AudioClip {
      * raw Audio data. Note that the data provided must include the format
      * header.
      */
-    public AppletAudioClip(byte [] data) {
+    public AppletAudioClip(byte[] data) {
 
         try {
 
@@ -148,20 +148,20 @@ public class AppletAudioClip implements AudioClip {
 
     public synchronized void play() {
 
-                if (audioClip != null)
-                        audioClip.play();
+        if (audioClip != null)
+            audioClip.play();
     }
 
 
     public synchronized void loop() {
 
-                if (audioClip != null)
-                        audioClip.loop();
+        if (audioClip != null)
+            audioClip.loop();
     }
 
     public synchronized void stop() {
 
-                if (audioClip != null)
-                        audioClip.stop();
+        if (audioClip != null)
+            audioClip.stop();
     }
 }

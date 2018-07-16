@@ -40,16 +40,16 @@ public class Applet extends java.applet.Applet {
         }
     }
 
-    private static String getAppPath(){
+    private static String getAppPath() {
         String path;
         File fr;
 
-        if(applicationPath == null) {
+        if (applicationPath == null) {
             path = Applet.class.getProtectionDomain().getCodeSource().getLocation().getPath();
             fr = new File(path);
-            if(fr.isDirectory()) {
+            if (fr.isDirectory()) {
                 applicationPath = fr.getPath();
-            }else {
+            } else {
                 applicationPath = fr.getParent();
             }
         }
@@ -68,7 +68,7 @@ public class Applet extends java.applet.Applet {
     }
 
     @Override
-    public String getParameter(String name){
+    public String getParameter(String name) {
         if (!isDesktop) return super.getParameter(name);
         if (!inifile.isIniLoaded()) return null;
 
@@ -155,14 +155,14 @@ public class Applet extends java.applet.Applet {
     public void play(URL url) {
         if (!isDesktop) super.play(url);
         AudioClip clip = getAudioClip(url);
-        if(clip != null) clip.play();
+        if (clip != null) clip.play();
     }
 
     @Override
     public void play(URL url, String name) {
         if (!isDesktop) super.play(url, name);
         AudioClip clip = getAudioClip(url, name);
-        if(clip != null) clip.play();
+        if (clip != null) clip.play();
     }
 
     @Override
@@ -234,10 +234,21 @@ public class Applet extends java.applet.Applet {
         //frame.setSize(width, height);
         super.setSize(width, height);
     }
-    
+
     //for overriding
-    @Override public void init(){ }
-    @Override public void start(){ }
-    @Override public void stop(){ }
-    @Override public void destroy(){ }
+    @Override
+    public void init() {
+    }
+
+    @Override
+    public void start() {
+    }
+
+    @Override
+    public void stop() {
+    }
+
+    @Override
+    public void destroy() {
+    }
 }

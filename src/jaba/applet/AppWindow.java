@@ -30,22 +30,22 @@ public class AppWindow extends Frame implements WindowListener, KeyListener {
         dispose();
 
         setResizable(!goFull);
-        if(goFull) {
-            mXPos   = getX();
-            mYPos   = getY();
-            mWidth  = getWidth();
+        if (goFull) {
+            mXPos = getX();
+            mYPos = getY();
+            mWidth = getWidth();
             mHeight = getHeight();
             screen = Toolkit.getDefaultToolkit().getScreenSize();
             setUndecorated(true);
-            if(device.isFullScreenSupported()) {
+            if (device.isFullScreenSupported()) {
                 device.setFullScreenWindow(this);
-            }else{
-                setLocation(0,0);
+            } else {
+                setLocation(0, 0);
                 setSize(screen);
             }
             setVisible(true);
             requestFocusInWindow();
-        }else{
+        } else {
             device.setFullScreenWindow(null);
             setUndecorated(false);
             setBounds(mXPos, mYPos, mWidth, mHeight);
@@ -63,12 +63,30 @@ public class AppWindow extends Frame implements WindowListener, KeyListener {
         dispose();
         System.exit(0);
     }
-    @Override public void windowOpened(WindowEvent e) { }
-    @Override public void windowClosed(WindowEvent e) { }
-    @Override public void windowIconified(WindowEvent e) { }
-    @Override public void windowDeiconified(WindowEvent e) { }
-    @Override public void windowActivated(WindowEvent e) { }
-    @Override public void windowDeactivated(WindowEvent e) { }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+    }
 
     //KeyListener
     @Override
@@ -79,7 +97,13 @@ public class AppWindow extends Frame implements WindowListener, KeyListener {
             fullToggle();
         }
     }
-    @Override public void keyTyped(KeyEvent e) { }
-    @Override public void keyReleased(KeyEvent e) { }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
 
 }

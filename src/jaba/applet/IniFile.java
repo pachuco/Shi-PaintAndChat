@@ -25,12 +25,12 @@ public class IniFile {
 
         reset();
         try {
-            for(int i=0; ; i++) {
+            for (int i = 0; ; i++) {
                 line = br.readLine();
                 if (line == null) break;
                 line = line.trim();
 
-                if        (validBlank(line)) {
+                if (validBlank(line)) {
                     //decoration blank line
                 } else if (validKeyValue(line)) {
                     //key=value
@@ -59,7 +59,7 @@ public class IniFile {
 
     public void reset() {
         strvec.clear();
-        for (int i=0; i<sectLocs.length; i++) sectLocs[i] = -1;
+        for (int i = 0; i < sectLocs.length; i++) sectLocs[i] = -1;
         sectnum = 0;
         isLoaded = false;
     }
@@ -88,7 +88,7 @@ public class IniFile {
         int sectStart;
 
         key = key.trim().toLowerCase();
-        sect = sect==null ? null : "[" + sect.trim().toLowerCase() + "]";
+        sect = sect == null ? null : "[" + sect.trim().toLowerCase() + "]";
 
         if (sect == null) {
             sectStart = 0;
@@ -108,15 +108,15 @@ public class IniFile {
     private String procSection(int sectStart, String key, String defVal) {
         int vSize = strvec.size();
 
-        for (int j=sectStart+1; j<vSize; j++) {
+        for (int j = sectStart + 1; j < vSize; j++) {
             String line = strvec.get(j).toString().trim();
-            if        (validSection(line)) {
+            if (validSection(line)) {
                 break;
             } else if (validKeyValue(line)) {
                 int eqLoc = line.indexOf('=');
                 String tkey = line.substring(0, eqLoc).trim().toLowerCase();
                 if (key.equals(tkey)) {
-                    return line.substring(eqLoc+1).trim().toLowerCase();
+                    return line.substring(eqLoc + 1).trim().toLowerCase();
                 }
             }
         }
