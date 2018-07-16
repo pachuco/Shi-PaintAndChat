@@ -1,3 +1,5 @@
+Tools used:
+    - 2018.06.18 GIT FernFlower, default options
 
 Info:
     ShiPainter
@@ -6,8 +8,8 @@ Info:
         zip date: 2005.11.13
 
 Bugs:
-    - [both]Tablet input cannot be reopened after close(check LComponent)
-    - [both]pro->palette->brush select, null menu items
-    - [both]hotkeys work fine for the most, but zooming out too much will break focus
-    - [both]the whole sourcecode is hot, piping mess after decompile
-    - [both]the whole sourcecode was hot, piping mess, before it was compiled
+    - [decompile] Tablet input cannot be reopened after close(check LComponent)
+    - [decompile] pro->palette->brush select, null menu items
+    - [mixing] Hotkeys work fine for the most, but zooming out too much will break focus
+    - [decompile] The whole sourcecode is hot, piping mess after decompile
+    - [general] The whole sourcecode was hot, piping mess, before it was compiled
