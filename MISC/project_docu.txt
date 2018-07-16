@@ -1,0 +1,13 @@
+
+Info:
+    ShiPainter
+        zip date: 2006.02.26 
+    PaintChat366
+        zip date: 2005.11.13
+
+Bugs:
+    - [both]Tablet input cannot be reopened after close(check LComponent)
+    - [both]pro->palette->brush select, null menu items
+    - [both]hotkeys work fine for the most, but zooming out too much will break focus
+    - [both]the whole sourcecode is hot, piping mess after decompile
+    - [both]the whole sourcecode was hot, piping mess, before it was compiled
