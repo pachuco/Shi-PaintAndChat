@@ -166,13 +166,15 @@ public class L extends LComponent implements ActionListener, ItemListener {
 
     private void send(int[] var1, byte[] var2) {
         M var3 = this.mg();
+        M.Info info = this.mi.info;
         this.setA(var3);
         var3.setRetouch(var1, var2, var2 != null ? var2.length : 0, false);
         int var4 = this.mi.user.wait;
 
         try {
             var3.draw();
-            this.mi.send(var3);
+            //MAGIC: layer alpha and mix mode are local if layer editing is disabled
+            if (info.isLEdit) this.mi.send(var3);
         } catch (Throwable var5) {
             ;
         }
