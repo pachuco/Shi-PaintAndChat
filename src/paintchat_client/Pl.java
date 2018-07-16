@@ -32,6 +32,7 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.MemoryImageSource;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import paintchat.M;
@@ -370,14 +371,20 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
             this.sounds = new AudioClip[4];
             String[] var1 = new String[]{"tp.au", "talk.au", "in.au", "out.au"};
 
-            for (int var3 = 0; var3 < 4; ++var3) {
+            for (int i = 0; i < 4; ++i) {
                 try {
-                    String var2 = this.dd.config.res(var1[var3]);
-                    if (var2 != null && var2.length() > 0 && var2.charAt(0) != '_') {
-                        this.sounds[var3] = this.applet.getAudioClip(new URL(this.applet.getCodeBase(), var2));
+                String var2 = this.dd.config.res(var1[i]);
+                if (var2 != null && var2.length() > 0 && var2.charAt(0) != '_') {
+                    URL url = getClass().getResource("/snd/" + var1[i]);
+                    AudioClip snd = this.applet.getAudioClip(url);
+                    if (snd == null) {
+                        try {
+                            snd = this.applet.getAudioClip(new URL(this.applet.getCodeBase(), var2));
+                        } catch (MalformedURLException e) {
+                            snd = null;
+                        }
                     }
-                } catch (IOException var4) {
-                    this.sounds[var3] = null;
+                    sounds[i] = snd;
                 }
             }
 
