@@ -70,9 +70,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
     private LComponent[] cs;
     private Window[] ws;
     private static int[] DEFC = new int[]{
-            0x000000, 0xFFFFFF, 0xb47575, 0x888888, 0xfa9696, 0xc096c0, 0xffb6ff,
-            0x8080ff, 0x25c7c9, 0xe7e58d, 0xe7962d, 0x99cb7b, 0xfcece2, 0xf9ddcf
-    };
+            0x000000, 0xFFFFFF, 0xb47575, 0x888888, 0xfa9696, 0xc096c0, 0xffb6ff, 0x8080ff, 0x25c7c9,0xe7e58d, 0xe7962d, 0x99cb7b, 0xfcece2, 0xf9ddcf};
     private static int[] COLORS = new int[14];
     private static Color[][] clRGB;
     private static Color[][] clERGB;
