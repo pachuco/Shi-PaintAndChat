@@ -66,7 +66,7 @@ public class TPic extends LComponent implements SW {
     }
 
     private int getRGB() {
-        return Color.HSBtoRGB(fhsb[0], fhsb[1], fhsb[2]) & 16777215;
+        return Color.HSBtoRGB(fhsb[0], fhsb[1], fhsb[2]) & 0xFFFFFF;
     }
 
     public void lift() {

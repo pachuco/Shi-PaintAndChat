@@ -170,7 +170,7 @@ public class Tools implements ToolBox, ActionListener {
     public void setARGB(int var1) {
         int var2 = this.mg.iAlpha << 24 | this.mg.iColor;
         this.mg.iAlpha = var1 >>> 24;
-        this.mg.iColor = var1 & 16777215;
+        this.mg.iColor = var1 & 0xFFFFFF;
         if (var2 != var1) {
             this.tPic.setColor(var1);
             this.tPalette.setColor(var1);
@@ -218,14 +218,14 @@ public class Tools implements ToolBox, ActionListener {
         if (var5) {
             this.setField(var1, "iMask", "mask_", var3, var4);
         } else {
-            this.mg.iColorMask = var2 & 16777215;
+            this.mg.iColorMask = var2 & 0xFFFFFF;
             this.components[4].repaint();
         }
 
     }
 
     public void setRGB(int var1) {
-        this.setARGB(this.mg.iAlpha << 24 | var1 & 16777215);
+        this.setARGB(this.mg.iAlpha << 24 | var1 & 0xFFFFFF);
     }
 
     public void up() {

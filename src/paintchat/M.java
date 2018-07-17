@@ -299,7 +299,7 @@ public class M {
                     var3.reserve();
                 } else {
                     if (var3.iCopy == 1) {
-                        this.memset(var9, 16777215);
+                        this.memset(var9, 0xFFFFFF);
 
                         for (int var15 = 0; var15 < var14 - 2; ++var15) {
                             var2[var15].draw(var9, 0, var12, var7, var12 + var11, var7);
@@ -1971,7 +1971,7 @@ public class M {
                 case 5:
                     var12 = var1 >>> 24;
                     var13 = var12 - (int) ((float) var12 * b255[var2]);
-                    return var13 == 0 ? 16777215 : var13 << 24 | var1 & 16777215;
+                    return var13 == 0 ? 0xFFFFFF : var13 << 24 | var1 & 0xFFFFFF;
                 case 6:
                 case 11:
                     var12 = var1 >>> 24;
@@ -2097,7 +2097,7 @@ public class M {
         if (this.iMask == 0) {
             return false;
         } else {
-            var1 &= 16777215;
+            var1 &= 0xFFFFFF;
             return this.iMask == 1 ? this.iColorMask == var1 : (this.iMask == 2 ? this.iColorMask != var1 : false);
         }
     }
@@ -2240,7 +2240,7 @@ public class M {
             var1 = this.user.buffer;
         }
 
-        this.memset(var1, 16777215);
+        this.memset(var1, 0xFFFFFF);
 
         for (int var10 = 0; var10 < var8; ++var10) {
             var9[var10].draw(var1, var2, var3, var2 + var4, var3 + var5, var4);
@@ -2263,7 +2263,7 @@ public class M {
         int[] var6 = this.user.buffer;
         int var7 = this.info.L;
         LO[] var8 = this.info.layers;
-        this.memset(var6, 16777215);
+        this.memset(var6, 0xFFFFFF);
 
         label87:
         for (int var9 = 0; var9 < var7; ++var9) {
@@ -2326,7 +2326,7 @@ public class M {
                                     var21 = var6[var16];
                                     var20 = this.getM(var14[var15], var10[var15] & 255, var15);
                                     var23 = b255[var20 >>> 24] * var22;
-                                    var20 ^= 16777215;
+                                    var20 ^= 0xFFFFFF;
                                     var11 = var21 >>> 16 & 255;
                                     var12 = var21 >>> 8 & 255;
                                     var13 = var21 & 255;
@@ -2536,7 +2536,7 @@ public class M {
         } else {
             int var3 = this.info.L;
             int var5 = 0;
-            int var7 = 16777215;
+            int var7 = 0xFFFFFF;
 
             for (int var10 = 0; var10 < var3; ++var10) {
                 int var8 = this.info.layers[var10].getPixel(var1, var2);
@@ -3127,7 +3127,7 @@ public class M {
                     }
                 }
 
-                return ((int) (var6 * 255.0F) << 24) + (this.buffer[0] & 16777215);
+                return ((int) (var6 * 255.0F) << 24) + (this.buffer[0] & 0xFFFFFF);
             } else {
                 return 0;
             }

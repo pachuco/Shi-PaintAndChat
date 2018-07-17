@@ -14,7 +14,7 @@ import syi.awt.Awt;
 import syi.awt.LComponent;
 
 public class TPalette extends LComponent {
-    private int lenColor = 255;
+    private int lenColor = 0xFF;
     private int iDrag = -1;
     private M.Info info;
     private M mg;
@@ -31,11 +31,17 @@ public class TPalette extends LComponent {
     private static Font clFont = null;
     private static final char[][] clValue = new char[][]{{'H', 'S', 'B', 'A'}, {'R', 'G', 'B', 'A'}};
     private static Color[][] clRGB = null;
-    private static int[] DEFC = new int[]{0, 16777215, 11826549, 8947848, 16422550, 12621504, 16758527, 8421631, 2475977, 15197581, 15177261, 10079099, 16575714, 16375247, 16777215, 16777215, 16777215, 16777215, 16777215, 16777215};
+    private static int[] DEFC = new int[]{
+        0x000000, 0xFFFFFF, 0xB47575, 0x888888, 0xFA9696, 0xC096C0, 0xFFB6FF, 0x8080FF, 0x25C7C9, 0xE7E58D,
+        0xE7962D, 0x99CB7B, 0xFCECE2, 0xF9DDCF, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF
+    };
 
     public TPalette() {
         if (clRGB == null) {
-            clRGB = new Color[][]{{Color.magenta, Color.cyan, Color.white, Color.lightGray}, {new Color(16422550), new Color(8581688), new Color(8421631), Color.lightGray}};
+            clRGB = new Color[][]{
+                    {Color.magenta, Color.cyan, Color.white, Color.lightGray},
+                    {new Color(0xfa9696), new Color(0x82f238), new Color(0x8080ff), Color.lightGray}
+            };
         }
 
     }
@@ -56,7 +62,7 @@ public class TPalette extends LComponent {
                 }
 
                 int var1 = this.cls[var3].getRGB();
-                var2.append("#" + Integer.toHexString(-16777216 | var1 & 16777215).substring(2).toUpperCase());
+                var2.append("#" + Integer.toHexString(0xFF000000 | var1 & 0xFFFFFF).substring(2).toUpperCase());
             }
 
             return var2.toString();
@@ -66,7 +72,7 @@ public class TPalette extends LComponent {
     }
 
     private int getRGB() {
-        return this.isRGB == 1 ? this.iColor : Color.HSBtoRGB((float) (this.iColor >>> 16 & 255) / 255.0F, (float) (this.iColor >>> 8 & 255) / 255.0F, (float) (this.iColor & 255) / 255.0F) & 16777215;
+        return this.isRGB == 1 ? this.iColor : Color.HSBtoRGB((float) (this.iColor >>> 16 & 0xFF) / 255.0F, (float) (this.iColor >>> 8 & 0xFF) / 255.0F, (float) (this.iColor & 0xFF) / 255.0F) & 0xFFFFFF;
     }
 
     public void init(Tools var1, M.Info var2, Res var3, Res var4) {
@@ -125,7 +131,7 @@ public class TPalette extends LComponent {
         Color var7 = this.getBackground();
         Color var8 = Awt.cFore;
         boolean var9 = this.mg.isText();
-        int var10 = var9 ? 255 : this.info.getPenMask()[this.mg.iPenM].length;
+        int var10 = var9 ? 0xFF : this.info.getPenMask()[this.mg.iPenM].length;
         int var11 = Math.min(var4 * 6, var10 * 8 + 1);
         int var12 = this.mg.iSize;
         var12 = var12 <= 0 ? 0 : (var12 >= var10 ? var10 - 1 : var12);
@@ -158,7 +164,7 @@ public class TPalette extends LComponent {
             var1.setColor(Color.white);
             var1.fillRect(var2 + 1, var3 + 2, var6 - 1, 1);
             var1.fillRect(var2 + 1, var3 + 3, 1, var4 - 4);
-            var14 = (int) ((float) (var6 - 2) * ((float) (var15 >>> var16 & 255) / 255.0F));
+            var14 = (int) ((float) (var6 - 2) * ((float) (var15 >>> var16 & 0xFF) / 255.0F));
             var1.setColor(clRGB[this.isRGB][var17]);
             var1.fillRect(var2 + 2, var3 + 3, var14, var4 - 4);
             var1.setColor(Color.gray);
@@ -166,7 +172,7 @@ public class TPalette extends LComponent {
             var1.setColor(var7);
             var1.fillRect(var2 + 2 + var14, var3 + 3, var6 - var14 - 2, var4 - 4);
             var1.setColor(var8);
-            var1.drawString(String.valueOf(clValue[this.isRGB][var17]) + (var15 >>> var16 & 255), var2 + 2, var3 + var4 - 2);
+            var1.drawString(String.valueOf(clValue[this.isRGB][var17]) + (var15 >>> var16 & 0xFF), var2 + 2, var3 + var4 - 2);
             var3 += var4;
             var16 -= 8;
         }
@@ -184,7 +190,7 @@ public class TPalette extends LComponent {
         int var8 = var7 * 2 + 1;
         boolean var9 = Awt.isR(var1);
         boolean var10 = this.mg.isText();
-        int var11 = var10 ? 255 : this.info.getPenMask()[this.mg.iPenM].length;
+        int var11 = var10 ? 0xFF : this.info.getPenMask()[this.mg.iPenM].length;
         int var12 = Math.min(var6 * 6, var11 * 8 + 1);
         if (var3 <= var8 && var2 == 501) {
             this.iDrag = -1;
@@ -242,9 +248,9 @@ public class TPalette extends LComponent {
                     int var14 = (int) ((float) (var3 - var8) / (float) (var5.width - var8) * 255.0F);
                     int var15 = 24 - 8 * (this.iDrag - 1);
                     int var16 = this.iColor << 8 | this.mg.iAlpha;
-                    var16 = var16 & ~(255 << var15) | Math.max(Math.min(var14, 255), 0) << var15;
+                    var16 = var16 & ~(0xFF << var15) | Math.max(Math.min(var14, 0xFF), 0) << var15;
                     this.iColor = var16 >>> 8;
-                    this.mg.iAlpha = Math.max(var16 & 255, 1);
+                    this.mg.iAlpha = Math.max(var16 & 0xFF, 1);
                     var16 = this.iColor;
                     this.tools.setRGB(this.getRGB());
                     boolean var17 = this.iColor == var16;
@@ -270,7 +276,7 @@ public class TPalette extends LComponent {
                 }
 
                 if (var3 < DEFC.length) {
-                    DEFC[var3++] = this.cls[var3].getRGB() & 16777215;
+                    DEFC[var3++] = this.cls[var3].getRGB() & 0xFFFFFF;
                 }
             }
 
@@ -282,16 +288,16 @@ public class TPalette extends LComponent {
     }
 
     public void setColor(int var1) {
-        var1 &= 16777215;
+        var1 &= 0xFFFFFF;
         boolean var2 = this.getRGB() != var1;
         if (this.isRGB == 1) {
             this.iColor = var1;
         } else {
-            Color.RGBtoHSB(var1 >>> 16, var1 >>> 8 & 255, var1 & 255, this.fhsb);
+            Color.RGBtoHSB(var1 >>> 16, var1 >>> 8 & 0xFF, var1 & 0xFF, this.fhsb);
             this.iColor = (int) (this.fhsb[0] * 255.0F) << 16 | (int) (this.fhsb[1] * 255.0F) << 8 | (int) (this.fhsb[2] * 255.0F);
         }
 
-        if ((this.cls[this.selPalette].getRGB() & 16777215) != var1) {
+        if ((this.cls[this.selPalette].getRGB() & 0xFFFFFF) != var1) {
             this.cls[this.selPalette] = new Color(this.mg.iColor);
             var2 = true;
         }
@@ -303,7 +309,7 @@ public class TPalette extends LComponent {
     }
 
     public void setLineSize(int var1) {
-        int var2 = this.mg.isText() ? 255 : this.info.getPenMask()[this.mg.iPenM].length;
+        int var2 = this.mg.isText() ? 0xFF : this.info.getPenMask()[this.mg.iPenM].length;
         int var3 = this.mg.iSize;
         this.mg.iSize = Math.min(Math.max(0, var1), var2);
         if (var3 != this.mg.iSize) {

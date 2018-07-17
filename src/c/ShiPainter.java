@@ -149,21 +149,21 @@ public class ShiPainter extends Applet implements Runnable {
             }
 
             Res var11 = this.config;
-            Color var6 = new Color(var11.getP("color_bk", 13619199));
+            Color var6 = new Color(var11.getP("color_bk", 0xcfcfff));
             this.setBackground(var6);
             this.p.setBackground(var6);
             var6 = new Color(var11.getP("window_color_bk", var6.getRGB()));
             Awt.cC = var6;
             Awt.cBk = var6;
-            var6 = new Color(var11.getP("color_text", 5263480));
+            var6 = new Color(var11.getP("color_text", 0x505078));
             this.setForeground(var6);
             this.p.setForeground(var6);
             Awt.cFore = new Color(var11.getP("window_color_text", var6.getRGB()));
-            Awt.cFSel = new Color(var11.getP("color_iconselect", 15610675));
-            Awt.cF = new Color(var11.getP("window_color_frame", 0));
-            Awt.clBar = new Color(var11.getP("window_color_bar", 6711039));
-            Awt.clLBar = new Color(var11.getP("window_color_bar_hl", 8947967));
-            Awt.clBarT = new Color(var11.getP("window_color_bar_text", 16777215));
+            Awt.cFSel = new Color(var11.getP("color_iconselect", 0xee3333));
+            Awt.cF = new Color(var11.getP("window_color_frame", 0x000000));
+            Awt.clBar = new Color(var11.getP("window_color_bar", 0x6666ff));
+            Awt.clLBar = new Color(var11.getP("window_color_bar_hl", 0x8888ff));
+            Awt.clBarT = new Color(var11.getP("window_color_bar_text", 0xFFFFFF));
 
             try {
                 Awt.setPFrame((Frame) Awt.getParent(this));

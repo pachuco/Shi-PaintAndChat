@@ -69,7 +69,10 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
     private PopupMenu popup;
     private LComponent[] cs;
     private Window[] ws;
-    private static int[] DEFC = new int[]{0, 16777215, 11826549, 8947848, 16422550, 12621504, 16758527, 8421631, 2475977, 15197581, 15177261, 10079099, 16575714, 16375247};
+    private static int[] DEFC = new int[]{
+            0x000000, 0xFFFFFF, 0xb47575, 0x888888, 0xfa9696, 0xc096c0, 0xffb6ff,
+            0x8080ff, 0x25c7c9, 0xe7e58d, 0xe7962d, 0x99cb7b, 0xfcece2, 0xf9ddcf
+    };
     private static int[] COLORS = new int[14];
     private static Color[][] clRGB;
     private static Color[][] clERGB;
@@ -204,7 +207,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
                     var2.append('\n');
                 }
 
-                var2.append("#" + Integer.toHexString(-16777216 | var1[var3] & 16777215).substring(2).toUpperCase());
+                var2.append("#" + Integer.toHexString(-16777216 | var1[var3] & 0xFFFFFF).substring(2).toUpperCase());
             }
 
             return var2.toString();
@@ -223,7 +226,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
     }
 
     private int getRGB() {
-        return !this.isRGB ? Color.HSBtoRGB((float) (this.iColor >>> 16 & 255) / 255.0F, (float) (this.iColor >>> 8 & 255) / 255.0F, (float) (this.iColor & 255) / 255.0F) & 16777215 : this.iColor & 16777215;
+        return !this.isRGB ? Color.HSBtoRGB((float) (this.iColor >>> 16 & 255) / 255.0F, (float) (this.iColor >>> 8 & 255) / 255.0F, (float) (this.iColor & 255) / 255.0F) & 0xFFFFFF : this.iColor & 0xFFFFFF;
     }
 
     private int i(String var1, int var2) {
@@ -838,7 +841,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
 
     public void setARGB(int var1) {
         this.mg.iAlpha = var1 >>> 24;
-        var1 &= 16777215;
+        var1 &= 0xFFFFFF;
         this.mg.iColor = var1;
         this.toColor(var1);
         this.mPaint(-1);
@@ -895,7 +898,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
         int var8 = 255 << var5;
         var8 = ~var8;
         var6 = var6 & var8 | var4 << var5;
-        this.iColor = var6 & 16777215;
+        this.iColor = var6 & 0xFFFFFF;
         this.mg.iColor = this.getRGB();
         this.mg.iAlpha = Math.max(var6 >>> 24, 1);
         this.mPaint(var1);

@@ -446,9 +446,9 @@ public class Mi extends LComponent implements ActionListener {
                     int var6 = var5 >>> 1;
                     Graphics var7 = this.primary2;
                     Color var8 = this.cPre;
-                    var8 = (var8.getRGB() & 16777215) != this.mgInfo.iColor >>> 1 ? new Color(this.mgInfo.iColor >>> 1) : var8;
+                    var8 = (var8.getRGB() & 0xFFFFFF) != this.mgInfo.iColor >>> 1 ? new Color(this.mgInfo.iColor >>> 1) : var8;
                     this.cPre = var8;
-                    var7.setColor(this.mgInfo.iPen != 4 && this.mgInfo.iPen != 5 ? (var8.getRGB() == 16777215 ? Color.red : var8) : Color.cyan);
+                    var7.setColor(this.mgInfo.iPen != 4 && this.mgInfo.iPen != 5 ? (var8.getRGB() == 0xFFFFFF ? Color.red : var8) : Color.cyan);
                     if (var5 <= this.info.scale * 2) {
                         if (var3) {
                             var7.fillRect(this.oldX - var6, this.oldY - var6, var5, var5);
@@ -751,7 +751,7 @@ public class Mi extends LComponent implements ActionListener {
         this.cls = new Color[6];
         this.cls[0] = new Color(var2.getP(var8 + "frame", 5263480));
         this.cls[1] = new Color(var2.getP(var8 + "icon", 13421823));
-        this.cls[2] = new Color(var2.getP(var8 + "bar_hl", 16777215));
+        this.cls[2] = new Color(var2.getP(var8 + "bar_hl", 0xFFFFFF));
         this.cls[3] = new Color(var2.getP(var8 + "bar", 7303086));
         this.cls[4] = new Color(var2.getP(var8 + "bar_hl", 15658751));
         this.cls[5] = new Color(var2.getP(var8 + "bar_shadow", 11184810));
@@ -911,7 +911,7 @@ public class Mi extends LComponent implements ActionListener {
                     this.isDrag = false;
                     super.isPaint = true;
                 } else {
-                    this.imi.setARGB(this.user.getPixel(var4 / this.info.scale + this.info.scaleX, var5 / this.info.scale + this.info.scaleY) & 16777215 | this.info.m.iAlpha << 24);
+                    this.imi.setARGB(this.user.getPixel(var4 / this.info.scale + this.info.scaleX, var5 / this.info.scale + this.info.scaleY) & 0xFFFFFF | this.info.m.iAlpha << 24);
                 }
 
                 return;

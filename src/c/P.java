@@ -1128,7 +1128,7 @@ public class P extends Panel implements IMi {
     }
 
     public void setARGB(int var1) {
-        this.tool.selPix(var1 == 16777215);
+        this.tool.selPix(var1 == 0xFFFFFF);
         if (this.mi.info.m.iPen != 4 && this.mi.info.m.iPen != 5) {
             this.tool.setARGB(var1);
         }

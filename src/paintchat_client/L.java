@@ -66,7 +66,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
         this.sL = var7;
         this.strMenu = var3.res("MenuLayer");
         this.cM = new Color(var4.getP("l_m_color", 0));
-        this.cT = new Color(var4.getP("l_m_color_text", 16777215));
+        this.cT = new Color(var4.getP("l_m_color_text", 0xFFFFFF));
         var5 = this.getFontMetrics(this.bFont);
         var6 = Math.max(var5.stringWidth(var7 + "00") + 4, var6);
         var6 = Math.max(var5.stringWidth(this.strMenu) + 4, var6);

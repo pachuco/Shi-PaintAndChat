@@ -515,7 +515,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
                 Awt.cF = new Color(var4.getP(var2 + "_frame", 0));
                 Awt.clBar = new Color(var4.getP(var2 + "_bar", 6711039));
                 Awt.clLBar = new Color(var4.getP(var2 + "_bar_hl", 8947967));
-                Awt.clBarT = new Color(var4.getP(var2 + "_bar_text", 16777215));
+                Awt.clBarT = new Color(var4.getP(var2 + "_bar_text", 0xFFFFFF));
                 Awt.getDef(this);
                 Awt.setPFrame((Frame) Awt.getParent(this));
             } catch (Throwable var13) {
@@ -665,8 +665,8 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
     }
 
     public void setARGB(int var1) {
-        var1 &= 16777215;
-        this.tool.selPix(this.mi.info.m.iLayer != 0 && var1 == 16777215);
+        var1 &= 0xFFFFFF;
+        this.tool.selPix(this.mi.info.m.iLayer != 0 && var1 == 0xFFFFFF);
         if (this.mi.info.m.iPen != 4 && this.mi.info.m.iPen != 5) {
             this.tool.setARGB(this.mi.info.m.iAlpha << 24 | var1);
         }
