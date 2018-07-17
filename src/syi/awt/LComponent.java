@@ -10,6 +10,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 
 public abstract class LComponent extends Canvas {
@@ -268,15 +269,14 @@ public abstract class LComponent extends Canvas {
 
     public abstract void pMouse(MouseEvent var1);
 
-    protected void processEvent(AWTEvent var1) {
+    protected void processEvent(AWTEvent awtEv) {
         try {
-            int var2 = var1.getID();
             Dimension var3 = this.getSizeW();
             Point var4 = this.getLocation();
             int var6;
             int var7;
-            switch (var2) {
-                case 100:
+            switch (awtEv.getID()) {
+                case ComponentEvent.COMPONENT_MOVED:
                     var4.setLocation(super.getLocation());
                     var7 = var4.x;
                     int var8 = var4.y;
@@ -285,7 +285,7 @@ public abstract class LComponent extends Canvas {
                         this.getParent().repaint(0L, var7, var8, var3.width, var3.height);
                     }
                     break;
-                case 101:
+                case ComponentEvent.COMPONENT_RESIZED:
                     var3.setSize(super.getSize());
                     int var5 = var3.width;
                     var6 = var3.height;
@@ -295,11 +295,11 @@ public abstract class LComponent extends Canvas {
                     }
             }
 
-            if (var1 instanceof MouseEvent) {
-                MouseEvent var20 = (MouseEvent) var1;
-                var20.consume();
-                var6 = var20.getX();
-                var7 = var20.getY();
+            if (awtEv instanceof MouseEvent) {
+                MouseEvent mEv = (MouseEvent) awtEv;
+                mEv.consume();
+                var6 = mEv.getX();
+                var7 = mEv.getY();
                 if (this.isGUI) {
                     var3 = this.getSizeW();
                     Dimension var21 = this.getSize();
@@ -308,12 +308,11 @@ public abstract class LComponent extends Canvas {
                     int var10000 = this.iGap * 2;
                     boolean var11 = false;
                     Dimension var14;
-                    switch (var20.getID()) {
-                        case 501:
+                    switch (mEv.getID()) {
+                        case MouseEvent.MOUSE_PRESSED:
                             this.oldX = var6;
                             this.oldY = var7;
-                            int var22 = this.inCorner(var6, var7);
-                            if (var22 != 0) {
+                            if (this.inCorner(var6, var7) != 0) {
                                 this.isMove = true;
                                 this.isResize = true;
                                 this.isPaint = false;
@@ -321,17 +320,16 @@ public abstract class LComponent extends Canvas {
                                 return;
                             }
 
-                            Container var13 = this.getParent();
+                            Container parent = this.getParent();
                             if (var7 <= this.iBSize) {
                                 if (var6 >= var3.width - this.iBSize) {
                                     if (this.isHide) {
-                                        var13.remove(this);
+                                        parent.remove(this);
                                     }
-
                                     return;
                                 }
 
-                                if (var20.getClickCount() % 2 != 0) {
+                                if (mEv.getClickCount() % 2 != 0) {
                                     this.isMove = true;
                                     this.isResize = false;
                                     this.isPaint = false;
@@ -340,7 +338,7 @@ public abstract class LComponent extends Canvas {
 
                                 var14 = this.getMaximumSize();
                                 Dimension var15 = this.getMinimumSize();
-                                Dimension var16 = var13.getSize();
+                                Dimension var16 = parent.getSize();
                                 int var17 = Math.min(var14.width, var16.width - this.getGapW());
                                 int var18 = Math.min(var14.height, var16.height - this.getGapH());
                                 if (var9 >= var17 && var10 >= var18) {
@@ -358,14 +356,14 @@ public abstract class LComponent extends Canvas {
                                 return;
                             }
                             break;
-                        case 502:
+                        case MouseEvent.MOUSE_RELEASED:
                             if (this.isMove) {
                                 this.isMove = false;
                                 var11 = true;
                                 this.isPaint = true;
                             }
                             break;
-                        case 503:
+                        case MouseEvent.MOUSE_MOVED:
                             if (!this.getCursor().equals(this.getCur(var6, var7))) {
                                 this.setCursor(this.getCur(var6, var7));
                             }
@@ -377,11 +375,11 @@ public abstract class LComponent extends Canvas {
                                     var12.add(this, 0);
                                 }
                             }
-                        case 504:
-                        case 505:
+                        case MouseEvent.MOUSE_ENTERED:
+                        case MouseEvent.MOUSE_EXITED:
                         default:
                             break;
-                        case 506:
+                        case MouseEvent.MOUSE_DRAGGED:
                             if (this.isMove && ++this.countResize >= 4) {
                                 var11 = true;
                                 this.countResize = 0;
@@ -421,13 +419,13 @@ public abstract class LComponent extends Canvas {
                 var6 = this.getGapX();
                 var7 = this.getGapY();
                 if (!this.isMove) {
-                    var20.translatePoint(-var6, -var7);
-                    this.pMouse(var20);
-                    var20.translatePoint(var6, var7);
+                    mEv.translatePoint(-var6, -var7);
+                    this.pMouse(mEv);
+                    mEv.translatePoint(var6, var7);
                 }
             }
 
-            super.processEvent(var1);
+            super.processEvent(awtEv);
         } catch (Throwable var19) {
             ;
         }
