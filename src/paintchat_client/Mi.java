@@ -135,6 +135,7 @@ public class Mi extends LComponent implements ActionListener {
                             this.tab = this;
                         }
                     } else {
+                        this.getParent().add(tab, 0);
                         this.tab.setVisible(true);
                     }
 

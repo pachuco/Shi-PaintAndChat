@@ -8,7 +8,6 @@ Info:
         zip date: 2005.11.13
 
 Bugs:
-    - [decompile] Tablet input cannot be reopened after close(check LComponent)
     - [decompile] pro->palette->brush select, null menu items
     - [mixing] Hotkeys work fine for the most, but zooming out too much will break focus
     - [decompile] The whole sourcecode is hot, piping mess after decompile

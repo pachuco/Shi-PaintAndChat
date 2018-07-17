@@ -324,6 +324,8 @@ public abstract class LComponent extends Canvas {
                             if (var7 <= this.iBSize) {
                                 if (var6 >= var3.width - this.iBSize) {
                                     if (this.isHide) {
+                                        //this.setVisible(false);
+                                        //tablet widget expects visibility change instead of removal
                                         parent.remove(this);
                                     }
                                     return;
