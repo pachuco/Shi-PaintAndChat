@@ -8,7 +8,6 @@ Info:
         zip date: 2005.11.13
 
 Bugs:
-    - [decompile] pro->palette->brush select, null menu items
     - [original] Key shortcuts not working when canvas is not mouse-over.
         in ShiPainter normal: perfect
         in ShiPainter pro: break on mouse not over
