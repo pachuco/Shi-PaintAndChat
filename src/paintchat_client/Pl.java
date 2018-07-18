@@ -129,7 +129,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
         if (var2 == null) {
             this.tText.repaint();
         } else {
-            this.tText.addText(var1 == null ? var2 : "<" + var1 + "> " + var2, var3);
+            this.tText.addText(var1 == null ? var2 : formatIrcLine(var1, var2), var3);
         }
 
     }
@@ -727,7 +727,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
             } else {
                 this.mgText.setData(0, (byte) 0, (String) msg);
                 this.dd.send(this.mgText);
-                msg = '<' + this.dd.strName + "> " + msg;
+                msg = formatIrcLine(this.dd.strName, msg);
                 this.tText.addText(msg, true);
                 this.dSound(1);
             }
@@ -735,6 +735,17 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
             var2.printStackTrace();
         }
 
+    }
+
+    private String formatIrcLine(String name, String msg) {
+        boolean isAction = msg.startsWith("/me ");
+        String ret;
+        if (isAction) {
+            ret = "*" + name + msg.substring(3);
+        } else {
+            ret = "<" + name + "> " + msg;
+        }
+        return ret;
     }
 
     public void undo(boolean var1) {
