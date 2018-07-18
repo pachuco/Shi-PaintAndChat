@@ -9,8 +9,12 @@ Info:
 
 Bugs:
     - [original] Key shortcuts not working when canvas is not mouse-over.
-        in ShiPainter normal: perfect
-        in ShiPainter pro: break on mouse not over
+        in spaint normal: perfect
+        in spaint pro: break on mouse not over
         in pchat366 both: break everytime, have to click canvas to regain
+    - [original?] Repaint of varying quality with flashing(zoom spam)
+        in spaint normal: just scrollbars
+        in spaint pro: scrollbars and canvas
+        in pchat366 both: whole UI
     - [decompile] The whole sourcecode is hot, piping mess after decompile
     - [original] The whole sourcecode was hot, piping mess, before it was compiled
