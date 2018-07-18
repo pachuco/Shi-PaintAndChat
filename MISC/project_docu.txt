@@ -13,4 +13,4 @@ Bugs:
         in ShiPainter pro: break on mouse not over
         in pchat366 both: break everytime, have to click canvas to regain
     - [decompile] The whole sourcecode is hot, piping mess after decompile
-    - [general] The whole sourcecode was hot, piping mess, before it was compiled
+    - [original] The whole sourcecode was hot, piping mess, before it was compiled

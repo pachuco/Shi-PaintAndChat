@@ -82,8 +82,10 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
                     case 0:
                         this.f(this.tPanel, true);
                         break;
-                        //case 1: f(this, false);
                     case 1:
+                        if(!Awt.isDesktop()) f(this, false);
+                        break;
+                    case 2:
                         this.mExit();
                 }
             } else {
@@ -96,6 +98,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
     }
 
     public void mExit() {
+        //TODO: proper exit when isDesktop
         try {
             this.applet.getAppletContext().showDocument(new URL(this.applet.getDocumentBase(), this.dd.config.getP("exit", "../index.html")));
         } catch (Throwable var1) {
@@ -397,15 +400,18 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
             var4.add((Component) this.tField, (Object) var1);
             this.tLabel = new Label(this.dd.res.res("input"));
             var4.add((Component) this.tLabel, (Object) var3);
-            String[] var5 = new String[]{"F", "leave"};
+            String[] var5 = new String[]{"F", "FAll", "leave"};
             Panel var6 = new Panel(new FlowLayout(0, 2, 1));
             this.tPanelB = var6;
 
-            for (int var8 = 0; var8 < var5.length; ++var8) {
-                LButton var7 = new LButton(this.res.res(var5[var8]));
+            for (int i = 0; i < var5.length; ++i) {
+                LButton var7 = new LButton(this.res.res(var5[i]));
                 var7.addActionListener(this);
-                var7.setName(String.valueOf(var8));
+                var7.setName(String.valueOf(i));
                 var6.add(var7);
+                if(Awt.isDesktop() && var5[i].equals("FAll")) {
+                    var7.setVisible(false);
+                }
             }
 
             var4.add((Component) var6, (Object) var2);
@@ -558,6 +564,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
                 this.loadSound();
             }
 
+            //TODO: alternate path when desktop
             DCF var10 = new DCF(this.res);
             var10.mShow();
             String var11 = var10.mGetHandle();

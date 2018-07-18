@@ -34,6 +34,7 @@ public class Awt {
     private static Font fontDef = null;
     private static float Q = 0.0F;
     private static MediaTracker mt = null;
+    private static boolean isDeskApp = false;
 
     public static final void drawFrame(Graphics var0, boolean var1, int var2, int var3, int var4, int var5) {
         setup();
@@ -103,6 +104,14 @@ public class Awt {
         }
 
         return main_frame;
+    }
+
+    public static void setDesktop() {
+        isDeskApp = true;
+    }
+
+    public static boolean isDesktop() {
+        return isDeskApp;
     }
 
     public static boolean isR(MouseEvent var0) {
