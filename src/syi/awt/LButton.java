@@ -131,19 +131,19 @@ public class LButton extends Canvas {
 
     }
 
-    protected void processEvent(AWTEvent var1) {
+    protected void processEvent(AWTEvent ev) {
         try {
-            int var2 = var1.getID();
-            if (var1 instanceof MouseEvent) {
-                MouseEvent var3 = (MouseEvent) var1;
-                var3.consume();
-                if (var2 == 501) {
+            int id = ev.getID();
+            if (ev instanceof MouseEvent) {
+                MouseEvent mev = (MouseEvent) ev;
+                mev.consume();
+                if (id == MouseEvent.MOUSE_PRESSED) {
                     this.isPress = true;
                     this.repaint();
                 }
 
-                if (var2 == 502) {
-                    if (this.contains(((MouseEvent) var1).getPoint())) {
+                if (id == MouseEvent.MOUSE_RELEASED) {
+                    if (this.contains(((MouseEvent) ev).getPoint())) {
                         this.doAction();
                     }
 
@@ -154,8 +154,8 @@ public class LButton extends Canvas {
                 return;
             }
 
-            if (var1 instanceof ComponentEvent) {
-                if (var2 == 101 || var2 == 102) {
+            if (ev instanceof ComponentEvent) {
+                if (id == ComponentEvent.COMPONENT_RESIZED || id == ComponentEvent.COMPONENT_SHOWN) {
                     this.size = null;
                     this.repaint();
                 }
@@ -163,7 +163,7 @@ public class LButton extends Canvas {
                 return;
             }
 
-            super.processEvent(var1);
+            super.processEvent(ev);
         } catch (Throwable var4) {
             var4.printStackTrace();
         }

@@ -837,47 +837,48 @@ public class Mi extends LComponent implements ActionListener {
 
     }
 
-    public void pMouse(MouseEvent var1) {
+    public void pMouse(MouseEvent ev) {
         try {
-            int var2 = var1.getID();
-            int var3 = this.info.scale;
-            int var4 = var1.getX() / var3 * var3;
-            int var5 = var1.getY() / var3 * var3;
-            boolean var6 = var2 == 501;
-            boolean var7 = var2 == 506;
-            boolean var8 = this.isRight;
-            if (var1.isAltDown() && var1.isControlDown()) {
+            int id = ev.getID();
+            int scale = this.info.scale;
+            int sX = ev.getX() / scale * scale;
+            int sY = ev.getY() / scale * scale;
+            boolean isMPress   = id == MouseEvent.MOUSE_PRESSED;
+            boolean isMRelease = id == MouseEvent.MOUSE_RELEASED;
+            boolean isMDrag    = id == MouseEvent.MOUSE_DRAGGED;
+            boolean isMRight   = this.isRight;
+            if (ev.isAltDown() && ev.isControlDown()) {
                 if (this.psCount >= 0) {
                     this.reset();
                 }
 
-                if (var6) {
-                    this.poS.y = var5;
+                if (isMPress) {
+                    this.poS.y = sY;
                     this.poS.x = this.mgInfo.iSize;
                     this.m_paint((Rectangle) null);
                 }
 
-                if (var7) {
+                if (isMDrag) {
                     Dimension var9 = this.getSize();
                     int var10 = var9.width / 2;
                     int var11 = var9.height / 2;
                     int var12 = this.info.getPenSize(this.mgInfo) * this.info.scale;
                     this.m_paint(var10 - var12, var11 - var12, var12 * 2, var12 * 2);
-                    this.imi.setLineSize((var5 - this.poS.y) / 4 + this.poS.x);
+                    this.imi.setLineSize((sY - this.poS.y) / 4 + this.poS.x);
                     this.dPre(var10, var11, false);
                 }
 
                 return;
             }
 
-            if (var6) {
-                var8 = this.isRight = Awt.isR(var1);
+            if (isMPress) {
+                isMRight = this.isRight = Awt.isR(ev);
                 if (!this.isDrag) {
                     this.dPre(this.oldX, this.oldY, false);
                 }
 
                 this.isDrag = true;
-                if (this.b(var4, var5)) {
+                if (this.b(sX, sY)) {
                     return;
                 }
 
@@ -886,7 +887,7 @@ public class Mi extends LComponent implements ActionListener {
                 }
             }
 
-            if (var2 == 502) {
+            if (isMRelease) {
                 if (!this.isDrag) {
                     return;
                 }
@@ -912,17 +913,17 @@ public class Mi extends LComponent implements ActionListener {
                     this.isDrag = false;
                     super.isPaint = true;
                 } else {
-                    this.imi.setARGB(this.user.getPixel(var4 / this.info.scale + this.info.scaleX, var5 / this.info.scale + this.info.scaleY) & 0xFFFFFF | this.info.m.iAlpha << 24);
+                    this.imi.setARGB(this.user.getPixel(sX / this.info.scale + this.info.scaleX, sY / this.info.scale + this.info.scaleY) & 0xFFFFFF | this.info.m.iAlpha << 24);
                 }
 
                 return;
             }
 
             if (!this.isDrag) {
-                this.cursor(var2, var4, var5);
-                switch (var2) {
+                this.cursor(id, sX, sY);
+                switch (id) {
                     case 503:
-                        this.dPre(var4, var5, this.isIn);
+                        this.dPre(sX, sY, this.isIn);
                         this.isIn = true;
                         break;
                     case 504:
@@ -941,34 +942,34 @@ public class Mi extends LComponent implements ActionListener {
             }
 
             if (this.isScroll) {
-                this.dScroll(var1, 0, 0);
+                this.dScroll(ev, 0, 0);
                 return;
             }
 
-            if (this.isEnable && ((long) (this.mgInfo.iLayer + 1) & this.info.permission) != 0L && !var8 && (this.mgInfo.iHint == 10 || this.info.layers[this.mgInfo.iLayer].iAlpha > 0.0F)) {
+            if (this.isEnable && ((long) (this.mgInfo.iLayer + 1) & this.info.permission) != 0L && !isMRight && (this.mgInfo.iHint == 10 || this.info.layers[this.mgInfo.iLayer].iAlpha > 0.0F)) {
                 switch (this.mgInfo.iHint) {
                     case 0:
                     case 11:
-                        this.dFLine(var2, var4, var5);
+                        this.dFLine(id, sX, sY);
                         break;
                     case 1:
-                        this.dLine(var2, var4, var5);
+                        this.dLine(id, sX, sY);
                         break;
                     case 2:
-                        this.dBz(var2, var4, var5);
+                        this.dBz(id, sX, sY);
                         break;
                     case 3:
                     case 4:
                     case 5:
                     case 6:
                     default:
-                        this.dRect(var2, var4, var5);
+                        this.dRect(id, sX, sY);
                         break;
                     case 7:
-                        if (var6 && this.info.isFill) {
+                        if (isMPress && this.info.isFill) {
                             this.m.set(this.info.m);
-                            this.p(0, var4, var5);
-                            this.p(1, var4 + 1024, var5 + 1024);
+                            this.p(0, sX, sY);
+                            this.p(1, sX + 1024, sY + 1024);
                             this.transRect();
                             this.m.setRetouch(this.user.points, (byte[]) null, 0, true);
                             this.m.draw();
@@ -977,20 +978,20 @@ public class Mi extends LComponent implements ActionListener {
                         break;
                     case 8:
                     case 12:
-                        this.dText(var2, var4, var5);
+                        this.dText(id, sX, sY);
                         break;
                     case 9:
-                        this.dCopy(var2, var4, var5);
+                        this.dCopy(id, sX, sY);
                         break;
                     case 10:
-                        if (this.info.isClean && var6) {
+                        if (this.info.isClean && isMPress) {
                             this.dClear();
                         }
                 }
             }
 
-            if (var2 == 502 && this.isIn) {
-                this.dPre(var4, var5, false);
+            if (id == 502 && this.isIn) {
+                this.dPre(sX, sY, false);
                 this.isDrag = false;
             }
         } catch (Throwable var13) {

@@ -224,8 +224,8 @@ public class Tools implements ToolBox, ActionListener {
 
     }
 
-    public void setRGB(int var1) {
-        this.setARGB(this.mg.iAlpha << 24 | var1 & 0xFFFFFF);
+    public void setRGB(int col) {
+        this.setARGB(this.mg.iAlpha << 24 | col & 0xFFFFFF);
     }
 
     public void up() {

@@ -738,9 +738,8 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
     }
 
     private String formatIrcLine(String name, String msg) {
-        boolean isAction = msg.startsWith("/me ");
         String ret;
-        if (isAction) {
+        if (msg.startsWith("/me ")) {
             ret = "*" + name + msg.substring(3);
         } else {
             ret = "<" + name + "> " + msg;
