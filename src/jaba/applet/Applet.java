@@ -3,10 +3,6 @@ package jaba.applet;
 import java.applet.AppletContext;
 import java.applet.AudioClip;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -14,6 +10,7 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 import javax.imageio.ImageIO;
 
 public class Applet extends java.applet.Applet {
@@ -203,7 +200,23 @@ public class Applet extends java.applet.Applet {
             }
 
             public Enumeration<java.applet.Applet> getApplets() {
-                return null;
+                return new Enumeration<java.applet.Applet>() {
+                    private int i = 0;
+
+                    @Override
+                    public boolean hasMoreElements() {
+                        return i < 1;
+                    }
+
+                    @Override
+                    public java.applet.Applet nextElement() {
+                        if (hasMoreElements()) {
+                            return ctx;
+                        } else {
+                            throw new NoSuchElementException();
+                        }
+                    }
+                };
             }
 
             public void showDocument(URL url) {
