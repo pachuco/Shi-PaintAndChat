@@ -186,7 +186,7 @@ public class Applet extends java.applet.Applet {
     public AppletContext getAppletContext() {
         if (!isDesktop) return super.getAppletContext();
 
-        AppletContext ac = new AppletContext() {
+        return new AppletContext() {
             public AudioClip getAudioClip(URL url) {
                 return ctx.getAudioClip(url);
             }
@@ -211,6 +211,7 @@ public class Applet extends java.applet.Applet {
                     @Override
                     public java.applet.Applet nextElement() {
                         if (hasMoreElements()) {
+                            i++;
                             return ctx;
                         } else {
                             throw new NoSuchElementException();
@@ -251,8 +252,6 @@ public class Applet extends java.applet.Applet {
             }
 
         };
-        return ac;
-
     }
 
     @Override
