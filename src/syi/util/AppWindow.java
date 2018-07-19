@@ -1,4 +1,4 @@
-package jaba.applet;
+package syi.util;
 
 import java.awt.*;
 import java.awt.event.*;

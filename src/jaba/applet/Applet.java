@@ -9,6 +9,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.*;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -16,9 +17,9 @@ import java.util.Locale;
 import javax.imageio.ImageIO;
 
 public class Applet extends java.applet.Applet {
-    private java.applet.Applet japplet;
+    private Applet ctx;
     private IniFile inifile = null;
-    //private AppWindow frame;
+    private Frame frame;
 
     private static String iniPath;
     private static String iniSection;
@@ -27,6 +28,7 @@ public class Applet extends java.applet.Applet {
     private static String applicationPath;
 
     public Applet() {
+        ctx = this;
         inifile = new IniFile();
         if (isDesktop) {
             try {
@@ -59,6 +61,18 @@ public class Applet extends java.applet.Applet {
     private static File openResFile(String filePath) {
         String appPath = getAppPath();
         return new File(appPath, filePath);
+    }
+
+    public void attachFrame(Frame f) {
+        if(frame != null) detachFrame();
+        f.add(this);
+        frame = f;
+    }
+
+    public void detachFrame() {
+        if(frame == null) return;
+        frame.remove(this);
+        frame = null;
     }
 
     public static void setupDesktop(String iniPth, String iniSect) {
@@ -123,7 +137,7 @@ public class Applet extends java.applet.Applet {
     public void showStatus(String msg) {
         if (!isDesktop) super.showStatus(msg);
 
-        //frame.setTitle(msg);
+        if (frame != null) frame.setTitle(msg);
     }
 
     @Override
@@ -177,15 +191,15 @@ public class Applet extends java.applet.Applet {
 
         AppletContext ac = new AppletContext() {
             public AudioClip getAudioClip(URL url) {
-                return null;
+                return ctx.getAudioClip(url);
             }
 
             public Image getImage(URL url) {
-                return null;
+                return ctx.getImage(url);
             }
 
             public java.applet.Applet getApplet(String name) {
-                return null;
+                return ctx;
             }
 
             public Enumeration<java.applet.Applet> getApplets() {
@@ -193,15 +207,21 @@ public class Applet extends java.applet.Applet {
             }
 
             public void showDocument(URL url) {
-
+                showDocument(url, null);
             }
 
             public void showDocument(URL url, String target) {
-
+                try {
+                    Desktop.getDesktop().browse(url.toURI());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
             }
 
             public void showStatus(String status) {
-
+                ctx.showStatus(status);
             }
 
             public void setStream(String key, InputStream stream) throws IOException {

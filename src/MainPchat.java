@@ -1,4 +1,4 @@
-import jaba.applet.AppWindow;
+import syi.util.AppWindow;
 import jaba.applet.Applet;
 import syi.awt.Awt;
 
@@ -9,7 +9,7 @@ public class MainPchat {
         AppWindow frame = new AppWindow();
 
         Awt.setDesktop();
-        frame.add(client);
+        client.attachFrame(frame);
         client.init();
         client.start();
     }
