@@ -25,6 +25,7 @@ import java.io.BufferedReader;
 import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import paintchat.Res;
@@ -457,8 +458,18 @@ public class TextPanel extends Canvas implements ActionListener, ItemListener {
 
         this.add(popup);
         popup.addActionListener(this);
-        popup.getItem(2).setEnabled(this.getLine(var2).indexOf("http://") >= 0);
+        popup.getItem(2).setEnabled(isStringUrl(this.getLine(var2)));
         popup.show(this, var1, var2);
+    }
+
+    private boolean isStringUrl(String str) {
+        str = str.substring(str.indexOf('>')+1);
+        try {
+            new URL(str);
+            return true;
+        } catch (MalformedURLException e) {
+            return false;
+        }
     }
 
     protected void processEvent(AWTEvent var1) {
