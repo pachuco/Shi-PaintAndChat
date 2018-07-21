@@ -2,13 +2,10 @@ package c;
 
 import jaba.applet.Applet;
 
-import java.awt.AWTEvent;
-import java.awt.Color;
-import java.awt.FontMetrics;
-import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.LayoutManager;
-import java.awt.Window;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 import java.net.URL;
 import java.util.Locale;
 
@@ -17,17 +14,27 @@ import paintchat.Res;
 import paintchat.ToolBox;
 import paintchat_client.Mi;
 import syi.awt.Awt;
+import syi.awt.FileDlg;
+import syi.awt.NewImage;
 import syi.util.ByteStream;
 
-public class ShiPainter extends Applet implements Runnable {
+import javax.imageio.ImageIO;
+
+public class ShiPainter extends Applet implements Runnable, ActionListener {
     public int isStart = 0;
     private P p;
+    private MBar mbar;
     private Ts ts;
     private Res res;
     private Res config;
     public String str_header = null;
     private Mi mi;
     private String[] sj;
+    private Frame frame;
+    private String lastMode;
+    private File lastFile;
+    private String lastType;
+    private String lastFName;
 
     public void destroy() {
         try {
@@ -38,6 +45,7 @@ public class ShiPainter extends Applet implements Runnable {
             this.removeAll();
             this.p = null;
             this.ts = null;
+            this.mbar = null;
         } catch (Throwable var1) {
             ;
         }
@@ -104,11 +112,16 @@ public class ShiPainter extends Applet implements Runnable {
     }
 
     private void rInit() throws Throwable {
+        rInit(-1, -1, null, null);
+    }
+
+    private void rInit(int width, int height, String imgPath, String mode) throws Throwable {
         try {
             this.isStart = 1;
             this.setLayout((LayoutManager) null);
             this.ts = new Ts();
             this.p = new P(this);
+            this.mbar = new MBar(this);
             URL var1 = this.getCodeBase();
             String var2 = this.p.p("dir_resource", "./res/");
             char var4 = var2.charAt(var2.length() - 1);
@@ -179,6 +192,10 @@ public class ShiPainter extends Applet implements Runnable {
         this.enableEvents(9L);
         this.add(this.ts);
         this.add(this.p);
+        p.loadImW = width;
+        p.loadImH = height;
+        p.loadPath = imgPath;
+        p.loadMode = mode;
         this.p.init(this.config, this.res, this.ts);
         this.ts.init(this, this.p, this.res, this.config);
         this.mi = this.p.mi;
@@ -194,6 +211,11 @@ public class ShiPainter extends Applet implements Runnable {
             this.ts.w(false);
         }
 
+        if (this.d_isDesktop()) {
+            if (lastMode == null) lastMode = config.getP("tools", "normal");
+            frame = d_getFrame();
+            frame.setMenuBar(mbar);
+        }
     }
 
     public void run() {
@@ -298,5 +320,102 @@ public class ShiPainter extends Applet implements Runnable {
             var2 = var3 + 1;
         } while (var3 < var4);
 
+    }
+
+    public void newImg() {
+        Dimension dim;
+        String mode = lastMode;
+        try {
+
+            if(mi == null || mi.info == null){
+                dim = new Dimension(300, 300);
+            }else {
+                dim = mi.info.getCanvasSize();
+            }
+
+            NewImage ni = new NewImage(d_getFrame(), dim, lastMode);
+            dim = ni.getDim();
+            mode = ni.getMode();
+            if(dim != null) {
+                isStart = 0;
+                destroy();
+                paint(getGraphics());
+                rInit(dim.width, dim.height, null, mode);
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        lastMode = mode;
+        setLastFile(null);
+    }
+
+    public void openImg() {
+        FileDlg fileBr = new FileDlg(frame, "Open SPCH/Image", FileDialog.LOAD, "*.spch;*.jpg;*.png;*.gif");
+        File f =fileBr.getF();
+        if(f == null) return;
+
+        String fnl = f.getName().toLowerCase();
+        String path = "file:///" + f.getPath();
+
+        //get image size and initiate canvas with it if it's not a PCH
+        int imW = 300;
+        int imH = 300;
+        try {
+            isStart = 0;
+            destroy();
+            paint(getGraphics());
+
+            Image img = ImageIO.read(f.toURI().toURL());
+            Awt.wait(img);
+
+            if(img != null) {
+                imW = img.getWidth(null);
+                imH = img.getHeight(null);
+            }
+
+            setLastFile(f);
+            rInit(imW, imH, path, lastMode);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
+
+    void setLastFile(File f) {
+        if (f == null) {
+            lastFile = null;
+            lastFName = null;
+        } else {
+            String tf = f.getName();
+            String tfl = tf.toLowerCase();
+            lastFile = f;
+            lastFName = tf.substring(0, tf.lastIndexOf('.'));
+            if (tfl.endsWith(".png")) {
+                lastType = "png";
+            } else if (tfl.endsWith(".jpg") || tfl.endsWith(".jpeg")) {
+                lastType = "jpg";
+            } else if (tfl.endsWith(".spch")) {
+                lastType = "pch";
+            } else {
+                lastType = "png";
+            }
+        }
+        System.out.println(lastFName);
+        System.out.println(lastType);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        String com = e.getActionCommand();
+        if        (com.equals(MBar.hNew)) {
+            newImg();
+        } else if (com.equals(MBar.hOpen)) {
+            openImg();
+        } else if (com.equals(MBar.hSave)) {
+        } else if (com.equals(MBar.hSvAsJPG)) {
+        } else if (com.equals(MBar.hSvAsPNG)) {
+        } else if (com.equals(MBar.hSvAsAni)) {
+        } else if (com.equals(MBar.hExit)) {
+            System.exit(0);
+        } else if (com.equals(MBar.hToggleScr)) {
+        }
     }
 }

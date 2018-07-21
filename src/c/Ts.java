@@ -96,7 +96,7 @@ class Ts extends LComponent {
         this.parent = this.app = var1;
         this.p = var2;
         this.cnf = var4;
-        boolean var5 = var4.getP("bar_visible", true);
+        boolean var5 = var4.getP("bar_visible", !app.d_isDesktop());
         this.is_visible = var5;
         if (!var5) {
             this.setVisible(false);

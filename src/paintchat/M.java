@@ -3307,6 +3307,10 @@ public class M {
             this.imH = this.H / this.Q;
         }
 
+        public Dimension getCanvasSize() {
+            return new Dimension(imW, imH);
+        }
+
         public Dimension getSize() {
             this.vD.setSize(this.vWidth, this.vHeight);
             return this.vD;

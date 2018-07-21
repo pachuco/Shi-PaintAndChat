@@ -1,17 +1,15 @@
-package syi.util;
+package syi.awt;
 
 import java.awt.*;
 import java.awt.event.*;
 
 
 public class AppWindow extends Frame implements WindowListener, KeyListener {
-    private GraphicsDevice device;
     private int mXPos, mYPos, mWidth, mHeight;
     public boolean isFullscreen = false;
 
     public AppWindow() {
         isFullscreen = false;
-        device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 
         setSize(600, 600);
         addKeyListener(this);
@@ -24,8 +22,8 @@ public class AppWindow extends Frame implements WindowListener, KeyListener {
     }
 
     public boolean fullToggle(boolean goFull) {
-        Dimension screen;
         //TODO: this is broken, fix it later
+        GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 
         dispose();
 
@@ -35,13 +33,11 @@ public class AppWindow extends Frame implements WindowListener, KeyListener {
             mYPos = getY();
             mWidth = getWidth();
             mHeight = getHeight();
-            screen = Toolkit.getDefaultToolkit().getScreenSize();
             setUndecorated(true);
             if (device.isFullScreenSupported()) {
                 device.setFullScreenWindow(this);
             } else {
-                setLocation(0, 0);
-                setSize(screen);
+                setExtendedState(Frame.MAXIMIZED_BOTH);
             }
             setVisible(true);
             requestFocusInWindow();
@@ -58,38 +54,19 @@ public class AppWindow extends Frame implements WindowListener, KeyListener {
     }
 
     //WindowListener
-    @Override
     public void windowClosing(WindowEvent e) {
         dispose();
         System.exit(0);
     }
 
-    @Override
-    public void windowOpened(WindowEvent e) {
-    }
-
-    @Override
-    public void windowClosed(WindowEvent e) {
-    }
-
-    @Override
-    public void windowIconified(WindowEvent e) {
-    }
-
-    @Override
-    public void windowDeiconified(WindowEvent e) {
-    }
-
-    @Override
-    public void windowActivated(WindowEvent e) {
-    }
-
-    @Override
-    public void windowDeactivated(WindowEvent e) {
-    }
+    public void windowOpened(WindowEvent e) { }
+    public void windowClosed(WindowEvent e) { }
+    public void windowIconified(WindowEvent e) { }
+    public void windowDeiconified(WindowEvent e) { }
+    public void windowActivated(WindowEvent e) { }
+    public void windowDeactivated(WindowEvent e) { }
 
     //KeyListener
-    @Override
     public void keyPressed(KeyEvent e) {
         boolean isAltDown = e.isAltDown();
         int keyCode = e.getKeyCode();
@@ -98,12 +75,7 @@ public class AppWindow extends Frame implements WindowListener, KeyListener {
         }
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-    }
+    public void keyTyped(KeyEvent e) { }
+    public void keyReleased(KeyEvent e) { }
 
 }

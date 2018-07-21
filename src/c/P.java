@@ -15,12 +15,7 @@ import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.image.ImageObserver;
 import java.awt.image.MemoryImageSource;
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.net.Socket;
 import java.net.URL;
@@ -284,34 +279,47 @@ public class P extends Panel implements IMi {
         return var1;
     }
 
-    public void init(Res var1, Res var2, Ts var3) throws Throwable {
+    public int loadImW = -1;
+    public int loadImH = -1;
+    public String loadPath = null;
+    public String loadMode = null;
+    private int giveP(int i1, int i2) {
+        if(i1 < 0) return i2;
+        return i1;
+    }
+    private String giveP(String s1, String s2) {
+        if(s1 == null) return s2;
+        return s1;
+    }
+
+    public void init(Res config, Res res, Ts var3) throws Throwable {
         this.enableEvents(49L);
-        this.config = var1;
-        this.res = var2;
+        this.config = config;
+        this.res = res;
         String var5 = "cursor_";
         ShiPainter var6 = this.app;
         this.ts = var3;
-        this.isLeft = var1.getP("isLeft", false);
-        int var7 = var1.getP("image_width", 300);
-        int var8 = var1.getP("image_height", 300);
-        int var9 = var1.getP("quality", 1);
-        int var10 = var1.getP("layer_count", 2);
-        this.clB = new Color(var1.getP("color_bk2", 12303359));
-        Cursor[] var11 = new Cursor[4];
+        this.isLeft = config.getP("isLeft", false);
+        int imW = giveP(loadImW, config.getP("image_width", 300));
+        int imH = giveP(loadImH, config.getP("image_height", 300));
+        int qual = config.getP("quality", 1);
+        int layNum = config.getP("layer_count", 2);
+        this.clB = new Color(config.getP("color_bk2", 12303359));
+        Cursor[] curArr = new Cursor[4];
         int[] var12 = new int[]{0, 13, 0, 0};
 
         int var4;
         for (var4 = 0; var4 < 4; ++var4) {
-            var11[var4] = this.loadCursor(var6.getParameter(var5 + (var4 + 1)), var12[var4]);
+            curArr[var4] = this.loadCursor(var6.getParameter(var5 + (var4 + 1)), var12[var4]);
         }
 
-        this.mi = new Mi(this, var2);
-        this.mi.init(var6, var1, var7, var8, var9, var10, var11);
+        this.mi = new Mi(this, res);
+        this.mi.init(var6, config, imW, imH, qual, layNum, curArr);
 
         try {
-            String var13 = var1.getP("tools", "normal");
+            String var13 = giveP(loadMode, config.getP("tools", "normal"));
             this.tool = (ToolBox) Class.forName("paintchat." + var13 + ".Tools").newInstance();
-            this.tool.init(this, var6, var1, this.res, this.mi);
+            this.tool.init(this, var6, config, res, this.mi);
         } catch (Throwable var24) {
             var24.printStackTrace();
         }
@@ -320,19 +328,19 @@ public class P extends Panel implements IMi {
         this.add(this.mi);
         M.Info var25 = this.mi.info;
         M.User var14 = this.user = this.mi.user;
-        var6.mPermission(var1.getP("permission", "layer_edit:t;fill:t;clean:t;layer:all;"));
-        String var15 = var1.getP("mg_init");
+        var6.mPermission(config.getP("permission", "layer_edit:t;fill:t;clean:t;layer:all;"));
+        String var15 = config.getP("mg_init");
         if (var15 != null && var15.length() > 0) {
             var25.m.set(var15);
         }
 
         this.m = new M(var25, var14);
         int var16;
-        if (undoLO != null && Ts.confirm("Restore")) {
+        if (!app.d_isDesktop() && undoLO != null && Ts.confirm("Restore")) {
             var25.setLayers(sLO);
             var25.W = sLO[0].W;
             var25.H = sLO[0].H;
-            var25.setSize(var7, var8, var9);
+            var25.setSize(imW, imH, qual);
 
             for (var4 = 0; var4 < undoLO.length; ++var4) {
                 for (var16 = 0; var16 < undoLO[var4].length; ++var16) {
@@ -342,11 +350,11 @@ public class P extends Panel implements IMi {
         } else {
             var14.wait = -2;
             this.reset();
-            LF = var10;
+            LF = layNum;
             LO.iL = 0;
             this.setLName();
-            var16 = var1.getP("undo", 24);
-            int var17 = Math.min(var1.getP("undo_in_mg", 12), var16);
+            var16 = config.getP("undo", 24);
+            int var17 = Math.min(config.getP("undo_in_mg", 12), var16);
             var16 = Math.max(var16 / var17, 2);
             undoLO = new LO[var16][];
             undoMgs = new ByteStream[var16];
@@ -356,23 +364,26 @@ public class P extends Panel implements IMi {
             }
 
             maxGp = var17;
-            maxAni = var1.getP("animation_max", 0) * 1024 * 2;
-            String var18 = this.p("pch_file", (String) null);
-            String var19 = this.p("image_canvas", (String) null);
-            if (var19 != null && var19.toLowerCase().endsWith("pch")) {
-                var18 = var19;
-                var19 = null;
+            maxAni = config.getP("animation_max", 0) * 1024 * 2;
+            String var18 = this.p("pch_file", null);
+            String canvasLoc = giveP(loadPath, this.p("image_canvas", null));
+            if (canvasLoc != null) {
+                String lExt = canvasLoc.toLowerCase();
+                if (lExt.endsWith(".pch") || lExt.endsWith(".spch")) {
+                    var18 = canvasLoc;
+                    canvasLoc = null;
+                }
             }
 
             sTime = System.currentTimeMillis();
-            if (var19 != null) {
-                Image var20 = var6.getImage(var6.getCodeBase(), var19);
+            if (canvasLoc != null) {
+                Image var20 = var6.getImage(var6.getCodeBase(), canvasLoc);
                 Awt.wait(var20);
                 int var21 = var20.getWidth((ImageObserver) null);
                 int var22 = var20.getHeight((ImageObserver) null);
-                if (var9 > 1) {
-                    var21 *= var9;
-                    var22 *= var9;
+                if (qual > 1) {
+                    var21 *= qual;
+                    var22 *= qual;
                     Image var23 = var20.getScaledInstance(var21, var22, 16);
                     var20.flush();
                     var20 = var23;
@@ -381,7 +392,7 @@ public class P extends Panel implements IMi {
                 int[] var28 = Awt.getPix(var20);
                 var20.flush();
                 var25.layers[0].toCopy(var21, var22, var28, 0, 0);
-                this.setL(var7, var8, var25.L);
+                this.setL(imW, imH, var25.L);
                 this.copyLO(var25.layers, undoLO[0]);
             }
 
@@ -389,11 +400,11 @@ public class P extends Panel implements IMi {
                 this.r(var18);
             }
 
-            this.setL(var7, var8, var25.L);
+            this.setL(imW, imH, var25.L);
             var14.wait = 0;
             int var26 = 0;
 
-            while ((var15 = var1.getP("mg_" + var26)) != null && var15.length() > 0) {
+            while ((var15 = config.getP("mg_" + var26)) != null && var15.length() > 0) {
                 ++var26;
                 M var27 = new M(var25, var14);
                 var27.set(var15);
@@ -824,6 +835,7 @@ public class P extends Panel implements IMi {
     }
 
     public void rSave() {
+        if (this.ts == null) return;
         if (!this.ts.isMe()) {
             this.mi.isEnable = false;
             this.ts.setEnabled(false);
@@ -866,6 +878,74 @@ public class P extends Panel implements IMi {
                 }
             }
         }
+    }
+
+    //MAGIC: image exporting
+    public byte[] export(String type) {
+        ByteStream bs = null;
+        ByteStream undoMg0 = new ByteStream();
+        ByteStream undoMg1 = new ByteStream();
+        //do not overwrite undo buffer
+        try {
+            undoMgs[0].writeTo(undoMg0);
+            undoMgs[1].writeTo(undoMg1);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        undoMg0.seek(undoMgs[0].size());
+        undoMg1.seek(undoMgs[1].size());
+
+        Deflater deflater = new Deflater(9, false);
+        SJpegEncoder sjpegencoder = new SJpegEncoder();
+        SPngEncoder spngencoder = new SPngEncoder(undoMg0, undoMg1, deflater);
+        try {
+            int qlty = 1;
+            int comp = 10;
+
+            M.Info info = mi.info;
+            info.setQuality(qlty);
+            //info.setSize(200, 200, 1);
+            int imW = info.imW;
+            int imH = info.imH;
+            int[] is = new int[imW * qlty * (imH * qlty)];
+            M m = new M(info, mi.user);
+            m.mkLPic(is, 0, 0, imW, imH, qlty);
+
+            wMg(-1);
+            bs = work;
+            bs.reset();
+            bs.gc();
+            //---------------------------------------------------
+            if (type.equals("pch")) {
+                ani(bs, deflater, undoMg0, undoMg1, 1);
+            }
+            if (type.equals("png")) {
+                spngencoder.setInterlace(false);
+
+                //spngencoder.fencode(bs, is, imW, imH);
+                //int size = bs.size();
+                //if (size == 0){
+
+                //}
+
+                //spngencoder.encode(bs, is, imW, imH, 0);
+                spngencoder.fencode(bs, getThumbnail(is, imW, imH, true, comp / 4), imW, imH);
+            }
+            if (type.equals("jpg")) {
+                sjpegencoder.encode(bs, is, imW, imH, comp);
+            }
+
+            undoMg1.reset();
+
+        }catch (Throwable throwable) {
+            throwable.printStackTrace();
+            return null;
+        }
+
+        deflater.end();
+        bs.gc();
+        return bs.getBuffer();
     }
 
     private String save() throws Throwable {
