@@ -26,7 +26,6 @@ import java.awt.event.*;
 import java.awt.image.ImageObserver;
 import java.awt.image.IndexColorModel;
 import java.awt.image.MemoryImageSource;
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -83,7 +82,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
                         this.f(this.tPanel, true);
                         break;
                     case 1:
-                        if(!Awt.isDesktop()) f(this, false);
+                        if(!applet.d_isDesktop()) f(this, false);
                         break;
                     case 2:
                         this.mExit();
@@ -98,7 +97,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
     }
 
     public void mExit() {
-        //TODO: proper exit when isDesktop
+        //TODO: proper exit when d_isDesktop
         try {
             this.applet.getAppletContext().showDocument(new URL(this.applet.getDocumentBase(), this.dd.config.getP("exit", "../index.html")));
         } catch (Throwable var1) {
@@ -409,7 +408,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
                 var7.addActionListener(this);
                 var7.setName(String.valueOf(i));
                 var6.add(var7);
-                if(Awt.isDesktop() && var5[i].equals("FAll")) {
+                if(applet.d_isDesktop() && var5[i].equals("FAll")) {
                     var7.setVisible(false);
                 }
             }

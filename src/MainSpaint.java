@@ -1,15 +1,13 @@
-import syi.util.AppWindow;
+import syi.awt.AppWindow;
 import jaba.applet.Applet;
-import syi.awt.Awt;
 
 public class MainSpaint {
     public static void main(String[] args) {
-        jaba.applet.Applet.setupDesktop("shipainter.ini", "ShiPainter");
+        jaba.applet.Applet.d_setupDesktop("shipainter.ini", "ShiPainter");
         Applet client = new c.ShiPainter();
         AppWindow frame = new AppWindow();
 
-        Awt.setDesktop();
-        client.attachFrame(frame);
+        client.d_setDesktop(frame);
         client.init();
         client.start();
     }

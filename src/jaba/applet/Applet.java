@@ -34,8 +34,6 @@ public class Applet extends java.applet.Applet {
                 System.out.println("Cannot load applet ini!");
                 System.out.println(e.getMessage());
             }
-            //init();
-            //start();
         }
     }
 
@@ -60,19 +58,27 @@ public class Applet extends java.applet.Applet {
         return new File(appPath, filePath);
     }
 
-    public void attachFrame(Frame f) {
-        if(frame != null) detachFrame();
+    public boolean d_isDesktop() {
+        return frame != null;
+    }
+
+    public Frame d_getFrame() {
+        return frame;
+    }
+
+    public void d_setDesktop(Frame f) {
+        if(frame != null) d_detachFrame();
         f.add(this);
         frame = f;
     }
 
-    public void detachFrame() {
+    public void d_detachFrame() {
         if(frame == null) return;
         frame.remove(this);
         frame = null;
     }
 
-    public static void setupDesktop(String iniPth, String iniSect) {
+    public static void d_setupDesktop(String iniPth, String iniSect) {
         iniPath = iniPth;
         iniSection = iniSect;
         isDesktop = true;
@@ -158,7 +164,7 @@ public class Applet extends java.applet.Applet {
 
     //@Override
     //public AudioClip newAudioClip(URL url) {
-    //    if (!isDesktop) return super.newAudioClip(url);
+    //    if (!d_isDesktop) return super.newAudioClip(url);
     //    return new AppletAudioClip(url);
     //}
 
