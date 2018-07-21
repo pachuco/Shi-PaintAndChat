@@ -203,12 +203,10 @@ public class Applet extends java.applet.Applet {
                 return new Enumeration<java.applet.Applet>() {
                     private int i = 0;
 
-                    @Override
                     public boolean hasMoreElements() {
                         return i < 1;
                     }
 
-                    @Override
                     public java.applet.Applet nextElement() {
                         if (hasMoreElements()) {
                             i++;
@@ -245,7 +243,6 @@ public class Applet extends java.applet.Applet {
             public InputStream getStream(String key) {
                 return null;
             }
-
 
             public Iterator<String> getStreamKeys() {
                 return null;
