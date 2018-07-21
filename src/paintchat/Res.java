@@ -213,31 +213,24 @@ public class Res extends Hashtable {
         }
     }
 
-    public void loadResource(Res var1, String var2, String var3) {
-        boolean var10000;
-        if (var3 != null && var3.equals("ja")) {
-            var10000 = true;
-        } else {
-            var10000 = false;
-        }
+    public void loadResource(Res res, String defBase, String lng) {
+        String fName = defBase + (lng != null && lng.length() != 0 ? '_' + lng : "") + ".txt";
 
-        String var5 = var2 + (var3 != null && var3.length() != 0 ? '_' + var3 : "") + ".txt";
-
-        for (int var6 = 0; var6 < 2; ++var6) {
+        for (int i = 0; i < 2; ++i) {
             try {
-                byte[] var7 = (byte[]) var1.getRes(var5);
+                byte[] var7 = (byte[]) res.getRes(fName);
                 if (var7 != null) {
                     ByteArrayInputStream var4 = new ByteArrayInputStream(var7);
                     this.load((Reader) (new InputStreamReader(var4, "UTF8")));
                     break;
                 }
-            } catch (RuntimeException var8) {
-                ;
-            } catch (UnsupportedEncodingException var9) {
-                ;
+            } catch (RuntimeException e) {
+                System.err.println(e.getMessage());
+            } catch (UnsupportedEncodingException e) {
+                System.err.println(e.getMessage());
             }
 
-            var5 = var2 + ".txt";
+            fName = defBase + ".txt";
         }
 
     }
