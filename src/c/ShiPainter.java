@@ -5,7 +5,9 @@ import jaba.applet.Applet;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.*;
 import java.net.URL;
 import java.util.Locale;
 
@@ -15,12 +17,13 @@ import paintchat.ToolBox;
 import paintchat_client.Mi;
 import syi.awt.Awt;
 import syi.awt.FileDlg;
+import syi.awt.FullScreen;
 import syi.awt.NewImage;
 import syi.util.ByteStream;
 
 import javax.imageio.ImageIO;
 
-public class ShiPainter extends Applet implements Runnable, ActionListener {
+public class ShiPainter extends Applet implements Runnable, ActionListener, WindowListener {
     public int isStart = 0;
     private P p;
     private MBar mbar;
@@ -31,10 +34,12 @@ public class ShiPainter extends Applet implements Runnable, ActionListener {
     private Mi mi;
     private String[] sj;
     private Frame frame;
-    private String lastMode;
+
     private File lastFile;
     private String lastType;
-    private String lastFName;
+    private String lastMode;
+
+    public FullScreen fs;
 
     public void destroy() {
         try {
@@ -161,22 +166,22 @@ public class ShiPainter extends Applet implements Runnable, ActionListener {
                 Ts.alert(var8.getMessage());
             }
 
-            Res var11 = this.config;
-            Color var6 = new Color(var11.getP("color_bk", 0xcfcfff));
-            this.setBackground(var6);
-            this.p.setBackground(var6);
-            var6 = new Color(var11.getP("window_color_bk", var6.getRGB()));
-            Awt.cC = var6;
-            Awt.cBk = var6;
-            var6 = new Color(var11.getP("color_text", 0x505078));
-            this.setForeground(var6);
-            this.p.setForeground(var6);
-            Awt.cFore = new Color(var11.getP("window_color_text", var6.getRGB()));
-            Awt.cFSel = new Color(var11.getP("color_iconselect", 0xee3333));
-            Awt.cF = new Color(var11.getP("window_color_frame", 0x000000));
-            Awt.clBar = new Color(var11.getP("window_color_bar", 0x6666ff));
-            Awt.clLBar = new Color(var11.getP("window_color_bar_hl", 0x8888ff));
-            Awt.clBarT = new Color(var11.getP("window_color_bar_text", 0xFFFFFF));
+            //Res var11 = this.config;
+            Color cTemp = new Color(config.getP("color_bk", 0xcfcfff));
+            this.setBackground(cTemp);
+            this.p.setBackground(cTemp);
+            cTemp = new Color(config.getP("window_color_bk", cTemp.getRGB()));
+            Awt.cC = cTemp;
+            Awt.cBk = cTemp;
+            cTemp = new Color(config.getP("color_text", 0x505078));
+            this.setForeground(cTemp);
+            this.p.setForeground(cTemp);
+            Awt.cFore = new Color(config.getP("window_color_text", cTemp.getRGB()));
+            Awt.cFSel = new Color(config.getP("color_iconselect", 0xee3333));
+            Awt.cF = new Color(config.getP("window_color_frame", 0x000000));
+            Awt.clBar = new Color(config.getP("window_color_bar", 0x6666ff));
+            Awt.clLBar = new Color(config.getP("window_color_bar_hl", 0x8888ff));
+            Awt.clBarT = new Color(config.getP("window_color_bar_text", 0xFFFFFF));
 
             try {
                 Awt.setPFrame((Frame) Awt.getParent(this));
@@ -211,10 +216,12 @@ public class ShiPainter extends Applet implements Runnable, ActionListener {
             this.ts.w(false);
         }
 
-        if (this.d_isDesktop()) {
+        if(d_isDesktop()) {
             if (lastMode == null) lastMode = config.getP("tools", "normal");
-            frame = d_getFrame();
             frame.setMenuBar(mbar);
+            frame.setBackground(Awt.cC);
+            frame.setForeground(Awt.cFore);
+            frame.setVisible(true);
         }
     }
 
@@ -223,9 +230,9 @@ public class ShiPainter extends Applet implements Runnable, ActionListener {
             switch (Thread.currentThread().getName().charAt(0)) {
                 case 'i':
                     this.rInit();
+                    if(p.p("fullscreen", false)) fs.fullToggle(true);
                     break;
                 case 'j':
-                    String[] var1 = this.sj;
                     synchronized (this.sj) {
                         for (int var3 = 0; var3 < this.sj.length; ++var3) {
                             String var2;
@@ -288,6 +295,12 @@ public class ShiPainter extends Applet implements Runnable, ActionListener {
     }
 
     public void start() {
+        if(d_isDesktop()) {
+            frame = d_getFrame();
+            fs = new FullScreen(frame);
+            frame.addWindowListener(this);
+            frame.setSize(800, 600);
+        }
         try {
             if (this.isStart == 0) {
                 Ts.run(this, 'i', 3);
@@ -295,7 +308,6 @@ public class ShiPainter extends Applet implements Runnable, ActionListener {
         } catch (Throwable var2) {
             var2.printStackTrace();
         }
-
     }
 
     public void update(Graphics var1) {
@@ -333,7 +345,7 @@ public class ShiPainter extends Applet implements Runnable, ActionListener {
                 dim = mi.info.getCanvasSize();
             }
 
-            NewImage ni = new NewImage(d_getFrame(), dim, lastMode);
+            NewImage ni = new NewImage(frame, dim, lastMode);
             dim = ni.getDim();
             mode = ni.getMode();
             if(dim != null) {
@@ -346,15 +358,68 @@ public class ShiPainter extends Applet implements Runnable, ActionListener {
             e.printStackTrace();
         }
         lastMode = mode;
-        setLastFile(null);
+        lastFile = null;
     }
 
-    public void openImg() {
-        FileDlg fileBr = new FileDlg(frame, "Open SPCH/Image", FileDialog.LOAD, "*.spch;*.jpg;*.png;*.gif");
-        File f =fileBr.getF();
-        if(f == null) return;
+    public void saveFile(boolean isSaveAs, String type) {
+        File f;
+        if(type == null) type = "png";
 
-        String fnl = f.getName().toLowerCase();
+        if(isSaveAs || lastFile == null){
+            String fn;
+
+            fn = lastFile == null ? "untitled" : lastFile.getName();
+
+            FileDlg sa = new FileDlg(frame, "Save "+type.toUpperCase()+" file", FileDialog.SAVE, fn);
+            f =sa.getF();
+            if(f == null) return;
+            fn = f.getName();
+
+            //include files starting with dot
+            if(fn.lastIndexOf('.') <= 0) {
+                //silly homage to MS Paint. File extension in allcaps.
+                if        (type.equals("png")) {
+                    fn += ".PNG";
+                } else if (type.equals("jpg")) {
+                    fn += ".JPG";
+                } else if (type.equals("pch")) {
+                    fn += ".SPCH";
+                } else {
+                    fn += ".PNG";
+                }
+                f = new File(f.getParent(), fn);
+            } else {
+                type = getType(f);
+            }
+        }else{
+            f = lastFile;
+        }
+
+
+        try {
+            byte[] bs = p.export(type);
+            if(bs == null) return;
+
+            FileOutputStream fos = new FileOutputStream(f);
+            //BufferedOutputStream bos = new BufferedOutputStream(fos);
+            fos.write(bs);
+            fos.close();
+
+        } catch (FileNotFoundException e) {
+            return;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        lastFile = f;
+        lastType = getType(f);
+    }
+
+    public void openFile() {
+        FileDlg fileBr = new FileDlg(frame, "Open SPCH/Image", FileDialog.LOAD, "*.spch;*.jpg;*.png;*.gif;*.bmp");
+        File f =fileBr.getF();
+        if(f == null || !f.isFile()) return;
+
         String path = "file:///" + f.getPath();
 
         //get image size and initiate canvas with it if it's not a PCH
@@ -373,34 +438,34 @@ public class ShiPainter extends Applet implements Runnable, ActionListener {
                 imH = img.getHeight(null);
             }
 
-            setLastFile(f);
+            lastType = getType(f);
+            lastFile = f;
             rInit(imW, imH, path, lastMode);
         } catch (Throwable e) {
             e.printStackTrace();
         }
     }
 
-    void setLastFile(File f) {
+    public void exit() {
+        frame.dispose();
+        System.exit(0);
+    }
+
+    private String getType(File f) {
         if (f == null) {
-            lastFile = null;
-            lastFName = null;
+            return null;
         } else {
-            String tf = f.getName();
-            String tfl = tf.toLowerCase();
-            lastFile = f;
-            lastFName = tf.substring(0, tf.lastIndexOf('.'));
+            String tfl = f.getName().toLowerCase();
             if (tfl.endsWith(".png")) {
-                lastType = "png";
+                return "png";
             } else if (tfl.endsWith(".jpg") || tfl.endsWith(".jpeg")) {
-                lastType = "jpg";
+                return "jpg";
             } else if (tfl.endsWith(".spch")) {
-                lastType = "pch";
+                return "pch";
             } else {
-                lastType = "png";
+                return "png";
             }
         }
-        System.out.println(lastFName);
-        System.out.println(lastType);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -408,14 +473,32 @@ public class ShiPainter extends Applet implements Runnable, ActionListener {
         if        (com.equals(MBar.hNew)) {
             newImg();
         } else if (com.equals(MBar.hOpen)) {
-            openImg();
+            openFile();
         } else if (com.equals(MBar.hSave)) {
+            saveFile(false, lastType);
         } else if (com.equals(MBar.hSvAsJPG)) {
+            saveFile(true, "jpg");
         } else if (com.equals(MBar.hSvAsPNG)) {
+            saveFile(true, "png");
         } else if (com.equals(MBar.hSvAsAni)) {
+            saveFile(true, "pch");
         } else if (com.equals(MBar.hExit)) {
-            System.exit(0);
+            exit();
         } else if (com.equals(MBar.hToggleScr)) {
+            fs.fullToggle();
         }
     }
+
+    //WindowListener
+    public void windowClosing(WindowEvent e) {
+        exit();
+    }
+
+    public void windowOpened(WindowEvent e) { }
+    public void windowClosed(WindowEvent e) { }
+    public void windowIconified(WindowEvent e) { }
+    public void windowDeiconified(WindowEvent e) { }
+    public void windowActivated(WindowEvent e) { }
+    public void windowDeactivated(WindowEvent e) { }
+
 }
