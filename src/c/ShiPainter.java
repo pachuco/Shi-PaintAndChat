@@ -77,23 +77,23 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
         return this.p.tool;
     }
 
-    protected void jump(String var1, String var2) {
+    protected void jump(String url, String target) {
         try {
-            this.getAppletContext().showDocument(new URL(this.getCodeBase(), var1), var2 == null ? "_self" : var2);
+            this.getAppletContext().showDocument(new URL(this.getCodeBase(), url), target == null ? "_self" : target);
         } catch (Throwable var4) {
             Ts.alert(var4.getMessage());
         }
 
     }
 
-    public void paint(Graphics var1) {
+    public void paint(Graphics g) {
         try {
             if (this.isStart >= 2) {
                 return;
             }
 
-            FontMetrics var2 = var1.getFontMetrics();
-            var1.drawString((String) "Wait for initialization to complete.", 10, var2.getHeight() + 10);
+            FontMetrics fontMetrics = g.getFontMetrics();
+            g.drawString((String) "Wait for initialization to complete.", 10, fontMetrics.getHeight() + 10);
         } catch (Throwable var3) {
             var3.printStackTrace();
         }
@@ -104,10 +104,10 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
         Ts.run(this, 's', 2);
     }
 
-    protected void processEvent(AWTEvent var1) {
+    protected void processEvent(AWTEvent evt) {
         try {
-            int var2 = var1.getID();
-            if (var2 == 101 && this.ts != null) {
+            int id = evt.getID();
+            if (id == 101 && this.ts != null) { // 101 = COMPONENT_EVENT_MASK | FOCUS_EVENT_MASK | MOUSE_MOTION_EVENT_MASK | WINDOW_EVENT_MASK
                 this.ts.pack();
             }
         } catch (Throwable var3) {

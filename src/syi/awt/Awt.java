@@ -35,38 +35,38 @@ public class Awt {
     private static float Q = 0.0F;
     private static MediaTracker mt = null;
 
-    public static final void drawFrame(Graphics var0, boolean var1, int var2, int var3, int var4, int var5) {
+    public static final void drawFrame(Graphics g, boolean var1, int var2, int var3, int var4, int var5) {
         setup();
-        drawFrame(var0, var1, var2, var3, var4, var5, cDk, cLt);
+        drawFrame(g, var1, var2, var3, var4, var5, cDk, cLt);
     }
 
-    public static final void drawFrame(Graphics var0, boolean var1, int var2, int var3, int var4, int var5, Color var6, Color var7) {
+    public static final void drawFrame(Graphics g, boolean var1, int xTopLeft, int yTopLeft, int width, int height, Color colorDark, Color colorLight) {
         setup();
-        int var8 = var2 + var4;
-        int var9 = var3 + var5;
-        var0.setColor(var6 == null ? cDk : var6);
-        var0.fillRect(var2, var3, var4, 1);
-        var0.fillRect(var2, var3 + 1, 1, var5 - 2);
-        var0.fillRect(var2 + 2, var9 - 2, var4 - 2, 1);
-        var0.fillRect(var8 - 1, var3 + 2, 1, var5 - 4);
-        var0.setColor(var7 == null ? cLt : var7);
+        int var8 = xTopLeft + width;
+        int var9 = yTopLeft + height;
+        g.setColor(colorDark == null ? cDk : colorDark);
+        g.fillRect(xTopLeft, yTopLeft, width, 1);
+        g.fillRect(xTopLeft, yTopLeft + 1, 1, height - 2);
+        g.fillRect(xTopLeft + 2, var9 - 2, width - 2, 1);
+        g.fillRect(var8 - 1, yTopLeft + 2, 1, height - 4);
+        g.setColor(colorLight == null ? cLt : colorLight);
         if (!var1) {
-            var0.fillRect(var2 + 1, var3 + 1, var4 - 2, 1);
-            var0.fillRect(var2 + 1, var3 + 2, 1, var5 - 4);
+            g.fillRect(xTopLeft + 1, yTopLeft + 1, width - 2, 1);
+            g.fillRect(xTopLeft + 1, yTopLeft + 2, 1, height - 4);
         }
 
-        var0.fillRect(var2 + 1, var9 - 1, var4 - 1, 1);
-        var0.fillRect(var8, var3 + 1, 1, var5 - 2);
+        g.fillRect(xTopLeft + 1, var9 - 1, width - 1, 1);
+        g.fillRect(var8, yTopLeft + 1, 1, height - 2);
     }
 
-    public static final void fillFrame(Graphics var0, boolean var1, int var2, int var3, int var4, int var5) {
-        fillFrame(var0, var1, var2, var3, var4, var5, cC, cDk, cDk, cLt);
+    public static final void fillFrame(Graphics g, boolean var1, int var2, int var3, int var4, int var5) {
+        fillFrame(g, var1, var2, var3, var4, var5, cC, cDk, cDk, cLt);
     }
 
-    public static final void fillFrame(Graphics var0, boolean var1, int var2, int var3, int var4, int var5, Color var6, Color var7, Color var8, Color var9) {
-        drawFrame(var0, var1, var2, var3, var4, var5, var8, var9);
-        var0.setColor(var1 ? (var7 == null ? cDk : var7) : (var6 == null ? cC : var6));
-        var0.fillRect(var2 + 2, var3 + 2, var4 - 3, var5 - 4);
+    public static final void fillFrame(Graphics g, boolean var1, int var2, int var3, int var4, int var5, Color var6, Color var7, Color var8, Color var9) {
+        drawFrame(g, var1, var2, var3, var4, var5, var8, var9);
+        g.setColor(var1 ? (var7 == null ? cDk : var7) : (var6 == null ? cC : var6));
+        g.fillRect(var2 + 2, var3 + 2, var4 - 3, var5 - 4);
     }
 
     public static void getDef(Component var0) {
