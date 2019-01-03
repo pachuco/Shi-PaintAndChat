@@ -55,9 +55,9 @@ public class PP extends LComponent implements SW {
     }
 
     private int b(int x, int y) {
-        Dimension dimension = this.getSize();
-        if (x > 0 && y > 0 && x < dimension.width - 1 && y < dimension.height - 1) {
-            int var4 = y / (this.iH + 1) * (dimension.width / (this.iW + 1)) + x / (this.iW + 1);
+        Dimension dim = this.getSize();
+        if (x > 0 && y > 0 && x < dim.width - 1 && y < dim.height - 1) {
+            int var4 = y / (this.iH + 1) * (dim.width / (this.iW + 1)) + x / (this.iW + 1);
             return var4 >= this.Len ? -1 : var4;
         } else {
             return -1;

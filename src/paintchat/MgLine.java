@@ -22,6 +22,7 @@ import java.io.InterruptedIOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
+/** Currently only used by PCHViewer */
 public class MgLine {
     public int head = 0;
     private int line_size = 1;

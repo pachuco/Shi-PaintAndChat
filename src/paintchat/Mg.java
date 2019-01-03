@@ -21,6 +21,7 @@ import java.lang.reflect.Field;
 import syi.awt.Awt;
 import syi.util.ByteStream;
 
+/** Currently only used by PCHViewer when loading the older PCH format */
 public class Mg {
     private Mg.Info info;
     private Mg.User user;

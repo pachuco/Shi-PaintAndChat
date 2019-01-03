@@ -330,8 +330,9 @@ public class Res extends Hashtable {
         }
     }
 
-    public final String res(String var1) {
-        return this.getP(var1, var1);
+    /** Returns the value of key if available, otherwise the key itself */
+    public final String res(String key) {
+        return this.getP(key, key);
     }
 
     public void put(Res var1) {

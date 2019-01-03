@@ -127,34 +127,34 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
             this.ts = new Ts();
             this.p = new P(this);
             this.mbar = new MBar(this);
-            URL var1 = this.getCodeBase();
-            String var2 = this.p.p("dir_resource", "./res/");
-            char var4 = var2.charAt(var2.length() - 1);
-            Object var3;
-            if (var4 != '&' && var4 != '?' && var4 != '=') {
-                if (var2.charAt(var2.length() - 1) != '/') {
-                    var2 = var2 + '/';
+            URL basePath = this.getCodeBase();
+            String dirResource = this.p.p("dir_resource", "./res/");
+            char lastChar = dirResource.charAt(dirResource.length() - 1);
+            Object resPath;
+            if (lastChar != '&' && lastChar != '?' && lastChar != '=') {
+                if (lastChar != '/') {
+                    dirResource = dirResource + '/';
                 }
 
-                var3 = new URL(var1, var2);
+                resPath = new URL(basePath, dirResource);
             } else {
-                var3 = var2;
+                resPath = dirResource;
             }
 
-            this.config = new Res(this, var3, (ByteStream) null);
-            this.res = new Res(this, var3, (ByteStream) null);
+            this.config = new Res(this, resPath, (ByteStream) null);
+            this.res = new Res(this, resPath, (ByteStream) null);
 
             try {
-                String var5 = this.p.p("res.zip", "res/res.zip");
-                if (var5.equals("res_normal.zip")) {
-                    var5 = "res.zip";
+                String fileName = this.p.p("res.zip", "res/res.zip");
+                if (fileName.equals("res_normal.zip")) {
+                    fileName = "res.zip";
                 }
 
-                if (var5.equals("res_pro.zip")) {
-                    var5 = "res.zip";
+                if (fileName.equals("res_pro.zip")) {
+                    fileName = "res.zip";
                 }
 
-                this.config.loadZip(var5);
+                this.config.loadZip(fileName);
             } catch (Throwable var9) {
                 var9.printStackTrace();
             }
@@ -310,27 +310,28 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
         }
     }
 
-    public void update(Graphics var1) {
-        this.paint(var1);
+    public void update(Graphics g) {
+        this.paint(g);
     }
 
-    public void mPermission(String var1) {
-        int var2 = 0;
-        int var4 = var1.length();
+    public void mPermission(String permissionString) {
+        // TODO: check if modern Java has a direct method for splitting
+        int strStart = 0;
+        int strLength = permissionString.length();
 
-        int var3;
+        int strEnd;
         do {
-            var3 = var1.indexOf(59, var2);
-            if (var3 < 0) {
-                var3 = var4;
+            strEnd = permissionString.indexOf(',', strStart);
+            if (strEnd < 0) {
+                strEnd = strLength;
             }
 
-            if (var3 - var2 > 0) {
-                this.p.mP(var1.substring(var2, var3));
+            if (strEnd - strStart > 0) {
+                this.p.mP(permissionString.substring(strStart, strEnd));
             }
 
-            var2 = var3 + 1;
-        } while (var3 < var4);
+            strStart = strEnd + 1;
+        } while (strEnd < strLength);
 
     }
 
