@@ -8,6 +8,8 @@ import java.awt.event.MouseEvent;
 import syi.awt.Awt;
 import syi.awt.LComponent;
 
+import static java.awt.event.MouseEvent.MOUSE_PRESSED;
+
 public class PP extends LComponent implements SW {
     private ToolBox tools;
     private int Len;
@@ -17,8 +19,8 @@ public class PP extends LComponent implements SW {
     private M m;
     private M.Info info;
 
-    public void paint2(Graphics var1) {
-        this.mPaint(var1);
+    public void paint2(Graphics g) {
+        this.mPaint(g);
     }
 
     public void mPaint(Graphics g) {
@@ -27,9 +29,9 @@ public class PP extends LComponent implements SW {
             g = this.getG();
         }
 
-        Dimension var3 = this.getSize();
-        int width = var3.width / this.iW;
-        int height = Math.max(var3.height / this.iH, 1);
+        Dimension dim = this.getSize();
+        int width = dim.width / this.iW;
+        int height = Math.max(dim.height / this.iH, 1);
         int y = 0;
         int x = 0;
         Color colorBlack = Color.black;
@@ -68,18 +70,18 @@ public class PP extends LComponent implements SW {
         int var2 = this.b(evt.getX(), evt.getY());
         if (var2 >= 0) {
             switch (evt.getID()) {
-                case 501:
+                case MOUSE_PRESSED:
                     if (Awt.isR(evt)) {
                         this.ms[var2].set(this.m);
                     } else {
                         this.tools.lift();
-                        int var3 = this.m.iLayer;
-                        int var4 = this.m.iLayerSrc;
-                        int var5 = this.m.iColorMask;
+                        int layer = this.m.iLayer;
+                        int layerSrc = this.m.iLayerSrc;
+                        int mask = this.m.iColorMask;
                         this.m.set(this.ms[var2]);
-                        this.m.iLayer = var3;
-                        this.m.iLayerSrc = var4;
-                        this.m.iColorMask = var5;
+                        this.m.iLayer = layer;
+                        this.m.iLayerSrc = layerSrc;
+                        this.m.iColorMask = mask;
                         this.tools.up();
                     }
 
@@ -115,8 +117,8 @@ public class PP extends LComponent implements SW {
         this.m = mg;
         super.isBar = true;
         this.setTitle(config.get("PPTitle"));
-        Dimension var11 = new Dimension(width, height * len);
-        this.setDimension(new Dimension(width, height), var11, new Dimension(width * len, height * len));
+        Dimension dim = new Dimension(width, height * len);
+        this.setDimension(new Dimension(width, height), dim, new Dimension(width * len, height * len));
     }
 
     public void up() {

@@ -23,6 +23,8 @@ import paintchat_client.Me;
 import syi.awt.Awt;
 import syi.awt.LComponent;
 
+import static java.awt.event.MouseEvent.*;
+
 class Ts extends LComponent {
     private static String SV = "1.114";
     public Res res;
@@ -75,12 +77,12 @@ class Ts extends LComponent {
         return Me.confirm(var0, true);
     }
 
-    private void ev(AWTEvent var1) {
-        switch (var1.getID()) {
-            case 101:
+    private void ev(AWTEvent evt) {
+        switch (evt.getID()) {
+            case 101: // WINDOW_EVENT_MASK | MOUSE_MOTION_EVENT_MASK | FOCUS_EVENT_MASK | COMPONENT_EVENT_MASK
                 this.pack();
                 break;
-            case 201:
+            case 201: // ACTION_EVENT_MASK | WINDOW_EVENT_MASK | KEY_EVENT_MASK | COMPONENT_EVENT_MASK
                 if (this.getV(2)) {
                     this.w(true);
                 }
@@ -88,80 +90,84 @@ class Ts extends LComponent {
 
     }
 
-    public boolean getV(int var1) {
-        return (this.V >>> var1 & 1) == 1;
+    /** Returns the bit at the pos position from V (something to do with buttons) */
+    public boolean getV(int pos) {
+        return (this.V >>> pos & 1) == 1;
     }
 
-    public void init(ShiPainter var1, P var2, Res var3, Res var4) {
-        this.parent = this.app = var1;
-        this.p = var2;
-        this.cnf = var4;
-        boolean var5 = var4.getP("bar_visible", !app.d_isDesktop());
-        this.is_visible = var5;
-        if (!var5) {
+    /** Sets the pos bit in V (something to do with buttons) */
+    public void setV(int pos, boolean value) { this.V = this.V ^ (1 << pos) | (value ? 1 : 0) << pos; }
+
+    public void init(ShiPainter app, P panel, Res res, Res conf) {
+        this.parent = this.app = app;
+        this.p = panel;
+        this.cnf = conf;
+        boolean isBarVisible = conf.getP("bar_visible", !this.app.d_isDesktop());
+        this.is_visible = isBarVisible;
+        if (!isBarVisible) {
             this.setVisible(false);
         }
 
-        Me.res = var3;
-        this.res = var3;
-        Me.conf = var4;
+        Me.res = res;
+        this.res = res;
+        Me.conf = conf;
         super.isGUI = false;
         super.isHide = false;
         super.iGap = 0;
-        String var6 = "bar_color_";
-        if (var4.getP(var6 + "bk") != null) {
-            this.setBackground(new Color(var4.getP(var6 + "bk", 0)));
+        String strBarColor = "bar_color_";
+        if (conf.getP(strBarColor + "bk") != null) {
+            this.setBackground(new Color(conf.getP(strBarColor + "bk", 0)));
         }
 
-        if (var4.getP(var6 + "text") != null) {
-            this.clText = new Color(var4.getP(var6 + "text", 0));
+        if (conf.getP(strBarColor + "text") != null) {
+            this.clText = new Color(conf.getP(strBarColor + "text", 0));
             this.setForeground(this.clText);
         }
 
-        if (var4.getP(var6 + "frame") != null) {
-            super.clFrame = new Color(var4.getP(var6 + "frame", 0));
+        if (conf.getP(strBarColor + "frame") != null) {
+            super.clFrame = new Color(conf.getP(strBarColor + "frame", 0));
         }
 
-        String var7 = var6 + "off";
+        String strBarColorOff = strBarColor + "off";
 
-        int var9;
-        for (var9 = 0; var9 < 2; ++var9) {
-            Color[] var8 = this.cls[var9];
-            if (var4.getP(var7) != null) {
-                var8[0] = new Color(var4.getP(var7, 0));
+        int i;
+        for (i = 0; i < 2; ++i) {
+            Color[] var8 = this.cls[i];
+            if (conf.getP(strBarColorOff) != null) {
+                var8[0] = new Color(conf.getP(strBarColorOff, 0));
             }
 
-            if (var4.getP(var7 + "_hl") != null) {
-                var8[1] = new Color(var4.getP(var7 + "_hl", 0));
+            if (conf.getP(strBarColorOff + "_hl") != null) {
+                var8[1] = new Color(conf.getP(strBarColorOff + "_hl", 0));
             }
 
-            if (var4.getP(var7 + "_dk") != null) {
-                var8[2] = new Color(var4.getP(var7 + "_dk", 0));
+            if (conf.getP(strBarColorOff + "_dk") != null) {
+                var8[2] = new Color(conf.getP(strBarColorOff + "_dk", 0));
             }
 
-            var7 = var6 + "on";
+            strBarColorOff = strBarColor + "on";
         }
 
-        var6 = var3.getP("app_name", (String) null);
-        if (var6 == null) {
-            var6 = "(C)" + (Locale.getDefault().getLanguage().equals("ja") ? "しぃちゃん v" + SV + " しぃペインター" : "Shi-chan v" + SV + " Shi-Painter");
+        strBarColor = res.getP("app_name", (String) null);
+        if (strBarColor == null) {
+            strBarColor = "(C)" + (Locale.getDefault().getLanguage().equals("ja") ? "しぃちゃん v" + SV + " しぃペインター" : "Shi-chan v" + SV + " Shi-Painter");
         }
 
-        this.strs = new String[]{"sUpload", "sF", "sRedo", "sUndo", "sFill", var6};
+        this.strs = new String[]{"sUpload", "sF", "sRedo", "sUndo", "sFill", strBarColor};
 
-        for (var9 = 0; var9 < 5; ++var9) {
-            this.strs[var9] = var3.res(this.strs[var9]);
+        for (i = 0; i < 5; ++i) {
+            this.strs[i] = res.res(this.strs[i]);
         }
 
-        if (var6.length() == 1 && var6.charAt(0) == '_') {
+        if (strBarColor.length() == 1 && strBarColor.charAt(0) == '_') {
             this.is_vv = false;
         }
 
-        Font var11 = Awt.getDefFont();
-        this.setFont(var11);
-        this.H = this.getFontMetrics(var11).getHeight() + 10;
-        Dimension var10 = new Dimension(var1.getSize().width, this.H);
-        this.setDimension(var10, var10, new Dimension(9999, this.H));
+        Font font = Awt.getDefFont();
+        this.setFont(font);
+        this.H = this.getFontMetrics(font).getHeight() + 10;
+        Dimension dApp = new Dimension(app.getSize().width, this.H);
+        this.setDimension(dApp, dApp, new Dimension(9999, this.H));
     }
 
     public boolean isMe() {
@@ -170,16 +176,16 @@ class Ts extends LComponent {
 
     public void layout(int var1) {
         if (this.is_visible) {
-            Container var2 = this.parent;
-            Dimension var3 = this.getSize();
+            Container parent = this.parent;
+            Dimension dim = this.getSize();
             boolean var4 = var1 == 0;
             if (var4 && super.isGUI) {
                 var4 = false;
-                this.isUpper = this.getLocation().y <= var2.getSize().height / 2;
+                this.isUpper = this.getLocation().y <= parent.getSize().height / 2;
             }
 
             super.isGUI = var4;
-            this.setSize(var3.width, var3.height);
+            this.setSize(dim.width, dim.height);
         }
 
         this.pack();
@@ -216,16 +222,16 @@ class Ts extends LComponent {
         }
     }
 
-    public void paint2(Graphics var1) {
+    public void paint2(Graphics g) {
         if (this.strs != null) {
             byte var2 = 2;
             byte var3 = 1;
             Dimension var4 = this.getSize();
-            FontMetrics var5 = var1.getFontMetrics();
+            FontMetrics var5 = g.getFontMetrics();
             int var6 = var5.getMaxAscent();
             int var7 = (int) (12.0F * LComponent.Q);
-            var1.setColor(super.clFrame);
-            var1.fillRect(0, 0, var7, (int) (8.0F * LComponent.Q));
+            g.setColor(super.clFrame);
+            g.fillRect(0, 0, var7, (int) (8.0F * LComponent.Q));
             int var11 = var2 + var7;
             Color var9 = this.clText == null ? this.getForeground() : this.clText;
 
@@ -233,64 +239,64 @@ class Ts extends LComponent {
             for (int var10 = 0; var10 < this.strs.length - 1; ++var10) {
                 var8 = this.cls[this.nowButton == var10 + 1 ? 1 : 0];
                 var7 = var5.stringWidth(this.strs[var10]) + 8;
-                Awt.fillFrame(var1, this.nowButton == var10 + 1, var11, var3, var7, var4.height - 3, this.cls[0][0], this.cls[1][0], var8[2], var8[1]);
-                var1.setColor(var9);
-                var1.drawString(this.strs[var10], var11 + 4, var3 + var6 + 3);
+                Awt.fillFrame(g, this.nowButton == var10 + 1, var11, var3, var7, var4.height - 3, this.cls[0][0], this.cls[1][0], var8[2], var8[1]);
+                g.setColor(var9);
+                g.drawString(this.strs[var10], var11 + 4, var3 + var6 + 3);
                 var11 += var7 + 2;
             }
 
             if (this.is_vv) {
                 var7 = Math.min(var5.stringWidth(this.strs[5]) + 10, var4.width - var11 - 2);
                 var11 = var4.width - var7 - 3;
-                var1.clipRect(var11, var3, var7, var4.height - 3);
+                g.clipRect(var11, var3, var7, var4.height - 3);
                 var8 = this.cls[this.nowButton == 6 ? 1 : 0];
-                Awt.fillFrame(var1, this.nowButton == 6, var11, var3, var7, var4.height - 3, this.cls[0][0], this.cls[1][0], var8[2], var8[1]);
-                var1.setColor(var9);
-                var1.drawString(this.strs[5], var4.width - var7 + 4, var3 + var6 + 3);
-                var1.setClip(0, 0, var4.width, var4.height);
+                Awt.fillFrame(g, this.nowButton == 6, var11, var3, var7, var4.height - 3, this.cls[0][0], this.cls[1][0], var8[2], var8[1]);
+                g.setColor(var9);
+                g.drawString(this.strs[5], var4.width - var7 + 4, var3 + var6 + 3);
+                g.setClip(0, 0, var4.width, var4.height);
             }
 
         }
     }
 
-    public void pMouse(MouseEvent var1) {
-        int var2 = var1.getX();
-        int var3 = this.b(var2);
-        switch (var1.getID()) {
-            case 501:
-                if (this.getV(var3) && (this.nowButton = this.b(var2)) >= 1) {
+    public void pMouse(MouseEvent evt) {
+        int x = evt.getX();
+        int var3 = this.b(x);
+        switch (evt.getID()) {
+            case MOUSE_PRESSED:
+                if (this.getV(var3) && (this.nowButton = this.b(x)) >= 1) {
                     this.repaint();
                 }
                 break;
-            case 502:
+            case MOUSE_RELEASED:
                 if (this.nowButton >= 0) {
-                    if (this.nowButton == this.b(var2)) {
+                    if (this.nowButton == this.b(x)) {
                         switch (this.nowButton) {
-                            case 0:
+                            case 0: // Toggle top bar
                                 this.layout(0);
                                 break;
-                            case 1:
+                            case 1: // Upload
                                 run(this.app, 's', 2);
                                 break;
-                            case 2:
+                            case 2: // Float
                                 this.w(true);
                                 break;
-                            case 3:
-                            case 4:
+                            case 3: // Redo
+                            case 4: // Undo
                                 this.p.undo(this.nowButton == 4);
                                 break;
-                            case 5:
+                            case 5: // Fill
                                 this.p.tool.up();
                                 this.p.tool.lift();
-                                M var4 = this.p.mi.info.m;
-                                var4.iHint = 7;
-                                var4.iPen = 10;
+                                M mg = this.p.mi.info.m;
+                                mg.iHint = 7;
+                                mg.iPen = 10;
                                 break;
-                            case 6:
+                            case 6: // Credits
                                 if (this.is_vv) {
-                                    String var5 = this.cnf.getP("app_url", "http://shichan.jp/");
-                                    if ((var5.length() != 1 || var5.charAt(0) != '_') && confirm("kakunin_0")) {
-                                        this.app.jump(var5, "top");
+                                    String appUrl = this.cnf.getP("app_url", "http://shichan.jp/");
+                                    if ((appUrl.length() != 1 || appUrl.charAt(0) != '_') && confirm("kakunin_0")) {
+                                        this.app.jump(appUrl, "top");
                                     }
                                 }
                         }
@@ -303,19 +309,14 @@ class Ts extends LComponent {
 
     }
 
-    public static void run(Runnable var0) {
-        run(var0, 'x', 1);
+    public static void run(Runnable target) {
+        run(target, 'x', 1);
     }
 
-    public static void run(Runnable var0, char var1, int var2) {
-        Thread var3 = new Thread(var0, String.valueOf(var1));
-        var3.setPriority(var2);
-        var3.start();
-    }
-
-    public void setV(int var1, boolean var2) {
-        int var3 = 1 << var1;
-        this.V = this.V ^ var3 | (var2 ? 1 : 0) << var1;
+    public static void run(Runnable target, char name, int priority) {
+        Thread thread = new Thread(target, String.valueOf(name));
+        thread.setPriority(priority);
+        thread.start();
     }
 
     public String v() {

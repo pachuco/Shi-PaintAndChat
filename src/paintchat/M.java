@@ -32,13 +32,13 @@ public class M {
     public int iColorMask = 0;
     public int iAlpha = 255;
     public int iAlpha2;
-    public int iSA = 65280;
+    public int iSA = 0xFF00;
     public int iLayer = 0;
     public int iLayerSrc = 1;
     public int iMask = 0;
     public int iSize = 0;
-    public int iSS = 65280;
-    public int iCount = -8;
+    public int iSS = 0xFF00;
+    public int iCount = DEF_COUNT;
     public int iSOB;
     public boolean isAFix;
     public boolean isOver;
@@ -116,67 +116,67 @@ public class M {
     public M() {
     }
 
-    public M(M.Info var1, M.User var2) {
-        this.info = var1;
-        this.user = var2;
+    public M(M.Info info, M.User user) {
+        this.info = info;
+        this.user = user;
     }
 
     public final void dBuffer() {
         this.dBuffer(!this.user.isDirect, this.user.X, this.user.Y, this.user.X2, this.user.Y2);
     }
 
-    private final void dBuffer(boolean var1, int var2, int var3, int var4, int var5) {
+    private final void dBuffer(boolean isDirect, int x1, int y1, int x2, int y2) {
         try {
-            int var6 = this.info.scale;
-            int var7 = this.info.Q;
-            int var8 = this.info.W;
-            int var9 = this.info.H;
-            int var10 = this.info.scaleX;
-            int var11 = this.info.scaleY;
-            boolean var13 = var6 == 1;
+            int scale = this.info.scale;
+            int quality = this.info.Q;
+            int w = this.info.W;
+            int h = this.info.H;
+            int scaleX = this.info.scaleX;
+            int scaleY = this.info.scaleY;
+            boolean isUnscaled = scale == 1;
             int[] var14 = this.user.buffer;
-            Color var15 = Color.white;
-            Graphics var16 = this.info.g;
-            if (var16 == null) {
+            Color colorWhite = Color.white;
+            Graphics g = this.info.g;
+            if (g == null) {
                 return;
             }
 
-            var2 /= var7;
-            var3 /= var7;
-            var4 /= var7;
-            var5 /= var7;
-            var2 = var2 <= var10 ? var10 : var2;
-            var3 = var3 <= var11 ? var11 : var3;
-            int var12 = this.info.vWidth / var6 + var10;
-            var4 = var4 > var12 ? var12 : var4;
-            var4 = var4 > var8 ? var8 : var4;
-            var12 = this.info.vHeight / var6 + var11;
-            var5 = var5 > var12 ? var12 : var5;
-            var5 = var5 > var9 ? var9 : var5;
-            if (var4 <= var2 || var5 <= var3) {
+            x1 /= quality;
+            y1 /= quality;
+            x2 /= quality;
+            y2 /= quality;
+            x1 = x1 <= scaleX ? scaleX : x1;
+            y1 = y1 <= scaleY ? scaleY : y1;
+            int var12 = this.info.vWidth / scale + scaleX;
+            x2 = x2 > var12 ? var12 : x2;
+            x2 = x2 > w ? w : x2;
+            var12 = this.info.vHeight / scale + scaleY;
+            y2 = y2 > var12 ? var12 : y2;
+            y2 = y2 > h ? h : y2;
+            if (x2 <= x1 || y2 <= y1) {
                 return;
             }
 
-            var8 = var4 - var2;
-            int var17 = var8 * var6;
-            int var18 = (var2 - var10) * var6;
-            int var19 = var3;
-            var12 = var14.length / (var8 * var7 * var7);
+            w = x2 - x1;
+            int var17 = w * scale;
+            int var18 = (x1 - scaleX) * scale;
+            int var19 = y1;
+            var12 = var14.length / (w * quality * quality);
 
             while (true) {
-                var9 = Math.min(var12, var5 - var19);
-                if (var9 <= 0) {
+                h = Math.min(var12, y2 - var19);
+                if (h <= 0) {
                     break;
                 }
 
-                Image var20 = var1 ? this.mkMPic(var2, var19, var8, var9, var7) : this.mkLPic((int[]) null, var2, var19, var8, var9, var7);
-                if (var13) {
-                    var16.drawImage(var20, var18, var19 - var11, var15, (ImageObserver) null);
+                Image var20 = isDirect ? this.mkMPic(x1, var19, w, h, quality) : this.mkLPic((int[]) null, x1, var19, w, h, quality);
+                if (isUnscaled) {
+                    g.drawImage(var20, var18, var19 - scaleY, colorWhite, (ImageObserver) null);
                 } else {
-                    var16.drawImage(var20, var18, (var19 - var11) * var6, var17, var9 * var6, var15, (ImageObserver) null);
+                    g.drawImage(var20, var18, (var19 - scaleY) * scale, var17, h * scale, colorWhite, (ImageObserver) null);
                 }
 
-                var19 += var9;
+                var19 += h;
             }
         } catch (RuntimeException var21) {
             var21.printStackTrace();
@@ -1472,7 +1472,7 @@ public class M {
                         break label99;
                     case 8:
                     case 12:
-                        String var18 = new String(this.offset, this.iSeek, this.iOffset - this.iSeek, "UTF8");
+                        String var18 = new String(this.offset, this.iSeek, this.iOffset - this.iSeek, ENCODE);
                         var21 = var18.indexOf(0);
                         this.dText(var18.substring(var21 + 1), var7, var8);
                         break label99;
@@ -1521,7 +1521,7 @@ public class M {
                             if ((var5[2] & 255) == 1) {
                                 var19 = var20.createImage(this.offset, this.iSeek, this.iOffset - this.iSeek);
                             } else {
-                                var19 = var20.createImage((byte[]) this.info.cnf.getRes(new String(this.offset, this.iSeek, this.iOffset - this.iSeek, "UTF8")));
+                                var19 = var20.createImage((byte[]) this.info.cnf.getRes(new String(this.offset, this.iSeek, this.iOffset - this.iSeek, ENCODE)));
                             }
 
                             if (var19 != null) {
@@ -1549,7 +1549,7 @@ public class M {
                         var10.iCopy = this.offset[4];
                         break;
                     case 10:
-                        var10.name = new String(this.offset, 4, this.iOffset - 4, "UTF8");
+                        var10.name = new String(this.offset, 4, this.iOffset - 4, ENCODE);
                 }
 
                 this.setD(0, 0, var2, var3);
@@ -2563,18 +2563,20 @@ public class M {
         }
     }
 
+    /** Reads one byte from this.offset */
     private final byte r() {
         return this.iSeek >= this.iOffset ? 0 : this.offset[this.iSeek++];
     }
 
-    private final int r(byte[] var1, int var2, int var3) {
-        int var4 = 0;
+    /** Returns an int made of "length" bytes from "buffer" at "seek" position */
+    private final int r(byte[] buffer, int seek, int length) {
+        int out = 0;
 
-        for (int var5 = var3 - 1; var5 >= 0; --var5) {
-            var4 |= (var1[var2++] & 255) << var5 * 8;
+        for (int i = length - 1; i >= 0; --i) {
+            out |= (buffer[seek++] & 0xFF) << i * 8;
         }
 
-        return var4;
+        return out;
     }
 
     private final short r2() {
@@ -3004,7 +3006,7 @@ public class M {
     public Font getFont(int var1) {
         try {
             if (this.strHint != null) {
-                return Font.decode(new String(this.strHint, "UTF8") + var1);
+                return Font.decode(new String(this.strHint, ENCODE) + var1);
             }
         } catch (IOException var2) {
             ;
