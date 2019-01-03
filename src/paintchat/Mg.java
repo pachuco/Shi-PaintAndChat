@@ -25,9 +25,9 @@ import syi.util.ByteStream;
 public class Mg {
     private Mg.Info info;
     private Mg.User user;
-    public int iHint = 0;
-    public int iPen = 0;
-    public int iPenM = 0;
+    public int iHint = H_FLINE;
+    public int iPen = P_SOLID;
+    public int iPenM = PM_PEN;
     public int iTT = 0;
     public int iColor = 0;
     public int iColorMask = 0;
@@ -36,7 +36,7 @@ public class Mg {
     public int iSA = 65280;
     public int iLayer = 0;
     public int iLayerSrc = 1;
-    public int iMask = 0;
+    public int iMask = M_N;
     public int iSize = 0;
     public int iSS = 65280;
     public int iCount = -8;
@@ -1172,7 +1172,7 @@ public class Mg {
     }
 
     private final void dPen(int var1, int var2, float var3) {
-        if (this.iPen == 3) {
+        if (this.iPen == P_SUISAI2) {
             this.dPY(var1, var2);
         } else {
             this.dPenM(var1, var2, var3);
@@ -1940,7 +1940,7 @@ public class Mg {
                 var2.w((long) this.iSS, 2);
             }
 
-            if (this.iPen == 20) {
+            if (this.iPen == P_FUSION) {
                 var2.w2(this.iAlpha2);
             }
 
@@ -2220,11 +2220,11 @@ public class Mg {
     }
 
     private final boolean isM(int var1) {
-        if (this.iMask == 0) {
+        if (this.iMask == M_N) {
             return false;
         } else {
             var1 &= 16777215;
-            return this.iMask == 1 ? this.iColorMask == var1 : (this.iMask == 2 ? this.iColorMask != var1 : false);
+            return this.iMask == M_M ? this.iColorMask == var1 : (this.iMask == M_R ? this.iColorMask != var1 : false);
         }
     }
 
@@ -2789,7 +2789,7 @@ public class Mg {
                     var2 += 2;
                 }
 
-                if (this.iPen == 20) {
+                if (this.iPen == P_FUSION) {
                     this.iAlpha2 = this.r(var1, var2, 2);
                     var2 += 2;
                 }
@@ -3019,7 +3019,7 @@ public class Mg {
             this.iDCount = 0;
             this.oX = -1000;
             this.oY = -1000;
-            this.isDirect = var1.iPen == 3 || var1.iHint == 9 || var1.isOver;
+            this.isDirect = var1.iPen == P_SUISAI2 || var1.iHint == H_COPY || var1.isOver;
             if (var1.iTT >= 12) {
                 this.pTT = Mg.this.info.getTT(var1.iTT);
                 this.pTTW = (int) Math.sqrt((double) this.pTT.length);

@@ -31,6 +31,10 @@ import paintchat.ToolBox;
 import syi.awt.Awt;
 import syi.awt.LComponent;
 
+import static paintchat.M.H_L;
+import static paintchat.M.H_RECT;
+import static paintchat.M.P_FUSION;
+
 public class L extends LComponent implements ActionListener, ItemListener {
     private Mi mi;
     private ToolBox tool;
@@ -125,7 +129,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
                         this.config(this.m.iLayer);
                 }
             } else if (var4 == 0) {
-                var6.iHint = 14;
+                var6.iHint = H_L;
                 var6.setRetouch(new int[]{3}, (byte[]) null, 0, false);
                 var10 = true;
             } else {
@@ -133,8 +137,8 @@ public class L extends LComponent implements ActionListener, ItemListener {
                 if (var13 == 1) {
                     this.dFusion();
                 } else {
-                    var6.iHint = 3;
-                    var6.iPen = 20;
+                    var6.iHint = H_RECT;
+                    var6.iPen = P_FUSION;
                     var9[0] = var13;
                     var6.setRetouch(new int[]{0, var5.W << 16 | var5.H}, var9, 4, false);
                     var10 = true;
@@ -284,7 +288,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
     private M mg() {
         M var1 = new M(this.mi.info, this.mi.user);
         var1.iAlpha = 255;
-        var1.iHint = 14;
+        var1.iHint = H_L;
         var1.iLayer = this.m.iLayer;
         var1.iLayerSrc = this.m.iLayerSrc;
         return var1;

@@ -321,7 +321,7 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
 
         int strEnd;
         do {
-            strEnd = permissionString.indexOf(',', strStart);
+            strEnd = permissionString.indexOf(';', strStart);
             if (strEnd < 0) {
                 strEnd = strLength;
             }

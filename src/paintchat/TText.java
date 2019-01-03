@@ -17,6 +17,9 @@ import java.awt.event.WindowEvent;
 
 import syi.awt.Awt;
 
+import static paintchat.M.H_TEXT;
+import static paintchat.M.H_VTEXT;
+
 public class TText extends Dialog implements SW, ActionListener, ItemListener {
     ToolBox ts;
     M mg;
@@ -37,7 +40,7 @@ public class TText extends Dialog implements SW, ActionListener, ItemListener {
             this.ts.lift();
             this.mg.iPen = Integer.parseInt(this.cFill.getText());
             this.mg.iSize = Integer.parseInt(this.cSize.getText());
-            this.mg.iHint = this.cV.getState() ? 12 : 8;
+            this.mg.iHint = this.cV.getState() ? H_VTEXT : H_TEXT;
             this.mg.strHint = (this.cName.getSelectedItem() + '-' + (this.cBL.getState() ? "BOLD" : "") + (this.cIT.getState() ? "ITALIC" : "") + '-').getBytes("UTF8");
             this.mg.iCount = Integer.parseInt(this.cSpace.getText());
         } catch (Throwable var3) {

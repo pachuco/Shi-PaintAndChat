@@ -24,6 +24,9 @@ import syi.awt.Awt;
 import syi.awt.LComponent;
 
 import static java.awt.event.MouseEvent.*;
+import static paintchat.M.H_FILL;
+import static paintchat.M.P_FILL;
+
 
 class Ts extends LComponent {
     private static String SV = "1.114";
@@ -289,8 +292,8 @@ class Ts extends LComponent {
                                 this.p.tool.up();
                                 this.p.tool.lift();
                                 M mg = this.p.mi.info.m;
-                                mg.iHint = 7;
-                                mg.iPen = 10;
+                                mg.iHint = H_FILL;
+                                mg.iPen = P_FILL;
                                 break;
                             case 6: // Credits
                                 if (this.is_vv) {

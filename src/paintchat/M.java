@@ -24,9 +24,9 @@ import syi.util.ByteStream;
 public class M {
     private M.Info info;
     private M.User user;
-    public int iHint = 0;
-    public int iPen = 0;
-    public int iPenM = 0;
+    public int iHint = H_FLINE;
+    public int iPen = P_SOLID;
+    public int iPenM = PM_PEN;
     public int iTT = 0;
     public int iColor = 0;
     public int iColorMask = 0;
@@ -35,7 +35,7 @@ public class M {
     public int iSA = 0xFF00;
     public int iLayer = 0;
     public int iLayerSrc = 1;
-    public int iMask = 0;
+    public int iMask = M_N;
     public int iSize = 0;
     public int iSS = 0xFF00;
     public int iCount = DEF_COUNT;
@@ -49,6 +49,7 @@ public class M {
     private int iSeek;
     private int iOffset;
     private byte[] offset;
+    // iHint
     public static final int H_FLINE = 0;
     public static final int H_LINE = 1;
     public static final int H_BEZI = 2;
@@ -63,6 +64,7 @@ public class M {
     public static final int H_SP = 11;
     public static final int H_VTEXT = 12;
     public static final int H_L = 14;
+    // iPen
     public static final int P_SOLID = 0;
     public static final int P_PEN = 1;
     public static final int P_SUISAI = 2;
@@ -80,18 +82,22 @@ public class M {
     public static final int P_UD = 18;
     public static final int P_R = 19;
     public static final int P_FUSION = 20;
+    // iPenM
     public static final int PM_PEN = 0;
     public static final int PM_SUISAI = 1;
     public static final int PM_MANY = 2;
+    // iMask
     public static final int M_N = 0;
     public static final int M_M = 1;
     public static final int M_R = 2;
     public static final int M_ADD = 3;
     public static final int M_SUB = 4;
+    // F1?
     private static final int F1O = 4;
     private static final int F1C = 8;
     private static final int F1A = 16;
     private static final int F1S = 32;
+    // F2?
     private static final int F2H = 1;
     private static final int F2PM = 2;
     private static final int F2M = 4;
@@ -99,6 +105,7 @@ public class M {
     private static final int F2T = 16;
     private static final int F2L = 32;
     private static final int F2LS = 64;
+    // F3?
     private static final int F3A = 1;
     private static final int F3C = 2;
     private static final int F3CM = 4;
@@ -106,6 +113,7 @@ public class M {
     private static final int F3E = 16;
     private static final int F3SA = 32;
     private static final int F3SS = 64;
+
     private static final int DEF_COUNT = -8;
     private static final String ENCODE = "UTF8";
     private static float[] b255 = new float[256];
@@ -254,7 +262,7 @@ public class M {
     }
 
     public void dClear() {
-        if (this.iPen != 14) {
+        if (this.iPen != P_NULL) {
             for (int var1 = 0; var1 < this.info.L; ++var1) {
                 if (var1 >= 64 || (this.info.unpermission & (long) (1 << var1)) == 0L) {
                     this.info.layers[var1].clear();
@@ -977,7 +985,7 @@ public class M {
                         }
                         break;
                     default:
-                        if (this.iHint != 14 && this.iHint != 9) {
+                        if (this.iHint != H_L && this.iHint != H_COPY) {
                             var10.reserve();
 
                             for (var22 = var10.offset; var6 < var8; ++var6) {
@@ -1032,7 +1040,7 @@ public class M {
             int var3 = this.iSOB != 0 ? this.ru() : 0;
             this.shift(var1, var2);
             this.user.iDCount = this.user.iDCount + 1;
-            if (this.iHint != 11) {
+            if (this.iHint != H_SP) {
                 if (this.isAnti) {
                     this.dFLine((float) var1, (float) var2, var3);
                 } else {
@@ -1059,7 +1067,7 @@ public class M {
                 this.info.workOut.write(var3);
             }
 
-            if (this.iHint == 11) {
+            if (this.iHint == H_SP) {
                 if (this.user.iDCount >= 2) {
                     this.dFLine2(var3);
                 }
@@ -1073,7 +1081,7 @@ public class M {
     }
 
     private final void dPen(int var1, int var2, float var3) {
-        if (this.iPen == 3) {
+        if (this.iPen == P_SUISAI2) {
             if (!this.user.isPre) {
                 this.dPY(var1, var2);
             }
@@ -1403,7 +1411,7 @@ public class M {
                         }
                     }
 
-                    if (this.iHint == 5 && var17 > 0 && var18 > 0) {
+                    if (this.iHint == H_OVAL && var17 > 0 && var18 > 0) {
                         var20 = this.iColor;
                         this.iColor = var11;
                         this.dFill(var10, var1, var2, var3, var4);
@@ -1586,7 +1594,7 @@ public class M {
             this.setD(var1 - var4 - 1, var2 - var4 - 1, var1 + var4, var2 + var4);
             this.user.fX = (float) var1;
             this.user.fY = (float) var2;
-            if (this.iHint != 11 && !this.isAnti) {
+            if (this.iHint != H_SP && !this.isAnti) {
                 this.dFLine(var1, var2, var3);
             }
         } catch (RuntimeException var5) {
@@ -1626,7 +1634,7 @@ public class M {
             this.setD(var1 - var6 - 1, var2 - var6 - 1, var1 + var6, var2 + var6);
             this.user.fX = (float) var1;
             this.user.fY = (float) var2;
-            if (this.iHint != 11 && !this.isAnti) {
+            if (this.iHint != H_SP && !this.isAnti) {
                 this.dFLine(var1, var2, var3);
             }
         } catch (IOException var7) {
@@ -1655,7 +1663,7 @@ public class M {
             }
 
             this.info.layers[this.iLayer].reserve();
-            boolean var11 = this.iHint == 8;
+            boolean var11 = this.iHint == H_TEXT;
             int var12 = var10.getMaxAdvance();
             int var13 = var10.getMaxAscent() + var10.getMaxDescent() + var10.getLeading() + 2;
             int var14 = var10.getMaxAscent() + var10.getLeading() / 2 + 1;
@@ -1823,7 +1831,7 @@ public class M {
                 var2.w((long) this.iSS, 2);
             }
 
-            if (this.iPen == 20) {
+            if (this.iPen == P_FUSION) {
                 var2.w2(this.iAlpha2);
             }
 
@@ -2046,7 +2054,7 @@ public class M {
     }
 
     private final int[] getPM() {
-        if (!this.isText() && (this.iHint < 3 || this.iHint > 6)) {
+        if (!this.isText() && (this.iHint < H_RECT || this.iHint > H_FOVAL)) {
             int[] var1 = this.user.p;
             if (this.user.pM != this.iPenM || this.user.pA != this.iAlpha || this.user.pS != this.iSize) {
                 int[][] var2 = this.info.bPen[this.iPenM];
@@ -2094,11 +2102,11 @@ public class M {
     }
 
     private final boolean isM(int var1) {
-        if (this.iMask == 0) {
+        if (this.iMask == M_N) {
             return false;
         } else {
             var1 &= 0xFFFFFF;
-            return this.iMask == 1 ? this.iColorMask == var1 : (this.iMask == 2 ? this.iColorMask != var1 : false);
+            return this.iMask == M_M ? this.iColorMask == var1 : (this.iMask == M_R ? this.iColorMask != var1 : false);
         }
     }
 
@@ -2729,7 +2737,7 @@ public class M {
                     var2 += 2;
                 }
 
-                if (this.iPen == 20) {
+                if (this.iPen == P_FUSION) {
                     this.iAlpha2 = this.r(var1, var2, 2);
                     var2 += 2;
                 }
@@ -2875,7 +2883,7 @@ public class M {
             int var9 = this.info.scaleY;
             this.getPM();
             int var10 = this.user.pW / 2;
-            int var11 = this.iHint == 2 ? var10 : 0;
+            int var11 = this.iHint == H_BEZI ? var10 : 0;
             int[] var14 = this.user.points;
             switch (this.iHint) {
                 case 2:
@@ -3000,7 +3008,7 @@ public class M {
     }
 
     public boolean isText() {
-        return this.iHint == 8 || this.iHint == 12;
+        return this.iHint == H_TEXT || this.iHint == H_VTEXT;
     }
 
     public Font getFont(int var1) {
@@ -3074,7 +3082,7 @@ public class M {
             this.iDCount = 0;
             this.oX = -1000;
             this.oY = -1000;
-            this.isDirect = var1.iPen == 3 || var1.iHint == 9 || var1.isOver;
+            this.isDirect = var1.iPen == P_SUISAI2 || var1.iHint == H_COPY || var1.isOver;
             if (M.this.info.L <= var1.iLayer) {
                 M.this.info.setL(var1.iLayer + 1);
             }
@@ -3327,7 +3335,7 @@ public class M {
         }
 
         public int getPMMax() {
-            return !this.m.isText() && (this.m.iHint < 3 || this.m.iHint > 6) ? this.bPen[this.m.iPenM].length : 255;
+            return !this.m.isText() && (this.m.iHint < H_RECT || this.m.iHint > H_FOVAL) ? this.bPen[this.m.iPenM].length : 255;
         }
 
         public float[] getTT(int var1) {

@@ -25,6 +25,13 @@ import paintchat.ToolBox;
 import syi.awt.Awt;
 import syi.awt.LComponent;
 
+import static paintchat.M.H_L;
+import static paintchat.M.H_SP;
+import static paintchat.M.H_CLEAR;
+import static paintchat.M.P_WHITE;
+import static paintchat.M.P_SWHITE;
+import static paintchat.M.P_FUSION;
+
 public class Mi extends LComponent implements ActionListener {
     private LComponent tab;
     private Method mGet;
@@ -303,7 +310,7 @@ public class Mi extends LComponent implements ActionListener {
 
     private void dEnd(boolean var1) throws InterruptedException {
         M var2 = this.m;
-        if (var2.iHint != 10 && var2.iPen == 20 && var2.iHint != 14) {
+        if (var2.iHint != H_CLEAR && var2.iPen == P_FUSION && var2.iHint != H_L) {
             int var3 = this.user.wait;
             this.user.wait = -2;
             if (var1) {
@@ -357,7 +364,7 @@ public class Mi extends LComponent implements ActionListener {
                     break;
                 case 502:
                     if (this.psCount >= 0) {
-                        if (this.m.iHint == 11) {
+                        if (this.m.iHint == H_SP) {
                             this.m.dNext(var2, var3, this.getS(), 0);
                         }
 
@@ -449,7 +456,7 @@ public class Mi extends LComponent implements ActionListener {
                     Color var8 = this.cPre;
                     var8 = (var8.getRGB() & 0xFFFFFF) != this.mgInfo.iColor >>> 1 ? new Color(this.mgInfo.iColor >>> 1) : var8;
                     this.cPre = var8;
-                    var7.setColor(this.mgInfo.iPen != 4 && this.mgInfo.iPen != 5 ? (var8.getRGB() == 0xFFFFFF ? Color.red : var8) : Color.cyan);
+                    var7.setColor(this.mgInfo.iPen != P_WHITE && this.mgInfo.iPen != P_SWHITE ? (var8.getRGB() == 0xFFFFFF ? Color.red : var8) : Color.cyan);
                     if (var5 <= this.info.scale * 2) {
                         if (var3) {
                             var7.fillRect(this.oldX - var6, this.oldY - var6, var5, var5);
@@ -643,7 +650,7 @@ public class Mi extends LComponent implements ActionListener {
                             this.ps[0] = var4[0];
                             this.ps[1] = var4[1];
                             this.m.setRetouch(this.ps, (byte[]) null, 0, true);
-                            if (this.m.iPen != 20) {
+                            if (this.m.iPen != P_FUSION) {
                                 this.m.draw();
                             }
 
@@ -1292,7 +1299,7 @@ public class Mi extends LComponent implements ActionListener {
 
     private final void setM() {
         this.m.set(this.mgInfo);
-        if (this.m.iPen == 20) {
+        if (this.m.iPen == P_FUSION) {
             this.m.iLayerSrc = this.m.iLayer;
         }
 

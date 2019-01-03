@@ -37,6 +37,11 @@ import syi.jpeg.SJpegEncoder;
 import syi.png.SPngEncoder;
 import syi.util.ByteStream;
 
+import static paintchat.M.H_L;
+import static paintchat.M.P_WHITE;
+import static paintchat.M.P_SWHITE;
+
+
 public class P extends Panel implements IMi {
     private ShiPainter app;
     private Res res;
@@ -1154,7 +1159,7 @@ public class P extends Panel implements IMi {
         }
 
         mg.get(var8, this.work, (M) null);
-        if (mg.iHint != 14 || !this.setL(this.mi.info.imW, this.mi.info.imH, var5)) {
+        if (mg.iHint != H_L || !this.setL(this.mi.info.imW, this.mi.info.imH, var5)) {
             try {
                 ++nowI;
                 lastI = nowI;
@@ -1212,7 +1217,7 @@ public class P extends Panel implements IMi {
 
     public void setARGB(int var1) {
         this.tool.selPix(var1 == 0xFFFFFF);
-        if (this.mi.info.m.iPen != 4 && this.mi.info.m.iPen != 5) {
+        if (this.mi.info.m.iPen != P_WHITE && this.mi.info.m.iPen != P_SWHITE) {
             this.tool.setARGB(var1);
         }
 
