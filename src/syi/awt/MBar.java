@@ -1,4 +1,4 @@
-package c;
+package syi.awt;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
