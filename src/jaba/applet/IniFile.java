@@ -68,6 +68,17 @@ public class IniFile {
         return isLoaded;
     }
 
+    public boolean hasSection(String sect) {
+        if (sect == null) return false;
+        sect = "[" + sect.trim().toLowerCase() + "]";
+
+        for (int i=0; i<sectnum; i++) {
+            String line = strvec.get(sectLocs[i]).toString().trim().toLowerCase();
+            if (line == sect) return true;
+        }
+        return false;
+    }
+
     public boolean delParameter(String sect, String key) {
         return false;
         //same as below, but in reverse for sectLoc
@@ -84,7 +95,7 @@ public class IniFile {
         //for adding a new section, same is done, but contents are shifted up the array
     }
 
-    public String getParameter(String sect, String key, String defval) {
+    public String getParameter(String sect, String key) {
         int sectStart;
 
         key = key.trim().toLowerCase();
@@ -92,20 +103,20 @@ public class IniFile {
 
         if (sect == null) {
             sectStart = 0;
-            return procSection(sectStart, key, defval);
+            return procSection(sectStart, key);
         } else {
             for (int i = 0; i < sectnum; i++) {
                 sectStart = sectLocs[i];
                 String tsect = strvec.get(sectStart).toString().trim().toLowerCase();
                 if (sect.equals(tsect)) {
-                    return procSection(sectStart, key, defval);
+                    return procSection(sectStart, key);
                 }
             }
         }
-        return defval;
+        return null;
     }
 
-    private String procSection(int sectStart, String key, String defVal) {
+    private String procSection(int sectStart, String key) {
         int vSize = strvec.size();
 
         for (int j = sectStart + 1; j < vSize; j++) {
@@ -116,11 +127,11 @@ public class IniFile {
                 int eqLoc = line.indexOf('=');
                 String tkey = line.substring(0, eqLoc).trim().toLowerCase();
                 if (key.equals(tkey)) {
-                    return line.substring(eqLoc + 1).trim().toLowerCase();
+                    return line.substring(eqLoc + 1).trim().toLowerCase().split(";")[0];
                 }
             }
         }
-        return defVal;
+        return null;
     }
 
     private final boolean validKeyValue(String str) {

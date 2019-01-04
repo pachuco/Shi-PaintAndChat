@@ -38,11 +38,17 @@ public class Applet extends java.applet.Applet {
     }
 
     private static String getAppPath() {
-        String path;
+        String path = "";
         File fr;
 
         if (applicationPath == null) {
-            path = Applet.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+            String protocol = Applet.class.getResource("").getProtocol();
+            if(protocol.equals("jar")){
+                path = Applet.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+            } else if(protocol.equals("file")) {
+                path = System.getProperty("user.dir");
+            }
+
             fr = new File(path);
             if (fr.isDirectory()) {
                 applicationPath = fr.getPath();
@@ -89,7 +95,7 @@ public class Applet extends java.applet.Applet {
         if (!isDesktop) return super.getParameter(name);
         if (!inifile.isIniLoaded()) return null;
 
-        return inifile.getParameter(iniSection, name, null);
+        return inifile.getParameter(iniSection, name);
     }
 
     @Override
