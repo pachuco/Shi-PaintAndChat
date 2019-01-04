@@ -41,28 +41,28 @@ public class MgText {
         this.setData(var1);
     }
 
-    public void getData(OutputStream var1, boolean var2) throws IOException {
+    public void getData(OutputStream out, boolean saveName) throws IOException {
         if (this.head != -1) {
             this.toBin(false);
-            int var3 = this.bName != null && var2 ? this.bName.length : 0;
-            int var4 = this.seekMax + 4 + var3;
-            if (var3 >= 255) {
+            int nameLength = this.bName != null && saveName ? this.bName.length : 0;
+            int chunkSize = this.seekMax + 4 + nameLength;
+            if (nameLength >= 255) {
                 throw new IOException("longer name");
             } else {
-                this.w2(var1, var4);
-                var1.write(this.head);
-                this.w2(var1, this.ID);
-                if (var2) {
-                    var1.write(var3);
-                    if (var3 > 0) {
-                        var1.write(this.bName);
+                this.w2(out, chunkSize);
+                out.write(this.head);
+                this.w2(out, this.ID);
+                if (saveName) {
+                    out.write(nameLength);
+                    if (nameLength > 0) {
+                        out.write(this.bName);
                     }
                 } else {
-                    var1.write(0);
+                    out.write(0);
                 }
 
                 if (this.seekMax > 0) {
-                    var1.write(this.data, 0, this.seekMax);
+                    out.write(this.data, 0, this.seekMax);
                 }
 
             }
@@ -102,8 +102,8 @@ public class MgText {
         return this.seekMax;
     }
 
-    private final int r(InputStream var1) throws IOException {
-        int var2 = var1.read();
+    private final int r(InputStream in) throws IOException {
+        int var2 = in.read();
         if (var2 == -1) {
             throw new EOFException();
         } else {
@@ -111,14 +111,14 @@ public class MgText {
         }
     }
 
-    private final int r2(InputStream var1) throws IOException {
-        return this.r(var1) << 8 | this.r(var1);
+    private final int r2(InputStream in) throws IOException {
+        return this.r(in) << 8 | this.r(in);
     }
 
-    private final void r(InputStream var1, byte[] var2, int var3) throws IOException {
+    private final void r(InputStream in, byte[] var2, int var3) throws IOException {
         int var5;
         for (int var4 = 0; var4 < var3; var4 += var5) {
-            var5 = var1.read(var2, var4, var3 - var4);
+            var5 = in.read(var2, var4, var3 - var4);
             if (var5 == -1) {
                 throw new EOFException();
             }

@@ -74,13 +74,13 @@ public class P extends Panel implements IMi {
         this.app = var1;
     }
 
-    private void ani(OutputStream var1, Deflater var2, ByteStream var3, ByteStream var4, int var5) throws Throwable {
-        this.O = var1;
+    private void ani(OutputStream out, Deflater deflater, ByteStream var3, ByteStream var4, int var5) throws Throwable {
+        this.O = out;
         M.Info var6 = this.mi.info;
         String var7 = "layer_";
         String var8 = var7 + "count";
         this.wS(var8);
-        var1.write(61);
+        out.write(61);
         this.wS(String.valueOf(LF));
         this.wN();
         this.wS("image_width=");
@@ -103,18 +103,18 @@ public class P extends Panel implements IMi {
         int var11;
         for (byte[] var13 = var3.getBuffer(); var10 < var9; var10 += var11) {
             var11 = Math.min(var9 - var10, 65000);
-            var2.reset();
-            var2.setInput(ani.getBuffer(), var10, var11);
-            var2.finish();
+            deflater.reset();
+            deflater.setInput(ani.getBuffer(), var10, var11);
+            deflater.finish();
             var4.reset();
 
-            while (!var2.finished()) {
-                int var12 = var2.deflate(var13, 0, var13.length);
+            while (!deflater.finished()) {
+                int var12 = deflater.deflate(var13, 0, var13.length);
                 var4.write(var13, 0, var12);
             }
 
             this.w2(var4.size());
-            var4.writeTo(var1);
+            var4.writeTo(out);
         }
 
     }
@@ -123,9 +123,10 @@ public class P extends Panel implements IMi {
         this.pack();
     }
 
-    void copyLO(LO[] var1, LO[] var2) {
-        for (int var3 = 0; var3 < var1.length; ++var3) {
-            var2[var3].setLayer(var1[var3]);
+    /** Copies a layer over another */
+    void copyLO(LO[] source, LO[] destination) {
+        for (int i = 0; i < source.length; ++i) {
+            destination[i].setLayer(source[i]);
         }
 
     }
@@ -308,9 +309,9 @@ public class P extends Panel implements IMi {
         Cursor[] curArr = new Cursor[4];
         int[] var12 = new int[]{0, 13, 0, 0};
 
-        int var4;
-        for (var4 = 0; var4 < 4; ++var4) {
-            curArr[var4] = this.loadCursor(var6.getParameter(var5 + (var4 + 1)), var12[var4]);
+        int i;
+        for (i = 0; i < 4; ++i) {
+            curArr[i] = this.loadCursor(var6.getParameter(var5 + (i + 1)), var12[i]);
         }
 
         this.mi = new Mi(this, res);
@@ -342,9 +343,9 @@ public class P extends Panel implements IMi {
             var25.H = sLO[0].H;
             var25.setSize(imW, imH, qual);
 
-            for (var4 = 0; var4 < undoLO.length; ++var4) {
-                for (var16 = 0; var16 < undoLO[var4].length; ++var16) {
-                    undoLO[var4][var16].setSize(var25.W, var25.H);
+            for (i = 0; i < undoLO.length; ++i) {
+                for (var16 = 0; var16 < undoLO[i].length; ++var16) {
+                    undoLO[i][var16].setSize(var25.W, var25.H);
                 }
             }
         } else {
@@ -359,8 +360,8 @@ public class P extends Panel implements IMi {
             undoLO = new LO[var16][];
             undoMgs = new ByteStream[var16];
 
-            for (var4 = 0; var4 < var16; ++var4) {
-                undoMgs[var4] = new ByteStream();
+            for (i = 0; i < var16; ++i) {
+                undoMgs[i] = new ByteStream();
             }
 
             maxGp = var17;
@@ -502,26 +503,28 @@ public class P extends Panel implements IMi {
         }
     }
 
-    public String p(String var1, String var2) {
+    /** Returns parameter value or fallback value if not found */
+    public String p(String parameter, String fallback) {
         try {
-            String var3 = this.app.getParameter(var1);
-            return var3 != null && var3.length() > 0 ? var3 : var2;
+            String value = this.app.getParameter(parameter);
+            return value != null && value.length() > 0 ? value : fallback;
         } catch (Throwable var4) {
-            return var2;
+            return fallback;
         }
     }
 
-    public final boolean p(String var1, boolean var2) {
+    /** Returns true if parameter is (t,y,1), uses fallback value if not found */
+    public final boolean p(String parameter, boolean fallback) {
         try {
-            String var3 = this.app.getParameter(var1);
-            if (var3 != null && var3.length() > 0) {
-                char var4 = Character.toLowerCase(var3.charAt(0));
-                return var4 == 't' || var4 == 'y' || var4 == '1';
+            String value = this.app.getParameter(parameter);
+            if (value != null && value.length() > 0) {
+                char c = Character.toLowerCase(value.charAt(0));
+                return c == 't' || c == 'y' || c == '1';
             } else {
-                return var2;
+                return fallback;
             }
         } catch (Throwable var5) {
-            return var2;
+            return fallback;
         }
     }
 
@@ -539,33 +542,33 @@ public class P extends Panel implements IMi {
 
     }
 
-    public void paint(Graphics var1) {
+    public void paint(Graphics g) {
         try {
             if (this.app.isStart <= 1) {
                 return;
             }
 
-            Dimension var2 = this.getSize();
-            int var3;
+            Dimension size = this.getSize();
+            int x;
             if (this.imBk == null) {
-                var1.setColor(this.clB);
+                g.setColor(this.clB);
 
-                for (var3 = 16; var3 < var2.width; var3 += 20) {
-                    var1.fillRect(var3, 0, 1, var2.height);
+                for (x = 16; x < size.width; x += 20) {
+                    g.fillRect(x, 0, 1, size.height);
                 }
 
-                for (var3 = 16; var3 < var2.height; var3 += 20) {
-                    var1.fillRect(0, var3, var2.width, 1);
+                for (x = 16; x < size.height; x += 20) {
+                    g.fillRect(0, x, size.width, 1);
                 }
             } else {
-                var3 = this.imBk.getWidth((ImageObserver) null);
-                int var4 = this.imBk.getHeight((ImageObserver) null);
-                int var5 = var2.width / var3 + (var2.width % var3 > 0 ? 1 : 0);
-                int var6 = var2.height / var4 + (var2.height % var4 > 0 ? 1 : 0);
+                x = this.imBk.getWidth((ImageObserver) null);
+                int height = this.imBk.getHeight((ImageObserver) null);
+                int width = size.width / x + (size.width % x > 0 ? 1 : 0);
+                int var6 = size.height / height + (size.height % height > 0 ? 1 : 0);
 
                 for (int var7 = 0; var7 < var6; ++var7) {
-                    for (int var8 = 0; var8 < var5; ++var8) {
-                        var1.drawImage(this.imBk, var8 * var3, var7 * var4, this);
+                    for (int var8 = 0; var8 < width; ++var8) {
+                        g.drawImage(this.imBk, var8 * x, var7 * height, this);
                     }
                 }
             }
@@ -949,28 +952,28 @@ public class P extends Panel implements IMi {
     }
 
     private String save() throws Throwable {
-        M.Info var2 = this.mi.info;
+        M.Info info = this.mi.info;
         String var3 = null;
         this.wMg(-1);
-        Deflater var5 = new Deflater(9, false);
+        Deflater deflater = new Deflater(9, false);
         ByteStream var6 = this.work;
         this.work.reset();
         ByteStream var7 = undoMgs[0];
         ByteStream var8 = undoMgs[1];
         SJpegEncoder var9 = new SJpegEncoder();
-        SPngEncoder var10 = new SPngEncoder(var7, var8, var5);
+        SPngEncoder var10 = new SPngEncoder(var7, var8, deflater);
         boolean var11 = false;
         Me var12 = new Me();
 
         try {
-            int var13 = this.p("quality", 1);
-            var2.setQuality(var13);
-            int var14 = var2.imW;
-            int var15 = var2.imH;
+            int quality = this.p("quality", 1);
+            info.setQuality(quality);
+            int var14 = info.imW;
+            int var15 = info.imH;
             URL var16 = new URL(this.app.getCodeBase(), this.p("url_save", "getpic.cgi"));
             boolean var17 = this.p("poo", false);
             boolean var18 = this.p("send_advance", true);
-            boolean var19 = this.p("image_jpeg", false);
+            boolean isJpeg = this.p("image_jpeg", false);
             int var20 = this.p("compress_level", 10);
             int var21 = this.p("thumbnail_compress_level", 20);
             int var22 = this.p("image_size", 0);
@@ -983,9 +986,9 @@ public class P extends Panel implements IMi {
             var12.pack();
             Awt.moveCenter(var12);
             var12.setVisible(true);
-            int[] var26 = new int[var14 * var13 * var15 * var13];
-            M var27 = new M(var2, this.mi.user);
-            var27.mkLPic(var26, 0, 0, var14, var15, var13);
+            int[] var26 = new int[var14 * quality * var15 * quality];
+            M var27 = new M(info, this.mi.user);
+            var27.mkLPic(var26, 0, 0, var14, var15, quality);
             var27 = null;
             boolean var28 = false;
             if (var22 != 1) {
@@ -995,7 +998,7 @@ public class P extends Panel implements IMi {
             int var32 = var6.size();
             if (var32 == 0 || var22 > 0 && var32 >= var22 * 1024) {
                 var6.reset();
-                if (var19) {
+                if (isJpeg) {
                     var25.setText(this.res.res("EncJpeg"));
                     var11 = true;
                     var9.encode(var6, var26, var14, var15, var20);
@@ -1009,7 +1012,7 @@ public class P extends Panel implements IMi {
                 }
 
                 if (var32 == 0 || var6.size() < var32) {
-                    var11 = var19;
+                    var11 = isJpeg;
                 }
             }
 
@@ -1044,7 +1047,7 @@ public class P extends Panel implements IMi {
                     this.l(0);
                     switch (var33) {
                         case 'a':
-                            this.ani(var6, var5, var7, var8, var13);
+                            this.ani(var6, deflater, var7, var8, quality);
                             break;
                         case 'j':
                             var9.encode(var6, var26, var23, var24, var21);
@@ -1060,7 +1063,7 @@ public class P extends Panel implements IMi {
                 }
             }
 
-            var5.end();
+            deflater.end();
             var26 = (int[]) null;
             var9 = null;
             var10 = null;
@@ -1131,7 +1134,7 @@ public class P extends Panel implements IMi {
 
     }
 
-    public void send(M var1) {
+    public void send(M mg) {
         int var3 = maxGp;
         int var4 = undoMgs.length;
         int var5 = this.mi.info.L;
@@ -1150,8 +1153,8 @@ public class P extends Panel implements IMi {
             var8.seek(var9);
         }
 
-        var1.get(var8, this.work, (M) null);
-        if (var1.iHint != 14 || !this.setL(this.mi.info.imW, this.mi.info.imH, var5)) {
+        mg.get(var8, this.work, (M) null);
+        if (mg.iHint != M.H_L || !this.setL(this.mi.info.imW, this.mi.info.imH, var5)) {
             try {
                 ++nowI;
                 lastI = nowI;
@@ -1209,7 +1212,7 @@ public class P extends Panel implements IMi {
 
     public void setARGB(int var1) {
         this.tool.selPix(var1 == 0xFFFFFF);
-        if (this.mi.info.m.iPen != 4 && this.mi.info.m.iPen != 5) {
+        if (this.mi.info.m.iPen != M.P_WHITE && this.mi.info.m.iPen != M.P_SWHITE) {
             this.tool.setARGB(var1);
         }
 
@@ -1262,8 +1265,8 @@ public class P extends Panel implements IMi {
         }
     }
 
-    public void setLineSize(int var1) {
-        this.tool.setLineSize(var1);
+    public void setLineSize(int size) {
+        this.tool.setLineSize(size);
     }
 
     public void undo(boolean var1) {
@@ -1319,8 +1322,8 @@ public class P extends Panel implements IMi {
 
     }
 
-    public void update(Graphics var1) {
-        this.paint(var1);
+    public void update(Graphics g) {
+        this.paint(g);
     }
 
     private void w2(int var1) throws Throwable {
@@ -1425,12 +1428,12 @@ public class P extends Panel implements IMi {
     }
 
     private void setLName() {
-        LO[] var1 = this.mi.info.layers;
-        String var2 = this.res.res("Layer");
+        LO[] layers = this.mi.info.layers;
+        String name = this.res.res("Layer");
 
-        for (int var3 = 0; var3 < this.mi.info.L; ++var3) {
-            if (var1[var3].name == null) {
-                var1[var3].makeName(var2);
+        for (int i = 0; i < this.mi.info.L; ++i) {
+            if (layers[i].name == null) {
+                layers[i].makeName(name);
             }
         }
 

@@ -85,7 +85,7 @@ public class TPen extends LComponent implements Runnable {
             }
 
             for (var8 = var7 - 1; var8 >= 0; --var8) {
-                if (this.mgs[var8].iPen == 4 || this.mgs[var8].iPen == 5) {
+                if (this.mgs[var8].iPen == M.P_WHITE || this.mgs[var8].iPen == M.P_SWHITE) {
                     this.selWhite = var8;
                 }
             }

@@ -60,81 +60,81 @@ public class LO {
 
     }
 
-    public final void draw(int[] var1, int var2, int var3, int var4, int var5, int var6) {
+    public final void draw(int[] var1, int x1, int y1, int x2, int y2, int var6) {
         if (this.offset != null && this.iAlpha > 0.0F) {
             float[] var11 = M.getb255();
-            float var13 = this.iAlpha;
-            int var14 = this.W;
-            var2 = Math.max(var2, 0);
-            var3 = Math.max(var3, 0);
-            var4 = Math.min(this.W, var4);
-            var5 = Math.min(this.H, var5);
-            int var15 = var4 - var2;
-            int var16 = var5 - var3;
+            float layerAlpha = this.iAlpha;
+            int layerWidth = this.W;
+            x1 = Math.max(x1, 0);
+            y1 = Math.max(y1, 0);
+            x2 = Math.min(this.W, x2);
+            y2 = Math.min(this.H, y2);
+            int width = x2 - x1;
+            int height = y2 - y1;
             int var17 = 0;
-            int var18 = var3 * var14 + var2;
+            int var18 = y1 * layerWidth + x1;
 
             int var9;
             int var10;
-            float var12;
+            float alpha;
             int var19;
             int var20;
             int var21;
             switch (this.iCopy) {
                 case 1:
-                    for (int i = 0; i < var16; ++i) {
-                        for (int j = 0; j < var15; ++j) {
+                    for (int i = 0; i < height; ++i) {
+                        for (int j = 0; j < width; ++j) {
                             var9 = this.offset[var18 + j];
                             var10 = var1[var17 + j];
-                            var12 = var11[var9 >>> 24] * var13;
+                            alpha = var11[var9 >>> 24] * layerAlpha;
                             var19 = var10 >>> 16 & 0xFF;
                             var20 = var10 >>> 8 & 0xFF;
                             var21 = var10 & 0xFF;
-                            if (var12 > 0.0F) {
-                                var1[var17 + j] = ((var10 >>> 16 & 0xFF) - (int) (var11[var10 >>> 16 & 0xFF] * (float) (var9 >>> 16 & 0xFF ^ 0xFF) * var12) << 16) + ((var10 >>> 8 & 0xFF) - (int) (var11[var10 >>> 8 & 0xFF] * (float) (var9 >>> 8 & 0xFF ^ 0xFF) * var12) << 8) + ((var10 & 0xFF) - (int) (var11[var10 & 0xFF] * (float) (var9 & 0xFF ^ 0xFF) * var12));
+                            if (alpha > 0.0F) {
+                                var1[var17 + j] = ((var10 >>> 16 & 0xFF) - (int) (var11[var10 >>> 16 & 0xFF] * (float) (var9 >>> 16 & 0xFF ^ 0xFF) * alpha) << 16) + ((var10 >>> 8 & 0xFF) - (int) (var11[var10 >>> 8 & 0xFF] * (float) (var9 >>> 8 & 0xFF ^ 0xFF) * alpha) << 8) + ((var10 & 0xFF) - (int) (var11[var10 & 0xFF] * (float) (var9 & 0xFF ^ 0xFF) * alpha));
                             }
                         }
 
                         var17 += var6;
-                        var18 += var14;
+                        var18 += layerWidth;
                     }
 
                     return;
                 case 2:
-                    for (int i = 0; i < var16; ++i) {
-                        for (int j = 0; j < var15; ++j) {
+                    for (int i = 0; i < height; ++i) {
+                        for (int j = 0; j < width; ++j) {
                             var9 = this.offset[var18 + j] ^ 0xFFFFFF;
                             var10 = var1[var17 + j];
-                            var12 = var11[var9 >>> 24] * var13;
-                            if (var12 > 0.0F) {
+                            alpha = var11[var9 >>> 24] * layerAlpha;
+                            if (alpha > 0.0F) {
                                 var19 = var10 >>> 16 & 0xFF;
                                 var20 = var10 >>> 8 & 0xFF;
                                 var21 = var10 & 0xFF;
-                                var1[var17 + j] = var12 == 1.0F ? var9 : var19 + (int) ((float) ((var9 >>> 16 & 0xFF) - var19) * var12) << 16 | var20 + (int) ((float) ((var9 >>> 8 & 0xFF) - var20) * var12) << 8 | var21 + (int) ((float) ((var9 & 0xFF) - var21) * var12);
+                                var1[var17 + j] = alpha == 1.0F ? var9 : var19 + (int) ((float) ((var9 >>> 16 & 0xFF) - var19) * alpha) << 16 | var20 + (int) ((float) ((var9 >>> 8 & 0xFF) - var20) * alpha) << 8 | var21 + (int) ((float) ((var9 & 0xFF) - var21) * alpha);
                             }
                         }
 
                         var17 += var6;
-                        var18 += var14;
+                        var18 += layerWidth;
                     }
 
                     return;
                 default:
-                    for (int i = 0; i < var16; ++i) {
-                        for (int j = 0; j < var15; ++j) {
+                    for (int i = 0; i < height; ++i) {
+                        for (int j = 0; j < width; ++j) {
                             var9 = this.offset[var18 + j];
                             var10 = var1[var17 + j];
-                            var12 = var11[var9 >>> 24] * var13;
-                            if (var12 > 0.0F) {
+                            alpha = var11[var9 >>> 24] * layerAlpha;
+                            if (alpha > 0.0F) {
                                 var19 = var10 >>> 16 & 0xFF;
                                 var20 = var10 >>> 8 & 0xFF;
                                 var21 = var10 & 0xFF;
-                                var1[var17 + j] = var12 == 1.0F ? var9 : var19 + (int) ((float) ((var9 >>> 16 & 0xFF) - var19) * var12) << 16 | var20 + (int) ((float) ((var9 >>> 8 & 0xFF) - var20) * var12) << 8 | var21 + (int) ((float) ((var9 & 0xFF) - var21) * var12);
+                                var1[var17 + j] = alpha == 1.0F ? var9 : var19 + (int) ((float) ((var9 >>> 16 & 0xFF) - var19) * alpha) << 16 | var20 + (int) ((float) ((var9 >>> 8 & 0xFF) - var20) * alpha) << 8 | var21 + (int) ((float) ((var9 & 0xFF) - var21) * alpha);
                             }
                         }
 
                         var17 += var6;
-                        var18 += var14;
+                        var18 += layerWidth;
                     }
 
             }

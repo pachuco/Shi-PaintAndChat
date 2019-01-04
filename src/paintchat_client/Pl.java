@@ -673,7 +673,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
     public void setARGB(int var1) {
         var1 &= 0xFFFFFF;
         this.tool.selPix(this.mi.info.m.iLayer != 0 && var1 == 0xFFFFFF);
-        if (this.mi.info.m.iPen != 4 && this.mi.info.m.iPen != 5) {
+        if (this.mi.info.m.iPen != M.P_WHITE && this.mi.info.m.iPen != M.P_SWHITE) {
             this.tool.setARGB(this.mi.info.m.iAlpha << 24 | var1);
         }
 

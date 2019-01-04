@@ -31,10 +31,10 @@ public class Res extends Hashtable {
         this((Applet) null, (Object) null, (ByteStream) null);
     }
 
-    public Res(Applet var1, Object var2, ByteStream var3) {
-        this.resBase = var2;
-        this.applet = var1;
-        this.work = var3;
+    public Res(Applet applet, Object resBase, ByteStream work) {
+        this.resBase = resBase;
+        this.applet = applet;
+        this.work = work;
     }
 
     public final String get(String var1) {
@@ -330,8 +330,9 @@ public class Res extends Hashtable {
         }
     }
 
-    public final String res(String var1) {
-        return this.getP(var1, var1);
+    /** Returns the value of key if available, otherwise the key itself */
+    public final String res(String key) {
+        return this.getP(key, key);
     }
 
     public void put(Res var1) {

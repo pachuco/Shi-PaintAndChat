@@ -8,6 +8,8 @@ import java.awt.event.MouseEvent;
 import syi.awt.Awt;
 import syi.awt.LComponent;
 
+import static java.awt.event.MouseEvent.MOUSE_PRESSED;
+
 public class PP extends LComponent implements SW {
     private ToolBox tools;
     private int Len;
@@ -17,69 +19,69 @@ public class PP extends LComponent implements SW {
     private M m;
     private M.Info info;
 
-    public void paint2(Graphics var1) {
-        this.mPaint(var1);
+    public void paint2(Graphics g) {
+        this.mPaint(g);
     }
 
-    public void mPaint(Graphics var1) {
-        boolean var2 = var1 == null;
-        if (var2) {
-            var1 = this.getG();
+    public void mPaint(Graphics g) {
+        boolean hasGraphics = g == null;
+        if (hasGraphics) {
+            g = this.getG();
         }
 
-        Dimension var3 = this.getSize();
-        int var4 = var3.width / this.iW;
-        int var5 = Math.max(var3.height / this.iH, 1);
-        int var6 = 0;
-        int var7 = 0;
-        Color var8 = Color.black;
+        Dimension dim = this.getSize();
+        int width = dim.width / this.iW;
+        int height = Math.max(dim.height / this.iH, 1);
+        int y = 0;
+        int x = 0;
+        Color colorBlack = Color.black;
 
-        for (int var10 = 0; var10 < var5; ++var10) {
-            for (int var11 = 0; var11 < var4; ++var11) {
-                var8 = new Color(this.ms[var7].iColor);
-                Color var9 = this.ms[var7].eq(this.m) ? Awt.cFSel : null;
-                Awt.fillFrame(var1, false, var11 * (this.iW + 1), var6, this.iW, this.iH, var8, var8, var9, var9);
-                ++var7;
-                if (var7 >= this.Len) {
+        for (int i = 0; i < height; ++i) {
+            for (int j = 0; j < width; ++j) {
+                colorBlack = new Color(this.ms[x].iColor);
+                Color color = this.ms[x].eq(this.m) ? Awt.cFSel : null;
+                Awt.fillFrame(g, false, j * (this.iW + 1), y, this.iW, this.iH, colorBlack, colorBlack, color, color);
+                ++x;
+                if (x >= this.Len) {
                     return;
                 }
             }
 
-            var6 += this.iH + 1;
+            y += this.iH + 1;
         }
 
-        if (var2) {
-            var1.dispose();
+        if (hasGraphics) {
+            g.dispose();
         }
 
     }
 
-    private int b(int var1, int var2) {
-        Dimension var3 = this.getSize();
-        if (var1 > 0 && var2 > 0 && var1 < var3.width - 1 && var2 < var3.height - 1) {
-            int var4 = var2 / (this.iH + 1) * (var3.width / (this.iW + 1)) + var1 / (this.iW + 1);
+    private int b(int x, int y) {
+        Dimension dim = this.getSize();
+        if (x > 0 && y > 0 && x < dim.width - 1 && y < dim.height - 1) {
+            int var4 = y / (this.iH + 1) * (dim.width / (this.iW + 1)) + x / (this.iW + 1);
             return var4 >= this.Len ? -1 : var4;
         } else {
             return -1;
         }
     }
 
-    public void pMouse(MouseEvent var1) {
-        int var2 = this.b(var1.getX(), var1.getY());
+    public void pMouse(MouseEvent evt) {
+        int var2 = this.b(evt.getX(), evt.getY());
         if (var2 >= 0) {
-            switch (var1.getID()) {
-                case 501:
-                    if (Awt.isR(var1)) {
+            switch (evt.getID()) {
+                case MOUSE_PRESSED:
+                    if (Awt.isR(evt)) {
                         this.ms[var2].set(this.m);
                     } else {
                         this.tools.lift();
-                        int var3 = this.m.iLayer;
-                        int var4 = this.m.iLayerSrc;
-                        int var5 = this.m.iColorMask;
+                        int layer = this.m.iLayer;
+                        int layerSrc = this.m.iLayerSrc;
+                        int mask = this.m.iColorMask;
                         this.m.set(this.ms[var2]);
-                        this.m.iLayer = var3;
-                        this.m.iLayerSrc = var4;
-                        this.m.iColorMask = var5;
+                        this.m.iLayer = layer;
+                        this.m.iLayerSrc = layerSrc;
+                        this.m.iColorMask = mask;
                         this.tools.up();
                     }
 
@@ -96,27 +98,27 @@ public class PP extends LComponent implements SW {
         this.inParent();
     }
 
-    public void mSetup(ToolBox var1, M.Info var2, M.User var3, M var4, Res var5, Res var6) {
-        this.tools = var1;
-        this.info = var2;
-        this.iW = var6.getP("tp_width", 18);
-        this.iH = var6.getP("tp_height", 18);
-        int var7 = this.iW + 1;
-        int var8 = this.iH + 1;
-        int var9 = var6.getP("tp_len", 12);
-        this.Len = var9;
-        this.ms = new M[var9];
+    public void mSetup(ToolBox tools, M.Info info, M.User user, M mg, Res res, Res config) {
+        this.tools = tools;
+        this.info = info;
+        this.iW = config.getP("tp_width", 18);
+        this.iH = config.getP("tp_height", 18);
+        int width = this.iW + 1;
+        int height = this.iH + 1;
+        int len = config.getP("tp_len", 12);
+        this.Len = len;
+        this.ms = new M[len];
 
-        for (int var10 = 0; var10 < var9; ++var10) {
-            this.ms[var10] = new M();
-            this.ms[var10].set(var6.getP("tp" + var10, ""));
+        for (int i = 0; i < len; ++i) {
+            this.ms[i] = new M();
+            this.ms[i].set(config.getP("tp" + i, ""));
         }
 
-        this.m = var4;
+        this.m = mg;
         super.isBar = true;
-        this.setTitle(var6.get("PPTitle"));
-        Dimension var11 = new Dimension(var7, var8 * var9);
-        this.setDimension(new Dimension(var7, var8), var11, new Dimension(var7 * var9, var8 * var9));
+        this.setTitle(config.get("PPTitle"));
+        Dimension dim = new Dimension(width, height * len);
+        this.setDimension(new Dimension(width, height), dim, new Dimension(width * len, height * len));
     }
 
     public void up() {

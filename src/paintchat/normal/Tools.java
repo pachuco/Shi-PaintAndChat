@@ -104,22 +104,22 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
         super.iGap = 2;
     }
 
-    public void actionPerformed(ActionEvent var1) {
-        String var2 = var1.getActionCommand();
-        Menu var3 = (Menu) var1.getSource();
-        int var4 = 0;
-        int var5 = var3.getItemCount();
+    public void actionPerformed(ActionEvent evt) {
+        String var2 = evt.getActionCommand();
+        Menu menu = (Menu) evt.getSource();
+        int penMask = 0;
+        int count = menu.getItemCount();
 
-        for (int var6 = 0; var6 < var5; ++var6) {
-            if (var3.getItem(var6).getLabel().equals(var2)) {
-                var4 = var6;
+        for (int i = 0; i < count; ++i) {
+            if (menu.getItem(i).getLabel().equals(var2)) {
+                penMask = i;
                 break;
             }
         }
 
-        switch (Integer.parseInt(var3.getLabel())) {
+        switch (Integer.parseInt(menu.getLabel())) {
             case 2:
-                this.mg.iPenM = var4;
+                this.mg.iPenM = penMask;
                 this.setLineSize(0, this.mg.iSize);
                 this.repaint();
             default:

@@ -77,23 +77,23 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
         return this.p.tool;
     }
 
-    protected void jump(String var1, String var2) {
+    protected void jump(String url, String target) {
         try {
-            this.getAppletContext().showDocument(new URL(this.getCodeBase(), var1), var2 == null ? "_self" : var2);
+            this.getAppletContext().showDocument(new URL(this.getCodeBase(), url), target == null ? "_self" : target);
         } catch (Throwable var4) {
             Ts.alert(var4.getMessage());
         }
 
     }
 
-    public void paint(Graphics var1) {
+    public void paint(Graphics g) {
         try {
             if (this.isStart >= 2) {
                 return;
             }
 
-            FontMetrics var2 = var1.getFontMetrics();
-            var1.drawString((String) "Wait for initialization to complete.", 10, var2.getHeight() + 10);
+            FontMetrics fontMetrics = g.getFontMetrics();
+            g.drawString((String) "Wait for initialization to complete.", 10, fontMetrics.getHeight() + 10);
         } catch (Throwable var3) {
             var3.printStackTrace();
         }
@@ -104,10 +104,10 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
         Ts.run(this, 's', 2);
     }
 
-    protected void processEvent(AWTEvent var1) {
+    protected void processEvent(AWTEvent evt) {
         try {
-            int var2 = var1.getID();
-            if (var2 == 101 && this.ts != null) {
+            int id = evt.getID();
+            if (id == 101 && this.ts != null) { // 101 = COMPONENT_EVENT_MASK | FOCUS_EVENT_MASK | MOUSE_MOTION_EVENT_MASK | WINDOW_EVENT_MASK
                 this.ts.pack();
             }
         } catch (Throwable var3) {
@@ -127,34 +127,34 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
             this.ts = new Ts();
             this.p = new P(this);
             this.mbar = new MBar(this);
-            URL var1 = this.getCodeBase();
-            String var2 = this.p.p("dir_resource", "./res/");
-            char var4 = var2.charAt(var2.length() - 1);
-            Object var3;
-            if (var4 != '&' && var4 != '?' && var4 != '=') {
-                if (var2.charAt(var2.length() - 1) != '/') {
-                    var2 = var2 + '/';
+            URL basePath = this.getCodeBase();
+            String dirResource = this.p.p("dir_resource", "./res/");
+            char lastChar = dirResource.charAt(dirResource.length() - 1);
+            Object resPath;
+            if (lastChar != '&' && lastChar != '?' && lastChar != '=') {
+                if (lastChar != '/') {
+                    dirResource = dirResource + '/';
                 }
 
-                var3 = new URL(var1, var2);
+                resPath = new URL(basePath, dirResource);
             } else {
-                var3 = var2;
+                resPath = dirResource;
             }
 
-            this.config = new Res(this, var3, (ByteStream) null);
-            this.res = new Res(this, var3, (ByteStream) null);
+            this.config = new Res(this, resPath, (ByteStream) null);
+            this.res = new Res(this, resPath, (ByteStream) null);
 
             try {
-                String var5 = this.p.p("res.zip", "res/res.zip");
-                if (var5.equals("res_normal.zip")) {
-                    var5 = "res.zip";
+                String fileName = this.p.p("res.zip", "res/res.zip");
+                if (fileName.equals("res_normal.zip")) {
+                    fileName = "res.zip";
                 }
 
-                if (var5.equals("res_pro.zip")) {
-                    var5 = "res.zip";
+                if (fileName.equals("res_pro.zip")) {
+                    fileName = "res.zip";
                 }
 
-                this.config.loadZip(var5);
+                this.config.loadZip(fileName);
             } catch (Throwable var9) {
                 var9.printStackTrace();
             }
@@ -310,27 +310,28 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
         }
     }
 
-    public void update(Graphics var1) {
-        this.paint(var1);
+    public void update(Graphics g) {
+        this.paint(g);
     }
 
-    public void mPermission(String var1) {
-        int var2 = 0;
-        int var4 = var1.length();
+    public void mPermission(String permissionString) {
+        // TODO: check if modern Java has a direct method for splitting
+        int strStart = 0;
+        int strLength = permissionString.length();
 
-        int var3;
+        int strEnd;
         do {
-            var3 = var1.indexOf(59, var2);
-            if (var3 < 0) {
-                var3 = var4;
+            strEnd = permissionString.indexOf(';', strStart);
+            if (strEnd < 0) {
+                strEnd = strLength;
             }
 
-            if (var3 - var2 > 0) {
-                this.p.mP(var1.substring(var2, var3));
+            if (strEnd - strStart > 0) {
+                this.p.mP(permissionString.substring(strStart, strEnd));
             }
 
-            var2 = var3 + 1;
-        } while (var3 < var4);
+            strStart = strEnd + 1;
+        } while (strEnd < strLength);
 
     }
 
