@@ -19,6 +19,7 @@
         in spaint normal: just scrollbars
         in spaint pro: scrollbars and canvas
         in pchat366 both: whole UI
+        in PaintBBS scrollbar may appear garbled when moving over bars and buttons (JRE1.8)
     - [decompile] The whole sourcecode is hot, piping mess after decompile
     - [original] The whole sourcecode was hot, piping mess, before it was compiled
 
