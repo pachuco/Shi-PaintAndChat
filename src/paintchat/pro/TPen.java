@@ -15,9 +15,6 @@ import paintchat.Res;
 import syi.awt.Awt;
 import syi.awt.LComponent;
 
-import static paintchat.M.P_SWHITE;
-import static paintchat.M.P_WHITE;
-
 public class TPen extends LComponent implements Runnable {
     private Tools tools;
     private int iType = 0;
@@ -88,7 +85,7 @@ public class TPen extends LComponent implements Runnable {
             }
 
             for (var8 = var7 - 1; var8 >= 0; --var8) {
-                if (this.mgs[var8].iPen == P_WHITE || this.mgs[var8].iPen == P_SWHITE) {
+                if (this.mgs[var8].iPen == M.P_WHITE || this.mgs[var8].iPen == M.P_SWHITE) {
                     this.selWhite = var8;
                 }
             }

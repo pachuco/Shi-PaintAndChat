@@ -985,7 +985,7 @@ public class M {
                         }
                         break;
                     default:
-                        if (this.iHint != H_L && this.iHint != H_COPY) {
+                        if (this.iHint != M.H_L && this.iHint != M.H_COPY) {
                             var10.reserve();
 
                             for (var22 = var10.offset; var6 < var8; ++var6) {
