@@ -185,7 +185,7 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
 
     public void actionPerformed(ActionEvent var1) {
         try {
-            this.isD = var1.getActionCommand().equals(" OK ");
+            this.isD = var1.getActionCommand().equals("  Yes  ") || var1.getActionCommand().equals(" OK ");
             ((Dialog) ((Component) var1.getSource()).getParent().getParent()).dispose();
         } catch (Throwable var3) {
             var3.printStackTrace();
@@ -394,11 +394,11 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
                 case 2:
                     return "Text";
                 case 7:
-                    return "Tone";
+                    return "Halftone";
                 case 8:
-                    return "ShadeOff";
+                    return "Blur";
                 case 9:
-                    return "HLight";
+                    return "Light";
                 case 10:
                     return "Dark";
                 case 19:
@@ -418,19 +418,19 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
                 case 41:
                     return "Antialias";
                 case 42:
-                    return "reverseLR";
+                    return "flipHorizontally";
                 case 43:
-                    return "reverseUL";
+                    return "flipVertically";
                 case 44:
-                    return "lie";
+                    return "rotate";
                 case 45:
-                    return "lay-unif";
+                    return "layerUnify";
                 case 60:
-                    return "FreeLine";
+                    return "Freehand";
                 case 61:
-                    return "Straight";
+                    return "Line";
                 case 62:
-                    return "Bezie";
+                    return "Bezier";
                 case 100:
                     return "Clear";
                 case 110:
@@ -442,7 +442,7 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
                 case 113:
                     return "And";
                 case 114:
-                    return "Div";
+                    return "Divide";
             }
         }
 
@@ -939,11 +939,11 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
             var4.add(var7, "Center");
             if (var3 >= 1) {
                 Panel var8 = new Panel(new FlowLayout());
-                Button var9 = new Button(" OK ");
+                Button var9 = new Button(var3 >= 2 ? "  Yes  " : "  OK  ");
                 var8.add(var9);
                 var9.addActionListener(this);
                 if (var3 >= 2) {
-                    var9 = new Button(" Cancel ");
+                    var9 = new Button("   No   ");
                     var8.add(var9);
                     var9.addActionListener(this);
                 }

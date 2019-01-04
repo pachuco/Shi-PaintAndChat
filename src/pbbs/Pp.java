@@ -447,7 +447,7 @@ public class Pp extends Panel {
         if (this.isJp) {
             this.str_tools = new String[]{"やり直し", "元に戻す", "塗り潰し", "窓", "投稿", "(C)しぃちゃん PaintBBSv2.22_8", "+", "-"};
         } else {
-            this.str_tools = new String[]{"Redo", "Undo", "Paint", "F", "Send", "(C)shi-chan PaintBBSv2.22_8", "+", "-"};
+            this.str_tools = new String[]{"Redo", "Undo", "Fill", "Float", "Send", "(C)shi-chan PaintBBSv2.22_8", "+", "-"};
         }
 
         this.cl_app_fore = new Color(var1.p(var9 + var10, 6710937));
@@ -501,7 +501,7 @@ public class Pp extends Panel {
         this.addNotify();
         this.mI.init(this.pbbs, this, this.tools);
         boolean var37 = false;
-        if (PaintBBS.c_ioff != null && (var37 = this.tools.messageEx(this.isJp ? "以前の編集データを復元しますか？" : "Is former data restored?"))) {
+        if (PaintBBS.c_ioff != null && (var37 = this.tools.messageEx(this.isJp ? "以前の編集データを復元しますか？" : "Would you like to restore the temporary applet image?\\nIf you accidentally left the page, this will restore your image."))) {
             int[][] var21 = PaintBBS.c_ioff;
             this.copy(var21, this.mI.i_offs);
             this.b_ani = PaintBBS.c_ani;
@@ -796,7 +796,7 @@ public class Pp extends Panel {
                                     break label93;
                                 case 5:
                                     String var9 = "http://shichan.jp/";
-                                    if (this.tools.messageEx(var9 + (this.isJp ? "\nしぃちゃんのホームページを表示しますか？" : "Does it visit?"))) {
+                                    if (this.tools.messageEx(var9 + (this.isJp ? "\nしぃちゃんのホームページを表示しますか？" : "Visit external site?"))) {
                                         this.pbbs.getAppletContext().showDocument(new URL(var9), "_blank");
                                     }
                                     break label93;
