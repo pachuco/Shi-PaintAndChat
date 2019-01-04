@@ -3,7 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/mod_core/mod_core.iml" filepath="$PROJECT_DIR$/mod_core/mod_core.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mod_pchat/mod_pchat.iml" filepath="$PROJECT_DIR$/mod_pchat/mod_pchat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mod_paintbbs/mod_paintbbs.iml" filepath="$PROJECT_DIR$/mod_paintbbs/mod_paintbbs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mod_paintchat/mod_paintchat.iml" filepath="$PROJECT_DIR$/mod_paintchat/mod_paintchat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mod_pchviewer1/mod_pchviewer1.iml" filepath="$PROJECT_DIR$/mod_pchviewer1/mod_pchviewer1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mod_pchviewer2/mod_pchviewer2.iml" filepath="$PROJECT_DIR$/mod_pchviewer2/mod_pchviewer2.iml" />
       <module fileurl="file://$PROJECT_DIR$/mod_spaint/mod_spaint.iml" filepath="$PROJECT_DIR$/mod_spaint/mod_spaint.iml" />
     </modules>
   </component>

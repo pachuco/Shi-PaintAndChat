@@ -1,8 +1,12 @@
 <component name="ArtifactManager">
   <artifact type="jar" build-on-make="true" name="paintchat:jar">
     <output-path>$PROJECT_DIR$/dist</output-path>
-    <root id="archive" name="mod_pchat.jar">
-      <element id="module-output" name="mod_pchat" />
+    <root id="archive" name="paintchat.jar">
+      <element id="module-output" name="mod_paintchat" />
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/mod_pchat/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/mod_paintchat/META-INF/MANIFEST.MF" />
+      </element>
     </root>
   </artifact>
 </component>

@@ -1,6 +1,6 @@
 package pbbs;
 
-import java.applet.Applet;
+import jaba.applet.Applet;
 import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.Button;
