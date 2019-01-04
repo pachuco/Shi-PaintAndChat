@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="shipainter:jar">
+    <output-path>$PROJECT_DIR$/dist</output-path>
+    <root id="archive" name="mod_spaint.jar">
+      <element id="module-output" name="mod_spaint" />
+    </root>
+  </artifact>
+</component>

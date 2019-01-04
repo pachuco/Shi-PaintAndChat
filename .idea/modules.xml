@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/PaintAndChat.iml" filepath="$PROJECT_DIR$/PaintAndChat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mod_core/mod_core.iml" filepath="$PROJECT_DIR$/mod_core/mod_core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mod_pchat/mod_pchat.iml" filepath="$PROJECT_DIR$/mod_pchat/mod_pchat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mod_spaint/mod_spaint.iml" filepath="$PROJECT_DIR$/mod_spaint/mod_spaint.iml" />
     </modules>
   </component>
 </project>
