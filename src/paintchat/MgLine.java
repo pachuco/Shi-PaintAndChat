@@ -22,7 +22,7 @@ import java.io.InterruptedIOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
-/** Currently only used by PCHViewer */
+/** Currently used by PCHViewer and PaintBBS */
 public class MgLine {
     public int head = 0;
     private int line_size = 1;
@@ -162,6 +162,8 @@ public class MgLine {
         int[] var5 = var2[0];
         int var6 = 16777215;
         int var7 = var3 * var4;
+        // older section from PCHViewer
+        /*
         synchronized (var5) {
             int var9 = 0;
 
@@ -179,6 +181,32 @@ public class MgLine {
                 ++var9;
             }
         }
+        */
+        // newer section from PaintBBS
+        synchronized(var5){}
+        
+        try {
+            int var9;
+            for(var9 = 0; var9 < var3; ++var9) {
+                var5[var9] = var6;
+            }
+
+            var9 = var3;
+
+            while(true) {
+                if (var9 >= var7) {
+                    System.arraycopy(var5, 0, var2[1], 0, var5.length);
+                    break;
+                }
+
+                System.arraycopy(var5, 0, var5, var9, var3);
+                var9 += var3;
+            }
+        } catch (Throwable var11) {
+            //throw var11;
+            var11.printStackTrace();
+        }
+        // end
 
         this.d_x = 0;
         this.d_y = 0;
