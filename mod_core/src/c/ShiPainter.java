@@ -310,25 +310,10 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
         this.paint(g);
     }
 
-    public void mPermission(String permissionString) {
-        // TODO: check if modern Java has a direct method for splitting
-        int strStart = 0;
-        int strLength = permissionString.length();
-
-        int strEnd;
-        do {
-            strEnd = permissionString.indexOf(';', strStart);
-            if (strEnd < 0) {
-                strEnd = strLength;
-            }
-
-            if (strEnd - strStart > 0) {
-                this.p.mP(permissionString.substring(strStart, strEnd));
-            }
-
-            strStart = strEnd + 1;
-        } while (strEnd < strLength);
-
+    public void mPermission(String permString) {
+        //WARN: duplicate
+        String[] permArr = permString.split(";");
+        for(String perm : permArr) p.mP(perm);
     }
 
     public void newImg() {

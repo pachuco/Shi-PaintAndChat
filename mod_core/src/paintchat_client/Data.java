@@ -218,66 +218,37 @@ public class Data {
         this.mPermission(this.tLine.getStatus().get("permission"));
     }
 
-    public void mPermission(String var1) {
-        int var2 = 0;
-        int var4 = var1.length();
-
-        int var3;
-        do {
-            var3 = var1.indexOf(59, var2);
-            if (var3 < 0) {
-                var3 = var4;
-            }
-
-            if (var3 - var2 > 0) {
-                this.mP(var1.substring(var2, var3));
-            }
-
-            var2 = var3 + 1;
-        } while (var3 < var4);
-
+    public void mPermission(String permString) {
+        //WARN: duplicate
+        String[] permArr = permString.split(";");
+        for(String perm : permArr) mP(perm);
     }
 
-    private void mP(String var1) {
-        try {
-            int var2 = var1.indexOf(58);
-            if (var2 <= 0) {
-                return;
-            }
+    protected void mP(String perm) {
+        //WARN: duplicate
+        int split = perm.indexOf(58);
+        if (split <= 0) return;
 
-            String var3 = var1.substring(0, var2).trim();
-            String var4 = var1.substring(var2 + 1).trim();
-            boolean var5 = false;
-            if (var4.length() > 0) {
-                var5 = var4.charAt(0) == 't';
-            }
-
-            if (var3.equals("layer")) {
-                this.info.permission = (long) (var4.equals("all") ? -1 : Integer.parseInt(var4));
-            }
-
-            if (var3.equals("layer_edit")) {
-                this.info.isLEdit = var5;
-            }
-
-            if (var3.equals("canvas")) {
-                this.mi.isEnable = var5;
-            }
-
-            if (var3.equals("fill")) {
-                this.info.isFill = var5;
-            }
-
-            if (var3.equals("clean")) {
-                this.info.isClean = var5;
-            }
-
-            if (var3.equals("unlayer")) {
-                this.info.unpermission = (long) Integer.parseInt(var4);
-            }
-        } catch (RuntimeException var6) {
-            var6.printStackTrace();
+        M.Info info = this.mi.info;
+        String key   = perm.substring(0, split).trim();
+        String value = perm.substring(split + 1).trim();
+        boolean isTruthy = false;
+        if (value.length() > 0) {
+            isTruthy = value.charAt(0) == 't';
         }
 
+        if        (key.equals("layer")) {
+            info.permission = value.equals("all") ? -1L : Long.parseLong(value);
+        } else if (key.equals("layer_edit")) {
+            info.isLEdit = isTruthy;
+        } else if (key.equals("canvas")) {
+            this.mi.isEnable = isTruthy;
+        } else if (key.equals("fill")) {
+            info.isFill = isTruthy;
+        } else if (key.equals("clean")) {
+            info.isClean = isTruthy;
+        } else if (key.equals("unlayer")) {
+            info.unpermission = (long) Integer.parseInt(value);
+        }
     }
 }
