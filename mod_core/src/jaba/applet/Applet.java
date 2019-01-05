@@ -79,12 +79,6 @@ public class Applet extends java.applet.Applet implements WindowListener {
         return frame;
     }
 
-    public void d_detachFrame() {
-        if(frame == null) return;
-        frame.remove(this);
-        frame = null;
-    }
-
     public static void d_setupDesktop(String iniPth, String iniSect) {
         iniPath = iniPth;
         iniSection = iniSect;
