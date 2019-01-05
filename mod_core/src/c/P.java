@@ -1378,53 +1378,32 @@ public class P extends Panel implements IMi {
 
     }
 
-    protected void mP(String var1) {
-        try {
-            int var2 = var1.indexOf(58);
-            if (var2 <= 0) {
-                return;
-            }
+    protected void mP(String perm) {
+        //WARN: duplicate
+        int split = perm.indexOf(58);
+        if (split <= 0) return;
 
-            M.Info var3 = this.mi.info;
-            String var4 = var1.substring(0, var2).trim();
-            String var5 = var1.substring(var2 + 1).trim();
-            boolean var6 = false;
-            if (var5.length() > 0) {
-                var6 = var5.charAt(0) == 't';
-            }
-
-            if (var4.equals("layer")) {
-                var3.permission = var5.equals("all") ? -1L : Long.parseLong(var5);
-                return;
-            }
-
-            if (var4.equals("layer_edit")) {
-                var3.isLEdit = var6;
-                return;
-            }
-
-            if (var4.equals("canvas")) {
-                this.mi.isEnable = var6;
-                return;
-            }
-
-            if (var4.equals("fill")) {
-                var3.isFill = var6;
-                return;
-            }
-
-            if (var4.equals("clean")) {
-                var3.isClean = var6;
-                return;
-            }
-
-            if (var4.equals("unlayer")) {
-                var3.unpermission = (long) Integer.parseInt(var5);
-            }
-        } catch (RuntimeException var7) {
-            var7.printStackTrace();
+        M.Info info = this.mi.info;
+        String key   = perm.substring(0, split).trim();
+        String value = perm.substring(split + 1).trim();
+        boolean isTruthy = false;
+        if (value.length() > 0) {
+            isTruthy = value.charAt(0) == 't';
         }
 
+        if        (key.equals("layer")) {
+            info.permission = value.equals("all") ? -1L : Long.parseLong(value);
+        } else if (key.equals("layer_edit")) {
+            info.isLEdit = isTruthy;
+        } else if (key.equals("canvas")) {
+            this.mi.isEnable = isTruthy;
+        } else if (key.equals("fill")) {
+            info.isFill = isTruthy;
+        } else if (key.equals("clean")) {
+            info.isClean = isTruthy;
+        } else if (key.equals("unlayer")) {
+            info.unpermission = (long) Integer.parseInt(value);
+        }
     }
 
     private void setLName() {
