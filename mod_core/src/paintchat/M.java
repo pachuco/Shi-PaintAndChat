@@ -1612,7 +1612,8 @@ public class M {
 
     }
 
-    public void dStart(int var1, int var2, int var3, boolean var4, boolean var5) {
+    /** Starts drawing */
+    public void dStart(int x, int y, int var3, boolean var4, boolean var5) {
         try {
             this.user.setup(this);
             this.info.layers[this.iLayer].reserve();
@@ -1622,27 +1623,27 @@ public class M {
             int var6;
             if (var5) {
                 var6 = this.info.scale;
-                var1 = (var1 / var6 + this.info.scaleX) * this.info.Q;
-                var2 = (var2 / var6 + this.info.scaleY) * this.info.Q;
+                x = (x / var6 + this.info.scaleX) * this.info.Q;
+                y = (y / var6 + this.info.scaleY) * this.info.Q;
             }
 
             if (var4) {
                 ByteStream var9 = this.getWork();
-                var9.w((long) var1, 2);
-                var9.w((long) var2, 2);
+                var9.w((long) x, 2);
+                var9.w((long) y, 2);
                 if (this.iSOB != 0) {
                     var9.write(var3);
                 }
             }
 
-            this.memset(this.user.pX, var1);
-            this.memset(this.user.pY, var2);
+            this.memset(this.user.pX, x);
+            this.memset(this.user.pY, y);
             var6 = this.user.pW / 2;
-            this.setD(var1 - var6 - 1, var2 - var6 - 1, var1 + var6, var2 + var6);
-            this.user.fX = (float) var1;
-            this.user.fY = (float) var2;
+            this.setD(x - var6 - 1, y - var6 - 1, x + var6, y + var6);
+            this.user.fX = (float) x;
+            this.user.fY = (float) y;
             if (this.iHint != H_SP && !this.isAnti) {
-                this.dFLine(var1, var2, var3);
+                this.dFLine(x, y, var3);
             }
         } catch (IOException var7) {
             var7.printStackTrace();
@@ -2927,21 +2928,21 @@ public class M {
                 var5 = Math.min(var5, var1.length);
             }
 
-            for (int var15 = 0; var15 < var5; ++var15) {
-                int var12 = var1[var15] >> 16;
-                int var13 = (short) var1[var15];
+            for (int i = 0; i < var5; ++i) {
+                int var12 = var1[i] >> 16;
+                int var13 = (short) var1[i];
                 if (var4) {
                     var12 = (var12 / var6 + var8) * var7 - var11;
                     var13 = (var13 / var6 + var9) * var7 - var11;
                 }
 
-                var14[var15] = var12 << 16 | var13 & '\uffff';
+                var14[i] = var12 << 16 | var13 & '\uffff';
             }
 
             ByteStream var18 = this.getWork();
 
-            for (int var16 = 0; var16 < var5; ++var16) {
-                var18.w((long) var14[var16], 4);
+            for (int i = 0; i < var5; ++i) {
+                var18.w((long) var14[i], 4);
             }
 
             if (var2 != null && var3 > 0) {
@@ -2957,20 +2958,20 @@ public class M {
 
     }
 
-    private final void addD(int var1, int var2, int var3, int var4) {
-        this.user.addRect(var1, var2, var3, var4);
+    private final void addD(int x, int y, int x2, int y2) {
+        this.user.addRect(x, y, x2, y2);
     }
 
-    private final void setD(int var1, int var2, int var3, int var4) {
-        this.user.setRect(var1, var2, var3, var4);
+    private final void setD(int x, int y, int x2, int y2) {
+        this.user.setRect(x, y, x2, y2);
     }
 
-    public void setInfo(M.Info var1) {
-        this.info = var1;
+    public void setInfo(M.Info info) {
+        this.info = info;
     }
 
-    public void setUser(M.User var1) {
-        this.user = var1;
+    public void setUser(M.User user) {
+        this.user = user;
     }
 
     private final void shift(int var1, int var2) {
@@ -3171,8 +3172,8 @@ public class M {
             this.Y2 = y2;
         }
 
-        public final void addRect(int var1, int var2, int var3, int var4) {
-            this.setRect(Math.min(var1, this.X), Math.min(var2, this.Y), Math.max(var3, this.X2), Math.max(var4, this.Y2));
+        public final void addRect(int x, int y, int x2, int y2) {
+            this.setRect(Math.min(x, this.X), Math.min(y, this.Y), Math.max(x2, this.X2), Math.max(y2, this.Y2));
         }
 
         public Image mkImage(int var1, int var2) {
@@ -3210,87 +3211,89 @@ public class M {
         private float[][] bTT = new float[14][];
         public M m = new M();
 
-        public void setSize(int var1, int var2, int var3) {
-            int var4 = var1 * var3;
-            int var5 = var2 * var3;
-            int var6;
-            if (var4 != this.W || var5 != this.H) {
-                for (var6 = 0; var6 < this.L; ++var6) {
-                    this.layers[var6].setSize(var4, var5);
+        public void setSize(int width, int height, int quality) {
+            int actualWidth = width * quality;
+            int actualHeight = height * quality;
+            if (actualWidth != this.W || actualHeight != this.H) {
+                for (int i = 0; i < this.L; ++i) {
+                    this.layers[i].setSize(actualWidth, actualHeight);
                 }
             }
 
-            this.imW = var1;
-            this.imH = var2;
-            this.W = var4;
-            this.H = var5;
-            this.Q = var3;
-            var6 = this.W * this.H;
-            if (this.iMOffs == null || this.iMOffs.length < var6) {
-                this.iMOffs = new byte[var6];
+            this.imW = width;
+            this.imH = height;
+            this.W = actualWidth;
+            this.H = actualHeight;
+            this.Q = quality;
+            int size = this.W * this.H;
+            if (this.iMOffs == null || this.iMOffs.length < size) {
+                this.iMOffs = new byte[size];
             }
 
         }
 
-        public void setLayers(LO[] var1) {
-            this.L = var1.length;
-            this.layers = var1;
+        public void setLayers(LO[] layers) {
+            this.L = layers.length;
+            this.layers = layers;
         }
 
-        public void setComponent(Component var1, Graphics var2, int var3, int var4) {
-            this.component = var1;
-            this.vWidth = var3;
-            this.vHeight = var4;
-            this.g = var2;
+        public void setComponent(Component cmp, Graphics g, int width, int height) {
+            this.component = cmp;
+            this.vWidth = width;
+            this.vHeight = height;
+            this.g = g;
         }
 
-        public void setL(int var1) {
-            int var2 = this.layers == null ? 0 : this.layers.length;
-            int var3 = Math.min(var2, var1);
-            if (var2 != var1) {
-                LO[] var4 = new LO[var1];
+        /** Changes the current layer and creates new ones if necessary */
+        public void setL(int n) {
+            int layerCount = this.layers == null ? 0 : this.layers.length;
+            int amountToCopy = Math.min(layerCount, n);
+            if (layerCount != n) {
+                LO[] destLayers = new LO[n];
                 if (this.layers != null) {
-                    System.arraycopy(this.layers, 0, var4, 0, var3);
+                    System.arraycopy(this.layers, 0, destLayers, 0, amountToCopy);
                 }
 
-                for (int var5 = 0; var5 < var1; ++var5) {
-                    if (var4[var5] == null) {
-                        var4[var5] = LO.getLO(this.W, this.H);
+                for (int i = 0; i < n; ++i) {
+                    if (destLayers[i] == null) {
+                        destLayers[i] = LO.getLO(this.W, this.H);
                     }
                 }
 
-                this.layers = var4;
+                this.layers = destLayers;
             }
 
-            this.L = var1;
+            this.L = n;
         }
 
-        public void delL(int var1) {
-            int var2 = this.layers.length;
-            if (var1 < var2) {
-                LO[] var3 = new LO[var2 - 1];
-                int var4 = 0;
+        /** Deletes a layer */
+        public void delL(int layerNumber) {
+            int layerCount = this.layers.length;
+            if (layerNumber < layerCount) {
+                LO[] destLayers = new LO[layerCount - 1];
+                int j = 0;
 
-                for (int var5 = 0; var5 < var2; ++var5) {
-                    if (var5 != var1) {
-                        var3[var4++] = this.layers[var5];
+                for (int i = 0; i < layerCount; ++i) {
+                    if (i != layerNumber) {
+                        destLayers[j++] = this.layers[i];
                     }
                 }
 
-                this.layers = var3;
-                this.L = var2 - 1;
+                this.layers = destLayers;
+                this.L = layerCount - 1;
             }
         }
 
-        public void swapL(int var1, int var2) {
-            int var3 = Math.max(var1, var2);
-            if (var3 >= this.L) {
-                this.setL(var3);
+        /** Swaps two layers */
+        public void swapL(int layer1, int layer2) {
+            int maxL = Math.max(layer1, layer2);
+            if (maxL >= this.L) {
+                this.setL(maxL);
             }
 
-            this.layers[var1].isDraw = true;
-            this.layers[var2].isDraw = true;
-            this.layers[var1].swap(this.layers[var2]);
+            this.layers[layer1].isDraw = true;
+            this.layers[layer2].isDraw = true;
+            this.layers[layer1].swap(this.layers[layer2]);
         }
 
         public boolean addScale(int var1, boolean var2) {
@@ -3324,6 +3327,7 @@ public class M {
             }
         }
 
+        /** Sets dots per pixel */
         public void setQuality(int var1) {
             this.Q = var1;
             this.imW = this.W / this.Q;
