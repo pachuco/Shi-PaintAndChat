@@ -296,7 +296,6 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
             frame = d_getFrame();
             fs = new FullScreen(frame);
             frame.addWindowListener(this);
-            frame.setSize(800, 600);
         }
         try {
             if (this.isStart == 0) {
@@ -445,6 +444,7 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
     }
 
     public void exit() {
+        //TODO: ask to save modified document
         frame.dispose();
         System.exit(0);
     }

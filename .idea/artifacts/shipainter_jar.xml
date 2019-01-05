@@ -2,10 +2,10 @@
   <artifact type="jar" build-on-make="true" name="shipainter:jar">
     <output-path>$PROJECT_DIR$/dist</output-path>
     <root id="archive" name="shipainter.jar">
-      <element id="module-output" name="mod_spaint" />
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/mod_spaint/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/mod_shipainter/META-INF/MANIFEST.MF" />
       </element>
+      <element id="module-output" name="mod_shipainter" />
     </root>
   </artifact>
 </component>

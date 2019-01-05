@@ -3,6 +3,8 @@ package jaba.applet;
 import java.applet.AppletContext;
 import java.applet.AudioClip;
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -13,7 +15,7 @@ import java.util.Locale;
 import java.util.NoSuchElementException;
 import javax.imageio.ImageIO;
 
-public class Applet extends java.applet.Applet {
+public class Applet extends java.applet.Applet implements WindowListener {
     private Applet ctx;
     private IniFile inifile = null;
     private Frame frame;
@@ -34,6 +36,11 @@ public class Applet extends java.applet.Applet {
                 System.out.println("Cannot load applet ini!");
                 System.out.println(e.getMessage());
             }
+            frame = new Frame();
+            frame.add(this);
+            frame.addWindowListener(this);
+            frame.setSize(800, 600);
+            frame.setVisible(true);
         }
     }
 
@@ -70,12 +77,6 @@ public class Applet extends java.applet.Applet {
 
     public Frame d_getFrame() {
         return frame;
-    }
-
-    public void d_setDesktop(Frame f) {
-        if(frame != null) d_detachFrame();
-        f.add(this);
-        frame = f;
     }
 
     public void d_detachFrame() {
@@ -292,4 +293,21 @@ public class Applet extends java.applet.Applet {
     @Override
     public void destroy() {
     }
+
+    private void exit() {
+        frame.dispose();
+        System.exit(0);
+    }
+
+    //WindowListener
+    public void windowClosing(WindowEvent e) {
+        exit();
+    }
+
+    public void windowOpened(WindowEvent e) { }
+    public void windowClosed(WindowEvent e) { }
+    public void windowIconified(WindowEvent e) { }
+    public void windowDeiconified(WindowEvent e) { }
+    public void windowActivated(WindowEvent e) { }
+    public void windowDeactivated(WindowEvent e) { }
 }

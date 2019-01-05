@@ -24,10 +24,8 @@ public class Client extends Applet implements WindowListener {
         if(d_isDesktop()) {
             frame = d_getFrame();
             frame.addWindowListener(this);
-            frame.setSize(800, 600);
             frame.setBackground(Awt.cC);
             frame.setForeground(Awt.cFore);
-            frame.setVisible(true);
         }
         try {
             this.setLayout(new BorderLayout());
