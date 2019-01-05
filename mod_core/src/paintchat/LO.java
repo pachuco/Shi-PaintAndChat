@@ -62,7 +62,7 @@ public class LO {
 
     public final void draw(int[] var1, int x1, int y1, int x2, int y2, int var6) {
         if (this.offset != null && this.iAlpha > 0.0F) {
-            float[] var11 = M.getb255();
+            float[] alphaLUT = M.getb255(); // relative alpha
             float layerAlpha = this.iAlpha;
             int layerWidth = this.W;
             x1 = Math.max(x1, 0);
@@ -77,21 +77,23 @@ public class LO {
             int var9;
             int var10;
             float alpha;
-            int var19;
-            int var20;
-            int var21;
+            int r;
+            int g;
+            int b;
             switch (this.iCopy) {
-                case 1:
+                case M.M_M: // Multiply
                     for (int i = 0; i < height; ++i) {
                         for (int j = 0; j < width; ++j) {
                             var9 = this.offset[var18 + j];
                             var10 = var1[var17 + j];
-                            alpha = var11[var9 >>> 24] * layerAlpha;
-                            var19 = var10 >>> 16 & 0xFF;
-                            var20 = var10 >>> 8 & 0xFF;
-                            var21 = var10 & 0xFF;
+                            alpha = alphaLUT[var9 >>> 24] * layerAlpha;
+                            r = var10 >>> 16 & 0xFF;
+                            g = var10 >>> 8 & 0xFF;
+                            b = var10 & 0xFF;
                             if (alpha > 0.0F) {
-                                var1[var17 + j] = ((var10 >>> 16 & 0xFF) - (int) (var11[var10 >>> 16 & 0xFF] * (float) (var9 >>> 16 & 0xFF ^ 0xFF) * alpha) << 16) + ((var10 >>> 8 & 0xFF) - (int) (var11[var10 >>> 8 & 0xFF] * (float) (var9 >>> 8 & 0xFF ^ 0xFF) * alpha) << 8) + ((var10 & 0xFF) - (int) (var11[var10 & 0xFF] * (float) (var9 & 0xFF ^ 0xFF) * alpha));
+                                var1[var17 + j] = (r - (int) (alphaLUT[r] * (float) (var9 >>> 16 & 0xFF ^ 0xFF) * alpha) << 16)
+                                        + (g - (int) (alphaLUT[g] * (float) (var9 >>> 8 & 0xFF ^ 0xFF) * alpha) << 8)
+                                        + (b - (int) (alphaLUT[b] * (float) (var9 & 0xFF ^ 0xFF) * alpha));
                             }
                         }
 
@@ -100,17 +102,17 @@ public class LO {
                     }
 
                     return;
-                case 2:
+                case M.M_R: // Invert
                     for (int i = 0; i < height; ++i) {
                         for (int j = 0; j < width; ++j) {
                             var9 = this.offset[var18 + j] ^ 0xFFFFFF;
                             var10 = var1[var17 + j];
-                            alpha = var11[var9 >>> 24] * layerAlpha;
+                            alpha = alphaLUT[var9 >>> 24] * layerAlpha;
                             if (alpha > 0.0F) {
-                                var19 = var10 >>> 16 & 0xFF;
-                                var20 = var10 >>> 8 & 0xFF;
-                                var21 = var10 & 0xFF;
-                                var1[var17 + j] = alpha == 1.0F ? var9 : var19 + (int) ((float) ((var9 >>> 16 & 0xFF) - var19) * alpha) << 16 | var20 + (int) ((float) ((var9 >>> 8 & 0xFF) - var20) * alpha) << 8 | var21 + (int) ((float) ((var9 & 0xFF) - var21) * alpha);
+                                r = var10 >>> 16 & 0xFF;
+                                g = var10 >>> 8 & 0xFF;
+                                b = var10 & 0xFF;
+                                var1[var17 + j] = alpha == 1.0F ? var9 : r + (int) ((float) ((var9 >>> 16 & 0xFF) - r) * alpha) << 16 | g + (int) ((float) ((var9 >>> 8 & 0xFF) - g) * alpha) << 8 | b + (int) ((float) ((var9 & 0xFF) - b) * alpha);
                             }
                         }
 
@@ -119,17 +121,17 @@ public class LO {
                     }
 
                     return;
-                default:
+                default: // Normal (M_N)
                     for (int i = 0; i < height; ++i) {
                         for (int j = 0; j < width; ++j) {
                             var9 = this.offset[var18 + j];
                             var10 = var1[var17 + j];
-                            alpha = var11[var9 >>> 24] * layerAlpha;
+                            alpha = alphaLUT[var9 >>> 24] * layerAlpha;
                             if (alpha > 0.0F) {
-                                var19 = var10 >>> 16 & 0xFF;
-                                var20 = var10 >>> 8 & 0xFF;
-                                var21 = var10 & 0xFF;
-                                var1[var17 + j] = alpha == 1.0F ? var9 : var19 + (int) ((float) ((var9 >>> 16 & 0xFF) - var19) * alpha) << 16 | var20 + (int) ((float) ((var9 >>> 8 & 0xFF) - var20) * alpha) << 8 | var21 + (int) ((float) ((var9 & 0xFF) - var21) * alpha);
+                                r = var10 >>> 16 & 0xFF;
+                                g = var10 >>> 8 & 0xFF;
+                                b = var10 & 0xFF;
+                                var1[var17 + j] = alpha == 1.0F ? var9 : r + (int) ((float) ((var9 >>> 16 & 0xFF) - r) * alpha) << 16 | g + (int) ((float) ((var9 >>> 8 & 0xFF) - g) * alpha) << 8 | b + (int) ((float) ((var9 & 0xFF) - b) * alpha);
                             }
                         }
 
@@ -141,19 +143,19 @@ public class LO {
         }
     }
 
-    public void drawAlpha(int[] var1, int var2, int var3, int var4, int var5, int var6) {
+    public void drawAlpha(int[] var1, int x1, int y1, int x2, int y2, int var6) {
         if (this.offset != null && this.iAlpha > 0.0F) {
             float[] var11 = M.getb255();
             float var12 = this.iAlpha;
             int var13 = this.W;
-            var2 = Math.max(var2, 0);
-            var3 = Math.max(var3, 0);
-            var4 = Math.min(this.W, var4);
-            var5 = Math.min(this.H, var5);
-            int var14 = var4 - var2;
-            int var15 = var5 - var3;
+            x1 = Math.max(x1, 0);
+            y1 = Math.max(y1, 0);
+            x2 = Math.min(this.W, x2);
+            y2 = Math.min(this.H, y2);
+            int var14 = x2 - x1;
+            int var15 = y2 - y1;
             int var16 = 0;
-            int var17 = var3 * var13 + var2;
+            int var17 = y1 * var13 + x1;
             int[] var18 = this.offset;
 
             for (int i = 0; i < var15; ++i) {
@@ -170,20 +172,20 @@ public class LO {
         }
     }
 
-    public void dAdd(int[] var1, int var2, int var3, int var4, int var5, int[] var6) {
+    public void dAdd(int[] var1, int x1, int y1, int x2, int y2, int[] var6) {
         if (this.offset != null) {
             float[] var14 = M.getb255();
             int[] var16 = this.offset;
             int var17 = this.W;
             int var18 = var17;
-            var2 = Math.max(var2, 0);
-            var3 = Math.max(var3, 0);
-            var4 = Math.min(this.W, var4);
-            var5 = Math.min(this.H, var5);
-            int var19 = var4 - var2;
-            int var20 = var5 - var3;
-            int var21 = var3 * var17 + var2;
-            int var22 = var3 * var17 + var2;
+            x1 = Math.max(x1, 0);
+            y1 = Math.max(y1, 0);
+            x2 = Math.min(this.W, x2);
+            y2 = Math.min(this.H, y2);
+            int var19 = x2 - x1;
+            int var20 = y2 - y1;
+            int var21 = y1 * var17 + x1;
+            int var22 = y1 * var17 + x1;
             int var23 = 0;
             int var9;
             int var10;
@@ -332,43 +334,43 @@ public class LO {
         }
     }
 
-    public void copyTo(int var1, int var2, int var3, int var4, LO var5, int var6, int var7, int[] var8) {
-        int[] var9 = var5.offset;
+    public void copyTo(int x1, int y1, int x2, int y2, LO layer, int var6, int var7, int[] var8) {
+        int[] var9 = layer.offset;
         if (this.offset != null || var9 != null) {
             if (var9 == null) {
-                var5.reserve();
-                var9 = var5.offset;
+                layer.reserve();
+                var9 = layer.offset;
             }
 
-            this.copyTo(var1, var2, var3, var4, var9, var6, var7, var5.W, var5.H, var8);
+            this.copyTo(x1, y1, x2, y2, var9, var6, var7, layer.W, layer.H, var8);
         }
     }
 
-    public final void copyTo(int var1, int var2, int var3, int var4, int[] var5, int var6, int var7, int var8, int var9, int[] var10) {
-        var1 = Math.max(var1, 0);
-        var2 = Math.max(var2, 0);
-        var3 = Math.min(var3, this.W);
-        var4 = Math.min(var4, this.H);
-        int var11 = Math.min(var3 - var1, var8);
-        int var12 = Math.min(var4 - var2, var9);
+    public final void copyTo(int x1, int y1, int x2, int y2, int[] var5, int var6, int var7, int layerW, int layerH, int[] var10) {
+        x1 = Math.max(x1, 0);
+        y1 = Math.max(y1, 0);
+        x2 = Math.min(x2, this.W);
+        y2 = Math.min(y2, this.H);
+        int var11 = Math.min(x2 - x1, layerW);
+        int var12 = Math.min(y2 - y1, layerH);
         if (var6 < 0) {
             var11 += var6;
-            var1 -= var6;
+            x1 -= var6;
             var6 = 0;
         }
 
         if (var7 < 0) {
             var12 += var7;
-            var2 -= var7;
+            y1 -= var7;
             var7 = 0;
         }
 
-        if (var6 + var11 >= var8) {
-            var11 = var8 - var6;
+        if (var6 + var11 >= layerW) {
+            var11 = layerW - var6;
         }
 
-        if (var7 + var12 >= var9) {
-            var12 = var9 - var7;
+        if (var7 + var12 >= layerH) {
+            var12 = layerH - var7;
         }
 
         if (var11 > 0 && var12 > 0) {
@@ -377,21 +379,21 @@ public class LO {
             int i;
             if (this.offset == null) {
                 for (var14 = var7; var14 < var7 + var12; ++var14) {
-                    var13 = var14 * var8 + var6;
+                    var13 = var14 * layerW + var6;
 
                     for (i = 0; i < var11; ++i) {
                         var5[var13++] = 0xFFFFFF;
                     }
                 }
             } else {
-                var13 = var2 * this.W + var1;
+                var13 = y1 * this.W + x1;
                 if (this.offset != var5) {
-                    var14 = var7 * var8 + var6;
+                    var14 = var7 * layerW + var6;
 
                     for (i = 0; i < var12; ++i) {
                         System.arraycopy(this.offset, var13, var5, var14, var11);
                         var13 += this.W;
-                        var14 += var8;
+                        var14 += layerW;
                     }
                 } else {
                     var14 = var11 * var12;
@@ -404,11 +406,11 @@ public class LO {
                         var13 += this.W;
                     }
 
-                    var13 = var7 * var8 + var6;
+                    var13 = var7 * layerW + var6;
 
                     for (i = 0; i < var12; ++i) {
                         System.arraycopy(var10, i * var11, var5, var13, var11);
-                        var13 += var8;
+                        var13 += layerW;
                     }
                 }
             }
@@ -588,12 +590,12 @@ public class LO {
         int[] srcDat = this.offset;
         int[] destDat = destLay.offset;
         if (srcDat != null && destDat != null) {
-            int var5 = this.W * this.H;
+            int size = this.W * this.H;
 
-            for (int var7 = 0; var7 < var5; ++var7) {
-                int var6 = srcDat[var7];
-                srcDat[var7] = destDat[var7];
-                destDat[var7] = var6;
+            for (int i = 0; i < size; ++i) {
+                int newDestVal = srcDat[i];
+                srcDat[i] = destDat[i];
+                destDat[i] = newDestVal;
             }
         } else {
             this.offset = destDat;
