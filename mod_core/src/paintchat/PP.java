@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 import syi.awt.Awt;
 import syi.awt.LComponent;
 
-import static java.awt.event.MouseEvent.MOUSE_PRESSED;
+import static java.awt.event.MouseEvent.*;
 
 public class PP extends LComponent implements SW {
     private ToolBox tools;

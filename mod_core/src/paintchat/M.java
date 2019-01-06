@@ -63,6 +63,7 @@ public class M {
     public static final int H_CLEAR = 10;
     public static final int H_SP = 11;
     public static final int H_VTEXT = 12;
+    public static final int H_UNKNOWN13 = 13;
     public static final int H_L = 14;
     // iPen
     public static final int P_SOLID = 0;
@@ -77,27 +78,33 @@ public class M {
     public static final int P_MOSAIC = 9;
     public static final int P_FILL = 10;
     public static final int P_LPEN = 11;
+    public static final int P_UNKNOWN12 = 12;
+    public static final int P_UNKNOWN13 = 13;
     public static final int P_NULL = 14;
+    public static final int P_UNKNOWN15 = 15;
+    public static final int P_UNKNOWN16 = 16;
     public static final int P_LR = 17;
     public static final int P_UD = 18;
     public static final int P_R = 19;
     public static final int P_FUSION = 20;
     // iPenM
     public static final int PM_PEN = 0;
-    public static final int PM_SUISAI = 1;
+    public static final int PM_SUISAI = 1; // Suisai means watercolor
     public static final int PM_MANY = 2;
     // iMask
-    public static final int M_N = 0;
-    public static final int M_M = 1;
-    public static final int M_R = 2;
-    public static final int M_ADD = 3;
-    public static final int M_SUB = 4;
-    // F1?
+    public static final int M_N = 0; // Normal
+    public static final int M_M = 1; // Multiply
+    public static final int M_R = 2; // Invert
+    public static final int M_ADD = 3; // Additive
+    public static final int M_SUB = 4; // Subtract
+    // Flags group 1
+    private static final int F1_ALL_LAYERS = 1;
+    private static final int F1_AFIX = 2;
     private static final int F1O = 4;
     private static final int F1C = 8;
     private static final int F1A = 16;
     private static final int F1S = 32;
-    // F2?
+    // Flags group 2
     private static final int F2H = 1;
     private static final int F2PM = 2;
     private static final int F2M = 4;
@@ -105,7 +112,7 @@ public class M {
     private static final int F2T = 16;
     private static final int F2L = 32;
     private static final int F2LS = 64;
-    // F3?
+    // Flags group 3
     private static final int F3A = 1;
     private static final int F3C = 2;
     private static final int F3CM = 4;
@@ -875,10 +882,10 @@ public class M {
                 int[] var22;
                 label156:
                 switch (this.iPen) {
-                    case 3:
+                    case P_SUISAI2:
                         this.dCMask(var5, var6, var7, var8);
                         break;
-                    case 9:
+                    case P_MOSAIC:
                         var10.reserve();
                         var22 = var10.offset;
                         int var23 = this.iAlpha / 10 + 1;
@@ -937,20 +944,20 @@ public class M {
 
                             var13 += var23;
                         }
-                    case 17:
+                    case P_LR:
                         var10.dLR(var5, var6, var7, var8);
                         this.dCMask(var5, var6, var7, var8);
                         break;
-                    case 18:
+                    case P_UD:
                         var10.dUD(var5, var6, var7, var8);
                         this.dCMask(var5, var6, var7, var8);
                         break;
-                    case 19:
+                    case P_R:
                         var10.dR(var5, var6, var7, var8, (int[]) null);
                         this.dCMask(var5, var6, var7, var8);
                         this.addD(var5, var6, var5 + Math.max(var7 - var5, var8 - var6), var6 + Math.max(var7 - var5, var8 - var6));
                         break;
-                    case 20:
+                    case P_FUSION:
                         byte var11 = this.iOffset > 8 ? this.offset[8] : 0;
                         LO var12 = this.info.layers[this.iLayerSrc];
                         var12.normalize(b255[this.iAlpha2 & 255], var5, var6, var7, var8);
@@ -985,7 +992,7 @@ public class M {
                         }
                         break;
                     default:
-                        if (this.iHint != M.H_L && this.iHint != M.H_COPY) {
+                        if (this.iHint != H_L && this.iHint != H_COPY) {
                             var10.reserve();
 
                             for (var22 = var10.offset; var6 < var8; ++var6) {
@@ -1125,15 +1132,15 @@ public class M {
                             ++var6;
                         } else {
                             switch (this.iPen) {
-                                case 1:
-                                case 20:
+                                case P_PEN:
+                                case P_FUSION:
                                     var9 = Math.max((int) ((float) var9 * b255[255 - var8 >>> 1] * var3), 1);
                                     var17[var6++] = (byte) Math.min(var8 + var9, 255);
                                     break;
-                                case 2:
-                                case 5:
-                                case 6:
-                                case 7:
+                                case P_SUISAI:
+                                case P_SWHITE:
+                                case P_LIGHT:
+                                case P_DARK:
                                     if ((var9 = (int) ((float) var9 * this.getTT(var4, var5))) != 0) {
                                         var17[var6] = (byte) Math.min(var8 + Math.max((int) ((float) var9 * b255[255 - var8 >>> 2]), 1), 255);
                                     }
@@ -1260,9 +1267,9 @@ public class M {
             this.iSeek = 0;
             label23:
             switch (this.iHint) {
-                case 0:
-                case 1:
-                case 11:
+                case H_FLINE:
+                case H_LINE:
+                case H_SP:
                     this.dStart();
 
                     while (true) {
@@ -1270,7 +1277,7 @@ public class M {
                             break label23;
                         }
                     }
-                case 10:
+                case H_CLEAR:
                     this.dClear();
                     break;
                 default:
@@ -1320,7 +1327,7 @@ public class M {
             int var18;
             label139:
             switch (this.iHint) {
-                case 3:
+                case H_RECT:
                     var13 = var2;
 
                     while (true) {
@@ -1340,7 +1347,7 @@ public class M {
 
                         ++var13;
                     }
-                case 4:
+                case H_FRECT:
                     var13 = var1;
                     var14 = var2;
                     var15 = var3;
@@ -1394,8 +1401,8 @@ public class M {
 
                         ++var17;
                     }
-                case 5:
-                case 6:
+                case H_OVAL:
+                case H_FOVAL:
                     var13 = var3 - var1 - 1;
                     var14 = var4 - var2 - 1;
                     var17 = var13 / 2;
@@ -1458,36 +1465,36 @@ public class M {
                 short var8 = (short) var5[0];
                 int var21;
                 switch (this.iHint) {
-                    case 2:
+                    case H_BEZI:
                         int var9 = this.user.wait;
                         this.user.wait = -2;
                         this.dStart(var7 + var1, var8 + var1, 0, false, false);
                         this.dBz(var5);
                         this.user.wait = var9;
                         break label99;
-                    case 3:
-                    case 4:
-                    case 5:
-                    case 6:
-                    case 10:
-                    case 11:
-                    case 13:
+                    case H_RECT:
+                    case H_FRECT:
+                    case H_OVAL:
+                    case H_FOVAL:
+                    case H_CLEAR:
+                    case H_SP:
+                    case H_UNKNOWN13:
                     default:
                         this.dRect(var7, var8, var5[1] >> 16, (short) var5[1]);
                         break label99;
-                    case 7:
+                    case H_FILL:
                         this.dFill(var7, var8);
                         break label99;
-                    case 8:
-                    case 12:
+                    case H_TEXT:
+                    case H_VTEXT:
                         String var18 = new String(this.offset, this.iSeek, this.iOffset - this.iSeek, ENCODE);
                         var21 = var18.indexOf(0);
                         this.dText(var18.substring(var21 + 1), var7, var8);
                         break label99;
-                    case 9:
+                    case H_COPY:
                         this.dCopy(var5);
                         break label99;
-                    case 14:
+                    case H_L:
                 }
 
                 LO var10 = var4[this.iLayer];
@@ -1605,7 +1612,8 @@ public class M {
 
     }
 
-    public void dStart(int var1, int var2, int var3, boolean var4, boolean var5) {
+    /** Starts drawing */
+    public void dStart(int x, int y, int var3, boolean var4, boolean var5) {
         try {
             this.user.setup(this);
             this.info.layers[this.iLayer].reserve();
@@ -1615,27 +1623,27 @@ public class M {
             int var6;
             if (var5) {
                 var6 = this.info.scale;
-                var1 = (var1 / var6 + this.info.scaleX) * this.info.Q;
-                var2 = (var2 / var6 + this.info.scaleY) * this.info.Q;
+                x = (x / var6 + this.info.scaleX) * this.info.Q;
+                y = (y / var6 + this.info.scaleY) * this.info.Q;
             }
 
             if (var4) {
                 ByteStream var9 = this.getWork();
-                var9.w((long) var1, 2);
-                var9.w((long) var2, 2);
+                var9.w((long) x, 2);
+                var9.w((long) y, 2);
                 if (this.iSOB != 0) {
                     var9.write(var3);
                 }
             }
 
-            this.memset(this.user.pX, var1);
-            this.memset(this.user.pY, var2);
+            this.memset(this.user.pX, x);
+            this.memset(this.user.pY, y);
             var6 = this.user.pW / 2;
-            this.setD(var1 - var6 - 1, var2 - var6 - 1, var1 + var6, var2 + var6);
-            this.user.fX = (float) var1;
-            this.user.fY = (float) var2;
+            this.setD(x - var6 - 1, y - var6 - 1, x + var6, y + var6);
+            this.user.fX = (float) x;
+            this.user.fY = (float) y;
             if (this.iHint != H_SP && !this.isAnti) {
-                this.dFLine(var1, var2, var3);
+                this.dFLine(x, y, var3);
             }
         } catch (IOException var7) {
             var7.printStackTrace();
@@ -1747,110 +1755,110 @@ public class M {
         }
     }
 
-    public final void get(OutputStream var1, ByteStream var2, M var3) {
+    public final void get(OutputStream out, ByteStream bs, M mg) {
         try {
-            var2.reset();
+            bs.reset();
             int var4 = 0;
-            boolean var5 = false;
-            int var6 = this.getFlag(var3);
-            int var7 = var6 >>> 8 & 255;
-            int var8 = var6 & 255;
-            var2.write(var6 >>> 16);
-            var2.write(var7);
-            var2.write(var8);
-            if ((var7 & 1) != 0) {
+            boolean shiftFlag = false; // Used to pack multiple flags in a single int
+            int flags = this.getFlag(mg);
+            int flags2 = flags >>> 8 & 255; // F2
+            int flags3 = flags & 255;  // F3
+            bs.write(flags >>> 16); // F1
+            bs.write(flags2);
+            bs.write(flags3);
+            if ((flags2 & F2H) != 0) {
                 var4 = this.iHint;
-                var5 = true;
+                shiftFlag = true;
             }
 
-            if ((var7 & 2) != 0) {
-                if (var5) {
-                    var2.write(var4 << 4 | this.iPenM);
+            if ((flags2 & F2PM) != 0) {
+                if (shiftFlag) {
+                    bs.write(var4 << 4 | this.iPenM);
                 } else {
                     var4 = this.iPenM;
                 }
 
-                var5 = !var5;
+                shiftFlag = !shiftFlag;
             }
 
-            if ((var7 & 4) != 0) {
-                if (var5) {
-                    var2.write(var4 << 4 | this.iMask);
+            if ((flags2 & F2M) != 0) {
+                if (shiftFlag) {
+                    bs.write(var4 << 4 | this.iMask);
                 } else {
                     var4 = this.iMask;
                 }
 
-                var5 = !var5;
+                shiftFlag = !shiftFlag;
             }
 
-            if (var5) {
-                var2.write(var4 << 4);
+            if (shiftFlag) {
+                bs.write(var4 << 4);
             }
 
-            if ((var7 & 8) != 0) {
-                var2.write(this.iPen);
+            if ((flags2 & F2P) != 0) {
+                bs.write(this.iPen);
             }
 
-            if ((var7 & 16) != 0) {
-                var2.write(this.iTT);
+            if ((flags2 & F2T) != 0) {
+                bs.write(this.iTT);
             }
 
-            if ((var7 & 32) != 0) {
-                var2.write(this.iLayer);
+            if ((flags2 & F2L) != 0) {
+                bs.write(this.iLayer);
             }
 
-            if ((var7 & 64) != 0) {
-                var2.write(this.iLayerSrc);
+            if ((flags2 & F2LS) != 0) {
+                bs.write(this.iLayerSrc);
             }
 
-            if ((var8 & 1) != 0) {
-                var2.write(this.iAlpha);
+            if ((flags3 & F3A) != 0) {
+                bs.write(this.iAlpha);
             }
 
-            if ((var8 & 2) != 0) {
-                var2.w((long) this.iColor, 3);
+            if ((flags3 & F3C) != 0) {
+                bs.w((long) this.iColor, 3);
             }
 
-            if ((var8 & 4) != 0) {
-                var2.w((long) this.iColorMask, 3);
+            if ((flags3 & F3CM) != 0) {
+                bs.w((long) this.iColorMask, 3);
             }
 
-            if ((var8 & 8) != 0) {
-                var2.write(this.iSize);
+            if ((flags3 & F3S) != 0) {
+                bs.write(this.iSize);
             }
 
-            if ((var8 & 16) != 0) {
-                var2.write(this.iCount);
+            if ((flags3 & F3E) != 0) {
+                bs.write(this.iCount);
             }
 
-            if ((var8 & 32) != 0) {
-                var2.w((long) this.iSA, 2);
+            if ((flags3 & F3SA) != 0) {
+                bs.w((long) this.iSA, 2);
             }
 
-            if ((var8 & 64) != 0) {
-                var2.w((long) this.iSS, 2);
+            if ((flags3 & F3SS) != 0) {
+                bs.w((long) this.iSS, 2);
             }
 
             if (this.iPen == P_FUSION) {
-                var2.w2(this.iAlpha2);
+                bs.w2(this.iAlpha2);
             }
 
             if (this.isText()) {
                 if (this.strHint == null) {
-                    var2.w2(0);
+                    bs.w2(0);
                 } else {
-                    var2.w2(this.strHint.length);
-                    var2.write(this.strHint);
+                    bs.w2(this.strHint.length);
+                    bs.write(this.strHint);
                 }
             }
 
             if (this.offset != null && this.iOffset > 0) {
-                var2.write(this.offset, 0, this.iOffset);
+                bs.write(this.offset, 0, this.iOffset);
             }
 
-            var1.write(var2.size() >>> 8);
-            var1.write(var2.size() & 255);
-            var2.writeTo(var1);
+            out.write(bs.size() >>> 8);
+            out.write(bs.size() & 255);
+            bs.writeTo(out);
         } catch (IOException var9) {
             var9.printStackTrace();
         } catch (RuntimeException var10) {
@@ -1859,192 +1867,196 @@ public class M {
 
     }
 
-    private final int getFlag(M var1) {
-        int var3 = 0;
+    private final int getFlag(M mg) {
+        // F1 flags
+        int flagGroup = 0;
         if (this.isAllL) {
-            var3 |= 1;
+            flagGroup |= F1_ALL_LAYERS;
         }
 
         if (this.isAFix) {
-            var3 |= 2;
+            flagGroup |= F1_AFIX;
         }
 
         if (this.isAnti) {
-            var3 |= 16;
+            flagGroup |= F1A;
         }
 
         if (this.isCount) {
-            var3 |= 8;
+            flagGroup |= F1C;
         }
 
         if (this.isOver) {
-            var3 |= 4;
+            flagGroup |= F1O;
         }
 
-        var3 |= this.iSOB << 6;
-        int var2 = var3 << 16;
-        if (var1 == null) {
-            return var2 | '\uffff';
+        flagGroup |= this.iSOB << 6; // F1S
+        int flags = flagGroup << 16;
+        if (mg == null) {
+            return flags | '\uffff';
         } else {
-            var3 = 0;
-            if (this.iHint != var1.iHint) {
-                var3 |= 1;
+            // F2 flags
+            flagGroup = 0;
+            if (this.iHint != mg.iHint) {
+                flagGroup |= F2H;
             }
 
-            if (this.iPenM != var1.iPenM) {
-                var3 |= 2;
+            if (this.iPenM != mg.iPenM) {
+                flagGroup |= F2PM;
             }
 
-            if (this.iMask != var1.iMask) {
-                var3 |= 4;
+            if (this.iMask != mg.iMask) {
+                flagGroup |= F2M;
             }
 
-            if (this.iPen != var1.iPen) {
-                var3 |= 8;
+            if (this.iPen != mg.iPen) {
+                flagGroup |= F2P;
             }
 
-            if (this.iTT != var1.iTT) {
-                var3 |= 16;
+            if (this.iTT != mg.iTT) {
+                flagGroup |= F2T;
             }
 
-            if (this.iLayer != var1.iLayer) {
-                var3 |= 32;
+            if (this.iLayer != mg.iLayer) {
+                flagGroup |= F2L;
             }
 
-            if (this.iLayerSrc != var1.iLayerSrc) {
-                var3 |= 64;
+            if (this.iLayerSrc != mg.iLayerSrc) {
+                flagGroup |= F2LS;
             }
 
-            var2 |= var3 << 8;
-            var3 = 0;
-            if (this.iAlpha != var1.iAlpha) {
-                var3 |= 1;
+            flags |= flagGroup << 8;
+            // F3 flags
+            flagGroup = 0;
+            if (this.iAlpha != mg.iAlpha) {
+                flagGroup |= F3A;
             }
 
-            if (this.iColor != var1.iColor) {
-                var3 |= 2;
+            if (this.iColor != mg.iColor) {
+                flagGroup |= F3C;
             }
 
-            if (this.iColorMask != var1.iColorMask) {
-                var3 |= 4;
+            if (this.iColorMask != mg.iColorMask) {
+                flagGroup |= F3CM;
             }
 
-            if (this.iSize != var1.iSize) {
-                var3 |= 8;
+            if (this.iSize != mg.iSize) {
+                flagGroup |= F3S;
             }
 
-            if (this.iCount != var1.iCount) {
-                var3 |= 16;
+            if (this.iCount != mg.iCount) {
+                flagGroup |= F3E;
             }
 
-            if (this.iSA != var1.iSA) {
-                var3 |= 32;
+            if (this.iSA != mg.iSA) {
+                flagGroup |= F3SA;
             }
 
-            if (this.iSS != var1.iSS) {
-                var3 |= 64;
+            if (this.iSS != mg.iSS) {
+                flagGroup |= F3SS;
             }
 
-            return var2 | var3;
-        }
-    }
-
-    public Image getImage(int var1, int var2, int var3, int var4, int var5) {
-        var2 = Math.round((float) (var2 / this.info.scale)) + this.info.scaleX;
-        var3 = Math.round((float) (var3 / this.info.scale)) + this.info.scaleY;
-        var4 /= this.info.scale;
-        var5 /= this.info.scale;
-        int var6 = this.info.Q;
-        if (var6 <= 1) {
-            return this.info.component.createImage(new MemoryImageSource(var4, var5, this.info.layers[var1].offset, var3 * this.info.W + var2, this.info.W));
-        } else {
-            Image var7 = this.info.component.createImage(new MemoryImageSource(var4 * var6, var5 * var6, this.info.layers[var1].offset, var3 * var6 * this.info.W + var2 * var6, this.info.W));
-            Image var8 = var7.getScaledInstance(var4, var5, 2);
-            var7.flush();
-            return var8;
+            return flags | flagGroup;
         }
     }
 
-    private final int getM(int var1, int var2, int var3) {
-        if (var2 == 0) {
-            return var1;
+    public Image getImage(int layerNumber, int offX, int offY, int width, int height) {
+        offX = Math.round((float) (offX / this.info.scale)) + this.info.scaleX;
+        offY = Math.round((float) (offY / this.info.scale)) + this.info.scaleY;
+        width /= this.info.scale;
+        height /= this.info.scale;
+        int quality = this.info.Q;
+        if (quality <= 1) {
+            return this.info.component.createImage(new MemoryImageSource(width, height, this.info.layers[layerNumber].offset, offY * this.info.W + offX, this.info.W));
         } else {
-            int var6;
-            int var12;
-            int var13;
-            int var14;
-            float var15;
+            Image img = this.info.component.createImage(new MemoryImageSource(width * quality, height * quality, this.info.layers[layerNumber].offset, offY * quality * this.info.W + offX * quality, this.info.W));
+            Image imgScaled = img.getScaledInstance(width, height, 2);
+            img.flush();
+            return imgScaled;
+        }
+    }
+
+    private final int getM(int pixel, int alpha, int var3) {
+        if (alpha == 0) {
+            return pixel;
+        } else {
+            // TODO: the compiled code was probably reusing variables, clean up later
+            int pxG;
+            int pxAlpha;
+            int pxR;
+            int pxB;
+            float fAlpha;
             switch (this.iPen) {
-                case 4:
-                case 5:
-                    var12 = var1 >>> 24;
-                    var13 = var12 - (int) ((float) var12 * b255[var2]);
-                    return var13 == 0 ? 0xFFFFFF : var13 << 24 | var1 & 0xFFFFFF;
-                case 6:
-                case 11:
-                    var12 = var1 >>> 24;
-                    var13 = var1 >>> 16 & 255;
-                    var6 = var1 >>> 8 & 255;
-                    var14 = var1 & 255;
-                    var15 = b255[var2];
-                    return (var12 << 24) + (Math.min(var13 + (int) ((float) var13 * var15), 255) << 16) + (Math.min(var6 + (int) ((float) var6 * var15), 255) << 8) + Math.min(var14 + (int) ((float) var14 * var15), 255);
-                case 7:
-                    var12 = var1 >>> 24;
-                    var13 = var1 >>> 16 & 255;
-                    var6 = var1 >>> 8 & 255;
-                    var14 = var1 & 255;
-                    var15 = b255[var2];
-                    return (var12 << 24) + (Math.max(var13 - (int) ((float) (255 - var13) * var15), 0) << 16) + (Math.max(var6 - (int) ((float) (255 - var6) * var15), 0) << 8) + Math.max(var14 - (int) ((float) (255 - var14) * var15), 0);
-                case 8:
-                    float var4 = b255[var2];
+                case P_WHITE:
+                case P_SWHITE:
+                    pxAlpha = pixel >>> 24;
+                    pxR = pxAlpha - (int) ((float) pxAlpha * b255[alpha]);
+                    return pxR == 0 ? 0xFFFFFF : pxR << 24 | pixel & 0xFFFFFF;
+                case P_LIGHT:
+                case P_LPEN:
+                    pxAlpha = pixel >>> 24;
+                    pxR = pixel >>> 16 & 255;
+                    pxG = pixel >>> 8 & 255;
+                    pxB = pixel & 255;
+                    fAlpha = b255[alpha];
+                    return (pxAlpha << 24) + (Math.min(pxR + (int) ((float) pxR * fAlpha), 255) << 16) + (Math.min(pxG + (int) ((float) pxG * fAlpha), 255) << 8) + Math.min(pxB + (int) ((float) pxB * fAlpha), 255);
+                case P_DARK:
+                    pxAlpha = pixel >>> 24;
+                    pxR = pixel >>> 16 & 255;
+                    pxG = pixel >>> 8 & 255;
+                    pxB = pixel & 255;
+                    fAlpha = b255[alpha];
+                    return (pxAlpha << 24) + (Math.max(pxR - (int) ((float) (255 - pxR) * fAlpha), 0) << 16) + (Math.max(pxG - (int) ((float) (255 - pxG) * fAlpha), 0) << 8) + Math.max(pxB - (int) ((float) (255 - pxB) * fAlpha), 0);
+                case P_BOKASHI:
+                    float var4 = b255[alpha];
                     int[] var5 = this.user.argb;
                     int[] var7 = this.info.layers[this.iLayer].offset;
                     int var8 = this.info.W;
 
-                    int var9;
-                    for (var9 = 0; var9 < 4; ++var9) {
-                        var5[var9] = 0;
+                    int i;
+                    for (i = 0; i < 4; ++i) {
+                        var5[i] = 0;
                     }
 
-                    var6 = var3 % var8;
-                    var3 += var6 == 0 ? 1 : (var6 == var8 - 1 ? -1 : 0);
+                    pxG = var3 % var8;
+                    var3 += pxG == 0 ? 1 : (pxG == var8 - 1 ? -1 : 0);
                     var3 += var3 < var8 ? var8 : (var3 > var8 * (this.info.H - 1) ? -var8 : 0);
 
-                    for (var9 = -1; var9 < 2; ++var9) {
+                    for (i = -1; i < 2; ++i) {
                         for (int var10 = -1; var10 < 2; ++var10) {
-                            var6 = var7[var3 + var10 + var9 * var8];
+                            pxG = var7[var3 + var10 + i * var8];
 
                             for (int var11 = 0; var11 < 4; ++var11) {
-                                var5[var11] += var6 >>> (var11 << 3) & 255;
+                                var5[var11] += pxG >>> (var11 << 3) & 255;
                             }
                         }
                     }
 
-                    for (var9 = 0; var9 < 4; ++var9) {
-                        var6 = var1 >>> (var9 << 3) & 255;
-                        var5[var9] = var6 + (int) ((float) (var5[var9] / 9 - var6) * var4);
+                    for (i = 0; i < 4; ++i) {
+                        pxG = pixel >>> (i << 3) & 255;
+                        var5[i] = pxG + (int) ((float) (var5[i] / 9 - pxG) * var4);
                     }
 
                     return var5[3] << 24 | var5[2] << 16 | var5[1] << 8 | var5[0];
-                case 9:
-                case 20:
-                    if (var2 == 0) {
-                        return var1;
+                case P_MOSAIC:
+                case P_FUSION:
+                    if (alpha == 0) {
+                        return pixel;
                     }
 
-                    return var2 << 24 | 16711680;
-                case 10:
-                    return var2 << 24 | this.iColor;
-                case 12:
-                case 13:
-                case 14:
-                case 15:
-                case 16:
-                case 17:
-                case 18:
-                case 19:
+                    return alpha << 24 | 0xFF0000;
+                case P_FILL:
+                    return alpha << 24 | this.iColor;
+                case P_UNKNOWN12:
+                case P_UNKNOWN13:
+                case P_NULL:
+                case P_UNKNOWN15:
+                case P_UNKNOWN16:
+                case P_LR:
+                case P_UD:
+                case P_R:
                 default:
-                    return this.fu(var1, this.iColor, var2);
+                    return this.fu(pixel, this.iColor, alpha);
             }
         }
     }
@@ -2110,55 +2122,56 @@ public class M {
         }
     }
 
-    public static final boolean isTone(int var0, int var1, int var2) {
-        switch (var0) {
+    /** Used to generate the dithered pattern */
+    public static final boolean isTone(int tone, int x, int y) {
+        switch (tone) {
             case 2:
-                if ((var1 + 2) % 4 == 0 && (var2 + 4) % 4 == 0) {
+                if ((x + 2) % 4 == 0 && (y + 4) % 4 == 0) {
                     break;
                 }
             case 1:
-                if ((var1 + 2) % 4 == 0 && (var2 + 2) % 4 == 0) {
+                if ((x + 2) % 4 == 0 && (y + 2) % 4 == 0) {
                     break;
                 }
             case 0:
-                if (var1 % 4 != 0 || var2 % 4 != 0) {
+                if (x % 4 != 0 || y % 4 != 0) {
                     return true;
                 }
                 break;
             case 4:
-                if ((var1 + 1) % 4 == 0 && (var2 + 3) % 4 == 0) {
+                if ((x + 1) % 4 == 0 && (y + 3) % 4 == 0) {
                     break;
                 }
             case 3:
-                if (var1 % 2 == 0 && var2 % 2 == 0) {
+                if (x % 2 == 0 && y % 2 == 0) {
                     break;
                 }
 
                 return true;
             case 7:
-                if ((var1 + 2) % 4 == 0 && (var2 + 3) % 4 == 0) {
+                if ((x + 2) % 4 == 0 && (y + 3) % 4 == 0) {
                     break;
                 }
             case 6:
-                if (var1 % 4 == 0 && (var2 + 1) % 4 == 0) {
+                if (x % 4 == 0 && (y + 1) % 4 == 0) {
                     break;
                 }
             case 5:
-                if ((var1 + 1) % 2 != (var2 + 1) % 2) {
+                if ((x + 1) % 2 != (y + 1) % 2) {
                     return true;
                 }
                 break;
             case 9:
-                if ((var1 + 1) % 4 == 0 && (var2 + 2) % 4 == 0) {
+                if ((x + 1) % 4 == 0 && (y + 2) % 4 == 0) {
                     break;
                 }
             case 8:
-                if (var1 % 2 != 0 && (var2 + 1) % 2 != 0) {
+                if (x % 2 != 0 && (y + 1) % 2 != 0) {
                     return true;
                 }
                 break;
             case 10:
-                if ((var1 + 3) % 4 == 0 && (var2 + 2) % 4 == 0) {
+                if ((x + 3) % 4 == 0 && (y + 2) % 4 == 0) {
                     return true;
                 }
         }
@@ -2538,16 +2551,17 @@ public class M {
         return this.user;
     }
 
-    public final int pix(int var1, int var2) {
+    /** Gets pixel from current layer or from all layers according to "isAllL" */
+    public final int pix(int x, int y) {
         if (!this.isAllL) {
-            return this.info.layers[this.iLayer].getPixel(var1, var2);
+            return this.info.layers[this.iLayer].getPixel(x, y);
         } else {
             int var3 = this.info.L;
             int var5 = 0;
             int var7 = 0xFFFFFF;
 
             for (int var10 = 0; var10 < var3; ++var10) {
-                int var8 = this.info.layers[var10].getPixel(var1, var2);
+                int var8 = this.info.layers[var10].getPixel(x, y);
                 float var9 = b255[var8 >>> 24];
                 if (var9 != 0.0F) {
                     if (var9 == 1.0F) {
@@ -2652,22 +2666,22 @@ public class M {
             try {
                 int var5 = 0;
                 boolean var6 = false;
-                int var7 = var1[var2++] & 255;
-                int var8 = var1[var2++] & 255;
-                int var9 = var1[var2++] & 255;
-                this.isAllL = (var7 & 1) != 0;
-                this.isAFix = (var7 & 2) != 0;
-                this.isOver = (var7 & 4) != 0;
-                this.isCount = (var7 & 8) != 0;
-                this.isAnti = (var7 & 16) != 0;
-                this.iSOB = var7 >>> 6;
-                if ((var8 & 1) != 0) {
+                int flags1 = var1[var2++] & 255;
+                int flags2 = var1[var2++] & 255;
+                int flags3 = var1[var2++] & 255;
+                this.isAllL = (flags1 & F1_ALL_LAYERS) != 0;
+                this.isAFix = (flags1 & F1_AFIX) != 0;
+                this.isOver = (flags1 & F1O) != 0;
+                this.isCount = (flags1 & F1C) != 0;
+                this.isAnti = (flags1 & F1A) != 0;
+                this.iSOB = flags1 >>> 6; // F1S
+                if ((flags2 & F2H) != 0) {
                     var5 = var1[var2++] & 255;
                     var6 = true;
                     this.iHint = var5 >>> 4;
                 }
 
-                if ((var8 & 2) != 0) {
+                if ((flags2 & F2PM) != 0) {
                     if (!var6) {
                         var5 = var1[var2++] & 255;
                         this.iPenM = var5 >>> 4;
@@ -2678,7 +2692,7 @@ public class M {
                     var6 = !var6;
                 }
 
-                if ((var8 & 4) != 0) {
+                if ((flags2 & F2M) != 0) {
                     if (!var6) {
                         var5 = var1[var2++] & 255;
                         this.iMask = var5 >>> 4;
@@ -2689,50 +2703,50 @@ public class M {
                     var6 = !var6;
                 }
 
-                if ((var8 & 8) != 0) {
+                if ((flags2 & F2P) != 0) {
                     this.iPen = var1[var2++] & 255;
                 }
 
-                if ((var8 & 16) != 0) {
+                if ((flags2 & F2T) != 0) {
                     this.iTT = var1[var2++] & 255;
                 }
 
-                if ((var8 & 32) != 0) {
+                if ((flags2 & F2L) != 0) {
                     this.iLayer = var1[var2++] & 255;
                 }
 
-                if ((var8 & 64) != 0) {
+                if ((flags2 & F2LS) != 0) {
                     this.iLayerSrc = var1[var2++] & 255;
                 }
 
-                if ((var9 & 1) != 0) {
+                if ((flags3 & F3A) != 0) {
                     this.iAlpha = var1[var2++] & 255;
                 }
 
-                if ((var9 & 2) != 0) {
+                if ((flags3 & F3C) != 0) {
                     this.iColor = this.r(var1, var2, 3);
                     var2 += 3;
                 }
 
-                if ((var9 & 4) != 0) {
+                if ((flags3 & F3CM) != 0) {
                     this.iColorMask = this.r(var1, var2, 3);
                     var2 += 3;
                 }
 
-                if ((var9 & 8) != 0) {
+                if ((flags3 & F3S) != 0) {
                     this.iSize = var1[var2++] & 255;
                 }
 
-                if ((var9 & 16) != 0) {
+                if ((flags3 & F3E) != 0) {
                     this.iCount = var1[var2++];
                 }
 
-                if ((var9 & 32) != 0) {
+                if ((flags3 & F3SA) != 0) {
                     this.iSA = this.r(var1, var2, 2);
                     var2 += 2;
                 }
 
-                if ((var9 & 64) != 0) {
+                if ((flags3 & F3SS) != 0) {
                     this.iSS = this.r(var1, var2, 2);
                     var2 += 2;
                 }
@@ -2840,38 +2854,38 @@ public class M {
 
     }
 
-    public final void set(M var1) {
-        if (var1 == null) {
-            var1 = mgDef;
+    public final void set(M mg) {
+        if (mg == null) {
+            mg = mgDef;
         }
 
-        this.iHint = var1.iHint;
-        this.iPen = var1.iPen;
-        this.iPenM = var1.iPenM;
-        this.iTT = var1.iTT;
-        this.iMask = var1.iMask;
-        this.iSize = var1.iSize;
-        this.iSS = var1.iSS;
-        this.iCount = var1.iCount;
-        this.isOver = var1.isOver;
-        this.isCount = var1.isCount;
-        this.isAFix = var1.isAFix;
-        this.isAnti = var1.isAnti;
-        this.isAllL = var1.isAllL;
-        this.iAlpha = var1.iAlpha;
-        this.iAlpha2 = var1.iAlpha2;
-        this.iSA = var1.iSA;
-        this.iColor = var1.iColor;
-        this.iColorMask = var1.iColorMask;
-        this.iLayer = var1.iLayer;
-        this.iLayerSrc = var1.iLayerSrc;
-        this.iSOB = var1.iSOB;
-        this.strHint = var1.strHint;
+        this.iHint = mg.iHint;
+        this.iPen = mg.iPen;
+        this.iPenM = mg.iPenM;
+        this.iTT = mg.iTT;
+        this.iMask = mg.iMask;
+        this.iSize = mg.iSize;
+        this.iSS = mg.iSS;
+        this.iCount = mg.iCount;
+        this.isOver = mg.isOver;
+        this.isCount = mg.isCount;
+        this.isAFix = mg.isAFix;
+        this.isAnti = mg.isAnti;
+        this.isAllL = mg.isAllL;
+        this.iAlpha = mg.iAlpha;
+        this.iAlpha2 = mg.iAlpha2;
+        this.iSA = mg.iSA;
+        this.iColor = mg.iColor;
+        this.iColorMask = mg.iColorMask;
+        this.iLayer = mg.iLayer;
+        this.iLayerSrc = mg.iLayerSrc;
+        this.iSOB = mg.iSOB;
+        this.strHint = mg.strHint;
         this.iOffset = 0;
     }
 
-    public final int set(ByteStream var1) {
-        return this.set(var1.getBuffer(), 0);
+    public final int set(ByteStream bs) {
+        return this.set(bs.getBuffer(), 0);
     }
 
     public void setRetouch(int[] var1, byte[] var2, int var3, boolean var4) {
@@ -2886,27 +2900,27 @@ public class M {
             int var11 = this.iHint == H_BEZI ? var10 : 0;
             int[] var14 = this.user.points;
             switch (this.iHint) {
-                case 2:
-                case 7:
-                case 14:
+                case H_BEZI:
+                case H_FILL:
+                case H_L:
                     break;
-                case 3:
-                case 4:
-                case 5:
-                case 6:
-                case 11:
-                case 13:
+                case H_RECT:
+                case H_FRECT:
+                case H_OVAL:
+                case H_FOVAL:
+                case H_SP:
+                case H_UNKNOWN13:
                 default:
                     var5 = 2;
                     break;
-                case 8:
-                case 12:
+                case H_TEXT:
+                case H_VTEXT:
                     var5 = 1;
                     break;
-                case 9:
+                case H_COPY:
                     var5 = 3;
                     break;
-                case 10:
+                case H_CLEAR:
                     var5 = 0;
             }
 
@@ -2914,21 +2928,21 @@ public class M {
                 var5 = Math.min(var5, var1.length);
             }
 
-            for (int var15 = 0; var15 < var5; ++var15) {
-                int var12 = var1[var15] >> 16;
-                int var13 = (short) var1[var15];
+            for (int i = 0; i < var5; ++i) {
+                int var12 = var1[i] >> 16;
+                int var13 = (short) var1[i];
                 if (var4) {
                     var12 = (var12 / var6 + var8) * var7 - var11;
                     var13 = (var13 / var6 + var9) * var7 - var11;
                 }
 
-                var14[var15] = var12 << 16 | var13 & '\uffff';
+                var14[i] = var12 << 16 | var13 & '\uffff';
             }
 
             ByteStream var18 = this.getWork();
 
-            for (int var16 = 0; var16 < var5; ++var16) {
-                var18.w((long) var14[var16], 4);
+            for (int i = 0; i < var5; ++i) {
+                var18.w((long) var14[i], 4);
             }
 
             if (var2 != null && var3 > 0) {
@@ -2944,20 +2958,20 @@ public class M {
 
     }
 
-    private final void addD(int var1, int var2, int var3, int var4) {
-        this.user.addRect(var1, var2, var3, var4);
+    private final void addD(int x, int y, int x2, int y2) {
+        this.user.addRect(x, y, x2, y2);
     }
 
-    private final void setD(int var1, int var2, int var3, int var4) {
-        this.user.setRect(var1, var2, var3, var4);
+    private final void setD(int x, int y, int x2, int y2) {
+        this.user.setRect(x, y, x2, y2);
     }
 
-    public void setInfo(M.Info var1) {
-        this.info = var1;
+    public void setInfo(M.Info info) {
+        this.info = info;
     }
 
-    public void setUser(M.User var1) {
-        this.user = var1;
+    public void setUser(M.User user) {
+        this.user = user;
     }
 
     private final void shift(int var1, int var2) {
@@ -3120,18 +3134,18 @@ public class M {
             }
         }
 
-        public int getPixel(int var1, int var2) {
+        public int getPixel(int x, int y) {
             int var3 = M.this.info.imW;
-            if (var1 >= 0 && var2 >= 0 && var1 < var3 && var2 < M.this.info.imH) {
-                int var4 = M.this.info.Q;
-                M.this.mkLPic(this.buffer, var1, var2, 1, 1, var4);
+            if (x >= 0 && y >= 0 && x < var3 && y < M.this.info.imH) {
+                int quality = M.this.info.Q;
+                M.this.mkLPic(this.buffer, x, y, 1, 1, quality);
                 LO[] var5 = M.this.info.layers;
-                var1 *= var4;
-                var2 *= var4;
+                x *= quality;
+                y *= quality;
                 float var6 = 0.0F;
 
-                for (int var7 = M.this.info.m.iLayer; var7 >= 0; --var7) {
-                    var6 += (1.0F - var6) * M.b255[var5[var7].getPixel(var1, var2) >>> 24] * var5[var7].iAlpha;
+                for (int i = M.this.info.m.iLayer; i >= 0; --i) {
+                    var6 += (1.0F - var6) * M.b255[var5[i].getPixel(x, y) >>> 24] * var5[i].iAlpha;
                     if (var6 >= 1.0F) {
                         break;
                     }
@@ -3151,15 +3165,15 @@ public class M {
             return (long) (this.X <= 0 ? 0 : this.X) << 48 | (long) (this.Y <= 0 ? 0 : this.Y) << 32 | (long) (this.X2 << 16) | (long) this.Y2;
         }
 
-        public void setRect(int var1, int var2, int var3, int var4) {
-            this.X = var1;
-            this.Y = var2;
-            this.X2 = var3;
-            this.Y2 = var4;
+        public void setRect(int x, int y, int x2, int y2) {
+            this.X = x;
+            this.Y = y;
+            this.X2 = x2;
+            this.Y2 = y2;
         }
 
-        public final void addRect(int var1, int var2, int var3, int var4) {
-            this.setRect(Math.min(var1, this.X), Math.min(var2, this.Y), Math.max(var3, this.X2), Math.max(var4, this.Y2));
+        public final void addRect(int x, int y, int x2, int y2) {
+            this.setRect(Math.min(x, this.X), Math.min(y, this.Y), Math.max(x2, this.X2), Math.max(y2, this.Y2));
         }
 
         public Image mkImage(int var1, int var2) {
@@ -3197,87 +3211,89 @@ public class M {
         private float[][] bTT = new float[14][];
         public M m = new M();
 
-        public void setSize(int var1, int var2, int var3) {
-            int var4 = var1 * var3;
-            int var5 = var2 * var3;
-            int var6;
-            if (var4 != this.W || var5 != this.H) {
-                for (var6 = 0; var6 < this.L; ++var6) {
-                    this.layers[var6].setSize(var4, var5);
+        public void setSize(int width, int height, int quality) {
+            int actualWidth = width * quality;
+            int actualHeight = height * quality;
+            if (actualWidth != this.W || actualHeight != this.H) {
+                for (int i = 0; i < this.L; ++i) {
+                    this.layers[i].setSize(actualWidth, actualHeight);
                 }
             }
 
-            this.imW = var1;
-            this.imH = var2;
-            this.W = var4;
-            this.H = var5;
-            this.Q = var3;
-            var6 = this.W * this.H;
-            if (this.iMOffs == null || this.iMOffs.length < var6) {
-                this.iMOffs = new byte[var6];
+            this.imW = width;
+            this.imH = height;
+            this.W = actualWidth;
+            this.H = actualHeight;
+            this.Q = quality;
+            int size = this.W * this.H;
+            if (this.iMOffs == null || this.iMOffs.length < size) {
+                this.iMOffs = new byte[size];
             }
 
         }
 
-        public void setLayers(LO[] var1) {
-            this.L = var1.length;
-            this.layers = var1;
+        public void setLayers(LO[] layers) {
+            this.L = layers.length;
+            this.layers = layers;
         }
 
-        public void setComponent(Component var1, Graphics var2, int var3, int var4) {
-            this.component = var1;
-            this.vWidth = var3;
-            this.vHeight = var4;
-            this.g = var2;
+        public void setComponent(Component cmp, Graphics g, int width, int height) {
+            this.component = cmp;
+            this.vWidth = width;
+            this.vHeight = height;
+            this.g = g;
         }
 
-        public void setL(int var1) {
-            int var2 = this.layers == null ? 0 : this.layers.length;
-            int var3 = Math.min(var2, var1);
-            if (var2 != var1) {
-                LO[] var4 = new LO[var1];
+        /** Changes the current layer and creates new ones if necessary */
+        public void setL(int n) {
+            int layerCount = this.layers == null ? 0 : this.layers.length;
+            int amountToCopy = Math.min(layerCount, n);
+            if (layerCount != n) {
+                LO[] destLayers = new LO[n];
                 if (this.layers != null) {
-                    System.arraycopy(this.layers, 0, var4, 0, var3);
+                    System.arraycopy(this.layers, 0, destLayers, 0, amountToCopy);
                 }
 
-                for (int var5 = 0; var5 < var1; ++var5) {
-                    if (var4[var5] == null) {
-                        var4[var5] = LO.getLO(this.W, this.H);
+                for (int i = 0; i < n; ++i) {
+                    if (destLayers[i] == null) {
+                        destLayers[i] = LO.getLO(this.W, this.H);
                     }
                 }
 
-                this.layers = var4;
+                this.layers = destLayers;
             }
 
-            this.L = var1;
+            this.L = n;
         }
 
-        public void delL(int var1) {
-            int var2 = this.layers.length;
-            if (var1 < var2) {
-                LO[] var3 = new LO[var2 - 1];
-                int var4 = 0;
+        /** Deletes a layer */
+        public void delL(int layerNumber) {
+            int layerCount = this.layers.length;
+            if (layerNumber < layerCount) {
+                LO[] destLayers = new LO[layerCount - 1];
+                int j = 0;
 
-                for (int var5 = 0; var5 < var2; ++var5) {
-                    if (var5 != var1) {
-                        var3[var4++] = this.layers[var5];
+                for (int i = 0; i < layerCount; ++i) {
+                    if (i != layerNumber) {
+                        destLayers[j++] = this.layers[i];
                     }
                 }
 
-                this.layers = var3;
-                this.L = var2 - 1;
+                this.layers = destLayers;
+                this.L = layerCount - 1;
             }
         }
 
-        public void swapL(int var1, int var2) {
-            int var3 = Math.max(var1, var2);
-            if (var3 >= this.L) {
-                this.setL(var3);
+        /** Swaps two layers */
+        public void swapL(int layer1, int layer2) {
+            int maxL = Math.max(layer1, layer2);
+            if (maxL >= this.L) {
+                this.setL(maxL);
             }
 
-            this.layers[var1].isDraw = true;
-            this.layers[var2].isDraw = true;
-            this.layers[var1].swap(this.layers[var2]);
+            this.layers[layer1].isDraw = true;
+            this.layers[layer2].isDraw = true;
+            this.layers[layer1].swap(this.layers[layer2]);
         }
 
         public boolean addScale(int var1, boolean var2) {
@@ -3311,6 +3327,7 @@ public class M {
             }
         }
 
+        /** Sets dots per pixel */
         public void setQuality(int var1) {
             this.Q = var1;
             this.imW = this.W / this.Q;

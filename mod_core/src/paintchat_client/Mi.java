@@ -25,6 +25,9 @@ import paintchat.ToolBox;
 import syi.awt.Awt;
 import syi.awt.LComponent;
 
+import static java.awt.event.KeyEvent.*;
+import static java.awt.event.MouseEvent.*;
+
 public class Mi extends LComponent implements ActionListener {
     private LComponent tab;
     private Method mGet;
@@ -156,7 +159,7 @@ public class Mi extends LComponent implements ActionListener {
     }
 
     private void cursor(int var1, int var2, int var3) {
-        if (var1 == 503) {
+        if (var1 == MOUSE_MOVED) {
             Dimension var4 = this.info.getSize();
             int var5 = this.sizeBar;
             int var6 = var4.width;
@@ -179,7 +182,7 @@ public class Mi extends LComponent implements ActionListener {
     private void dBz(int var1, int var2, int var3) {
         try {
             if (this.psCount <= 0) {
-                if (var1 != 502) {
+                if (var1 != MOUSE_RELEASED) {
                     this.dLine(var1, var2, var3);
                 } else {
                     this.primary2.drawLine(this.ps[0] >> 16, (short) this.ps[0], this.ps[1] >> 16, (short) this.ps[1]);
@@ -197,7 +200,7 @@ public class Mi extends LComponent implements ActionListener {
             this.ePre();
             this.dPreB(true);
             switch (var1) {
-                case 502:
+                case MOUSE_RELEASED:
                     this.p(this.psCount++, var2, var3);
                     if (this.psCount >= 3) {
                         --this.psCount;
@@ -211,12 +214,12 @@ public class Mi extends LComponent implements ActionListener {
 
                     this.p(this.psCount, var2, var3);
                     break;
-                case 503:
-                case 506:
+                case MOUSE_MOVED:
+                case MOUSE_DRAGGED:
                     this.p(this.psCount, var2, var3);
                     this.p(2, var2, var3);
-                case 504:
-                case 505:
+                case MOUSE_ENTERED:
+                case MOUSE_EXITED:
             }
 
             this.dPreB(false);
@@ -264,7 +267,7 @@ public class Mi extends LComponent implements ActionListener {
             int var7 = (short) this.ps[1] - (short) this.ps[0];
             int var8;
             switch (var1) {
-                case 501:
+                case MOUSE_PRESSED:
                     if (this.imCopy != null) {
                         this.imCopy.flush();
                     }
@@ -272,7 +275,7 @@ public class Mi extends LComponent implements ActionListener {
                     this.imCopy = this.m.getImage(this.ps[4], var4, var5, var6, var7);
                     this.p(3, var2, var3);
                     break;
-                case 502:
+                case MOUSE_RELEASED:
                     var4 += var2 - (this.ps[3] >> 16);
                     var8 = var5 + (var3 - (short) this.ps[3]);
                     this.p(2, var4, var8);
@@ -282,12 +285,12 @@ public class Mi extends LComponent implements ActionListener {
                     this.m.draw();
                     this.dEnd(false);
                     this.psCount = -1;
-                case 503:
-                case 504:
-                case 505:
+                case MOUSE_MOVED:
+                case MOUSE_ENTERED:
+                case MOUSE_EXITED:
                 default:
                     break;
-                case 506:
+                case MOUSE_DRAGGED:
                     this.m_paint(var4, var5, var6, var7);
                     var4 += var2 - (this.ps[3] >> 16);
                     var8 = var5 + (var3 - (short) this.ps[3]);
@@ -302,78 +305,78 @@ public class Mi extends LComponent implements ActionListener {
     }
 
     private void dEnd(boolean var1) throws InterruptedException {
-        M var2 = this.m;
-        if (var2.iHint != M.H_CLEAR && var2.iPen == M.P_FUSION && var2.iHint != M.H_L) {
-            int var3 = this.user.wait;
+        M mg = this.m;
+        if (mg.iHint != M.H_CLEAR && mg.iPen == M.P_FUSION && mg.iHint != M.H_L) {
+            int waitWas = this.user.wait;
             this.user.wait = -2;
             if (var1) {
-                var2.dEnd();
+                mg.dEnd();
             }
 
-            int var4 = var2.iLayer;
+            int layer = mg.iLayer;
 
-            int var5;
-            for (var5 = var4 + 1; var5 < this.info.L; ++var5) {
-                if (this.info.layers[var5].iAlpha != 0.0F) {
-                    var2.iLayerSrc = var5;
+
+            for (int i = layer + 1; i < this.info.L; ++i) {
+                if (this.info.layers[i].iAlpha != 0.0F) {
+                    mg.iLayerSrc = i;
                     this.setA();
-                    var2.draw();
-                    this.send(var2);
+                    mg.draw();
+                    this.send(mg);
                 }
             }
 
-            for (var5 = var4 - 1; var5 >= 0; --var5) {
-                if (this.info.layers[var5].iAlpha != 0.0F) {
-                    var2.iLayerSrc = var5;
+            for (int i = layer - 1; i >= 0; --i) {
+                if (this.info.layers[i].iAlpha != 0.0F) {
+                    mg.iLayerSrc = i;
                     this.setA();
-                    var2.draw();
-                    this.send(var2);
+                    mg.draw();
+                    this.send(mg);
                 }
             }
 
-            this.user.wait = var3;
+            this.user.wait = waitWas;
             this.mPaint((Graphics) null);
         } else {
             if (var1) {
-                var2.dEnd();
+                mg.dEnd();
             }
 
-            this.send(var2);
+            this.send(mg);
         }
 
     }
 
-    private void dFLine(int var1, int var2, int var3) {
+    private void dFLine(int eventId, int x, int y) {
         try {
-            switch (var1) {
-                case 501:
+            switch (eventId) {
+                case MOUSE_PRESSED:
                     this.poll();
                     this.setM();
-                    this.m.dStart(var2, var3, this.getS(), true, true);
+                    this.m.dStart(x, y, this.getS(), true, true);
                     this.oldX = 0;
                     this.oldY = 0;
                     this.psCount = 1;
-                    this.p(0, var2, var3);
+                    this.p(0, x, y);
                     break;
-                case 502:
+                case MOUSE_RELEASED:
                     if (this.psCount >= 0) {
                         if (this.m.iHint == M.H_SP) {
-                            this.m.dNext(var2, var3, this.getS(), 0);
+                            this.m.dNext(x, y, this.getS(), 0);
                         }
 
                         this.dEnd(true);
                         this.psCount = -1;
                     }
-                case 503:
-                case 504:
-                case 505:
+                case MOUSE_MOVED:
+                case MOUSE_ENTERED:
+                case MOUSE_EXITED:
                 default:
                     break;
-                case 506:
-                    if (this.psCount >= 0 && this.isOKPo(var2, var3)) {
+                case MOUSE_DRAGGED:
+                    if (this.psCount >= 0 && this.isOKPo(x, y)) {
                         this.psCount = 0;
-                        this.m.dNext(var2, var3, this.getS(), 0);
-                        this.p(this.psCount, var2, var3);
+                        this.m.dNext(x, y, this.getS(), 0);
+                        this.p(this.psCount, x, y);
                         ++this.psCount;
                     }
             }
@@ -383,32 +386,31 @@ public class Mi extends LComponent implements ActionListener {
 
     }
 
-    private void dLine(int var1, int var2, int var3) {
+    private void dLine(int eventId, int x, int y) {
         try {
-            int var4;
-            switch (var1) {
-                case 501:
+            switch (eventId) {
+                case MOUSE_PRESSED:
                     this.setM();
 
-                    for (var4 = 0; var4 < 4; ++var4) {
-                        this.p(var4, var2, var3);
+                    for (int i = 0; i < 4; ++i) {
+                        this.p(i, x, y);
                     }
 
                     this.psCount = 0;
                     this.primary2.setColor(new Color(this.m.iColor));
-                    this.primary2.drawLine(var2, var3, var2, var3);
+                    this.primary2.drawLine(x, y, x, y);
                     break;
-                case 502:
+                case MOUSE_RELEASED:
                     if (this.psCount >= 0) {
-                        var4 = this.ps[0] >> 16;
+                        int var4 = this.ps[0] >> 16;
                         short var5 = (short) this.ps[0];
                         int var6 = this.m.iSize;
-                        int var7 = var2 - var4;
-                        int var8 = var3 - var5;
+                        int var7 = x - var4;
+                        int var8 = y - var5;
                         int var9 = Math.max(Math.abs(var7), Math.abs(var8));
                         if (var9 > 0) {
                             this.m.dStart(var4, var5, var6, true, true);
-                            this.m.dNext(var2, var3, var6, 0);
+                            this.m.dNext(x, y, var6, 0);
                             this.dEnd(true);
                         } else {
                             this.mPaint((Graphics) null);
@@ -416,16 +418,16 @@ public class Mi extends LComponent implements ActionListener {
 
                         this.psCount = -1;
                     }
-                case 503:
-                case 504:
-                case 505:
+                case MOUSE_MOVED:
+                case MOUSE_ENTERED:
+                case MOUSE_EXITED:
                 default:
                     break;
-                case 506:
+                case MOUSE_DRAGGED:
                     if (this.psCount >= 0) {
                         this.primary2.drawLine(this.ps[0] >> 16, (short) this.ps[0], this.ps[1] >> 16, (short) this.ps[1]);
-                        this.primary2.drawLine(this.ps[0] >> 16, (short) this.ps[0], var2, var3);
-                        this.p(1, var2, var3);
+                        this.primary2.drawLine(this.ps[0] >> 16, (short) this.ps[0], x, y);
+                        this.p(1, x, y);
                     }
             }
         } catch (Throwable var10) {
@@ -502,13 +504,13 @@ public class Mi extends LComponent implements ActionListener {
 
     }
 
-    public void drawScroll(Graphics var1) {
+    public void drawScroll(Graphics g) {
         try {
-            if (var1 == null) {
-                var1 = this.primary;
+            if (g == null) {
+                g = this.primary;
             }
 
-            if (var1 == null) {
+            if (g == null) {
                 return;
             }
 
@@ -538,36 +540,36 @@ public class Mi extends LComponent implements ActionListener {
             int var16 = (int) ((float) var5 / (float) var7 * (float) var12);
             int var17 = (int) ((float) var6 / (float) var8 * (float) var13);
             int[] var18 = this.rS;
-            var1.setColor(this.cls[0]);
+            g.setColor(this.cls[0]);
 
             int var2;
             for (var2 = 0; var2 < 20; var2 += 4) {
-                var1.drawRect(var18[var2], var18[var2 + 1], var18[var2 + 2], var18[var2 + 3]);
+                g.drawRect(var18[var2], var18[var2 + 1], var18[var2 + 2], var18[var2 + 3]);
             }
 
             if (var16 > 0) {
-                var1.setColor(this.cls[2]);
-                var1.drawRect(var18[0] + 1, var18[1] + 1, var16 - 2, var18[3] - 2);
-                var1.setColor(this.cls[1]);
-                var1.fillRect(var18[0] + 2, var18[1] + 2, var16 - 2, var18[3] - 3);
+                g.setColor(this.cls[2]);
+                g.drawRect(var18[0] + 1, var18[1] + 1, var16 - 2, var18[3] - 2);
+                g.setColor(this.cls[1]);
+                g.fillRect(var18[0] + 2, var18[1] + 2, var16 - 2, var18[3] - 3);
             }
 
-            var1.setColor(this.cls[2]);
-            var1.drawRect(var18[0] + var16 + var14, var18[1] + 1, var18[2] - var16 - var14 - 1, var18[3] - 2);
-            var1.setColor(this.cls[1]);
-            var1.fillRect(var18[0] + 1 + var16 + var14, var18[1] + 2, var18[2] - var16 - var14 - 2, var18[3] - 3);
-            var1.setColor(this.cls[1]);
+            g.setColor(this.cls[2]);
+            g.drawRect(var18[0] + var16 + var14, var18[1] + 1, var18[2] - var16 - var14 - 1, var18[3] - 2);
+            g.setColor(this.cls[1]);
+            g.fillRect(var18[0] + 1 + var16 + var14, var18[1] + 2, var18[2] - var16 - var14 - 2, var18[3] - 3);
+            g.setColor(this.cls[1]);
             if (var17 > 0) {
-                var1.setColor(this.cls[2]);
-                var1.drawRect(var18[4] + 1, var18[5] + 1, var18[6] - 2, var17 - 1);
-                var1.setColor(this.cls[1]);
-                var1.fillRect(var18[4] + 2, var18[5] + 2, var18[6] - 3, var17 - 1);
+                g.setColor(this.cls[2]);
+                g.drawRect(var18[4] + 1, var18[5] + 1, var18[6] - 2, var17 - 1);
+                g.setColor(this.cls[1]);
+                g.fillRect(var18[4] + 2, var18[5] + 2, var18[6] - 3, var17 - 1);
             }
 
-            var1.setColor(this.cls[2]);
-            var1.drawRect(var18[4] + 1, var18[5] + var17 + var15, var18[6] - 2, var18[7] - var17 - var15 - 1);
-            var1.setColor(this.cls[1]);
-            var1.fillRect(var18[4] + 2, var18[5] + var17 + var15, var18[6] - 3, var18[7] - var17 - var15 - 1);
+            g.setColor(this.cls[2]);
+            g.drawRect(var18[4] + 1, var18[5] + var17 + var15, var18[6] - 2, var18[7] - var17 - var15 - 1);
+            g.setColor(this.cls[1]);
+            g.fillRect(var18[4] + 2, var18[5] + var17 + var15, var18[6] - 3, var18[7] - var17 - var15 - 1);
 
             int var19;
             int var20;
@@ -575,27 +577,27 @@ public class Mi extends LComponent implements ActionListener {
             int var22;
             for (var2 = 8; var2 < 20; var2 += 4) {
                 for (var19 = 0; var19 < 2; ++var19) {
-                    var1.setColor(this.cls[2 - var19]);
+                    g.setColor(this.cls[2 - var19]);
                     if (var19 == 0) {
-                        var1.drawRect(var18[var2] + 1, var18[var2 + 1] + 1, var18[var2 + 2] - 2, var18[var2 + 3] - 2);
+                        g.drawRect(var18[var2] + 1, var18[var2 + 1] + 1, var18[var2 + 2] - 2, var18[var2 + 3] - 2);
                     } else {
-                        var1.fillRect(var18[var2] + 2, var18[var2 + 1] + 2, var18[var2 + 2] - 3, var18[var2 + 3] - 3);
+                        g.fillRect(var18[var2] + 2, var18[var2 + 1] + 2, var18[var2 + 2] - 3, var18[var2 + 3] - 3);
                     }
                 }
 
-                var1.setColor(this.cls[3]);
+                g.setColor(this.cls[3]);
                 var19 = var18[var2 + 2] / 2;
                 var20 = var18[var2 + 3] / 2;
                 if (var2 == 16) {
                     var21 = var18[var2] + var19 / 2;
                     var22 = var18[var2 + 1] + var20 / 2;
                     var20 /= 2;
-                    var1.drawRect(var21, var22, var19, var20);
-                    var1.fillRect(var21, var22 + var20, 1, var20);
+                    g.drawRect(var21, var22, var19, var20);
+                    g.fillRect(var21, var22 + var20, 1, var20);
                 } else {
-                    var1.fillRect(var18[var2] + var19 / 2, var18[var2 + 1] + var20, var19 + 1, 1);
+                    g.fillRect(var18[var2] + var19 / 2, var18[var2 + 1] + var20, var19 + 1, 1);
                     if (var2 == 8) {
-                        var1.fillRect(var18[var2] + var19, var18[var2 + 1] + var20 / 2, 1, var20);
+                        g.fillRect(var18[var2] + var19, var18[var2 + 1] + var20 / 2, 1, var20);
                     }
                 }
             }
@@ -604,39 +606,39 @@ public class Mi extends LComponent implements ActionListener {
             var20 = var18[1] + 1;
             var21 = var18[4] + 1;
             var22 = var18[5] + var17;
-            var1.setColor(this.cls[0]);
-            var1.drawRect(var19, var20, var14, var18[3] - 2);
-            var1.drawRect(var21, var22, var18[6] - 2, var15 + 1);
-            var1.setColor(this.cls[3]);
-            var1.fillRect(var19 + 2, var20 + 2, var14 - 3, var18[3] - 5);
-            var1.fillRect(var21 + 2, var22 + 2, var18[6] - 5, var15 - 2);
-            var1.setColor(this.cls[4]);
-            var1.fillRect(var19 + 1, var20 + 1, var14 - 2, 1);
-            var1.fillRect(var19 + 1, var20 + 2, 1, var18[3] - 5);
-            var1.fillRect(var21 + 1, var22 + 1, var18[6] - 4, 1);
-            var1.fillRect(var21 + 1, var22 + 2, 1, var15 - 2);
-            var1.setColor(this.cls[5]);
-            var1.fillRect(var19 + var14 - 1, var20 + 1, 1, var18[3] - 4);
-            var1.fillRect(var19 + 1, var20 + var18[3] - 3, var14 - 1, 1);
-            var1.fillRect(var21 + var18[6] - 3, var22 + 1, 1, var15 - 1);
-            var1.fillRect(var21 + 1, var22 + var15, var18[6] - 3, 1);
+            g.setColor(this.cls[0]);
+            g.drawRect(var19, var20, var14, var18[3] - 2);
+            g.drawRect(var21, var22, var18[6] - 2, var15 + 1);
+            g.setColor(this.cls[3]);
+            g.fillRect(var19 + 2, var20 + 2, var14 - 3, var18[3] - 5);
+            g.fillRect(var21 + 2, var22 + 2, var18[6] - 5, var15 - 2);
+            g.setColor(this.cls[4]);
+            g.fillRect(var19 + 1, var20 + 1, var14 - 2, 1);
+            g.fillRect(var19 + 1, var20 + 2, 1, var18[3] - 5);
+            g.fillRect(var21 + 1, var22 + 1, var18[6] - 4, 1);
+            g.fillRect(var21 + 1, var22 + 2, 1, var15 - 2);
+            g.setColor(this.cls[5]);
+            g.fillRect(var19 + var14 - 1, var20 + 1, 1, var18[3] - 4);
+            g.fillRect(var19 + 1, var20 + var18[3] - 3, var14 - 1, 1);
+            g.fillRect(var21 + var18[6] - 3, var22 + 1, 1, var15 - 1);
+            g.fillRect(var21 + 1, var22 + var15, var18[6] - 3, 1);
         } catch (Throwable var23) {
             var23.printStackTrace();
         }
 
     }
 
-    private void dRect(int var1, int var2, int var3) {
+    private void dRect(int eventId, int var2, int var3) {
         try {
             int[] var4 = this.user.points;
-            switch (var1) {
-                case 501:
+            switch (eventId) {
+                case MOUSE_PRESSED:
                     this.setM();
                     this.p(0, var2, var3);
                     this.m.memset((int[]) var4, (int) 0);
                     this.psCount = 1;
                     break;
-                case 502:
+                case MOUSE_RELEASED:
                     if (this.psCount > 0) {
                         this.p(1, var2, var3);
                         if (this.transRect()) {
@@ -652,12 +654,12 @@ public class Mi extends LComponent implements ActionListener {
                     }
 
                     this.psCount = -1;
-                case 503:
-                case 504:
-                case 505:
+                case MOUSE_MOVED:
+                case MOUSE_ENTERED:
+                case MOUSE_EXITED:
                 default:
                     break;
-                case 506:
+                case MOUSE_DRAGGED:
                     if (this.psCount == 1) {
                         int var5 = var4[0];
                         int var6 = var4[1];
@@ -679,12 +681,12 @@ public class Mi extends LComponent implements ActionListener {
 
     }
 
-    public void dScroll(MouseEvent var1, int var2, int var3) {
+    public void dScroll(MouseEvent event, int var2, int var3) {
         if (var2 == 0 && var3 == 0) {
-            int var4 = var1.getID();
-            Point var5 = var1.getPoint();
-            if (var4 != 502 && var4 != 506) {
-                if (var4 == 501) {
+            int var4 = event.getID();
+            Point var5 = event.getPoint();
+            if (var4 != MOUSE_RELEASED && var4 != MOUSE_DRAGGED) {
+                if (var4 == MOUSE_PRESSED) {
                     this.poS = var5;
                 }
             } else {
@@ -697,9 +699,9 @@ public class Mi extends LComponent implements ActionListener {
         }
     }
 
-    public void dText(int var1, int var2, int var3) {
-        switch (var1) {
-            case 502:
+    public void dText(int eventId, int var2, int var3) {
+        switch (eventId) {
+            case MOUSE_RELEASED:
                 this.setM();
                 if (this.text == null) {
                     this.text = new TextField(16);
@@ -721,7 +723,7 @@ public class Mi extends LComponent implements ActionListener {
                 }
 
                 this.p(0, var2, var3);
-            case 501:
+            case MOUSE_PRESSED:
             default:
         }
     }
@@ -746,24 +748,24 @@ public class Mi extends LComponent implements ActionListener {
         return var1 >= 0 && var2 >= 0 && var1 < var3.width && var2 < var3.height;
     }
 
-    public void init(Applet var1, Res var2, int var3, int var4, int var5, int var6, Cursor[] var7) throws IOException {
+    public void init(Applet app, Res res, int var3, int var4, int var5, int var6, Cursor[] var7) throws IOException {
         String var8 = "color_";
         this.cursors = var7;
         this.cls = new Color[6];
-        this.cls[0] = new Color(var2.getP(var8 + "frame", 5263480));
-        this.cls[1] = new Color(var2.getP(var8 + "icon", 13421823));
-        this.cls[2] = new Color(var2.getP(var8 + "bar_hl", 0xFFFFFF));
-        this.cls[3] = new Color(var2.getP(var8 + "bar", 7303086));
-        this.cls[4] = new Color(var2.getP(var8 + "bar_hl", 15658751));
-        this.cls[5] = new Color(var2.getP(var8 + "bar_shadow", 11184810));
+        this.cls[0] = new Color(res.getP(var8 + "frame", 0x505078));
+        this.cls[1] = new Color(res.getP(var8 + "icon", 0xCCCCFF));
+        this.cls[2] = new Color(res.getP(var8 + "bar_hl", 0xFFFFFF));
+        this.cls[3] = new Color(res.getP(var8 + "bar", 0x6F6FAE));
+        this.cls[4] = new Color(res.getP(var8 + "bar_hl", 0xEEEEFF));
+        this.cls[5] = new Color(res.getP(var8 + "bar_shadow", 0xAAAAAA));
         this.setBackground(Color.white);
         this.m = new M();
         this.user = this.m.newUser(this);
-        M.Info var9 = this.m.newInfo(var1, this, var2);
-        var9.setSize(var3, var4, var5);
-        var9.setL(var6);
-        this.info = var9;
-        this.mgInfo = var9.m;
+        M.Info info = this.m.newInfo(app, this, res);
+        info.setSize(var3, var4, var5);
+        info.setL(var6);
+        this.info = info;
+        this.mgInfo = info.m;
 
         try {
             Method var10 = this.getClass().getMethod("setFocusTraversalKeys", Integer.TYPE, Class.forName("java.util.Set"));
@@ -843,8 +845,8 @@ public class Mi extends LComponent implements ActionListener {
             int scale = this.info.scale;
             int sX = ev.getX() / scale * scale;
             int sY = ev.getY() / scale * scale;
-            boolean isMPress   = id == MouseEvent.MOUSE_PRESSED;
-            boolean isMRelease = id == MouseEvent.MOUSE_RELEASED;
+            boolean isMPress   = id == MOUSE_PRESSED;
+            boolean isMRelease = id == MOUSE_RELEASED;
             boolean isMDrag    = id == MouseEvent.MOUSE_DRAGGED;
             boolean isMRight   = this.isRight;
             if (ev.isAltDown() && ev.isControlDown()) {
@@ -922,18 +924,18 @@ public class Mi extends LComponent implements ActionListener {
             if (!this.isDrag) {
                 this.cursor(id, sX, sY);
                 switch (id) {
-                    case 503:
+                    case MOUSE_MOVED:
                         this.dPre(sX, sY, this.isIn);
                         this.isIn = true;
                         break;
-                    case 504:
+                    case MOUSE_ENTERED:
                         if (this.text == null || !this.text.isVisible()) {
                             this.requestFocus();
                         }
 
                         this.getS();
                         break;
-                    case 505:
+                    case MOUSE_EXITED:
                         if (this.isIn) {
                             this.isIn = false;
                             this.dPre(this.oldX, this.oldY, false);
@@ -948,24 +950,24 @@ public class Mi extends LComponent implements ActionListener {
 
             if (this.isEnable && ((long) (this.mgInfo.iLayer + 1) & this.info.permission) != 0L && !isMRight && (this.mgInfo.iHint == 10 || this.info.layers[this.mgInfo.iLayer].iAlpha > 0.0F)) {
                 switch (this.mgInfo.iHint) {
-                    case 0:
-                    case 11:
+                    case M.H_FLINE:
+                    case M.H_SP:
                         this.dFLine(id, sX, sY);
                         break;
-                    case 1:
+                    case M.H_LINE:
                         this.dLine(id, sX, sY);
                         break;
-                    case 2:
+                    case M.H_BEZI:
                         this.dBz(id, sX, sY);
                         break;
-                    case 3:
-                    case 4:
-                    case 5:
-                    case 6:
+                    case M.H_RECT:
+                    case M.H_FRECT:
+                    case M.H_OVAL:
+                    case M.H_FOVAL:
                     default:
                         this.dRect(id, sX, sY);
                         break;
-                    case 7:
+                    case M.H_FILL:
                         if (isMPress && this.info.isFill) {
                             this.m.set(this.info.m);
                             this.p(0, sX, sY);
@@ -976,21 +978,21 @@ public class Mi extends LComponent implements ActionListener {
                             this.send();
                         }
                         break;
-                    case 8:
-                    case 12:
+                    case M.H_TEXT:
+                    case M.H_VTEXT:
                         this.dText(id, sX, sY);
                         break;
-                    case 9:
+                    case M.H_COPY:
                         this.dCopy(id, sX, sY);
                         break;
-                    case 10:
+                    case M.H_CLEAR:
                         if (this.info.isClean && isMPress) {
                             this.dClear();
                         }
                 }
             }
 
-            if (id == 502 && this.isIn) {
+            if (id == MOUSE_RELEASED && this.isIn) {
                 this.dPre(sX, sY, false);
                 this.isDrag = false;
             }
@@ -1014,78 +1016,78 @@ public class Mi extends LComponent implements ActionListener {
         }
     }
 
-    protected void processEvent(AWTEvent var1) {
+    protected void processEvent(AWTEvent event) {
         try {
-            int var2 = var1.getID();
-            if (var1 instanceof KeyEvent) {
-                KeyEvent var3 = (KeyEvent) var1;
-                boolean var4 = var3.isControlDown() || var3.isShiftDown();
-                boolean var5 = var3.isAltDown();
-                boolean var6 = true;
-                var3.consume();
+            int eventId = event.getID();
+            if (event instanceof KeyEvent) {
+                KeyEvent keyEvent = (KeyEvent) event;
+                boolean isCtrlOrShiftDown = keyEvent.isControlDown() || keyEvent.isShiftDown();
+                boolean isAltDown = keyEvent.isAltDown();
+                boolean isUndo = true; // if false it'll do a redo
+                keyEvent.consume();
                 label56:
-                switch (var2) {
-                    case 401:
-                        switch (var3.getKeyCode()) {
+                switch (eventId) {
+                    case 401: // ADJUSTMENT_EVENT_MASK | ACTION_EVENT_MASK | MOUSE_EVENT_MASK | COMPONENT_EVENT_MASK
+                        switch (keyEvent.getKeyCode()) {
                             case 9:
                                 this.isVTool = !this.isVTool;
                                 this.tBox.mVisible(this.isVTool);
                                 break label56;
-                            case 32:
+                            case VK_SPACE:
                                 this.isSpace = true;
                                 break label56;
-                            case 37:
+                            case VK_LEFT:
                                 this.scroll(-5, 0);
                                 break label56;
-                            case 38:
+                            case VK_UP:
                                 this.scroll(0, -5);
                                 break label56;
-                            case 39:
+                            case VK_RIGHT:
                                 this.scroll(5, 0);
                                 break label56;
-                            case 40:
+                            case VK_DOWN:
                                 this.scroll(0, 5);
                                 break label56;
-                            case 66:
+                            case VK_B:
                                 this.dPre(this.oldX, this.oldY, false);
                                 this.tBox.selPix(false);
                                 this.dPre(this.oldX, this.oldY, false);
                                 break label56;
-                            case 69:
+                            case VK_E:
                                 this.dPre(this.oldX, this.oldY, false);
                                 this.tBox.selPix(true);
                                 this.dPre(this.oldX, this.oldY, false);
                                 break label56;
-                            case 82:
-                            case 89:
-                                var6 = false;
-                            case 90:
-                                if (var5) {
-                                    var6 = false;
+                            case VK_R:
+                            case VK_Y:
+                                isUndo = false;
+                            case VK_Z:
+                                if (isAltDown) {
+                                    isUndo = false;
                                 }
 
-                                if (var4) {
-                                    this.imi.undo(var6);
+                                if (isCtrlOrShiftDown) {
+                                    this.imi.undo(isUndo);
                                 }
                                 break label56;
-                            case 107:
+                            case VK_ADD:
                                 this.scaleChange(1, false);
                                 break label56;
-                            case 109:
+                            case VK_SUBTRACT:
                                 this.scaleChange(-1, false);
                             default:
                                 break label56;
                         }
-                    case 402:
-                        switch (var3.getKeyCode()) {
-                            case 32:
+                    case 402: // ADJUSTMENT_EVENT_MASK | ACTION_EVENT_MASK | MOUSE_EVENT_MASK | CONTAINER_EVENT_MASK
+                        switch (keyEvent.getKeyCode()) {
+                            case VK_SPACE:
                                 this.isSpace = false;
                         }
                 }
             } else if (super.isGUI) {
-                switch (var2) {
-                    case 101:
-                    case 102:
+                switch (eventId) {
+                    case 101: // WINDOW_EVENT_MASK | MOUSE_MOTION_EVENT_MASK | FOCUS_EVENT_MASK | COMPONENT_EVENT_MASK
+                    case 102: // WINDOW_EVENT_MASK | MOUSE_MOTION_EVENT_MASK | FOCUS_EVENT_MASK | CONTAINER_EVENT_MASK
                         this.resetGraphics();
                         this.repaint();
                 }
@@ -1094,15 +1096,15 @@ public class Mi extends LComponent implements ActionListener {
             var7.printStackTrace();
         }
 
-        super.processEvent(var1);
+        super.processEvent(event);
     }
 
     public void reset() {
         if (this.psCount >= 0) {
             this.psCount = -1;
             switch (this.mgInfo.iHint) {
-                case 0:
-                case 11:
+                case M.H_FLINE:
+                case M.H_SP:
                     this.m.reset(true);
                     break;
                 default:
