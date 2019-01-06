@@ -45,10 +45,10 @@ pchatVersion=3.66
 App_Get_Index=true
 
 #Chat Name
-chatName=CatButts's chat room
+chatName=John McKenzie's chat room
 
 #Administrator Name
-administratorName=CatButts
+administratorName=administrator
 
 #Server Cache Line
 Server_Cash_Line=true
