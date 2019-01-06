@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+   
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+  <style>
+td{
+border:1px solid black;
+}
+  </style>
+  <title>PaintChatの簡易操作方法</title>
+      
+  <meta name="author" content="しぃちゃん">
+</head>
+  <body
+ style="background-color: rgb(204,204,255); color: rgb(80,80,120);"
+ link="#0000ff" vlink="#800080" alink="#ff0000">
+              <span style="color: rgb(0,0,153);">入口ページ等のカスタマイズ方法<br>
+  </span><br>
+ 
+<div style="margin-left: 40px;">  
+<table cellpadding="2" cellspacing="2" border="0"
+ style="text-align: left; width: 80%;">
+   <tbody>
+     <tr>
+       <td valign="top">入口とアプレット表示用のHTMLはバージョンアップ時やアプレット取得時等に上書きされてしまいます。<br>
+   これを回避したい場合はまずメニューのオプション、設定を選択の<span style="color: rgb(153,0,0);">クライアント取得時index.htmlを上書</span>をOffにします。その後自作のHTMLをwwwフォルダに置く事により公開が可能です。この設定如何に関わらずアプレット表示HTML(entrance_simple.html等)は上書きされますが、index.htmlさえ自作出来れば何とでもなると思います。<br>
+        </td>
+      </tr>
+   
+  </tbody>  
+</table>
+  <br>
+  </div>
+ <span style="color: rgb(0,0,102);"> アプレットパラメータの仕様</span><br>
+ 
+<div style="margin-left: 40px;">&lt;applet code="paintchat_client.Client.class"
+<br>
+  archive="アプレットアーカイブのファイル名" <br>
+  width="アプレットの長さ" height="アプレットの高さ" <br>
+  codebase="./"<br>
+  MAYSCRIPT&gt;<br>
+  <br>
+  &lt;param name="<span style="color: rgb(0,51,0);">client_image_width</span>" 
+value="1240"&gt;<span style="color: rgb(153,0,0);">キャンバスの幅</span><br>
+  &lt;param name="<span style="color: rgb(0,51,0);">client_image_height</span>" 
+value="1000"&gt;<span style="color: rgb(153,0,0);">キャンバスの高さ</span><br>
+  &lt;param name="<span style="color: rgb(0,51,0);">dir_resource</span>" value="./res/"&gt;<font
+ color="#990000"><span style="color: rgb(153,0,0);">アイコンイメージ等が入っている資源リソースのパス</span>../を抜かすと重くなります。</font><br>
+  &lt;param name="<span style="color: rgb(0,51,0);">tt.zip</span>" value="res/tt.zip"&gt;<span
+ style="color: rgb(153,0,0);">テクスチャアーカイブの位置。資源リソースを探す前にこちらを探します。</span><br>
+  &lt;param name="<span style="color: rgb(0,51,0);">res.zip</span>" value="res/res_smp.zip"&gt;<span
+ style="color: rgb(153,0,0);">資</span><span style="color: rgb(153,0,0);">源リソースアーカイブの位置。このアーカイブに入っていないデータは直接URLからゲットします。</span><br>
+ &lt;param name="<span style="color: rgb(0,51,0);">server</span>" value=".paintchat"&gt;<span
+ style="color: rgb(153,0,0);">ポートの位置やデフォルトキャンバスの幅等が記述されているファイルの位置</span><br>
+  &lt;param name="<span style="color: rgb(0,51,0);">exit</span>" value="../index.html"&gt;<span
+ style="color: rgb(153,0,0);">退室ボタンを押した時に何処へ行くか</span><br>
+  <br>
+  &lt;param name="<span style="color: rgb(0,51,0);">scriptable</span>" value="true"&gt;<span
+ style="color: rgb(153,0,0);">一部機能でJavaScriptを利用する為Onに。</span><br>
+  &lt;param name="<span style="color: rgb(0,51,0);">MAYSCRIPT</span>" value="true"&gt;<span
+ style="color: rgb(153,0,0);">一部機能でJavaScriptを利用する為Onに。</span><br>
+  &lt;param name="<span style="color: rgb(0,51,0);">tools</span>" value="simple"&gt;<span
+ style="color: rgb(153,0,0);">作業するGUIの名前。simpleがシンプルモードで、stdが多機能モード</span><br>
+  <br>
+  &lt;/applet&gt;<br>
+</div>
+</body>
+</html>

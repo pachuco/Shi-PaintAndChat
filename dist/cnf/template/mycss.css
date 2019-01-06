@@ -1,0 +1,141 @@
+@charset "UTF-8";
+
+.bar{
+position:absolute;
+left:				0px;
+top:				0px;
+width:				100%;
+height:				100%;
+margin:				0;
+padding:			0;
+background-color:		#ffcccc;
+vertical-align:			middle;
+font-size:			14px;
+}
+
+.component{
+color:				#aa5a5a;
+background-color:		#ffcccc;
+vertical-align:			middle;
+font-size:			14px;
+height:				14px;
+font-family:			"ＭＳ ゴシック";
+}
+
+.icon_font{
+filter:				DropShadow(Color=#ffffff, OffX=1, OffY=1, Positive=1);
+font-size:			10pt;
+font-family:			"ＭＳ ゴシック";
+
+
+}
+
+body {
+
+background-color:		#ccccff;
+color:				#505078;
+
+background-image:		url("./top.jpg");
+background-repeat:		no-repeat;
+background-position:		90% 10%;
+background-attachment:		fixed;
+
+
+
+scrollbar-3d-light-color:	#000000;
+scrollbar-arrow-color:		#5555ff;
+scrollbar-base-color:		#505078;
+scrollbar-face-color:		#ccccff;
+scrollbar-highlight-color:	#FFFFFF;
+scrollbar-shadow-color:		#bbbbbb;
+
+line-height:			150%;
+font-family:			"ＭＳ ゴシック";
+}
+
+body.disable-backimage{
+background-image:		none;
+font-family:			"ＭＳ ゴシック";
+}
+
+table{
+line-height:			150%;
+font-family:			"ＭＳ ゴシック";
+}
+
+table.entrance{
+border:				1px solid black;
+}
+
+td.entrance{
+text-align:			left;
+border:				1px outset #ffffff;
+
+}
+
+
+
+a{
+text-decoration:		none;
+padding:			1px;
+//margin:				1px;
+border:				1px solid #505078;
+}
+a:link{
+color:				#25A96C;
+
+}
+a:active{
+color:				#25A96C;
+background-color:		f0f0ff;
+}
+a:visited{
+color:				#5058F6;
+}
+a:hover{
+background-color:		f0f0ff;
+text-decoration:		underline;
+}
+
+
+
+
+
+a.entrance{
+width:				100%;
+}
+
+
+div.menu{
+position:			absolute;
+left:				1px;
+top:				1px;
+
+width:				140px;
+height:				95%;
+margin:				0;
+padding:			0;
+border:				1px solid black;
+font-size:			12px;
+filter:				DropShadow(Color=white, OffX=1, OffY=1, Positive=1);
+}
+
+input{
+font-size:		9pt;
+font-weight:		bold;
+color:			white;
+background-color:	#aaaacc;
+cursor:			hand;
+font-family:		"ＭＳ ゴシック";
+}
+
+span.label{
+
+background-color:		white;
+color:				#cc0000;
+border:				1px outset #ffcccc;
+padding:			1pt;
+margin-left:			3pt;
+margin-right:			3pt;
+}
+

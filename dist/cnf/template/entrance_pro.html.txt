@@ -1,0 +1,25 @@
+<html>
+
+<head>
+<title>(C)Shi-chan Oekaki Shi-Chat PaintChat Standard</title>
+</head>
+
+<body bgcolor="#CCCCFF" text="#505078" link="#FF0000" vlink="#800080" alink="#FF00FF" topmargin="0" leftmargin="0" marginwidth="0" marginheight="0">
+
+<applet code="paintchat_client.Client.class" archive="pchat.jar" name="paintchat" width="100%" height="100%" codebase="./" align="left" MAYSCRIPT>
+
+	<param name="dir_resource" value="./">
+	<param name="tt.zip" value="tt_def.zip">
+	<param name="res.zip" value="res.zip">
+	<param name="tools" value="pro">
+
+	<param name="server" value=".paintchat">
+	<param name="exit" value="index.html">
+	
+	<param name="scriptable" value="true">
+	<param name="MAYSCRIPT" value="true">
+	
+	<param name="tp.au" value="_">
+</applet>
+</body>
+</html>
