@@ -1,4 +1,4 @@
-package syi.awt;
+package syi.awt.cust;
 
 import java.awt.FileDialog;
 import java.awt.Frame;

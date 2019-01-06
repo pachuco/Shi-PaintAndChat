@@ -1,4 +1,4 @@
-package syi.awt;
+package syi.awt.cust;
 
 import java.awt.*;
 import java.awt.event.*;

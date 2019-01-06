@@ -16,6 +16,7 @@ import paintchat.Res;
 import paintchat.ToolBox;
 import paintchat_client.Mi;
 import syi.awt.*;
+import syi.awt.cust.*;
 import syi.util.ByteStream;
 
 import javax.imageio.ImageIO;

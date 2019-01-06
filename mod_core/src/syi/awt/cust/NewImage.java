@@ -1,6 +1,7 @@
-package syi.awt;
+package syi.awt.cust;
 
 import paintchat.Res;
+import syi.awt.*;
 
 import java.awt.*;
 import java.awt.event.*;
