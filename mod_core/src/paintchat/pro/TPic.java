@@ -79,9 +79,7 @@ public class TPic extends LComponent {
     public void mPaint() {
         try {
             Graphics var1 = this.getG();
-            if (var1 == null) {
-                return;
-            }
+            if (var1 == null) return;
 
             this.mPaint(var1);
             var1.dispose();
@@ -99,7 +97,6 @@ public class TPic extends LComponent {
         byte var6 = 0;
         int var7 = var2.width - var3 - 1;
         int var8 = var2.height - var3 - 1;
-        int[] var9 = this.tools.iBuffer;
         int var13;
         synchronized (this.tools.iBuffer) {
             Image var10 = this.cMk();

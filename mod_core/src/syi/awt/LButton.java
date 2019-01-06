@@ -15,6 +15,9 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.ImageObserver;
 
+import static java.awt.event.ComponentEvent.*;
+import static java.awt.event.MouseEvent.*;
+
 public class LButton extends Canvas {
     private Dimension size;
     private Image BackImage;
@@ -137,12 +140,12 @@ public class LButton extends Canvas {
             if (ev instanceof MouseEvent) {
                 MouseEvent mev = (MouseEvent) ev;
                 mev.consume();
-                if (id == MouseEvent.MOUSE_PRESSED) {
+                if (id == MOUSE_PRESSED) {
                     this.isPress = true;
                     this.repaint();
                 }
 
-                if (id == MouseEvent.MOUSE_RELEASED) {
+                if (id == MOUSE_RELEASED) {
                     if (this.contains(((MouseEvent) ev).getPoint())) {
                         this.doAction();
                     }
@@ -155,7 +158,7 @@ public class LButton extends Canvas {
             }
 
             if (ev instanceof ComponentEvent) {
-                if (id == ComponentEvent.COMPONENT_RESIZED || id == ComponentEvent.COMPONENT_SHOWN) {
+                if (id == COMPONENT_RESIZED || id == COMPONENT_SHOWN) {
                     this.size = null;
                     this.repaint();
                 }

@@ -78,20 +78,18 @@ public class TPic extends LComponent implements SW {
 
     public void mPaint() {
         try {
-            Graphics var1 = this.getG();
-            if (var1 == null) {
-                return;
-            }
+            Graphics g = this.getG();
+            if (g == null) return;
 
-            this.mPaint(var1);
-            var1.dispose();
+            this.mPaint(g);
+            g.dispose();
         } catch (Throwable var2) {
             var2.printStackTrace();
         }
 
     }
 
-    public void mPaint(Graphics var1) {
+    public void mPaint(Graphics g) {
         Dimension var2 = this.getSize();
         int var3 = (int) (22.0F * LComponent.Q);
         int var4 = var3;
@@ -103,29 +101,29 @@ public class TPic extends LComponent implements SW {
         int var14;
         synchronized (var9) {
             Image var11 = this.cMk();
-            var1.drawImage(var11, var5, var6, var7, var8, Color.white, (ImageObserver) null);
+            g.drawImage(var11, var5, var6, var7, var8, Color.white, (ImageObserver) null);
             var11 = this.cMkB();
-            var1.drawImage(var11, var7 + 1, var6, var4, var8, Color.white, (ImageObserver) null);
+            g.drawImage(var11, var7 + 1, var6, var4, var8, Color.white, (ImageObserver) null);
             var14 = var6 + var8;
         }
 
-        Awt.drawFrame(var1, false, var5, var14 + 1, var7, var3);
+        Awt.drawFrame(g, false, var5, var14 + 1, var7, var3);
         int var10 = (int) ((float) (var7 - 8) * 0.7F);
         this.lastMask = this.mg.iColorMask;
-        var1.setColor(new Color(this.lastMask));
-        var1.fillRect(var5 + var10 + 6, var14 + 4, (int) ((float) (var7 - 8) * 0.3F), var3 - 6);
-        var1.setColor(Color.getHSBColor(fhsb[0], fhsb[1], fhsb[2]));
-        var1.fillRect(var5 + 3, var14 + 4, var10, var3 - 6);
-        var1.setColor(Color.blue);
-        var1.setXORMode(Color.white);
+        g.setColor(new Color(this.lastMask));
+        g.fillRect(var5 + var10 + 6, var14 + 4, (int) ((float) (var7 - 8) * 0.3F), var3 - 6);
+        g.setColor(Color.getHSBColor(fhsb[0], fhsb[1], fhsb[2]));
+        g.fillRect(var5 + 3, var14 + 4, var10, var3 - 6);
+        g.setColor(Color.blue);
+        g.setXORMode(Color.white);
         int var15 = Math.max((int) (10.0F * LComponent.Q), 2);
         int var12 = var15 >>> 1;
-        var1.setClip(var7 + 1, 0, var3, var8);
-        var1.drawOval(var7 + 1 + var3 / 2 - var12, (int) ((float) var8 * fhsb[0]) - var12, var15, var15);
-        var1.setClip(0, 0, var7, var8);
-        var1.drawOval((int) ((float) var7 * (1.0F - fhsb[1])) - var12, (int) ((float) var8 * fhsb[2]) - var12, var15, var15);
-        var1.setPaintMode();
-        var1.setClip(0, 0, var2.width, var2.height);
+        g.setClip(var7 + 1, 0, var3, var8);
+        g.drawOval(var7 + 1 + var3 / 2 - var12, (int) ((float) var8 * fhsb[0]) - var12, var15, var15);
+        g.setClip(0, 0, var7, var8);
+        g.drawOval((int) ((float) var7 * (1.0F - fhsb[1])) - var12, (int) ((float) var8 * fhsb[2]) - var12, var15, var15);
+        g.setPaintMode();
+        g.setClip(0, 0, var2.width, var2.height);
     }
 
     public void mSetup(ToolBox var1, M.Info var2, M.User var3, M var4, Res var5, Res var6) {
@@ -138,32 +136,32 @@ public class TPic extends LComponent implements SW {
         this.setDimension(new Dimension((int) (66.0F * LComponent.Q), (int) (66.0F * LComponent.Q)), new Dimension((int) (128.0F * LComponent.Q), (int) (128.0F * LComponent.Q)), new Dimension((int) (284.0F * LComponent.Q), (int) (284.0F * LComponent.Q)));
     }
 
-    public void paint2(Graphics var1) {
-        this.mPaint(var1);
+    public void paint2(Graphics g) {
+        this.mPaint(g);
     }
 
-    public void pMouse(MouseEvent var1) {
-        int var2 = var1.getX();
-        int var3 = var1.getY();
+    public void pMouse(MouseEvent me) {
+        int meX = me.getX();
+        int meY = me.getY();
         int var4 = (int) (22.0F * LComponent.Q);
         int var5 = (int) (25.0F * LComponent.Q);
         boolean var6 = false;
         Dimension var7 = this.getSize();
         int var8 = var7.width - var5 - 1;
         int var9 = var7.height - var4 - 1;
-        if (var1.getID() == 501 && var3 > var9) {
+        if (me.getID() == 501 && meY > var9) {
             int var10 = (int) ((float) (var8 - 8) * 0.7F);
-            if (var2 > var10) {
+            if (meX > var10) {
                 this.mg.iColorMask = this.mg.iColor;
                 this.ts.up();
             }
 
         } else {
-            var2 = var2 <= 0 ? 0 : (var2 >= var8 ? var8 : var2);
-            var3 = var3 <= 0 ? 0 : (var3 >= var9 ? var9 : var3);
-            switch (var1.getID()) {
+            meX = meX <= 0 ? 0 : (meX >= var8 ? var8 : meX);
+            meY = meY <= 0 ? 0 : (meY >= var9 ? var9 : meY);
+            switch (me.getID()) {
                 case 501:
-                    this.iDrag = var2 < var8 ? 0 : 1;
+                    this.iDrag = meX < var8 ? 0 : 1;
                     var6 = true;
                     break;
                 case 502:
@@ -182,10 +180,10 @@ public class TPic extends LComponent implements SW {
 
             if (var6 && this.iDrag >= 0) {
                 if (this.iDrag == 0) {
-                    fhsb[1] = 1.0F - (float) var2 / (float) var8;
-                    fhsb[2] = (float) var3 / (float) var9;
+                    fhsb[1] = 1.0F - (float) meX / (float) var8;
+                    fhsb[2] = (float) meY / (float) var9;
                 } else {
-                    fhsb[0] = (float) var3 / (float) var9;
+                    fhsb[0] = (float) meY / (float) var9;
                 }
 
                 this.ts.setARGB(this.mg.iAlpha << 24 | this.getRGB());

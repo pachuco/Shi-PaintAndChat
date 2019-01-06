@@ -506,13 +506,8 @@ public class Mi extends LComponent implements ActionListener {
 
     public void drawScroll(Graphics g) {
         try {
-            if (g == null) {
-                g = this.primary;
-            }
-
-            if (g == null) {
-                return;
-            }
+            if (g == null) g = this.primary;
+            if (g == null) return;
 
             float var3 = (float) this.info.scale;
             int var4 = this.sizeBar;
