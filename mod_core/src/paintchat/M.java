@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.image.ColorModel;
 import java.awt.image.DirectColorModel;
@@ -134,6 +135,16 @@ public class M {
     public M(M.Info info, M.User user) {
         this.info = info;
         this.user = user;
+    }
+
+    private final void copy(int[][] var1, int[][] var2) {
+        for (int var3 = 0; var3 < var2.length; ++var3) {
+            System.arraycopy(var1[var3], 0, var2[var3], 0, var2[var3].length);
+        }
+
+                                        
+                         
+                         
     }
 
     public final void dBuffer() {
@@ -2794,6 +2805,7 @@ public class M {
                 return;
             }
 
+            //Field[] var2 = this.getClass().getDeclaredFields();
             Field[] var2 = this.getClass().getFields();
             int var3 = var1.indexOf(64);
             if (var3 < 0) {
@@ -3341,6 +3353,11 @@ public class M {
         public Dimension getSize() {
             this.vD.setSize(this.vWidth, this.vHeight);
             return this.vD;
+        }
+
+        private void center(Point var1) {
+            var1.x = var1.x / this.scale + this.scaleX;
+            var1.y = var1.y / this.scale + this.scaleY;
         }
 
         public int[][][] getPenMask() {

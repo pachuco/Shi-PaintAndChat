@@ -113,6 +113,7 @@ public class TText extends Dialog implements SW, ActionListener, ItemListener {
 
     protected void processWindowEvent(WindowEvent var1) {
         if (var1.getID() == 201) {
+            //this.setVisible(false);
             this.dispose();
         }
 

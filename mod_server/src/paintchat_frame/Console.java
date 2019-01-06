@@ -1,6 +1,6 @@
 package paintchat_frame;
 
-import java.applet.Applet;
+import jaba.applet.Applet;
 import java.awt.Color;
 import java.awt.TextField;
 import java.io.CharArrayWriter;

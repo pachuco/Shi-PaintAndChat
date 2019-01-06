@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+Class-Path: core.jar
 Created-By: 1.1.7A
 Main-Class: paintchat_frame.PFrame
 

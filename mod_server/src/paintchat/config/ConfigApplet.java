@@ -1,6 +1,6 @@
 package paintchat.config;
 
-import java.applet.Applet;
+import jaba.applet.Applet;
 import java.awt.Checkbox;
 import java.awt.Component;
 import java.awt.Container;

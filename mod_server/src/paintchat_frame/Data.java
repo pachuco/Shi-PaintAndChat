@@ -1,6 +1,6 @@
 package paintchat_frame;
 
-import java.applet.Applet;
+import jaba.applet.Applet;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;

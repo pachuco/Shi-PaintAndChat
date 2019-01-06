@@ -1,6 +1,6 @@
 package syi.applet;
 
-import java.applet.Applet;
+import jaba.applet.Applet;
 import java.applet.AppletContext;
 import java.applet.AppletStub;
 import java.applet.AudioClip;
