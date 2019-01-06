@@ -1,3 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
-<pchat_user_list port="41411" host="" refresh="15000" />
-<pchat_admin port="41411" host="" />
+<pchat_user_list port="9000" host="" refresh="15000" />
+<pchat_admin port="9000" host="" />

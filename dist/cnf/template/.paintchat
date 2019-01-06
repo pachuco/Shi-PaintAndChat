@@ -1,5 +1,5 @@
-Connection_Port_PaintChat=41411
+Connection_Port_PaintChat=9000
 Client_Image_Width=1200
 Client_Image_Height=900
-Client_Sound=false
+Client_Sound=true
 layer_count=3

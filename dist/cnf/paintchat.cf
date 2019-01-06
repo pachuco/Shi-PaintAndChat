@@ -1,69 +1,112 @@
-#ƒeƒLƒXƒg‚Ìƒ?ƒO
-Server_Log_Text=false
+App_IsConsole=true
 
-#·¬¯¼­(·¬ÝÊÞ½)
-Server_Cash_Line=true
+#Server Cache Text Size
+Server_Cash_Text_Size=200
 
-#ƒCƒ“ƒ^?[ƒlƒbƒg‚Ì?Ú‘±
-Connection_GrobalAddress=true
+#Auto HTTP
+App_Auto_Http=false
 
-#»°ÊÞ°—§‚¿?ã‚°ŽžÛËÞ°‚Ö“o˜^
-App_Auto_Lobby=true
+#Comments
+commentString=test room
 
-#·¬¯¼­(‰ï˜b)
-Server_Cash_Text=true
+#Browser Path
+App_BrowserPath=
 
-#»°ÊÞ°²ÝÌ«Ò°¼®Ý‚Ì?‘‚«?ž‚Ý?æ
-File_PaintChat_Infomation=www/.paintchat
-
-#¸×²±ÝÄŽæ“¾ŽžIndex.html?ã?‘‚«
-App_Get_Index=true
-
-File_Config=cnf/paintchat.cf
-
-#×²Ý·¬¯¼­(Byte)
+#Server Cache Line Size
 Server_Cash_Line_Size=512000
 
-#ƒEƒFƒbƒuƒ|?[ƒg
-Connection_Port_Http=80
+#Show Start Help
+App_ShowStartHelp=true
 
-#ƒLƒƒƒ“ƒoƒX‚Ì?‚‚³
-Client_Image_Height=900
+#Auto PaintChat
+App_Auto_Paintchat=true
 
-#ƒwƒ‹ƒv•\Ž¦
-App_ShowHelp=true
-
-#ƒLƒƒƒ“ƒoƒX‚Ì•?
-Client_Image_Width=1200
-
-#•Û‘¶?üƒf?[ƒ^?[‹N“®Žž“Ç‚Ý?ž‚Ý
+#Load Line
 Server_Load_Line=true
 
-#‹–‰ÂƒŒƒxƒ‹
-Client_Permission=layer:all;layer_edit:true;canvas:true;talk:true;fill:false;clean:true;
+#Location of the Server.
+informtionServerAddress=http://www.ax.sakura.ne.jp/~aotama/paintchat/paintchatexcheange.conf
 
-#ƒeƒLƒXƒgƒf?[ƒ^?[‹N“®Žž“Ç‚Ý?ž‚Ý
-Server_Load_Text=true
+#Homepage URL
+hpUrl=
+
+#PaintChat Server Information
+File_PaintChat_Infomation=www/.paintchat
+
+#Administrator Chat Master
+Admin_ChatMaster=true
+
+#Chat Sounds
+Client_Sound=true
+
+pchatVersion=3.66
+
+#Get Index
+App_Get_Index=true
+
+#Chat Name
+chatName=CatButts's chat room
+
+#Administrator Name
+administratorName=CatButts
+
+#Server Cache Line
+Server_Cash_Line=true
+
+#Administrator Password
+Admin_Password=
+
+#Show Help
+App_ShowHelp=true
 
 App_Version=(C)????? PaintChatApp v3.66
 
-#Žn‚ß‚ÌŠÈ’P‚È?à–¾•¶
-App_ShowStartHelp=true
+#Load Text
+Server_Load_Text=true
 
-#—§‚¿?ã‚°ŽžÁ¬¯Ä»°ÊÞ°‹N“®
-App_Auto_Paintchat=true
+#Auto Lobby
+App_Auto_Lobby=false
 
-App_IsConsole=true
-
-#?üƒf?[ƒ^?[‚Ìƒ?ƒO
+#Server Log Line
 Server_Log_Line=false
 
-#Ã·½Ä·¬¯¼­(×²Ý’PˆÊ)
-Server_Cash_Text_Size=200
+File_Config=C:\p_files\prog\_proj\InteliJ\PaintAndChat\dist\cnf\paintchat.cf
 
-#ƒ`ƒƒƒbƒgƒ|?[ƒg
-Connection_Port_PaintChat=0
+#Client Permission
+Client_Permission=layer:all;layer_edit:false;canvas:true;talk:true;fill:false;clean:true;
 
-#—§‚¿?ã‚°Žž³ª¯ÌÞ»°ÊÞ°‹N“®
-App_Auto_Http=true
+chatIndex=-2093689454
+
+#Width of Canvas
+Client_Image_Width=1200
+
+#Chat URL
+chatUrl=
+
+#Server Cache Text
+Server_Cash_Text=true
+
+#CGI Address
+App_Cgi=
+
+#Homepage Name
+homepageName=
+
+#Show HTML
+ao_show_html=false
+
+#PaintChat Connection Port
+Connection_Port_PaintChat=9000
+
+#Height of Canvas
+Client_Image_Height=900
+
+#Web Port
+Connection_Port_Http=9001
+
+#Global Address Connection
+Connection_GrobalAddress=true
+
+#Server Log Text
+Server_Log_Text=true
 

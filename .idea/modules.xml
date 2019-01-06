@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/mod_paintchat/mod_paintchat.iml" filepath="$PROJECT_DIR$/mod_paintchat/mod_paintchat.iml" />
       <module fileurl="file://$PROJECT_DIR$/mod_pchviewer1/mod_pchviewer1.iml" filepath="$PROJECT_DIR$/mod_pchviewer1/mod_pchviewer1.iml" />
       <module fileurl="file://$PROJECT_DIR$/mod_pchviewer2/mod_pchviewer2.iml" filepath="$PROJECT_DIR$/mod_pchviewer2/mod_pchviewer2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mod_server/mod_server.iml" filepath="$PROJECT_DIR$/mod_server/mod_server.iml" />
       <module fileurl="file://$PROJECT_DIR$/mod_shipainter/mod_shipainter.iml" filepath="$PROJECT_DIR$/mod_shipainter/mod_shipainter.iml" />
       <module fileurl="file://$PROJECT_DIR$/testmodule/testmodule.iml" filepath="$PROJECT_DIR$/testmodule/testmodule.iml" />
     </modules>
