@@ -147,7 +147,7 @@ public class PCHViewer extends Applet implements Runnable {
          var2.setBackground(this.clBack);
          var2.setForeground(this.clFore);
          this.table.put(var1, var2);
-         var3 = new Frame("(C)しぃちゃん PCHViewer v1.02");
+         var3 = new Frame(STR_VERSION);
          var3.addWindowListener(var2);
          var3.setLayout(new BorderLayout());
          var3.setBackground(this.clBack);
@@ -524,7 +524,7 @@ public class PCHViewer extends Applet implements Runnable {
                this.tLoad.setDaemon(true);
                this.tLoad.setPriority(1);
                this.tLoad.start();
-               this.showStatus("(C)しぃちゃん PCHViewer v1.02");
+               this.showStatus(STR_VERSION);
                MgLine.setup(this, 2);
                String var2 = this.p("pch_file", "");
                if (var2.length() > 0) {

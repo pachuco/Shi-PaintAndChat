@@ -18,6 +18,8 @@ import java.util.Vector;
 import paintchat.Res;
 import syi.util.ByteStream;
 
+
+
 public class PCHViewer extends Applet implements Runnable {
    private volatile boolean isStart = false;
    private boolean live = true;
@@ -156,7 +158,7 @@ public class PCHViewer extends Applet implements Runnable {
          var2.setForeground(this.clFore);
          var3.add(var2);
          this.table.put(var1, var2);
-         Frame var4 = new Frame("(C)しぃちゃん PCHViewer v3.00");
+         Frame var4 = new Frame(STR_VERSION);
          var4.addWindowListener(var2);
          var4.setLayout(new BorderLayout());
          var4.setBackground(this.clBack);
@@ -553,7 +555,7 @@ public class PCHViewer extends Applet implements Runnable {
                this.tLoad.setDaemon(true);
                this.tLoad.setPriority(1);
                this.tLoad.start();
-               this.showStatus("(C)しぃちゃん PCHViewer v3.00");
+               this.showStatus(STR_VERSION);
                String var2 = this.p("pch_file", "");
                if (var2.length() > 0) {
                   this.loadPCH(var2);

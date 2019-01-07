@@ -191,7 +191,7 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
          this.back.setColor(new Color(13421823));
          this.back.fillRect(0, 0, this.imW, this.imH);
          this.back.setColor(new Color(5263480));
-         this.back.drawString("(C)しぃちゃん PCHCanvas v1.02", 5, 32);
+         this.back.drawString(STR_VERSION, 5, 32);
          this.back.drawString(var1, 5, 64);
          this.repaint();
       } catch (Throwable var3) {
