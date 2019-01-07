@@ -71,17 +71,16 @@ public class P extends Panel implements IMi {
     private static int LF;
     private OutputStream O;
 
-    public P(ShiPainter var1) {
+    public P(ShiPainter app) {
         super((LayoutManager) null);
-        this.app = var1;
+        this.app = app;
     }
 
-    private void ani(OutputStream out, Deflater deflater, ByteStream var3, ByteStream var4, int var5) throws Throwable {
+    /** Saves the animation data */
+    private void ani(OutputStream out, Deflater deflater, ByteStream undoMg0, ByteStream undoMg1, int quality) throws Throwable {
         this.O = out;
         M.Info var6 = this.mi.info;
-        String var7 = "layer_";
-        String var8 = var7 + "count";
-        this.wS(var8);
+        this.wS("layer_count");
         out.write(61);
         this.wS(String.valueOf(LF));
         this.wN();
@@ -95,28 +94,28 @@ public class P extends Panel implements IMi {
         this.wS(String.valueOf(aniCount));
         this.wN();
         this.wS("quality=");
-        this.wS(String.valueOf(var5));
+        this.wS(String.valueOf(quality));
         this.wN();
         this.wS("version=2\r\n");
         this.wN();
-        int var9 = ani.size();
-        int var10 = 0;
+        int animLength = ani.size();
+        int offset = 0;
 
-        int var11;
-        for (byte[] var13 = var3.getBuffer(); var10 < var9; var10 += var11) {
-            var11 = Math.min(var9 - var10, 65000);
+        int saveLength;
+        for (byte[] buffer = undoMg0.getBuffer(); offset < animLength; offset += saveLength) {
+            saveLength = Math.min(animLength - offset, 65000);
             deflater.reset();
-            deflater.setInput(ani.getBuffer(), var10, var11);
+            deflater.setInput(ani.getBuffer(), offset, saveLength);
             deflater.finish();
-            var4.reset();
+            undoMg1.reset();
 
             while (!deflater.finished()) {
-                int var12 = deflater.deflate(var13, 0, var13.length);
-                var4.write(var13, 0, var12);
+                int compressedDataLength = deflater.deflate(buffer, 0, buffer.length);
+                undoMg1.write(buffer, 0, compressedDataLength);
             }
 
-            this.w2(var4.size());
-            var4.writeTo(out);
+            this.w2(undoMg1.size());
+            undoMg1.writeTo(out);
         }
 
     }
@@ -300,7 +299,7 @@ public class P extends Panel implements IMi {
         this.config = config;
         this.res = res;
         String var5 = "cursor_";
-        ShiPainter var6 = this.app;
+        ShiPainter app = this.app;
         this.ts = var3;
         this.isLeft = config.getP("isLeft", false);
         int imW = giveP(loadImW, config.getP("image_width", 300));
@@ -313,74 +312,74 @@ public class P extends Panel implements IMi {
 
         int i;
         for (i = 0; i < 4; ++i) {
-            curArr[i] = this.loadCursor(var6.getParameter(var5 + (i + 1)), var12[i]);
+            curArr[i] = this.loadCursor(app.getParameter(var5 + (i + 1)), var12[i]);
         }
 
         this.mi = new Mi(this, res);
-        this.mi.init(var6, config, imW, imH, qual, layNum, curArr);
+        this.mi.init(app, config, imW, imH, qual, layNum, curArr);
 
         try {
             String var13 = giveP(loadMode, config.getP("tools", "normal"));
             this.tool = (ToolBox) Class.forName("paintchat." + var13 + ".Tools").newInstance();
-            this.tool.init(this, var6, config, res, this.mi);
+            this.tool.init(this, app, config, res, this.mi);
         } catch (Throwable var24) {
             var24.printStackTrace();
         }
 
         this.mi.tBox = this.tool;
         this.add(this.mi);
-        M.Info var25 = this.mi.info;
-        M.User var14 = this.user = this.mi.user;
-        var6.mPermission(config.getP("permission", "layer_edit:t;fill:t;clean:t;layer:all;"));
+        M.Info info = this.mi.info;
+        M.User user = this.user = this.mi.user;
+        app.mPermission(config.getP("permission", "layer_edit:t;fill:t;clean:t;layer:all;"));
         String var15 = config.getP("mg_init");
         if (var15 != null && var15.length() > 0) {
-            var25.m.set(var15);
+            info.m.set(var15);
         }
 
-        this.m = new M(var25, var14);
-        int var16;
-        if (!app.d_isDesktop() && undoLO != null && Ts.confirm("Restore")) {
-            var25.setLayers(sLO);
-            var25.W = sLO[0].W;
-            var25.H = sLO[0].H;
-            var25.setSize(imW, imH, qual);
+        this.m = new M(info, user);
+
+        if (!this.app.d_isDesktop() && undoLO != null && Ts.confirm("Restore")) {
+            info.setLayers(sLO);
+            info.W = sLO[0].W;
+            info.H = sLO[0].H;
+            info.setSize(imW, imH, qual);
 
             for (i = 0; i < undoLO.length; ++i) {
-                for (var16 = 0; var16 < undoLO[i].length; ++var16) {
-                    undoLO[i][var16].setSize(var25.W, var25.H);
+                for (int j = 0; j < undoLO[i].length; ++j) {
+                    undoLO[i][j].setSize(info.W, info.H);
                 }
             }
         } else {
-            var14.wait = -2;
+            user.wait = -2;
             this.reset();
             LF = layNum;
             LO.iL = 0;
             this.setLName();
-            var16 = config.getP("undo", 24);
-            int var17 = Math.min(config.getP("undo_in_mg", 12), var16);
-            var16 = Math.max(var16 / var17, 2);
-            undoLO = new LO[var16][];
-            undoMgs = new ByteStream[var16];
+            int maxUndoSteps = config.getP("undo", 24);
+            int var17 = Math.min(config.getP("undo_in_mg", 12), maxUndoSteps);
+            maxUndoSteps = Math.max(maxUndoSteps / var17, 2);
+            undoLO = new LO[maxUndoSteps][];
+            undoMgs = new ByteStream[maxUndoSteps];
 
-            for (i = 0; i < var16; ++i) {
+            for (i = 0; i < maxUndoSteps; ++i) {
                 undoMgs[i] = new ByteStream();
             }
 
             maxGp = var17;
             maxAni = config.getP("animation_max", 0) * 1024 * 2;
-            String var18 = this.p("pch_file", null);
+            String pchFile = this.p("pch_file", null);
             String canvasLoc = giveP(loadPath, this.p("image_canvas", null));
             if (canvasLoc != null) {
                 String lExt = canvasLoc.toLowerCase();
                 if (lExt.endsWith(".pch") || lExt.endsWith(".spch")) {
-                    var18 = canvasLoc;
+                    pchFile = canvasLoc;
                     canvasLoc = null;
                 }
             }
 
             sTime = System.currentTimeMillis();
             if (canvasLoc != null) {
-                Image var20 = var6.getImage(var6.getCodeBase(), canvasLoc);
+                Image var20 = app.getImage(app.getCodeBase(), canvasLoc);
                 Awt.wait(var20);
                 int var21 = var20.getWidth((ImageObserver) null);
                 int var22 = var20.getHeight((ImageObserver) null);
@@ -394,22 +393,22 @@ public class P extends Panel implements IMi {
 
                 int[] var28 = Awt.getPix(var20);
                 var20.flush();
-                var25.layers[0].toCopy(var21, var22, var28, 0, 0);
-                this.setL(imW, imH, var25.L);
-                this.copyLO(var25.layers, undoLO[0]);
+                info.layers[0].toCopy(var21, var22, var28, 0, 0);
+                this.setL(imW, imH, info.L);
+                this.copyLO(info.layers, undoLO[0]);
             }
 
-            if (var18 != null) {
-                this.r(var18);
+            if (pchFile != null) {
+                this.r(pchFile);
             }
 
-            this.setL(imW, imH, var25.L);
-            var14.wait = 0;
+            this.setL(imW, imH, info.L);
+            user.wait = 0;
             int var26 = 0;
 
             while ((var15 = config.getP("mg_" + var26)) != null && var15.length() > 0) {
                 ++var26;
-                M var27 = new M(var25, var14);
+                M var27 = new M(info, user);
                 var27.set(var15);
                 var27.draw();
                 this.send(var27);
@@ -580,7 +579,7 @@ public class P extends Panel implements IMi {
 
     }
 
-    private String post(URL var1, ByteStream var2, ByteStream var3, Label var4, boolean var5) throws Throwable {
+    private String post(URL var1, ByteStream var2, ByteStream var3, Label var4, boolean useAdvancedPOST) throws Throwable {
         String var7 = this.getCode();
         char var8 = '2';
         Socket var10 = null;
@@ -590,7 +589,7 @@ public class P extends Panel implements IMi {
         String var14 = "KB/ All data size=" + var12 / 1024 + "KB";
         OutputStream var9;
         int var17;
-        if (var5) {
+        if (useAdvancedPOST) {
             var3.reset();
             this.O = var3;
             this.wS("POST ");
@@ -973,8 +972,8 @@ public class P extends Panel implements IMi {
             int var14 = info.imW;
             int var15 = info.imH;
             URL var16 = new URL(this.app.getCodeBase(), this.p("url_save", "getpic.cgi"));
-            boolean var17 = this.p("poo", false);
-            boolean var18 = this.p("send_advance", true);
+            boolean usePooFormat = this.p("poo", false); // alternate POST format, check original readme for details
+            boolean useAdvancedPOST = this.p("send_advance", true);
             boolean isJpeg = this.p("image_jpeg", false);
             int var20 = this.p("compress_level", 10);
             int var21 = this.p("thumbnail_compress_level", 20);
@@ -1023,7 +1022,7 @@ public class P extends Panel implements IMi {
             var22 = var7.size();
             var6.reset();
             this.O = var6;
-            if (!var17) {
+            if (!usePooFormat) {
                 this.wS(this.p("header_magic", "S"));
                 byte[] var29 = this.getHeader(var11);
                 this.l(var29.length);
@@ -1069,15 +1068,15 @@ public class P extends Panel implements IMi {
             var26 = (int[]) null;
             var9 = null;
             var10 = null;
-            if (var18) {
+            if (useAdvancedPOST) {
                 try {
                     var3 = this.post(var16, var6, var7, var25, true);
                 } catch (Throwable var30) {
-                    var18 = false;
+                    useAdvancedPOST = false;
                 }
             }
 
-            if (!var18) {
+            if (!useAdvancedPOST) {
                 var3 = this.post(var16, var6, var7, var25, false);
             }
         } catch (Throwable var31) {

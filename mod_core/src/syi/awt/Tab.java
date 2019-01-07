@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.lang.reflect.Method;
 
 import paintchat.M;
+import static paintchat.M.*;
 
 public class Tab extends LComponent {
     private M mg;
@@ -73,7 +74,7 @@ public class Tab extends LComponent {
         int var2 = this.iDrag;
         if (var2 > 0 && var2 != 3) {
             boolean var3 = var2 >= 3;
-            if ((this.iSOB & 1 << (!var3 ? 0 : 1)) != 0) {
+            if ((this.iSOB & M.F1_ALL_LAYERS << (!var3 ? 0 : 1)) != 0) {
                 var1 = (int) (255.0F / (float) this.getSize().width * (float) var1);
                 var1 = var1 <= 0 ? 0 : (var1 >= 255 ? 255 : var1);
                 int var4;
@@ -92,25 +93,21 @@ public class Tab extends LComponent {
         }
     }
 
-    public void paint2(Graphics var1) {
+    public void paint2(Graphics g) {
         try {
-            int var2 = this.sizeBar;
-            Dimension var3 = this.getSize();
-            int var10000 = this.mg.iSS;
-            int var5 = var3.width - 1;
-            int var6 = var5 - 6;
-            int var7 = var2 * 3 + 4;
-            float var11 = (float) var6 / 255.0F;
+            int sizeBar = this.sizeBar;
+            Dimension dim = this.getSize();
+            int x2 = dim.width - 1;
+            int y2 = sizeBar * 3 + 4;
 
-            for (int var4 = 0; var4 < 2; ++var4) {
-                boolean var9 = (this.iSOB & var4 + 1) != 0;
-                int var8 = var7 * var4;
-                Awt.fillFrame(var1, !var9, 0, var8, var5, var7);
-                Awt.fillFrame(var1, var9, 0, var8, var2, var2);
-                var1.setColor(this.getForeground());
-                var1.drawString(this.STR[var4] + '.' + (var9 ? "On" : "Off"), var2 + 2, var8 + var2 - 2);
-                this.dBar(var1, var4);
-                var10000 = this.mg.iSA;
+            for (int i = 0; i < 2; ++i) {
+                boolean var9 = (this.iSOB & i + 1) != 0;
+                int y = y2 * i;
+                Awt.fillFrame(g, !var9, 0, y, x2, y2);
+                Awt.fillFrame(g, var9, 0, y, sizeBar, sizeBar);
+                g.setColor(this.getForeground());
+                g.drawString(this.STR[i] + '.' + (var9 ? "On" : "Off"), sizeBar + 2, y + sizeBar - 2);
+                this.dBar(g, i);
             }
         } catch (Throwable var10) {
             var10.printStackTrace();
@@ -128,7 +125,7 @@ public class Tab extends LComponent {
                     int var5 = this.at(var3);
                     this.iDrag = var5;
                     if ((var5 == 0 || var5 == 3) && var2 <= var4) {
-                        this.iSOB = (byte) (this.iSOB ^ 1 << (var5 == 0 ? 0 : 1));
+                        this.iSOB = (byte) (this.iSOB ^ M.F1_ALL_LAYERS << (var5 == 0 ? 0 : 1));
                         this.repaint();
                     } else {
                         this.drag(var2);

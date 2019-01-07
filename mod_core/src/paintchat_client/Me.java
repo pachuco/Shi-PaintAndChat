@@ -19,6 +19,7 @@ import static java.awt.event.ComponentEvent.*;
 import paintchat.Res;
 import syi.awt.Awt;
 
+/** Dialog for prompts, modals, alerts */
 public class Me extends Dialog implements ActionListener {
     private static boolean isD = false;
     public static Res res;
@@ -137,7 +138,7 @@ public class Me extends Dialog implements ActionListener {
     }
 
     protected void processWindowEvent(WindowEvent var1) {
-        if (var1.getID() == 201) {
+        if (var1.getID() == WindowEvent.WINDOW_CLOSING) {
             var1.getWindow().dispose();
         }
 
@@ -159,9 +160,9 @@ public class Me extends Dialog implements ActionListener {
         return res == null ? var0 : res.res(var0);
     }
 
-    private void setConfirm(boolean var1) {
+    private void setConfirm(boolean canCancel) {
         int var2 = this.pBotton.getComponentCount();
-        if (var1) {
+        if (canCancel) {
             if (var2 <= 1) {
                 this.pBotton.add(this.bNo);
             }
