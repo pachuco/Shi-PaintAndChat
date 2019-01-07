@@ -16,7 +16,7 @@ public class PCHPanel extends Panel {
 
     protected void processComponentEvent(ComponentEvent var1) {
         switch (var1.getID()) {
-            case 101:
+            case COMPONENT_RESIZED:
                 this.setVisible(false);
                 ((PCHCanvas) this.getComponent(0)).moveCenter();
                 this.setVisible(true);

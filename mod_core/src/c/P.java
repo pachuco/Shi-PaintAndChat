@@ -713,7 +713,7 @@ public class P extends Panel implements IMi {
                 return;
             }
 
-            if (var2 == 101) {
+            if (var2 == COMPONENT_RESIZED) {
                 Dimension var3 = this.getSize();
                 var3.setSize(super.getSize());
                 if (!var3.equals(this.dPack)) {

@@ -12,6 +12,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Hashtable;
 
+import static java.awt.event.WindowEvent.*;
 import static java.awt.event.ComponentEvent.*;
 
 import paintchat.Config;
@@ -111,14 +112,14 @@ public class AppletWatcher extends Frame {
             int var2 = var1.getID();
             Window var3 = var1.getWindow();
             switch (var2) {
-                case 200:
+                case WINDOW_OPENED:
                     this.applet.start();
                     break;
-                case 201:
+                case WINDOW_CLOSING:
                     var3.dispose();
                     this.applet.stop();
                     break;
-                case 202:
+                case WINDOW_CLOSED:
                     this.applet.destroy();
                     this.applet = null;
                     if (this.bool_exit) {

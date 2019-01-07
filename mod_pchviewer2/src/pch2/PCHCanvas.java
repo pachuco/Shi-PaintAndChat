@@ -505,7 +505,7 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
 
     protected void processComponentEvent(ComponentEvent var1) {
         try {
-            if (var1.getID() == 102 || var1.getID() == 101) {
+            if (var1.getID() == COMPONENT_SHOWN || var1.getID() == COMPONENT_RESIZED) {
                 this.updateInfo();
             }
         } catch (Throwable var3) {

@@ -15,6 +15,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 
 import static java.awt.event.ComponentEvent.*;
+import static java.awt.event.MouseEvent.*;
 
 public class LTextField extends Component {
     private String Title;
@@ -133,12 +134,12 @@ public class LTextField extends Component {
             if (var1 instanceof MouseEvent) {
                 MouseEvent var3 = (MouseEvent) var1;
                 var3.consume();
-                if (this.edit && var2 == 501) {
+                if (this.edit && var2 == MOUSE_PRESSED) {
                     this.isPress = true;
                     this.repaint();
                 }
 
-                if (this.edit && var2 == 502) {
+                if (this.edit && var2 == MOUSE_RELEASED) {
                     var3.consume();
                     this.repaint();
                     this.isPress = false;

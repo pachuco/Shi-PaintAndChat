@@ -25,6 +25,7 @@ import paintchat.ToolBox;
 import syi.awt.Awt;
 import syi.awt.LComponent;
 
+import static java.awt.event.ComponentEvent.*;
 import static java.awt.event.KeyEvent.*;
 import static java.awt.event.MouseEvent.*;
 
@@ -1022,7 +1023,7 @@ public class Mi extends LComponent implements ActionListener {
                 keyEvent.consume();
                 label56:
                 switch (eventId) {
-                    case 401: // ADJUSTMENT_EVENT_MASK | ACTION_EVENT_MASK | MOUSE_EVENT_MASK | COMPONENT_EVENT_MASK
+                    case KEY_PRESSED:
                         switch (keyEvent.getKeyCode()) {
                             case 9:
                                 this.isVTool = !this.isVTool;
@@ -1073,7 +1074,7 @@ public class Mi extends LComponent implements ActionListener {
                             default:
                                 break label56;
                         }
-                    case 402: // ADJUSTMENT_EVENT_MASK | ACTION_EVENT_MASK | MOUSE_EVENT_MASK | CONTAINER_EVENT_MASK
+                    case KEY_RELEASED:
                         switch (keyEvent.getKeyCode()) {
                             case VK_SPACE:
                                 this.isSpace = false;
@@ -1081,8 +1082,8 @@ public class Mi extends LComponent implements ActionListener {
                 }
             } else if (super.isGUI) {
                 switch (eventId) {
-                    case 101: // WINDOW_EVENT_MASK | MOUSE_MOTION_EVENT_MASK | FOCUS_EVENT_MASK | COMPONENT_EVENT_MASK
-                    case 102: // WINDOW_EVENT_MASK | MOUSE_MOTION_EVENT_MASK | FOCUS_EVENT_MASK | CONTAINER_EVENT_MASK
+                    case COMPONENT_RESIZED:
+                    case COMPONENT_SHOWN:
                         this.resetGraphics();
                         this.repaint();
                 }

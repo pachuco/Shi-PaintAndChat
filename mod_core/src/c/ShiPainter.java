@@ -107,7 +107,7 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
     protected void processEvent(AWTEvent evt) {
         try {
             int id = evt.getID();
-            if (id == 101 && this.ts != null) { // 101 = COMPONENT_EVENT_MASK | FOCUS_EVENT_MASK | MOUSE_MOTION_EVENT_MASK | WINDOW_EVENT_MASK
+            if (id == COMPONENT_RESIZED && this.ts != null) {
                 this.ts.pack();
             }
         } catch (Throwable var3) {

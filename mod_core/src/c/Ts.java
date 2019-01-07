@@ -18,6 +18,8 @@ import java.awt.event.MouseEvent;
 import java.util.Locale;
 
 import static java.awt.event.ComponentEvent.*;
+import static java.awt.event.WindowEvent.*;
+import static java.awt.event.MouseEvent.*;
 
 import paintchat.M;
 import paintchat.Res;
@@ -25,7 +27,6 @@ import paintchat_client.Me;
 import syi.awt.Awt;
 import syi.awt.LComponent;
 
-import static java.awt.event.MouseEvent.*;
 
 class Ts extends LComponent {
     private static String SV = "1.114";
@@ -81,10 +82,10 @@ class Ts extends LComponent {
 
     private void ev(AWTEvent evt) {
         switch (evt.getID()) {
-            case 101: // WINDOW_EVENT_MASK | MOUSE_MOTION_EVENT_MASK | FOCUS_EVENT_MASK | COMPONENT_EVENT_MASK
+            case COMPONENT_RESIZED:
                 this.pack();
                 break;
-            case 201: // ACTION_EVENT_MASK | WINDOW_EVENT_MASK | KEY_EVENT_MASK | COMPONENT_EVENT_MASK
+            case WINDOW_CLOSING:
                 if (this.getV(2)) {
                     this.w(true);
                 }

@@ -24,6 +24,7 @@ import java.awt.image.ImageObserver;
 import java.io.BufferedReader;
 import java.io.StringReader;
 
+import static java.awt.event.ComponentEvent.*;
 import static java.awt.event.MouseEvent.*;
 
 import paintchat.LO;
@@ -780,7 +781,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
 
     protected void processEvent(AWTEvent var1) {
         switch (var1.getID()) {
-            case 100:
+            case COMPONENT_MOVED:
                 int var2 = this.getLocation().x;
                 int var3 = this.getParent().getSize().width / 2 - this.getSize().width / 2;
                 if (var2 < var3 && !this.isWest) {
@@ -791,8 +792,8 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
                     this.pack();
                 }
                 break;
-            case 101:
-            case 102:
+            case COMPONENT_RESIZED:
+            case COMPONENT_SHOWN:
                 if (this.primary != null) {
                     this.primary.dispose();
                     this.primary = null;

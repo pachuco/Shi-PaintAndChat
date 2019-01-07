@@ -448,7 +448,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
 
     protected void processEvent(AWTEvent var1) {
         int var2 = var1.getID();
-        if (var2 == 101) {
+        if (var2 == COMPONENT_RESIZED) {
             this.dSize = super.getSize();
             Dimension var3 = this.getSize();
             this.setSize(var3.getSize());

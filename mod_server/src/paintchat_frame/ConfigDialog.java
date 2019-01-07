@@ -7,6 +7,7 @@ import java.awt.Dialog;
 import java.awt.Window;
 import java.awt.event.WindowEvent;
 
+import static java.awt.event.WindowEvent.*;
 import static java.awt.event.ComponentEvent.*;
 
 import paintchat.Config;
@@ -35,20 +36,20 @@ public class ConfigDialog extends Dialog {
     protected void processWindowEvent(WindowEvent var1) {
         Window var2;
         switch (var1.getID()) {
-            case 200:
+            case WINDOW_OPENED:
             default:
                 break;
-            case 201:
+            case WINDOW_CLOSING:
                 this.applet.stop();
                 var2 = var1.getWindow();
                 var2.dispose();
                 var2.removeAll();
                 break;
-            case 202:
+            case WINDOW_CLOSED:
                 this.applet.destroy();
         }
 
-        if (var1.getID() == 201) {
+        if (var1.getID() == WINDOW_CLOSING) {
             var2 = var1.getWindow();
             var2.dispose();
             var2.removeAll();
