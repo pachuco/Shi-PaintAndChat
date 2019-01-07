@@ -15,6 +15,8 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.Hashtable;
 
+import static java.awt.event.ComponentEvent.*;
+
 public class MessageBox extends Dialog implements ActionListener {
     private static MessageBox message = null;
     public boolean bool = false;
@@ -31,7 +33,7 @@ public class MessageBox extends Dialog implements ActionListener {
         super(var1);
         this.setForeground(var1.getForeground());
         this.setBackground(var1.getBackground());
-        super.enableEvents(64L);
+        super.enableEvents(WINDOW_EVENT_MASK);
         this.setLayout(new BorderLayout());
         this.setModal(true);
         this.setResizable(false);

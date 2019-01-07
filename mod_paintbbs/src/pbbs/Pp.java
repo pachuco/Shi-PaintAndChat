@@ -24,6 +24,8 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Vector;
 
+import static java.awt.event.ComponentEvent.*;
+
 import paintchat.MgLine;
 import syi.util.ByteStream;
 
@@ -581,7 +583,7 @@ public class Pp extends Panel {
         }
 
         this.up_rect();
-        this.enableEvents(57L);
+        this.enableEvents(COMPONENT_EVENT_MASK | KEY_EVENT_MASK | MOUSE_EVENT_MASK | MOUSE_MOTION_EVENT_MASK);
         if (count_timer == 0L) {
             count_timer = System.currentTimeMillis();
         }

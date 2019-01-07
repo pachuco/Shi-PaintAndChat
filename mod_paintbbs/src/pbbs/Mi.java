@@ -20,6 +20,8 @@ import java.awt.image.DirectColorModel;
 import java.awt.image.ImageObserver;
 import java.awt.image.MemoryImageSource;
 
+import static java.awt.event.ComponentEvent.*;
+
 import paintchat.MgLine;
 
 public class Mi extends Canvas implements WindowListener, ActionListener {
@@ -251,7 +253,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
     }
 
     public void init(PaintBBS var1, Pp var2, Tools var3) {
-        this.enableEvents(56L);
+        this.enableEvents(KEY_EVENT_MASK | MOUSE_EVENT_MASK | MOUSE_MOTION_EVENT_MASK);
         this.tools = var3;
         this.pbbs = var1;
         this.pP = var2;

@@ -11,6 +11,8 @@ import java.io.*;
 import java.net.URL;
 import java.util.Locale;
 
+import static java.awt.event.ComponentEvent.*;
+
 import paintchat.M;
 import paintchat.Res;
 import paintchat.ToolBox;
@@ -192,7 +194,7 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
             var10.printStackTrace();
         }
 
-        this.enableEvents(9L);
+        this.enableEvents(COMPONENT_EVENT_MASK | KEY_EVENT_MASK);
         this.add(this.ts);
         this.add(this.p);
         p.loadImW = width;

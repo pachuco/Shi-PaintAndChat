@@ -28,6 +28,8 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.zip.Inflater;
 
+import static java.awt.event.ComponentEvent.*;
+
 import paintchat.LO;
 import paintchat.M;
 import paintchat.Mg;
@@ -71,7 +73,7 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
     private Point pressPo = null;
 
     public PCHCanvas(Applet var1, Object var2, boolean var3, Res var4) {
-        this.enableEvents(49L);
+        this.enableEvents(COMPONENT_EVENT_MASK | MOUSE_EVENT_MASK | MOUSE_MOTION_EVENT_MASK);
         this.setCursor(Cursor.getPredefinedCursor(12));
         this.cf = new Res(var1, var2, new ByteStream());
         Enumeration var6 = var4.keys();

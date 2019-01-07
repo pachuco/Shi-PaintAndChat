@@ -13,6 +13,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.ImageObserver;
 
+import static java.awt.event.ComponentEvent.*;
 import static java.awt.event.MouseEvent.*;
 
 public class PCHProgress extends Canvas {
@@ -46,7 +47,7 @@ public class PCHProgress extends Canvas {
     private static String[] JA_SPEED = {"最", "早", "既", "鈍"};
 
     public PCHProgress(boolean isBuffer) {
-        this.enableEvents(COMPONENT_EVENT_MASK | MOUSE_EVENT_MASK | MOUSE_MOTION_EVENT_MASK); //49L
+        this.enableEvents(COMPONENT_EVENT_MASK | MOUSE_EVENT_MASK | MOUSE_MOTION_EVENT_MASK);
         this.isBuffer = isBuffer;
     }
 
@@ -169,13 +170,13 @@ public class PCHProgress extends Canvas {
                 case I_RESTART: {
                     points1 = new int[]{rect.x + 8, rect.x + 2, rect.x + 8};
                     points2 = new int[]{points1[0] + 8, points1[1] + 8, points1[2] + 8};
-                    int[] var15 = new int[]{rect.y + 4, rect.y + 10, rect.y + 16};
+                    int[] points3 = new int[]{rect.y + 4, rect.y + 10, rect.y + 16};
                     g.setColor(this.clFore);
-                    g.fillPolygon(points1, var15, points1.length);
-                    g.fillPolygon(points2, var15, points1.length);
+                    g.fillPolygon(points1, points3, points1.length);
+                    g.fillPolygon(points2, points3, points1.length);
                     g.setColor(this.clFore.brighter());
-                    g.drawPolygon(points1, var15, points1.length);
-                    g.drawPolygon(points2, var15, points1.length);
+                    g.drawPolygon(points1, points3, points1.length);
+                    g.drawPolygon(points2, points3, points1.length);
                 } break;
                 case I_SPEED: {
                     String[] arrSpeedStr = isJa ? JA_SPEED : EN_SPEED;
@@ -218,8 +219,8 @@ public class PCHProgress extends Canvas {
     }
 
     public Dimension getPreferredSize() {
-        Container var1 = this.getParent();
-        return var1 == null ? this.getMinimumSize() : new Dimension(var1.getSize().width, I_SIZE_PRE);
+        Container parent = this.getParent();
+        return parent == null ? this.getMinimumSize() : new Dimension(parent.getSize().width, I_SIZE_PRE);
     }
 
     private Graphics getPrimary() {

@@ -12,6 +12,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Hashtable;
 
+import static java.awt.event.ComponentEvent.*;
+
 import paintchat.Config;
 import syi.awt.Awt;
 import syi.awt.Gui;
@@ -23,7 +25,7 @@ public class AppletWatcher extends Frame {
 
     public AppletWatcher(String var1, String var2, Config var3, Hashtable var4, boolean var5) throws ClassNotFoundException, Exception, IOException {
         super(var2);
-        this.enableEvents(64L);
+        this.enableEvents(WINDOW_EVENT_MASK);
         this.bool_exit = var5;
         this.setLayout(new BorderLayout());
         this.applet = (Applet) Class.forName(var1).newInstance();

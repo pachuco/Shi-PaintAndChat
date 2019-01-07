@@ -41,7 +41,7 @@ public class LButton extends Canvas {
         this.textWidth = -1;
         this.isPress = false;
         this.dkBackColor = Color.darkGray;
-        this.enableEvents(17L);
+        this.enableEvents(COMPONENT_EVENT_MASK | MOUSE_EVENT_MASK);
         this.setBackground(new Color(13619151));
         this.setText(var1);
     }

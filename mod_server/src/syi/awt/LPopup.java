@@ -8,6 +8,8 @@ import java.awt.Graphics;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
+import static java.awt.event.ComponentEvent.*;
+
 public class LPopup extends Component {
     private String[] strs = null;
     private int seek = 0;
@@ -15,7 +17,7 @@ public class LPopup extends Component {
     private int minWidth = 10;
 
     public LPopup() {
-        this.enableEvents(48L);
+        this.enableEvents(MOUSE_EVENT_MASK | MOUSE_MOTION_EVENT_MASK);
         this.setVisible(false);
     }
 

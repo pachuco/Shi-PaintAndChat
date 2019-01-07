@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.zip.GZIPInputStream;
 
+import static java.awt.event.ComponentEvent.*;
+
 import paintchat.MgLine;
 
 public class PCHCanvas extends Canvas implements Runnable, WindowListener {
@@ -64,7 +66,7 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
     private Point oldPo = null;
 
     public PCHCanvas(Applet var1, boolean var2) {
-        this.enableEvents(49L);
+        this.enableEvents(COMPONENT_EVENT_MASK | MOUSE_EVENT_MASK | MOUSE_MOTION_EVENT_MASK);
         this.setCursor(Cursor.getPredefinedCursor(12));
         this.applet = var1;
     }

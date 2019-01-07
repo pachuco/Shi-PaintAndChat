@@ -14,6 +14,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 
+import static java.awt.event.ComponentEvent.*;
+
 import paintchat.Res;
 import syi.awt.Awt;
 
@@ -30,7 +32,7 @@ public class Me extends Dialog implements ActionListener {
 
     public Me() {
         super(Awt.getPFrame());
-        this.enableEvents(64L);
+        this.enableEvents(WINDOW_EVENT_MASK);
         this.setModal(true);
         this.setLayout(new BorderLayout(5, 5));
         String var1 = "yes";

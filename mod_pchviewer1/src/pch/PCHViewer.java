@@ -14,6 +14,8 @@ import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Vector;
 
+import static java.awt.event.ComponentEvent.*;
+
 import paintchat.MgLine;
 
 public class PCHViewer extends Applet implements Runnable {
@@ -208,7 +210,7 @@ public class PCHViewer extends Applet implements Runnable {
 
     public void init() {
         try {
-            this.enableEvents(16L);
+            this.enableEvents(MOUSE_EVENT_MASK);
             isJa = Locale.getDefault().getLanguage().equalsIgnoreCase("ja");
             isJa = this.p("ja", isJa);
             PCHProgress.isJa = isJa;

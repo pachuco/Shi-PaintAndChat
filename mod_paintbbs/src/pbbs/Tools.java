@@ -31,6 +31,8 @@ import java.awt.image.ImageObserver;
 import java.io.BufferedReader;
 import java.io.StringReader;
 
+import static java.awt.event.ComponentEvent.*;
+
 import paintchat.MgLine;
 
 // moved from package paintchat_client because it didn't look like it belonged
@@ -98,7 +100,7 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
     public Dimension D_TOOL;
 
     public Tools(Applet var1, Component var2, String var3, int var4, boolean var5, boolean var6) {
-        this.enableEvents(56L);
+        this.enableEvents(KEY_EVENT_MASK | MOUSE_EVENT_MASK | MOUSE_MOTION_EVENT_MASK);
         this.setBackground(var1.getBackground());
         this.app = var1;
         this.mi = var2;

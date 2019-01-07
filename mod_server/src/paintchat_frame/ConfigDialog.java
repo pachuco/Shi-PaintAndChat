@@ -7,6 +7,8 @@ import java.awt.Dialog;
 import java.awt.Window;
 import java.awt.event.WindowEvent;
 
+import static java.awt.event.ComponentEvent.*;
+
 import paintchat.Config;
 import paintchat.Res;
 import syi.applet.ServerStub;
@@ -20,7 +22,7 @@ public class ConfigDialog extends Dialog {
         this.setModal(true);
         this.applet = (Applet) Class.forName(var1).newInstance();
         this.applet.setStub(ServerStub.getDefaultStub(var3, var4));
-        this.enableEvents(64L);
+        this.enableEvents(WINDOW_EVENT_MASK);
         this.setLayout(new BorderLayout());
         this.add((Component) this.applet, (Object) "Center");
         this.applet.init();

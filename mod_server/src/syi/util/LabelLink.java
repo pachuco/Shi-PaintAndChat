@@ -7,6 +7,8 @@ import java.awt.Label;
 import java.awt.event.MouseEvent;
 import java.net.URL;
 
+import static java.awt.event.ComponentEvent.*;
+
 public class LabelLink extends Label {
     private String strLink = null;
     private boolean isMouse = false;
@@ -28,7 +30,7 @@ public class LabelLink extends Label {
     private void init() {
         if (!this.isMouse) {
             this.isMouse = true;
-            this.enableEvents(48L);
+            this.enableEvents(MOUSE_EVENT_MASK | MOUSE_MOTION_EVENT_MASK);
             this.clBack = this.getForeground();
         }
     }

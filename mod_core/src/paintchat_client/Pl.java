@@ -30,6 +30,8 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static java.awt.event.ComponentEvent.*;
+
 import paintchat.M;
 import paintchat.MgText;
 import paintchat.Res;
@@ -552,7 +554,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
 
             this.mkTextPanel();
             this.tField.addKeyListener(this);
-            this.enableEvents(9L);
+            this.enableEvents(COMPONENT_EVENT_MASK | KEY_EVENT_MASK);
             this.isStart = true;
             this.add(this.tPanel);
             this.add(this.miPanel);

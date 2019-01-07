@@ -14,6 +14,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 
+import static java.awt.event.ComponentEvent.*;
+
 public class LTextField extends Component {
     private String Title;
     private String Text;
@@ -40,7 +42,7 @@ public class LTextField extends Component {
         this.isPress = false;
         this.size = null;
         this.actionListener = null;
-        this.enableEvents(17L);
+        this.enableEvents(COMPONENT_EVENT_MASK | MOUSE_EVENT_MASK);
         this.setBk(Color.white);
         this.setFr(new Color(5263480));
         this.setText(var1);

@@ -24,6 +24,8 @@ import java.util.Locale;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
+import static java.awt.event.ComponentEvent.*;
+
 import paintchat.LO;
 import paintchat.M;
 import paintchat.Res;
@@ -294,7 +296,7 @@ public class P extends Panel implements IMi {
     }
 
     public void init(Res config, Res res, Ts var3) throws Throwable {
-        this.enableEvents(49L);
+        this.enableEvents(COMPONENT_EVENT_MASK | MOUSE_EVENT_MASK | MOUSE_MOTION_EVENT_MASK);
         this.config = config;
         this.res = res;
         String var5 = "cursor_";

@@ -6,10 +6,12 @@ import java.awt.LayoutManager;
 import java.awt.Panel;
 import java.awt.event.ComponentEvent;
 
+import static java.awt.event.ComponentEvent.*;
+
 public class PCHPanel extends Panel {
     public PCHPanel() {
         super((LayoutManager) null);
-        this.enableEvents(1L);
+        this.enableEvents(COMPONENT_EVENT_MASK);
     }
 
     protected void processComponentEvent(ComponentEvent var1) {

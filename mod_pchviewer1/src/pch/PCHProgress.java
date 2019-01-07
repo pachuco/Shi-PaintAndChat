@@ -13,6 +13,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.ImageObserver;
 
+import static java.awt.event.ComponentEvent.*;
 import static java.awt.event.MouseEvent.*;
 
 public class PCHProgress extends Canvas {
@@ -45,9 +46,9 @@ public class PCHProgress extends Canvas {
     private static String[] EN_SPEED = {"Mx", "H", "M", "L"};
     private static String[] JA_SPEED = {"最", "早", "既", "鈍"};
 
-    public PCHProgress(boolean var1) {
-        this.enableEvents(COMPONENT_EVENT_MASK | MOUSE_EVENT_MASK | MOUSE_MOTION_EVENT_MASK); //49L
-        this.isBuffer = var1;
+    public PCHProgress(boolean isBuffer) {
+        this.enableEvents(COMPONENT_EVENT_MASK | MOUSE_EVENT_MASK | MOUSE_MOTION_EVENT_MASK);
+        this.isBuffer = isBuffer;
     }
 
     public void action(Point point) {
@@ -236,8 +237,8 @@ public class PCHProgress extends Canvas {
     }
 
     public Dimension getPreferredSize() {
-        Container cont = this.getParent();
-        return cont == null ? this.getMinimumSize() : new Dimension(cont.getSize().width, I_SIZE_PRE);
+        Container parent = this.getParent();
+        return parent == null ? this.getMinimumSize() : new Dimension(parent.getSize().width, I_SIZE_PRE);
     }
 
     private Graphics getPrimary() {
@@ -288,8 +289,8 @@ public class PCHProgress extends Canvas {
                 this.upRect();
                 this.iPaint(this.back);
             }
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }

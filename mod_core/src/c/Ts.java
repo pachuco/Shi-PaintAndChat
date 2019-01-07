@@ -17,6 +17,8 @@ import java.awt.Window;
 import java.awt.event.MouseEvent;
 import java.util.Locale;
 
+import static java.awt.event.ComponentEvent.*;
+
 import paintchat.M;
 import paintchat.Res;
 import paintchat_client.Me;
@@ -385,7 +387,7 @@ class Ts extends LComponent {
     private class W extends Dialog {
         W(String var2) {
             super(Awt.getPFrame(), var2, false);
-            this.enableEvents(65L);
+            this.enableEvents(COMPONENT_EVENT_MASK | WINDOW_EVENT_MASK);
         }
 
         protected void processEvent(AWTEvent var1) {
@@ -396,7 +398,7 @@ class Ts extends LComponent {
     private class WF extends Frame {
         WF(String var2) {
             super(var2);
-            this.enableEvents(65L);
+            this.enableEvents(COMPONENT_EVENT_MASK | WINDOW_EVENT_MASK);
         }
 
         protected void processEvent(AWTEvent var1) {

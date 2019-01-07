@@ -28,6 +28,8 @@ import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static java.awt.event.ComponentEvent.*;
+
 import paintchat.Res;
 import syi.javascript.JSController;
 
@@ -316,7 +318,7 @@ public class TextPanel extends Canvas implements ActionListener, ItemListener {
     }
 
     public void init(Applet var1, int var2, Color var3, Color var4, TextField var5) {
-        this.enableEvents(49L);
+        this.enableEvents(COMPONENT_EVENT_MASK | MOUSE_EVENT_MASK | MOUSE_MOTION_EVENT_MASK);
         this.textField = var5;
         this.applet = var1;
         this.setBackground(var3);
