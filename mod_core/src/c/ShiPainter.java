@@ -223,29 +223,30 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
         }
     }
 
+    // Implementation of Runnable
     public void run() {
         try {
             switch (Thread.currentThread().getName().charAt(0)) {
-                case 'i':
+                case 'i': // init - set to "i" by Ts.run()
                     this.rInit();
                     if(p.p("fullscreen", false)) fs.fullToggle(true);
                     break;
-                case 'j':
+                case 'j': // sends sj somewhere... but I don't think it's being used in ShiPainter
                     synchronized (this.sj) {
-                        for (int var3 = 0; var3 < this.sj.length; ++var3) {
+                        for (int i = 0; i < this.sj.length; ++i) {
                             String var2;
-                            if ((var2 = this.sj[var3]) != null) {
-                                this.sj[var3] = null;
+                            if ((var2 = this.sj[i]) != null) {
+                                this.sj[i] = null;
                                 this.mi.send(var2);
                             }
                         }
 
                         return;
                     }
-                case 'p':
+                case 'p': // happens at start and at window resize - set by pack()
                     this.ts.pack();
                     break;
-                case 's':
+                case 's': // save
                     this.p.rSave();
             }
         } catch (Throwable var5) {

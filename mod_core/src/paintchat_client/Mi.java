@@ -1269,10 +1269,10 @@ public class Mi extends LComponent implements ActionListener {
 
     public void send(String var1) {
         try {
-            M var2 = new M(this.info, this.user);
-            var2.set(var1);
-            var2.draw();
-            this.send(var2);
+            M mg = new M(this.info, this.user);
+            mg.set(var1);
+            mg.draw();
+            this.send(mg);
         } catch (Throwable var3) {
             ;
         }

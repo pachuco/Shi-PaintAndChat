@@ -98,8 +98,8 @@ public class M {
     public static final int M_R = 2; // Invert
     public static final int M_ADD = 3; // Additive
     public static final int M_SUB = 4; // Subtract
-    // Flags group 1
-    private static final int F1_ALL_LAYERS = 1;
+    // Flags group 1 (iSOB)
+    public static final int F1_ALL_LAYERS = 1;
     private static final int F1_AFIX = 2;
     private static final int F1O = 4;
     private static final int F1C = 8;
@@ -2217,14 +2217,14 @@ public class M {
         }
     }
 
-    public final void m_paint(int var1, int var2, int var3, int var4) {
-        int var5 = this.info.scale;
-        int var6 = this.info.Q;
-        var1 = (var1 / var5 + this.info.scaleX) * var6;
-        var2 = (var2 / var5 + this.info.scaleY) * var6;
-        var3 = var3 / var5 * var6;
-        var4 = var4 / var5 * var6;
-        this.dBuffer(false, var1, var2, var1 + var3, var2 + var4);
+    public final void m_paint(int x1, int y1, int x2, int y2) {
+        int scale = this.info.scale;
+        int quality = this.info.Q;
+        x1 = (x1 / scale + this.info.scaleX) * quality;
+        y1 = (y1 / scale + this.info.scaleY) * quality;
+        x2 = x2 / scale * quality;
+        y2 = y2 / scale * quality;
+        this.dBuffer(false, x1, y1, x1 + x2, y1 + y2);
     }
 
     public final void memset(float[] var1, float var2) {
@@ -2260,38 +2260,38 @@ public class M {
         var1[var3 + var3 - 1] = var2;
     }
 
-    public final Image mkLPic(int[] var1, int var2, int var3, int var4, int var5, int var6) {
-        var2 *= var6;
-        var3 *= var6;
-        var4 *= var6;
-        var5 *= var6;
-        boolean var7 = var1 == null;
+    public final Image mkLPic(int[] picture, int x, int y, int width, int height, int quality) {
+        x *= quality;
+        y *= quality;
+        width *= quality;
+        height *= quality;
+        boolean isEmpty = picture == null;
         int var8 = this.info.L;
         LO[] var9 = this.info.layers;
-        if (var7) {
-            var1 = this.user.buffer;
+        if (isEmpty) {
+            picture = this.user.buffer;
         }
 
-        this.memset(var1, 0xFFFFFF);
+        this.memset(picture, 0xFFFFFF);
 
         for (int var10 = 0; var10 < var8; ++var10) {
-            var9[var10].draw(var1, var2, var3, var2 + var4, var3 + var5, var4);
+            var9[var10].draw(picture, x, y, x + width, y + height, width);
         }
 
-        if (var7) {
-            this.user.raster.newPixels(this.user.image, var4, var5, var6);
+        if (isEmpty) {
+            this.user.raster.newPixels(this.user.image, width, height, quality);
         } else {
-            this.user.raster.scale(var1, var4, var5, var6);
+            this.user.raster.scale(picture, width, height, quality);
         }
 
         return this.user.image;
     }
 
-    private final Image mkMPic(int var1, int var2, int var3, int var4, int var5) {
-        var1 *= var5;
-        var2 *= var5;
-        var3 *= var5;
-        var4 *= var5;
+    private final Image mkMPic(int x, int y, int width, int height, int quality) {
+        x *= quality;
+        y *= quality;
+        width *= quality;
+        height *= quality;
         int[] var6 = this.user.buffer;
         int var7 = this.info.L;
         LO[] var8 = this.info.layers;
@@ -2300,7 +2300,7 @@ public class M {
         label87:
         for (int var9 = 0; var9 < var7; ++var9) {
             if (var9 != this.iLayer) {
-                var8[var9].draw(var6, var1, var2, var1 + var3, var2 + var4, var3);
+                var8[var9].draw(var6, x, y, x + width, y + height, width);
             } else {
                 byte[] var10 = this.info.iMOffs;
                 int[] var14 = var8[var9].offset;
@@ -2322,14 +2322,14 @@ public class M {
                             var18 = 0;
 
                             while (true) {
-                                if (var18 >= var4) {
+                                if (var18 >= height) {
                                     continue label87;
                                 }
 
-                                var15 = var19 * (var18 + var2) + var1;
-                                var16 = var3 * var18;
+                                var15 = var19 * (var18 + y) + x;
+                                var16 = width * var18;
 
-                                for (var17 = 0; var17 < var3; ++var17) {
+                                for (var17 = 0; var17 < width; ++var17) {
                                     var21 = var6[var16];
                                     var20 = this.getM(var14[var15], var10[var15] & 255, var15);
                                     var23 = b255[var20 >>> 24] * var22;
@@ -2347,14 +2347,14 @@ public class M {
                             var18 = 0;
 
                             while (true) {
-                                if (var18 >= var4) {
+                                if (var18 >= height) {
                                     continue label87;
                                 }
 
-                                var15 = var19 * (var18 + var2) + var1;
-                                var16 = var3 * var18;
+                                var15 = var19 * (var18 + y) + x;
+                                var16 = width * var18;
 
-                                for (var17 = 0; var17 < var3; ++var17) {
+                                for (var17 = 0; var17 < width; ++var17) {
                                     var21 = var6[var16];
                                     var20 = this.getM(var14[var15], var10[var15] & 255, var15);
                                     var23 = b255[var20 >>> 24] * var22;
@@ -2372,11 +2372,11 @@ public class M {
                             var18 = 0;
                     }
 
-                    while (var18 < var4) {
-                        var15 = var19 * (var18 + var2) + var1;
-                        var16 = var3 * var18;
+                    while (var18 < height) {
+                        var15 = var19 * (var18 + y) + x;
+                        var16 = width * var18;
 
-                        for (var17 = 0; var17 < var3; ++var17) {
+                        for (var17 = 0; var17 < width; ++var17) {
                             var21 = var6[var16];
                             var20 = this.getM(var14[var15], var10[var15] & 255, var15);
                             var23 = b255[var20 >>> 24] * var22;
@@ -2398,17 +2398,17 @@ public class M {
             }
         }
 
-        this.user.raster.newPixels(this.user.image, var3, var4, var5);
+        this.user.raster.newPixels(this.user.image, width, height, quality);
         return this.user.image;
     }
 
-    public M.Info newInfo(Applet var1, Component var2, Res var3) {
+    public M.Info newInfo(Applet app, Component component, Res cnf) {
         if (this.info != null) {
             return this.info;
         } else {
             this.info = new M.Info();
-            this.info.cnf = var3;
-            this.info.component = var2;
+            this.info.cnf = cnf;
+            this.info.component = component;
             M.Info var4 = this.info;
             M var5 = this.info.m;
             float var10 = 3.1415927F;
@@ -2521,9 +2521,9 @@ public class M {
             var11[1] = var12;
             this.set((M) null);
             var5.set((M) null);
-            if (var3 != null) {
+            if (cnf != null) {
                 for (var6 = 0; var6 < 16; ++var6) {
-                    for (var9 = 0; var3.get((Object) ("pm" + var6 + '/' + var9 + ".gif")) != null; ++var9) {
+                    for (var9 = 0; cnf.get((Object) ("pm" + var6 + '/' + var9 + ".gif")) != null; ++var9) {
                         ;
                     }
 
@@ -2536,10 +2536,10 @@ public class M {
                     }
                 }
 
-                this.info.bTT = new float[var3.getP("tt_size", 31)][];
+                this.info.bTT = new float[cnf.getP("tt_size", 31)][];
             }
 
-            String var28 = var1.getParameter("tt.zip");
+            String var28 = app.getParameter("tt.zip");
             if (var28 != null && var28.length() > 0) {
                 this.info.dirTT = var28;
             }
@@ -2660,7 +2660,7 @@ public class M {
     }
 
     private final int sa(int var1) {
-        if ((this.iSOB & 1) == 0) {
+        if ((this.iSOB & F1_ALL_LAYERS) == 0) {
             return this.iAlpha;
         } else {
             int var2 = this.iSA & 255;
@@ -2668,18 +2668,19 @@ public class M {
         }
     }
 
-    public final int set(byte[] var1, int var2) {
-        int var3 = (var1[var2++] & 255) << 8 | var1[var2++] & 255;
-        int var4 = var2;
+    /** Sets class data from a buffer */
+    public final int set(byte[] buffer, int offset) {
+        int var3 = (buffer[offset++] & 255) << 8 | buffer[offset++] & 255;
+        int start = offset;
         if (var3 <= 2) {
             return var3 + 2;
         } else {
             try {
                 int var5 = 0;
-                boolean var6 = false;
-                int flags1 = var1[var2++] & 255;
-                int flags2 = var1[var2++] & 255;
-                int flags3 = var1[var2++] & 255;
+                boolean shiftFlag = false;
+                int flags1 = buffer[offset++] & 255;
+                int flags2 = buffer[offset++] & 255;
+                int flags3 = buffer[offset++] & 255;
                 this.isAllL = (flags1 & F1_ALL_LAYERS) != 0;
                 this.isAFix = (flags1 & F1_AFIX) != 0;
                 this.isOver = (flags1 & F1O) != 0;
@@ -2687,106 +2688,106 @@ public class M {
                 this.isAnti = (flags1 & F1A) != 0;
                 this.iSOB = flags1 >>> 6; // F1S
                 if ((flags2 & F2H) != 0) {
-                    var5 = var1[var2++] & 255;
-                    var6 = true;
+                    var5 = buffer[offset++] & 255;
+                    shiftFlag = true;
                     this.iHint = var5 >>> 4;
                 }
 
                 if ((flags2 & F2PM) != 0) {
-                    if (!var6) {
-                        var5 = var1[var2++] & 255;
+                    if (!shiftFlag) {
+                        var5 = buffer[offset++] & 255;
                         this.iPenM = var5 >>> 4;
                     } else {
                         this.iPenM = var5 & 15;
                     }
 
-                    var6 = !var6;
+                    shiftFlag = !shiftFlag;
                 }
 
                 if ((flags2 & F2M) != 0) {
-                    if (!var6) {
-                        var5 = var1[var2++] & 255;
+                    if (!shiftFlag) {
+                        var5 = buffer[offset++] & 255;
                         this.iMask = var5 >>> 4;
                     } else {
                         this.iMask = var5 & 15;
                     }
 
-                    var6 = !var6;
+                    shiftFlag = !shiftFlag;
                 }
 
                 if ((flags2 & F2P) != 0) {
-                    this.iPen = var1[var2++] & 255;
+                    this.iPen = buffer[offset++] & 255;
                 }
 
                 if ((flags2 & F2T) != 0) {
-                    this.iTT = var1[var2++] & 255;
+                    this.iTT = buffer[offset++] & 255;
                 }
 
                 if ((flags2 & F2L) != 0) {
-                    this.iLayer = var1[var2++] & 255;
+                    this.iLayer = buffer[offset++] & 255;
                 }
 
                 if ((flags2 & F2LS) != 0) {
-                    this.iLayerSrc = var1[var2++] & 255;
+                    this.iLayerSrc = buffer[offset++] & 255;
                 }
 
                 if ((flags3 & F3A) != 0) {
-                    this.iAlpha = var1[var2++] & 255;
+                    this.iAlpha = buffer[offset++] & 255;
                 }
 
                 if ((flags3 & F3C) != 0) {
-                    this.iColor = this.r(var1, var2, 3);
-                    var2 += 3;
+                    this.iColor = this.r(buffer, offset, 3);
+                    offset += 3;
                 }
 
                 if ((flags3 & F3CM) != 0) {
-                    this.iColorMask = this.r(var1, var2, 3);
-                    var2 += 3;
+                    this.iColorMask = this.r(buffer, offset, 3);
+                    offset += 3;
                 }
 
                 if ((flags3 & F3S) != 0) {
-                    this.iSize = var1[var2++] & 255;
+                    this.iSize = buffer[offset++] & 255;
                 }
 
                 if ((flags3 & F3E) != 0) {
-                    this.iCount = var1[var2++];
+                    this.iCount = buffer[offset++];
                 }
 
                 if ((flags3 & F3SA) != 0) {
-                    this.iSA = this.r(var1, var2, 2);
-                    var2 += 2;
+                    this.iSA = this.r(buffer, offset, 2);
+                    offset += 2;
                 }
 
                 if ((flags3 & F3SS) != 0) {
-                    this.iSS = this.r(var1, var2, 2);
-                    var2 += 2;
+                    this.iSS = this.r(buffer, offset, 2);
+                    offset += 2;
                 }
 
                 if (this.iPen == P_FUSION) {
-                    this.iAlpha2 = this.r(var1, var2, 2);
-                    var2 += 2;
+                    this.iAlpha2 = this.r(buffer, offset, 2);
+                    offset += 2;
                 }
 
                 if (this.isText()) {
-                    int var10 = this.r(var1, var2, 2);
-                    var2 += 2;
+                    int var10 = this.r(buffer, offset, 2);
+                    offset += 2;
                     if (var10 == 0) {
                         this.strHint = null;
                     } else {
                         this.strHint = new byte[var10];
-                        System.arraycopy(var1, var2, this.strHint, 0, var10);
-                        var2 += var10;
+                        System.arraycopy(buffer, offset, this.strHint, 0, var10);
+                        offset += var10;
                     }
                 }
 
-                var4 = var3 - (var2 - var4);
-                if (var4 > 0) {
-                    if (this.offset == null || this.offset.length < var4) {
-                        this.offset = new byte[var4];
+                start = var3 - (offset - start);
+                if (start > 0) {
+                    if (this.offset == null || this.offset.length < start) {
+                        this.offset = new byte[start];
                     }
 
-                    this.iOffset = var4;
-                    System.arraycopy(var1, var2, this.offset, 0, var4);
+                    this.iOffset = start;
+                    System.arraycopy(buffer, offset, this.offset, 0, start);
                 } else {
                     this.iOffset = 0;
                 }
@@ -2799,46 +2800,48 @@ public class M {
         }
     }
 
-    public final void set(String var1) {
+    /** Sets class fields to a certain value by parsing a string "key=value;key2=value2...@ignored_content" */
+    public final void set(String commands) {
         try {
-            if (var1 == null || var1.length() == 0) {
+            if (commands == null || commands.length() == 0) {
                 return;
             }
 
             //Field[] var2 = this.getClass().getDeclaredFields();
-            Field[] var2 = this.getClass().getFields();
-            int var3 = var1.indexOf(64);
-            if (var3 < 0) {
-                var3 = var1.length();
+            Field[] classFields = this.getClass().getFields();
+            int cmdLength = commands.indexOf('@');
+            if (cmdLength < 0) {
+                cmdLength = commands.length();
             }
 
-            int var5;
-            int var10;
-            for (int var4 = 0; var4 < var3; var4 = var5 + 1) {
-                var5 = var1.indexOf(61, var4);
-                if (var5 == -1) {
+            int posEq;
+
+            //TODO: could be simplified with a StringTokenizer
+            for (int i = 0; i < cmdLength; i = posEq + 1) {
+                posEq = commands.indexOf('=', i);
+                if (posEq == -1) {
                     break;
                 }
 
-                String var6 = var1.substring(var4, var5);
-                var4 = var5 + 1;
-                var5 = var1.indexOf(59, var4);
-                if (var5 < 0) {
-                    var5 = var3;
+                String key = commands.substring(i, posEq);
+                i = posEq + 1;
+                posEq = commands.indexOf(';', i);
+                if (posEq < 0) {
+                    posEq = cmdLength;
                 }
 
                 try {
-                    for (var10 = 0; var10 < var2.length; ++var10) {
-                        Field var9 = var2[var10];
-                        if (var9.getName().equals(var6)) {
-                            String var7 = var1.substring(var4, var5);
-                            Class var8 = var9.getType();
-                            if (var8.equals(Integer.TYPE)) {
-                                var9.setInt(this, Integer.parseInt(var7));
-                            } else if (var8.equals(Boolean.TYPE)) {
-                                var9.setBoolean(this, Integer.parseInt(var7) != 0);
+                    for (int j = 0; j < classFields.length; ++j) {
+                        Field field = classFields[j];
+                        if (field.getName().equals(key)) {
+                            String value = commands.substring(j, posEq);
+                            Class fieldType = field.getType();
+                            if (fieldType.equals(Integer.TYPE)) {
+                                field.setInt(this, Integer.parseInt(value));
+                            } else if (fieldType.equals(Boolean.TYPE)) {
+                                field.setBoolean(this, Integer.parseInt(value) != 0);
                             } else {
-                                var9.set(this, var7);
+                                field.set(this, value);
                             }
                             break;
                         }
@@ -2850,14 +2853,14 @@ public class M {
                 }
             }
 
-            if (var3 != var1.length()) {
-                ByteStream var14 = this.getWork();
+            if (cmdLength != commands.length()) {
+                ByteStream bs = this.getWork();
 
-                for (var10 = var3 + 1; var10 < var1.length(); var10 += 2) {
-                    var14.write(Character.digit((char) var1.charAt(var10), 16) << 4 | Character.digit((char) var1.charAt(var10 + 1), 16));
+                for (int i = cmdLength + 1; i < commands.length(); i += 2) {
+                    bs.write(Character.digit((char) commands.charAt(i), 16) << 4 | Character.digit((char) commands.charAt(i + 1), 16));
                 }
 
-                this.offset = var14.toByteArray();
+                this.offset = bs.toByteArray();
                 this.iOffset = this.offset.length;
             }
         } catch (Throwable var13) {
@@ -2866,6 +2869,7 @@ public class M {
 
     }
 
+    /** Copies data from another M instance */
     public final void set(M mg) {
         if (mg == null) {
             mg = mgDef;
@@ -2994,7 +2998,7 @@ public class M {
     }
 
     private final int ss(int var1) {
-        if ((this.iSOB & 2) == 0) {
+        if ((this.iSOB & F1_AFIX) == 0) {
             return this.iSize;
         } else {
             int var2 = this.iSS & 255;
@@ -3256,7 +3260,7 @@ public class M {
             this.g = g;
         }
 
-        /** Changes the current layer and creates new ones if necessary */
+        /** Changes the number of layers */
         public void setL(int n) {
             int layerCount = this.layers == null ? 0 : this.layers.length;
             int amountToCopy = Math.min(layerCount, n);
