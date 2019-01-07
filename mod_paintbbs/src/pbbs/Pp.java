@@ -24,6 +24,7 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Vector;
 
+import static java.awt.event.MouseEvent.*;
 import static java.awt.event.ComponentEvent.*;
 
 import paintchat.MgLine;
@@ -447,9 +448,9 @@ public class Pp extends Panel {
         String var17 = "thumbnail_type";
         String var18 = null;
         if (this.isJp) {
-            this.str_tools = new String[]{"やり直し", "元に戻す", "塗り潰し", "窓", "投稿", "(C)しぃちゃん PaintBBSv2.22_8", "+", "-"};
+            this.str_tools = new String[]{"やり直し", "元に戻す", "塗り潰し", "窓", "投稿", "(C)しぃちゃん "+STR_VER, "+", "-"};
         } else {
-            this.str_tools = new String[]{"Redo", "Undo", "Fill", "Float", "Send", "(C)shi-chan PaintBBSv2.22_8", "+", "-"};
+            this.str_tools = new String[]{"Redo", "Undo", "Fill", "Float", "Send", "(C)shi-chan "+STR_VER, "+", "-"};
         }
 
         this.cl_app_fore = new Color(var1.p(var9 + var10, 6710937));
@@ -771,7 +772,7 @@ public class Pp extends Panel {
             Point var4 = var1.getPoint();
             Point var5;
             switch (var3) {
-                case 501:
+                case MOUSE_PRESSED:
                     label93:
                     for (this.old_point = new Point(var4); var2 < this.r_tools.length; ++var2) {
                         if (this.r_tools[var2].contains(var4)) {
@@ -820,7 +821,7 @@ public class Pp extends Panel {
                         this.mI.dispatchEvent(var1);
                     }
                     break;
-                case 502:
+                case MOUSE_RELEASED:
                     this.bool_mouse_tool = false;
                     if (this.mouse_now == -1) {
                         var5 = this.mI.getLocation();
@@ -837,7 +838,7 @@ public class Pp extends Panel {
                         this.mI.m_paint();
                     }
                     break;
-                case 503:
+                case MOUSE_MOVED:
                     while (var2 < this.r_tools.length) {
                         if (var2 != this.select_now && this.r_tools[var2].contains(var4)) {
                             this.select_now = (byte) var2;
@@ -855,7 +856,7 @@ public class Pp extends Panel {
                         this.mI.dispatchEvent(var1);
                     }
                     break;
-                case 506:
+                case MOUSE_DRAGGED:
                     switch (this.mouse_now) {
                         case -1:
                             var5 = this.mI.getLocation();
@@ -869,7 +870,7 @@ public class Pp extends Panel {
                     }
             }
 
-            if (var3 == 502) {
+            if (var3 == MOUSE_RELEASED) {
                 this.mouse_now = -1;
             }
 

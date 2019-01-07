@@ -7,6 +7,7 @@ import java.awt.Label;
 import java.awt.event.MouseEvent;
 import java.net.URL;
 
+import static java.awt.event.MouseEvent.*;
 import static java.awt.event.ComponentEvent.*;
 
 public class LabelLink extends Label {
@@ -43,16 +44,16 @@ public class LabelLink extends Label {
         if (this.isMouse) {
             try {
                 switch (var1.getID()) {
-                    case 501:
+                    case MOUSE_PRESSED:
                         this.applet.getAppletContext().showDocument(new URL(this.strLink), "top");
-                    case 502:
-                    case 503:
+                    case MOUSE_RELEASED:
+                    case MOUSE_MOVED:
                     default:
                         break;
-                    case 504:
+                    case MOUSE_ENTERED:
                         this.setFont(true);
                         break;
-                    case 505:
+                    case MOUSE_EXITED:
                         this.setFont(false);
                 }
             } catch (Throwable var3) {

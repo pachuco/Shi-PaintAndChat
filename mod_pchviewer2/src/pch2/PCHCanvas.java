@@ -28,6 +28,7 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.zip.Inflater;
 
+import static java.awt.event.MouseEvent.*;
 import static java.awt.event.ComponentEvent.*;
 
 import paintchat.LO;
@@ -520,20 +521,20 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
     protected void processMouseMotionEvent(MouseEvent var1) {
         try {
             switch (var1.getID()) {
-                case 501:
+                case MOUSE_PRESSED:
                     this.pressPo = var1.getPoint();
                     this.setCursor(Cursor.getPredefinedCursor(12));
                     break;
-                case 502:
+                case MOUSE_RELEASED:
                     this.pressPo = null;
                     this.setCursor(Cursor.getDefaultCursor());
                     this.repaint();
-                case 503:
-                case 504:
-                case 505:
+                case MOUSE_MOVED:
+                case MOUSE_ENTERED:
+                case MOUSE_EXITED:
                 default:
                     break;
-                case 506:
+                case MOUSE_DRAGGED:
                     this.scroll(var1.getPoint(), true, false);
             }
         } catch (Throwable var3) {

@@ -6,8 +6,9 @@ import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.Method;
 
+import static java.awt.event.MouseEvent.*;
+
 import paintchat.M;
-import static paintchat.M.*;
 
 public class Tab extends LComponent {
     private M mg;
@@ -120,7 +121,7 @@ public class Tab extends LComponent {
         int var3 = var1.getY();
         int var4 = this.sizeBar;
         switch (var1.getID()) {
-            case 501:
+            case MOUSE_PRESSED:
                 if (this.iDrag < 0) {
                     int var5 = this.at(var3);
                     this.iDrag = var5;
@@ -132,14 +133,14 @@ public class Tab extends LComponent {
                     }
                 }
                 break;
-            case 502:
+            case MOUSE_RELEASED:
                 this.iDrag = -1;
-            case 503:
-            case 504:
-            case 505:
+            case MOUSE_MOVED:
+            case MOUSE_ENTERED:
+            case MOUSE_EXITED:
             default:
                 break;
-            case 506:
+            case MOUSE_DRAGGED:
                 this.drag(var2);
         }
 

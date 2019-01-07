@@ -20,6 +20,7 @@ import java.awt.image.DirectColorModel;
 import java.awt.image.ImageObserver;
 import java.awt.image.MemoryImageSource;
 
+import static java.awt.event.MouseEvent.*;
 import static java.awt.event.ComponentEvent.*;
 
 import paintchat.MgLine;
@@ -500,7 +501,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
             int var2 = var1.getID();
             var1.consume();
             switch (var2) {
-                case 501:
+                case MOUSE_PRESSED:
                     boolean var9 = var1.isControlDown();
                     boolean var11 = var1.isAltDown();
                     boolean var12 = var1.getModifiers() == 4;
@@ -545,7 +546,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
                         }
                     }
                     break;
-                case 502:
+                case MOUSE_RELEASED:
                     if (this.dHint == 0) {
                         if (this.tools.lMode == 2) {
                             this.dHint = -1;
@@ -578,7 +579,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
                     this.dHint = -1;
                     this.isPreD = true;
                     break;
-                case 503:
+                case MOUSE_MOVED:
                     if (this.tools.lHints != 60 && this.tools.lMode != 40) {
                         this.move_draw(var1);
                     }
@@ -587,18 +588,18 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
                         this.dPre(var1);
                     }
                     break;
-                case 504:
+                case MOUSE_ENTERED:
                     this.isPreD = true;
                     this.requestFocus();
                     break;
-                case 506:
+                case MOUSE_DRAGGED:
                     if (this.dHint == 0) {
                         this.move_draw(var1);
                         this.isPre = false;
                         this.dPre(var1);
                         break;
                     }
-                case 505:
+                case MOUSE_EXITED:
                     this.isPreD = false;
             }
 

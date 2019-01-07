@@ -24,6 +24,8 @@ import java.awt.image.ImageObserver;
 import java.awt.image.ImageProducer;
 import java.awt.image.MemoryImageSource;
 
+import static java.awt.event.MouseEvent.*;
+
 import paintchat.LO;
 import paintchat.M;
 import paintchat.Res;
@@ -354,7 +356,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
             int var8;
             int var17;
             switch (var1.getID()) {
-                case 501:
+                case MOUSE_PRESSED:
                     if (this.mouse < 0) {
                         int var6 = this.b(var2);
                         int var7 = var6 - 1;
@@ -395,7 +397,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
                         }
                     }
                     break;
-                case 502:
+                case MOUSE_RELEASED:
                     if (!var5) {
                         if (this.isASlide) {
                             this.setAlpha(this.m.iLayer, (int) ((float) (var3 - this.bW) / 100.0F * 255.0F), true);
@@ -415,7 +417,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
                         }
                     }
                     break;
-                case 503:
+                case MOUSE_MOVED:
                     var8 = this.b(var2) - 1;
                     if (!this.is_pre || var8 < 0 || var3 >= this.bW) {
                         if (this.is_DIm) {
@@ -445,11 +447,11 @@ public class L extends LComponent implements ActionListener, ItemListener {
                     var13.setColor(Color.black);
                     var13.drawRect(this.bW, 0, var14, var14);
                     var13.dispose();
-                case 504:
-                case 505:
+                case MOUSE_ENTERED:
+                case MOUSE_EXITED:
                 default:
                     break;
-                case 506:
+                case MOUSE_DRAGGED:
                     if (this.mouse > 0) {
                         if (this.isASlide) {
                             this.setAlpha(this.m.iLayer, (int) ((float) (var3 - this.bW) / 100.0F * 255.0F), false);

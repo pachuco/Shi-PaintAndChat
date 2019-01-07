@@ -14,6 +14,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 
 import static java.awt.event.ComponentEvent.*;
+import static java.awt.event.MouseEvent.*;
 
 public abstract class LComponent extends Canvas {
     protected static boolean isWin;
@@ -278,7 +279,7 @@ public abstract class LComponent extends Canvas {
             int var6;
             int var7;
             switch (awtEv.getID()) {
-                case ComponentEvent.COMPONENT_MOVED:
+                case COMPONENT_MOVED:
                     var4.setLocation(super.getLocation());
                     var7 = var4.x;
                     int var8 = var4.y;
@@ -287,7 +288,7 @@ public abstract class LComponent extends Canvas {
                         this.getParent().repaint(0L, var7, var8, var3.width, var3.height);
                     }
                     break;
-                case ComponentEvent.COMPONENT_RESIZED:
+                case COMPONENT_RESIZED:
                     var3.setSize(super.getSize());
                     int var5 = var3.width;
                     var6 = var3.height;

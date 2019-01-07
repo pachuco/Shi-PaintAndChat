@@ -28,6 +28,7 @@ import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static java.awt.event.MouseEvent.*;
 import static java.awt.event.ComponentEvent.*;
 
 import paintchat.Res;
@@ -481,21 +482,21 @@ public class TextPanel extends Canvas implements ActionListener, ItemListener {
                 int var3 = var2.getX();
                 int var4 = var2.getY();
                 switch (var1.getID()) {
-                    case 501:
+                    case MOUSE_PRESSED:
                         this.Y = var4;
                         this.isPress = !Awt.isR(var2);
                         if (!this.isPress) {
                             this.popup(var3, var4);
                         }
                         break;
-                    case 502:
+                    case MOUSE_RELEASED:
                         this.isPress = false;
-                    case 503:
-                    case 504:
-                    case 505:
+                    case MOUSE_MOVED:
+                    case MOUSE_ENTERED:
+                    case MOUSE_EXITED:
                     default:
                         break;
-                    case 506:
+                    case MOUSE_DRAGGED:
                         if (this.isPress && this.Y != var4) {
                             int var5 = -(this.Y - var4);
                             if (!this.isSScroll) {

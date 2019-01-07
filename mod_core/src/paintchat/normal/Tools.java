@@ -24,6 +24,8 @@ import java.awt.image.ImageObserver;
 import java.io.BufferedReader;
 import java.io.StringReader;
 
+import static java.awt.event.MouseEvent.*;
+
 import paintchat.LO;
 import paintchat.M;
 import paintchat.Res;
@@ -726,17 +728,17 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
 
             var5 = var1.getID();
             switch (var5) {
-                case 501:
+                case MOUSE_PRESSED:
                     this.mPress(var1);
                     break;
-                case 502:
+                case MOUSE_RELEASED:
                     this.nowButton = -1;
-                case 503:
-                case 504:
-                case 505:
+                case MOUSE_MOVED:
+                case MOUSE_ENTERED:
+                case MOUSE_EXITED:
                 default:
                     break;
-                case 506:
+                case MOUSE_DRAGGED:
                     int var6 = this.nowButton;
                     if (var6 < this.list.length) {
                         return;

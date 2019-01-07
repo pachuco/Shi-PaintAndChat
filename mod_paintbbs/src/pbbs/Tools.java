@@ -31,6 +31,7 @@ import java.awt.image.ImageObserver;
 import java.io.BufferedReader;
 import java.io.StringReader;
 
+import static java.awt.event.MouseEvent.*;
 import static java.awt.event.ComponentEvent.*;
 
 import paintchat.MgLine;
@@ -1027,10 +1028,10 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
                 MouseEvent var2 = (MouseEvent) var1;
                 var2.consume();
                 switch (var1.getID()) {
-                    case 501:
+                    case MOUSE_PRESSED:
                         this.m_click(var2);
                         break;
-                    case 506:
+                    case MOUSE_DRAGGED:
                         this.m_drag(var2);
                 }
 

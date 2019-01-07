@@ -8,6 +8,8 @@ import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.StringReader;
 
+import static java.awt.event.MouseEvent.*;
+
 import paintchat.M;
 import paintchat.Res;
 import syi.awt.Awt;
@@ -192,7 +194,7 @@ public class TPalette extends LComponent {
         boolean var10 = this.mg.isText();
         int var11 = var10 ? 0xFF : this.info.getPenMask()[this.mg.iPenM].length;
         int var12 = Math.min(var6 * 6, var11 * 8 + 1);
-        if (var3 <= var8 && var2 == 501) {
+        if (var3 <= var8 && var2 == MOUSE_PRESSED) {
             this.iDrag = -1;
             int var18 = Math.min(var4 / var6 * 2 + var3 / var7, 19);
             if (var9) {
@@ -208,7 +210,7 @@ public class TPalette extends LComponent {
         } else {
             boolean var13 = false;
             switch (var2) {
-                case 501:
+                case MOUSE_PRESSED:
                     if (var4 < var12) {
                         if (var9) {
                             this.tools.setField(this, "iPenM", "penm_", var3, var4);
@@ -228,14 +230,14 @@ public class TPalette extends LComponent {
 
                     var13 = true;
                     break;
-                case 502:
+                case MOUSE_RELEASED:
                     this.iDrag = -1;
-                case 503:
-                case 504:
-                case 505:
+                case MOUSE_MOVED:
+                case MOUSE_ENTERED:
+                case MOUSE_EXITED:
                 default:
                     break;
-                case 506:
+                case MOUSE_DRAGGED:
                     if (this.iDrag >= 0) {
                         var13 = true;
                     }
