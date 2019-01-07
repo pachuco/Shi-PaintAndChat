@@ -42,31 +42,33 @@ public class PCHProgress extends Canvas {
     private static final int I_BAR = 7;
     private static final int I_SIZE_ICON = 20;
     public static final int I_SIZE_PRE = 26;
+    private static String[] EN_SPEED = {"Mx", "H", "M", "L"};
+    private static String[] JA_SPEED = {"最", "早", "既", "鈍"};
 
-    public PCHProgress(boolean var1) {
-        this.enableEvents(49L);
-        this.isBuffer = var1;
+    public PCHProgress(boolean isBuffer) {
+        this.enableEvents(COMPONENT_EVENT_MASK | MOUSE_EVENT_MASK | MOUSE_MOTION_EVENT_MASK); //49L
+        this.isBuffer = isBuffer;
     }
 
     public void action(Point point) {
         if (this.rects != null) {
-            int var2 = I_PLAY;
+            int iconNum = I_PLAY;
 
-            int var3;
-            for (var3 = this.rects.length; var2 < var3; ++var2) {
-                if (this.rects[var2].contains(point)) {
-                    if (this.putTool != var2) {
-                        this.putTool = var2;
-                        this.drawIcon(var2);
+            int maxIcon;
+            for (maxIcon = this.rects.length; iconNum < maxIcon; ++iconNum) {
+                if (this.rects[iconNum].contains(point)) {
+                    if (this.putTool != iconNum) {
+                        this.putTool = iconNum;
+                        this.drawIcon(iconNum);
                         return;
                     }
                     break;
                 }
             }
 
-            if (var2 < var3) {
+            if (iconNum < maxIcon) {
                 if (this.pch != null) {
-                    switch (var2) {
+                    switch (iconNum) {
                         case I_PLAY:
                             this.pch.playPCH();
                             break;
@@ -79,23 +81,23 @@ public class PCHProgress extends Canvas {
                             this.drawIcon(I_BAR);
                             break;
                         case I_SPEED:
-                            int var4 = this.pch.getSpeed();
-                            byte var5;
-                            switch (var4) {
+                            int oldSpeed = this.pch.getSpeed();
+                            byte newSpeed;
+                            switch (oldSpeed) {
                                 case 0:
-                                    var5 = 10;
+                                    newSpeed = 10;
                                     break;
                                 case 10:
-                                    var5 = 20;
+                                    newSpeed = 20;
                                     break;
                                 case 20:
-                                    var5 = -1;
+                                    newSpeed = -1;
                                     break;
                                 default:
-                                    var5 = 0;
+                                    newSpeed = 0;
                             }
 
-                            this.pch.setSpeed(var5);
+                            this.pch.setSpeed(newSpeed);
                             break;
                         case I_ADD:
                             this.pch.setScale(1, false);
@@ -125,103 +127,88 @@ public class PCHProgress extends Canvas {
             } else {
                 this.drawIcon(g, iconNum);
             }
-
         }
     }
 
     private void drawIcon(Graphics g, int iconNum) {
-        if (g != null) {
-            synchronized (g) {
-                try {
-                    if (this.rects == null || iconNum < 0 || iconNum >= this.rects.length || g == null) {
-                        return;
-                    }
+        if (this.rects == null || iconNum < 0 || iconNum >= this.rects.length || g == null) return;
+        synchronized (g) {
+            Rectangle rect = this.rects[iconNum];
+            Color color = iconNum == 0 ? this.clBack : this.clIcon;
+            color = iconNum == this.putTool ? color.darker() : color;
+            if (iconNum != I_BAR) {
+                g.setColor(color);
+                g.fillRect(rect.x + 1, rect.y + 1, rect.width - 2, rect.height - 2);
+            }
 
-                    Rectangle rect = this.rects[iconNum];
-                    Color var5 = iconNum == 0 ? this.clBack : this.clIcon;
-                    var5 = iconNum == this.putTool ? var5.darker() : var5;
-                    if (iconNum != I_BAR) {
-                        g.setColor(var5);
-                        g.fillRect(rect.x + 1, rect.y + 1, rect.width - 2, rect.height - 2);
-                    }
+            if (iconNum == this.selTool && iconNum != this.putTool || iconNum == 0) {
+                g.setColor(color.brighter());
+                g.drawRect(rect.x + 1, rect.y + 1, rect.width - 2, rect.height - 2);
+            }
 
-                    if (iconNum == this.selTool && iconNum != this.putTool || iconNum == 0) {
-                        g.setColor(var5.brighter());
-                        g.drawRect(rect.x + 1, rect.y + 1, rect.width - 2, rect.height - 2);
-                    }
+            g.setColor(iconNum == this.selTool ? this.clSelect : this.clFrame);
+            g.drawRect(rect.x, rect.y, rect.width - 1, rect.height - 1);
 
-                    g.setColor(iconNum == this.selTool ? this.clSelect : this.clFrame);
-                    g.drawRect(rect.x, rect.y, rect.width - 1, rect.height - 1);
-                    int var6;
-                    int var7;
-                    int var8;
-                    int[] var12;
-                    int[] var14;
-                    switch (iconNum) {
-                        case I_PLAY:
-                            var12 = new int[]{rect.x + 7, rect.x + 13, rect.x + 7};
-                            var14 = new int[]{rect.y + 4, rect.y + 10, rect.y + 16};
-                            g.setColor(this.clFore);
-                            g.fillPolygon(var12, var14, var12.length);
-                            g.setColor(this.clFore.brighter());
-                            g.drawPolygon(var12, var14, var12.length);
-                            break;
-                        case I_STOP:
-                            g.setColor(this.clFore);
-                            g.fillRect(rect.x + 5, rect.y + 6, 9, 9);
-                            g.setColor(this.clFore.brighter());
-                            g.drawRect(rect.x + 4, rect.y + 5, 10, 10);
-                            break;
-                        case I_RESTART:
-                            var12 = new int[]{rect.x + 8, rect.x + 2, rect.x + 8};
-                            var14 = new int[]{var12[0] + 8, var12[1] + 8, var12[2] + 8};
-                            int[] var15 = new int[]{rect.y + 4, rect.y + 10, rect.y + 16};
-                            g.setColor(this.clFore);
-                            g.fillPolygon(var12, var15, var12.length);
-                            g.fillPolygon(var14, var15, var12.length);
-                            g.setColor(this.clFore.brighter());
-                            g.drawPolygon(var12, var15, var12.length);
-                            g.drawPolygon(var14, var15, var12.length);
-                            break;
-                        case I_SPEED:
-                            String[][] var11 = new String[][]{{"Mx", "H", "M", "L"}, {"最", "早", "既", "鈍"}};
-                            String[] var13 = isJa ? var11[1] : var11[0];
-                            var8 = this.pch.getSpeed();
-                            var8 = var8 < 0 ? 0 : (var8 == 0 ? 1 : (var8 <= 10 ? 2 : 3));
-                            g.setColor(this.clFore);
-                            g.drawString(var13[var8], rect.x + 4, rect.y + rect.height - 4);
-                            break;
-                        case I_ADD:
-                            var6 = rect.width / 2;
-                            var7 = rect.height / 2;
-                            g.fillRect(rect.x + var6 / 2, rect.y + var7 - 1, var6, 2);
-                            g.fillRect(rect.x + var6 - 1, rect.y + var7 / 2, 2, var7);
-                            break;
-                        case I_SUB:
-                            var6 = rect.width / 2;
-                            var7 = rect.height / 2;
-                            g.fillRect(rect.x + var6 / 2, rect.y + var7 - 1, var6, 2);
-                            break;
-                        case I_BAR:
-                            var6 = this.pch.getLineCount();
-                            var7 = this.pch.getSeek();
-                            var8 = (int) ((float) rect.width * ((float) var7 / (float) var6)) - 5;
-                            if (var8 <= 0) {
-                                var8 = 1;
-                            }
+            int[] points1;
+            int[] points2;
+            switch (iconNum) {
+                case I_PLAY: {
+                    points1 = new int[]{rect.x + 7, rect.x + 13, rect.x + 7};
+                    points2 = new int[]{rect.y + 4, rect.y + 10, rect.y + 16};
+                    g.setColor(this.clFore);
+                    g.fillPolygon(points1, points2, points1.length);
+                    g.setColor(this.clFore.brighter());
+                    g.drawPolygon(points1, points2, points1.length);
+                } break;
+                case I_STOP: {
+                    g.setColor(this.clFore);
+                    g.fillRect(rect.x + 5, rect.y + 6, 9, 9);
+                    g.setColor(this.clFore.brighter());
+                    g.drawRect(rect.x + 4, rect.y + 5, 10, 10);
+                } break;
+                case I_RESTART: {
+                    points1 = new int[]{rect.x + 8, rect.x + 2, rect.x + 8};
+                    points2 = new int[]{points1[0] + 8, points1[1] + 8, points1[2] + 8};
+                    int[] var15 = new int[]{rect.y + 4, rect.y + 10, rect.y + 16};
+                    g.setColor(this.clFore);
+                    g.fillPolygon(points1, var15, points1.length);
+                    g.fillPolygon(points2, var15, points1.length);
+                    g.setColor(this.clFore.brighter());
+                    g.drawPolygon(points1, var15, points1.length);
+                    g.drawPolygon(points2, var15, points1.length);
+                } break;
+                case I_SPEED: {
+                    String[] arrSpeedStr = isJa ? JA_SPEED : EN_SPEED;
+                    int speed = this.pch.getSpeed();
+                    speed = speed < 0 ? 0 : (speed == 0 ? 1 : (speed <= 10 ? 2 : 3));
+                    g.setColor(this.clFore);
+                    g.drawString(arrSpeedStr[speed], rect.x + 4, rect.y + rect.height - 4);
+                } break;
+                case I_ADD: {
+                    int w = rect.width / 2;
+                    int h = rect.height / 2;
+                    g.fillRect(rect.x + w / 2, rect.y + h - 1, w, 2);
+                    g.fillRect(rect.x + w - 1, rect.y + h / 2, 2, h);
+                } break;
+                case I_SUB: {
+                    int w = rect.width / 2;
+                    int h = rect.height / 2;
+                    g.fillRect(rect.x + w / 2, rect.y + h - 1, w, 2);
+                } break;
+                case I_BAR: {
+                    int lineCount = this.pch.getLineCount();
+                    int seek = this.pch.getSeek();
+                    int seekPos = (int) ((float) rect.width * ((float) seek / (float) lineCount)) - 5;
+                    if (seekPos <= 0) seekPos = 1;
 
-                            g.setColor(this.clBar);
-                            g.fillRect(rect.x + 3, rect.y + 2, var8, rect.height - 4);
-                            g.setColor(var5);
-                            g.fillRect(rect.x + 3 + var8, rect.y + 2, rect.width - var8 - 5, rect.height - 4);
-                            g.setColor(this.clFore);
-                            g.fillRect(rect.x + Math.min(Math.max((int) ((float) this.pch.getMark() / (float) var6 * (float) rect.width), 3), rect.width - 3), rect.y + 2, 1, rect.height - 4);
-                            g.drawString(String.valueOf(var7) + '/' + var6, rect.x + 3, rect.y + rect.height - 3);
-                    }
-                } catch (RuntimeException var9) {
-                    var9.printStackTrace();
+                    g.setColor(this.clBar);
+                    g.fillRect(rect.x + 3, rect.y + 2, seekPos, rect.height - 4);
+                    g.setColor(color);
+                    g.fillRect(rect.x + 3 + seekPos, rect.y + 2, rect.width - seekPos - 5, rect.height - 4);
+                    g.setColor(this.clFore);
+                    g.fillRect(rect.x + Math.min(Math.max((int) ((float) this.pch.getMark() / (float) lineCount * (float) rect.width), 3), rect.width - 3), rect.y + 2, 1, rect.height - 4);
+                    g.drawString(String.valueOf(seek) + '/' + lineCount, rect.x + 3, rect.y + rect.height - 3);
                 }
-
             }
         }
     }
@@ -282,111 +269,104 @@ public class PCHProgress extends Canvas {
 
     protected void processComponentEvent(ComponentEvent cEv) {
         try {
-            int var2 = cEv.getID();
+            int id = cEv.getID();
             if (this.rects == null) {
                 return;
             }
 
-            if (var2 == COMPONENT_RESIZED) {
+            if (id == COMPONENT_RESIZED) {
                 this.upRect();
                 this.iPaint(this.back);
             }
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
 
     protected void processMouseEvent(MouseEvent mEv) {
         try {
-            int var2 = mEv.getID();
-            Point var3 = mEv.getPoint();
-            switch (var2) {
+            int id = mEv.getID();
+            Point point = mEv.getPoint();
+            switch (id) {
                 case MOUSE_PRESSED:
-                    this.action(var3);
-                    if (this.putTool == 7) {
-                        this.setMark(var3);
+                    this.action(point);
+                    if (this.putTool == I_BAR) {
+                        this.setMark(point);
                     }
                     break;
                 case MOUSE_RELEASED:
-                    this.action(var3);
+                    this.action(point);
                     this.releaseIcon();
                     break;
                 case MOUSE_MOVED:
-                    this.selIcon(var3);
+                    this.selIcon(point);
                 case MOUSE_ENTERED:
                 case MOUSE_EXITED:
                 default:
                     break;
                 case MOUSE_DRAGGED:
-                    if (this.putTool == 7) {
-                        this.setMark(var3);
+                    if (this.putTool == I_BAR) {
+                        this.setMark(point);
                     }
             }
-        } catch (Throwable var4) {
-            var4.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
 
-    protected void processMouseMotionEvent(MouseEvent var1) {
-        this.processMouseEvent(var1);
+    protected void processMouseMotionEvent(MouseEvent mEv) {
+        this.processMouseEvent(mEv);
     }
 
     private void releaseIcon() {
-        int pt = this.putTool;
+        int iconNum = this.putTool;
         this.putTool = -1;
-        this.drawIcon(pt);
+        this.drawIcon(iconNum);
     }
 
     private void selIcon(Point point) {
         if (this.rects != null) {
-            int var2 = this.selTool;
-            int var3 = this.rects.length;
+            int oldTool = this.selTool;
+            int maxTool = this.rects.length;
 
-            int i;
-            for (i = 1; i < var3 && !this.rects[i].contains(point); ++i) {
+            int newTool;
+            for (newTool = 1; newTool < maxTool && !this.rects[newTool].contains(point); ++newTool) {
             }
 
-            if (i >= var3) {
-                i = -1;
-            }
+            if (newTool >= maxTool)  newTool = -1;
 
-            if (this.selTool != i) {
-                this.selTool = i;
-                if (var2 != -1) {
-                    this.drawIcon(var2);
-                }
-
-                if (i != -1) {
-                    this.drawIcon(i);
-                }
+            if (this.selTool != newTool) {
+                this.selTool = newTool;
+                if (oldTool != -1) this.drawIcon(oldTool);
+                if (newTool != -1) this.drawIcon(newTool);
 
             }
         }
     }
 
-    public void setColor(Color var1, Color var2, Color var3, Color var4, Color var5, Color var6) {
-        this.clBack = var1;
-        this.clFore = var2;
-        this.clIcon = var3;
-        this.clBar = var4;
-        this.clFrame = var5;
-        this.clSelect = var6;
-        this.setBackground(var1);
-        this.setForeground(var2);
+    public void setColor(Color cBack, Color cFore, Color cIcon, Color cBar, Color cFrame, Color cSel) {
+        this.clBack = cBack;
+        this.clFore = cFore;
+        this.clIcon = cIcon;
+        this.clBar = cBar;
+        this.clFrame = cFrame;
+        this.clSelect = cSel;
+        this.setBackground(cBack);
+        this.setForeground(cFore);
     }
 
     private synchronized void setMark(Point point) {
         try {
-            int var2 = point.x - this.rects[7].x;
-            int var3 = this.rects[7].width;
-            int var4 = this.pch.getLineCount();
-            var2 = var2 <= 0 ? 0 : (var2 >= var3 ? var4 : (int) ((float) var2 / (float) var3 * (float) var4));
-            this.pch.setMark(var2);
-            this.drawIcon(7);
-        } catch (RuntimeException var5) {
-            var5.printStackTrace();
+            int pos = point.x - this.rects[I_BAR].x;
+            int barWidth = this.rects[I_BAR].width;
+            int lineCount = this.pch.getLineCount();
+            pos = pos <= 0 ? 0 : (pos >= barWidth ? lineCount : (int) ((float) pos / (float) barWidth * (float) lineCount));
+            this.pch.setMark(pos);
+            this.drawIcon(I_BAR);
+        } catch (RuntimeException ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -408,32 +388,31 @@ public class PCHProgress extends Canvas {
             }
         }
 
-        Dimension var2 = this.getSize();
-        int var4 = 3;
-        byte var5 = 3;
+        Dimension dim = this.getSize();
+        int x = 3;
+        int y = 3;
 
         for (int i = 1; i < this.rects.length; ++i) {
             this.rects[i].setSize(I_SIZE_ICON, I_SIZE_ICON);
         }
 
         for (int i = 1; i < this.rects.length; ++i) {
-            Rectangle var3 = this.rects[i];
-            var3.setLocation(var4, var5);
-            var4 += 23;
+            Rectangle rect = this.rects[i];
+            rect.setLocation(x, y);
+            x += 23;
         }
 
-        this.rects[7].setSize(var2.width - this.rects[7].x - 3, I_SIZE_ICON);
-        this.rects[0].setBounds(0, 0, var2.width, var2.height);
-        if (this.isBuffer && (this.image == null || this.image.getWidth((ImageObserver) null) < var2.width || this.image.getHeight((ImageObserver) null) < var2.height)) {
+        this.rects[I_BAR].setSize(dim.width - this.rects[I_BODY].x - 3, I_SIZE_ICON);
+        this.rects[I_BODY].setBounds(0, 0, dim.width, dim.height);
+        if (this.isBuffer && (this.image == null || this.image.getWidth(null) < dim.width || this.image.getHeight(null) < dim.height)) {
             if (this.image != null) {
                 this.image.flush();
                 this.back.dispose();
             }
 
-            this.image = this.createImage(var2.width, var2.height);
+            this.image = this.createImage(dim.width, dim.height);
             this.back = this.image.getGraphics();
             this.back.setFont(font);
         }
-
     }
 }
