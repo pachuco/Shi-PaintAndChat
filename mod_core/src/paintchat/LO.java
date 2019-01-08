@@ -3,11 +3,11 @@ package paintchat;
 public class LO {
     public int W;
     public int H;
-    int offX;
+    int offX; // both offX and offY seem to be always 0
     int offY;
-    public int[] offset;
+    public int[] offset; // argb data for this layer
     public String name;
-    public int iCopy;
+    public int iCopy; // blend mode
     public float iAlpha;
     public boolean isDraw;
     public static int iL = 0;
@@ -24,7 +24,7 @@ public class LO {
         this.offX = 0;
         this.offY = 0;
         this.offset = null;
-        this.iCopy = 0;
+        this.iCopy = M.M_N;
         this.iAlpha = 1.0F;
         this.isDraw = false;
         this.W = w;
@@ -442,6 +442,7 @@ public class LO {
         }
     }
 
+    /** Copies field values from another layer */
     public void setField(LO layer) {
         this.name = layer.name;
         this.iAlpha = layer.iAlpha;
