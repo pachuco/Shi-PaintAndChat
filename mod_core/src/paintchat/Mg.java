@@ -285,7 +285,7 @@ public class Mg {
         int var3 = this.info.H;
         int[][] var4 = this.info.iOffs;
         int[] var5 = var4[0];
-        int var6 = 16777215;
+        int var6 = 0xFFFFFF;
         int var7 = var2 * var3;
         synchronized (var4) {
             int var9;
@@ -1040,7 +1040,7 @@ public class Mg {
                 }
 
                 for (var23 = 0; var23 < var12; ++var23) {
-                    var10[var5 + var23] = 16777215;
+                    var10[var5 + var23] = 0xFFFFFF;
                     var9[var14 + var23] = 0;
                 }
 
@@ -1097,11 +1097,11 @@ public class Mg {
                                     float var21 = (float) var12 / (float) var14;
                                     var11 = var21 == 1.0F ? var15 : (var21 == 0.0F ? var11 : ((var11 & 16711680) + (int) ((float) ((var15 & 16711680) - (var11 & 16711680)) * var21) & 16711680) + ((var11 & '\uff00') + (int) ((float) ((var15 & '\uff00') - (var11 & '\uff00')) * var21) & '\uff00') + (var11 & 255) + (int) ((float) ((var15 & 255) - (var11 & 255)) * var21));
                                 } else {
-                                    var11 = 16777215;
+                                    var11 = 0xFFFFFF;
                                 }
 
-                                var10[var1] = var14 << 24 | var11 & 16777215;
-                                var16[var1] = 16777215;
+                                var10[var1] = var14 << 24 | var11 & 0xFFFFFF;
+                                var16[var1] = 0xFFFFFF;
                                 var9[var1] = 0;
                             }
 
@@ -2089,7 +2089,7 @@ public class Mg {
                 case 5:
                     var12 = var1 >>> 24;
                     var13 = var12 - (int) ((float) var12 * b255[var2]);
-                    return var13 == 0 ? 16777215 : var13 << 24 | var1 & 16777215;
+                    return var13 == 0 ? 0xFFFFFF : var13 << 24 | var1 & 0xFFFFFF;
                 case 6:
                     var12 = var1 >>> 24;
                     var13 = var1 >>> 16 & 255;
@@ -2223,7 +2223,7 @@ public class Mg {
         if (this.iMask == M_N) {
             return false;
         } else {
-            var1 &= 16777215;
+            var1 &= 0xFFFFFF;
             return this.iMask == M_M ? this.iColorMask == var1 : (this.iMask == M_R ? this.iColorMask != var1 : false);
         }
     }
@@ -2366,7 +2366,7 @@ public class Mg {
             int var12 = var16 * var3 + var2;
 
             for (int var14 = var12 + var4; var12 < var14; ++var12) {
-                int var11 = 16777215;
+                int var11 = 0xFFFFFF;
 
                 for (int var7 = 0; var7 < var8; ++var7) {
                     int var10 = var17[var7][var12];
@@ -2411,7 +2411,7 @@ public class Mg {
 
             for (int var15 = var13 + var3; var13 < var15; ++var13) {
                 int var12 = var20[var13] & 255;
-                int var11 = 16777215;
+                int var11 = 0xFFFFFF;
 
                 for (int var6 = 0; var6 < var7; ++var6) {
                     int var10 = var6 != var8 ? var18[var6][var13] : this.getM(var18[var6][var13], var12, var13);
@@ -2600,7 +2600,7 @@ public class Mg {
         } else {
             int var3 = this.info.L;
             int var5 = 0;
-            int var7 = 16777215;
+            int var7 = 0xFFFFFF;
             int var9 = this.info.W * var2 + var1;
 
             for (int var11 = 0; var11 < var3; ++var11) {
@@ -3056,7 +3056,7 @@ public class Mg {
             int var3 = Mg.this.info.imW;
             if (var1 >= 0 && var2 >= 0 && var1 < var3 && var2 < Mg.this.info.imH) {
                 Mg.this.mkLPic(this.buffer, var1, var2, 1, 1, Mg.this.info.Q);
-                return Mg.this.info.iOffs[Mg.this.info.m.iLayer][var3 * var2 + var1] & -16777216 | this.buffer[0];
+                return Mg.this.info.iOffs[Mg.this.info.m.iLayer][var3 * var2 + var1] & 0xFF000000 | this.buffer[0];
             } else {
                 return 0;
             }
@@ -3147,7 +3147,7 @@ public class Mg {
                 for (int var6 = 0; var6 < var1; ++var6) {
                     if (var6 >= var2) {
                         var3[var6] = 1.0F;
-                        Mg.this.memset(var4[var6] = new int[var5], 16777215);
+                        Mg.this.memset(var4[var6] = new int[var5], 0xFFFFFF);
                     } else {
                         var4[var6] = this.iOffs[var6];
                         var3[var6] = this.visit[var6];

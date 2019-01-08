@@ -109,7 +109,7 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
                 int[][] var5 = this.info.getOffset();
                 int var10 = var5[0].length;
                 int[] var12 = var5[0];
-                this.mgLine.memset(var12, 16777215);
+                this.mgLine.memset(var12, 0xFFFFFF);
                 int var8 = 1;
 
                 while (true) {

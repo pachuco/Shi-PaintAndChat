@@ -615,7 +615,7 @@ public class PaintBBS extends Applet implements Runnable {
 
             for (int var7 = 0; var7 < 2; ++var7) {
                 for (int var8 = 0; var8 < var5; ++var8) {
-                    var6[var7][var8] = 16777215;
+                    var6[var7][var8] = 0xFFFFFF;
                 }
             }
 
@@ -660,7 +660,7 @@ public class PaintBBS extends Applet implements Runnable {
         boolean var2 = this.p(var1, Locale.getDefault().getLanguage().equalsIgnoreCase(var1));
         this.pP = new Pp(var2);
         this.mI = new Mi();
-        this.tools = new Tools(this, this.mI, "PaintBBSv2.22_8", 16777215, var2, false);
+        this.tools = new Tools(this, this.mI, "PaintBBSv2.22_8", 0xFFFFFF, var2, false);
         this.pP.setVisible(false);
         this.add(this.pP, "Center");
         this.pP.setLocation(0, 0);

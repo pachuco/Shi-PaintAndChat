@@ -72,7 +72,7 @@ public class PCHViewer extends Applet implements Runnable {
     private synchronized Image getIcon() {
         try {
             if (this.imIcon == null) {
-                int[] var1 = new int[]{-3297361, -16777216, -1, -8551800, -393216};
+                int[] var1 = new int[]{0xFFCDAFAF, 0xFF000000, 0xFFFFFFFF, 0xFF7D8288, 0xFFFA0000};
                 byte[] var2 = new byte[]{-32, 1, 64, 49, 80, 1, 32, 33, 18, 17, 64, 1, 0, 17, 98, 1, 48, 33, 98, 1, 48, 33, 82, 33, 48, 1, 98, 17, 3, 1, 48, 1, 34, 65, 19, 1, 32, 17, 2, -125, 1, 32, 1, 18, -125, 1, 32, 1, 18, 83, 2, 3, 17, 32, 1, 18, 1, 51, 18, 97, 18, 113, 82, 1, 2, 48, 52, 18, 65, 2, 49, 36, 33, 82, 48, 20, -110};
                 int var3 = 0;
                 int[] var6 = new int[256];

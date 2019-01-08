@@ -78,7 +78,7 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
 
     private synchronized void clearCanvas() {
         try {
-            int var1 = 16777215;
+            int var1 = 0xFFFFFF;
             if (this.i_off != null) {
                 int var2 = this.i_off[0].length;
                 if (var2 > 0) {

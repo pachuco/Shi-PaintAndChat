@@ -80,7 +80,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
         int var4 = var3 / 2;
         Graphics var5 = this.primary();
         var5.setXORMode(Color.white);
-        var5.setColor(this.tools.lMode == 19 ? Color.cyan : (this.tools.clLine == 16777215 ? Color.red : new Color(this.tools.clLine >>> 1)));
+        var5.setColor(this.tools.lMode == 19 ? Color.cyan : (this.tools.clLine == 0xFFFFFF ? Color.red : new Color(this.tools.clLine >>> 1)));
         if (this.isPre) {
             var5.drawOval(this.po_pre_old.x - var4, this.po_pre_old.y - var4, var3, var3);
             this.isPre = false;
@@ -214,10 +214,10 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
         int var10 = Math.min((int) ((float) (var6 >>> 16 & 255) / 255.0F * (float) var7) + (int) ((float) (var5 >>> 16 & 255) / 255.0F * (float) var8) + var9, 255) << 16;
         int var11 = Math.min((int) ((float) (var6 >>> 8 & 255) / 255.0F * (float) var7) + (int) ((float) (var5 >>> 8 & 255) / 255.0F * (float) var8) + var9, 255) << 8;
         int var12 = Math.min((int) ((float) (var6 & 255) / 255.0F * (float) var7) + (int) ((float) (var5 & 255) / 255.0F * (float) var8) + var9, 255);
-        int var13 = this.i_offs[this.tools.lLayer][var4] & -16777216 | var10 | var11 | var12;
+        int var13 = this.i_offs[this.tools.lLayer][var4] & 0xFF000000 | var10 | var11 | var12;
         boolean var14 = false;
         if (this.tools.lLayer == 1) {
-            boolean var15 = var13 == 16777215;
+            boolean var15 = var13 == 0xFFFFFF;
             int var10000 = var13 >>> 24;
             if (this.tools.sel_button == 4) {
                 if (!var15) {
@@ -230,7 +230,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
             }
         }
 
-        var13 &= 16777215;
+        var13 &= 0xFFFFFF;
         if (var13 != this.tools.clLine) {
             this.tools.clLine = var13;
             var14 = true;
@@ -250,7 +250,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
         this.setBackground(var2.cl_back);
         this.mg_b = new MgLine();
         MgLine.setup(this, 1);
-        int var4 = var2.cl_back.getRGB() & 16777215;
+        int var4 = var2.cl_back.getRGB() & 0xFFFFFF;
         int var5 = var2.image_x;
         int var6 = var2.image_y;
         int var7 = var5 * var6;

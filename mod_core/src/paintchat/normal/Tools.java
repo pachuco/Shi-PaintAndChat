@@ -203,7 +203,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
                     var2.append('\n');
                 }
 
-                var2.append("#" + Integer.toHexString(-16777216 | var1[var3] & 0xFFFFFF).substring(2).toUpperCase());
+                var2.append("#" + Integer.toHexString(0xFF000000 | var1[var3] & 0xFFFFFF).substring(2).toUpperCase());
             }
 
             return var2.toString();

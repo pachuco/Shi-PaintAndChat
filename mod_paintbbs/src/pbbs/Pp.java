@@ -446,8 +446,8 @@ public class Pp extends Panel {
         this.cl_frame = new Color(var1.p(var9 + var14, this.cl_app_fore.getRGB()));
         this.cl_bar_hl = new Color(var1.p(var9 + var13 + '_' + var14 + var15, 15658751));
         this.cl_bar_sh = new Color(var1.p(var9 + var13 + '_' + var14 + var16, this.cl_bar.darker().getRGB()));
-        this.cl_bar_bhl = new Color(var1.p(var9 + var13 + var15, 16777215));
-        this.cl_back = new Color(var1.p("image_" + var5, 16777215));
+        this.cl_bar_bhl = new Color(var1.p(var9 + var13 + var15, 0xFFFFFF));
+        this.cl_back = new Color(var1.p("image_" + var5, 0xFFFFFF));
         this.size_bar = var1.p(var13 + '_' + var8, 20);
         this.image_x = var1.p("image_width", 300);
         this.image_y = var1.p("image_height", 300);

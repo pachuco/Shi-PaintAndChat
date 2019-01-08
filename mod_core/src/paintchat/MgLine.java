@@ -160,7 +160,7 @@ public class MgLine {
 
     private void clear(Graphics var1, int[][] var2, int var3, int var4) {
         int[] var5 = var2[0];
-        int var6 = 16777215;
+        int var6 = 0xFFFFFF;
         int var7 = var3 * var4;
         // older section from PCHViewer
         /*
@@ -218,9 +218,9 @@ public class MgLine {
         this.head = var1;
         this.line_size = var3 <= 0 ? 1 : var3;
         this.mask = var2 == 0 ? 110 : var2;
-        this.i_mask = var5 & 16777215;
+        this.i_mask = var5 & 0xFFFFFF;
         this.i_alpha = var6 == 0 ? 255 : var6;
-        this.i_color = var4 & 16777215;
+        this.i_color = var4 & 0xFFFFFF;
         this.layer = var7;
     }
 
@@ -287,7 +287,7 @@ public class MgLine {
                     }
 
                     var19[var7] = var15;
-                    var20[var7] = 16777215;
+                    var20[var7] = 0xFFFFFF;
                     ++var7;
                 }
             }
@@ -530,7 +530,7 @@ public class MgLine {
                     }
 
                     if (!this.isArc(var6) && var10 >= 0 && var10 < var9 && var12 >= 0 && var12 < var2 && !this.isM(var1[var10]) && !isTone(this.alpha, var12, var13)) {
-                        var1[var10] = -16777216 | this.i_color & 16777215;
+                        var1[var10] = 0xFF000000 | this.i_color & 0xFFFFFF;
                     }
                 }
 
@@ -620,7 +620,7 @@ public class MgLine {
                                 var30 -= Math.round((float) (255 - var30) / var31);
                             }
 
-                            var1[var10] = var7 & -16777216 | (var28 > 0 ? (var28 <= 255 ? var28 : 255) : 0) << 16 | (var29 > 0 ? (var29 <= 255 ? var29 : 255) : 0) << 8 | (var30 > 0 ? (var30 <= 255 ? var30 : 255) : 0);
+                            var1[var10] = var7 & 0xFF000000 | (var28 > 0 ? (var28 <= 255 ? var28 : 255) : 0) << 16 | (var29 > 0 ? (var29 <= 255 ? var29 : 255) : 0) << 8 | (var30 > 0 ? (var30 <= 255 ? var30 : 255) : 0);
                         }
                     }
                 }
@@ -861,7 +861,7 @@ public class MgLine {
                             }
 
                             for (var17 = 0; var17 < var9; ++var17) {
-                                if (!this.isM(var1[var8]) && (var27[var15] & 16777215) != 0) {
+                                if (!this.isM(var1[var8]) && (var27[var15] & 0xFFFFFF) != 0) {
                                     var1[var8] = this.getAPix(var1[var8], this.i_color);
                                 }
 
@@ -1004,7 +1004,7 @@ public class MgLine {
 
     private final int getAPix(int var1, int var2) {
         if (this.i_alpha == 255) {
-            return -16777216 | var2;
+            return 0xFF000000 | var2;
         } else {
             int var3 = var1 >>> 24;
             int var6 = Math.max(255 - this.i_alpha >>> 3, 1);
@@ -1137,7 +1137,7 @@ public class MgLine {
 
     private final int getWPix(int var1) {
         if (this.i_alpha == 255) {
-            return 16777215;
+            return 0xFFFFFF;
         } else {
             int var2 = var1 >> 24 & 255;
             var2 = Math.max(var2 - ((var2 / (255 - this.i_alpha) << 1) + 1), 0);
@@ -1177,7 +1177,7 @@ public class MgLine {
     }
 
     private final boolean isM(int var1) {
-        var1 &= 16777215;
+        var1 &= 0xFFFFFF;
         return this.mask == 111 ? var1 == this.i_mask : (this.mask == 112 ? var1 != this.i_mask : false);
     }
 
@@ -1345,7 +1345,7 @@ public class MgLine {
             }
 
             int var14 = var1[var5 * var2 + var4];
-            int var15 = this.i_alpha << 24 | this.i_color & 16777215;
+            int var15 = this.i_alpha << 24 | this.i_color & 0xFFFFFF;
             if (var14 == var15) {
                 return;
             }
@@ -1479,7 +1479,7 @@ public class MgLine {
                                 for (var27 = 0; var27 < var8; ++var27) {
                                     var22 = var26 * var8 + var27;
                                     int var21 = var36[var22];
-                                    var36[var22] = var13[var2 * (this.rect.y + var26) + this.rect.x + var27] & -16777216 | var21 & 16777215;
+                                    var36[var22] = var13[var2 * (this.rect.y + var26) + this.rect.x + var27] & 0xFF000000 | var21 & 0xFFFFFF;
                                 }
                             }
 

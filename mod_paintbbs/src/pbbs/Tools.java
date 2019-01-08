@@ -40,8 +40,8 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
     private boolean isD = false;
     private int v_bar;
     private int v_add;
-    public int clLine = -16777216;
-    public int clMask = -16777216;
+    public int clLine = 0xFF000000;
+    public int clMask = 0xFF000000;
     public int clAlpha = 255;
     public int lMode = 0;
     public int lHints = 60;
@@ -63,7 +63,7 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
     private int now_color = 0;
     private Image image = null;
     private Graphics back = null;
-    private static int[] DEFC = new int[]{0, 16777215, 11826549, 8947848, 16422550, 12621504, 16758527, 8421631, 2475977, 15197581, 15177261, 10079099, 16575714, 16375247};
+    private static int[] DEFC = new int[]{0x000000, 0xFFFFFF, 0xB47575, 0x888888, 0xFA9696, 0xC096C0, 0xFFB6FF, 0x8080FF, 0x25C7C9, 0xE7E58D, 0xE7962D, 0x68FAC7B, 0xFCECE2, 0xF9DDCF};
     private static int[] COLORS;
     private int[] CASHS;
     private Color cl_frame;
@@ -176,7 +176,7 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
                 var9.printStackTrace();
             }
 
-            this.CASHS = new int[]{0, 1, 255, 60, 0, 16777215, 5, 255, 60, 19, 16777215, 10, 255, 60, 19};
+            this.CASHS = new int[]{0, 1, 255, 60, 0, 0xFFFFFF, 5, 255, 60, 19, 0xFFFFFF, 10, 255, 60, 19};
         } catch (Throwable var10) {
             var10.printStackTrace();
         }
@@ -283,7 +283,7 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
                     var1.append('\n');
                 }
 
-                var1.append("#" + Integer.toHexString(-16777216 | var0[var2] & 16777215).substring(2).toUpperCase());
+                var1.append("#" + Integer.toHexString(0xFF000000 | var0[var2] & 0xFFFFFF).substring(2).toUpperCase());
             }
 
             return var1.toString();
