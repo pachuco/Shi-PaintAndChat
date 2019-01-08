@@ -1,21 +1,11 @@
 package syi.awt;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dialog;
-import java.awt.FlowLayout;
-import java.awt.Frame;
-import java.awt.Panel;
-import java.awt.Point;
-import java.awt.TextField;
-import java.awt.Window;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.Hashtable;
-
-import static java.awt.event.ComponentEvent.*;
 
 public class MessageBox extends Dialog implements ActionListener {
     private static MessageBox message = null;
@@ -33,7 +23,7 @@ public class MessageBox extends Dialog implements ActionListener {
         super(var1);
         this.setForeground(var1.getForeground());
         this.setBackground(var1.getBackground());
-        super.enableEvents(WINDOW_EVENT_MASK);
+        super.enableEvents(AWTEvent.WINDOW_EVENT_MASK);
         this.setLayout(new BorderLayout());
         this.setModal(true);
         this.setResizable(false);

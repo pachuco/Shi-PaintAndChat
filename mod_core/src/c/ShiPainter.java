@@ -3,16 +3,11 @@ package c;
 import jaba.applet.Applet;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 import java.io.*;
 import java.net.URL;
 import java.util.Locale;
 import javax.imageio.ImageIO;
-
-import static java.awt.event.ComponentEvent.*;
 
 import paintchat.M;
 import paintchat.Res;
@@ -107,7 +102,7 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
     protected void processEvent(AWTEvent evt) {
         try {
             int id = evt.getID();
-            if (id == COMPONENT_RESIZED && this.ts != null) {
+            if (id == ComponentEvent.COMPONENT_RESIZED && this.ts != null) {
                 this.ts.pack();
             }
         } catch (Throwable var3) {
@@ -194,7 +189,7 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
             var10.printStackTrace();
         }
 
-        this.enableEvents(COMPONENT_EVENT_MASK | KEY_EVENT_MASK);
+        this.enableEvents(AWTEvent.COMPONENT_EVENT_MASK | AWTEvent.KEY_EVENT_MASK);
         this.add(this.ts);
         this.add(this.p);
         p.loadImW = width;

@@ -1,14 +1,8 @@
 package syi.awt;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-
-import static java.awt.event.ComponentEvent.*;
 
 public class LPopup extends Component {
     private String[] strs = null;
@@ -17,7 +11,7 @@ public class LPopup extends Component {
     private int minWidth = 10;
 
     public LPopup() {
-        this.enableEvents(MOUSE_EVENT_MASK | MOUSE_MOTION_EVENT_MASK);
+        this.enableEvents(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
         this.setVisible(false);
     }
 

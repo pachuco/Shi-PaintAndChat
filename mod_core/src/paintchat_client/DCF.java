@@ -15,8 +15,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 
-import static java.awt.event.ComponentEvent.*;
-
 import paintchat.Res;
 import syi.awt.Awt;
 
@@ -75,7 +73,7 @@ public class DCF extends Dialog implements ItemListener, ActionListener {
         this.pText.add(this.cbAdmin);
         this.add((String) "Center", (Component) this.pText);
         this.lPas.setText(this.res.res("password"));
-        this.enableEvents(WINDOW_EVENT_MASK);
+        this.enableEvents(WindowEvent.WINDOW_EVENT_MASK);
         Awt.getDef(this);
         Awt.setDef(this, false);
         this.pack();

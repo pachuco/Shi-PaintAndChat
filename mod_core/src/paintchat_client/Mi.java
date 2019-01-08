@@ -11,10 +11,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.TextField;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.image.ImageObserver;
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -24,10 +21,6 @@ import paintchat.Res;
 import paintchat.ToolBox;
 import syi.awt.Awt;
 import syi.awt.LComponent;
-
-import static java.awt.event.ComponentEvent.*;
-import static java.awt.event.KeyEvent.*;
-import static java.awt.event.MouseEvent.*;
 
 public class Mi extends LComponent implements ActionListener {
     private LComponent tab;
@@ -160,7 +153,7 @@ public class Mi extends LComponent implements ActionListener {
     }
 
     private void cursor(int var1, int var2, int var3) {
-        if (var1 == MOUSE_MOVED) {
+        if (var1 == MouseEvent.MOUSE_MOVED) {
             Dimension var4 = this.info.getSize();
             int var5 = this.sizeBar;
             int var6 = var4.width;
@@ -183,7 +176,7 @@ public class Mi extends LComponent implements ActionListener {
     private void dBz(int var1, int var2, int var3) {
         try {
             if (this.psCount <= 0) {
-                if (var1 != MOUSE_RELEASED) {
+                if (var1 != MouseEvent.MOUSE_RELEASED) {
                     this.dLine(var1, var2, var3);
                 } else {
                     this.primary2.drawLine(this.ps[0] >> 16, (short) this.ps[0], this.ps[1] >> 16, (short) this.ps[1]);
@@ -201,7 +194,7 @@ public class Mi extends LComponent implements ActionListener {
             this.ePre();
             this.dPreB(true);
             switch (var1) {
-                case MOUSE_RELEASED:
+                case MouseEvent.MOUSE_RELEASED:
                     this.p(this.psCount++, var2, var3);
                     if (this.psCount >= 3) {
                         --this.psCount;
@@ -215,12 +208,12 @@ public class Mi extends LComponent implements ActionListener {
 
                     this.p(this.psCount, var2, var3);
                     break;
-                case MOUSE_MOVED:
-                case MOUSE_DRAGGED:
+                case MouseEvent.MOUSE_MOVED:
+                case MouseEvent.MOUSE_DRAGGED:
                     this.p(this.psCount, var2, var3);
                     this.p(2, var2, var3);
-                case MOUSE_ENTERED:
-                case MOUSE_EXITED:
+                case MouseEvent.MOUSE_ENTERED:
+                case MouseEvent.MOUSE_EXITED:
             }
 
             this.dPreB(false);
@@ -268,7 +261,7 @@ public class Mi extends LComponent implements ActionListener {
             int var7 = (short) this.ps[1] - (short) this.ps[0];
             int var8;
             switch (var1) {
-                case MOUSE_PRESSED:
+                case MouseEvent.MOUSE_PRESSED:
                     if (this.imCopy != null) {
                         this.imCopy.flush();
                     }
@@ -276,7 +269,7 @@ public class Mi extends LComponent implements ActionListener {
                     this.imCopy = this.m.getImage(this.ps[4], var4, var5, var6, var7);
                     this.p(3, var2, var3);
                     break;
-                case MOUSE_RELEASED:
+                case MouseEvent.MOUSE_RELEASED:
                     var4 += var2 - (this.ps[3] >> 16);
                     var8 = var5 + (var3 - (short) this.ps[3]);
                     this.p(2, var4, var8);
@@ -286,12 +279,12 @@ public class Mi extends LComponent implements ActionListener {
                     this.m.draw();
                     this.dEnd(false);
                     this.psCount = -1;
-                case MOUSE_MOVED:
-                case MOUSE_ENTERED:
-                case MOUSE_EXITED:
+                case MouseEvent.MOUSE_MOVED:
+                case MouseEvent.MOUSE_ENTERED:
+                case MouseEvent.MOUSE_EXITED:
                 default:
                     break;
-                case MOUSE_DRAGGED:
+                case MouseEvent.MOUSE_DRAGGED:
                     this.m_paint(var4, var5, var6, var7);
                     var4 += var2 - (this.ps[3] >> 16);
                     var8 = var5 + (var3 - (short) this.ps[3]);
@@ -350,7 +343,7 @@ public class Mi extends LComponent implements ActionListener {
     private void dFLine(int eventId, int x, int y) {
         try {
             switch (eventId) {
-                case MOUSE_PRESSED:
+                case MouseEvent.MOUSE_PRESSED:
                     this.poll();
                     this.setM();
                     this.m.dStart(x, y, this.getS(), true, true);
@@ -359,7 +352,7 @@ public class Mi extends LComponent implements ActionListener {
                     this.psCount = 1;
                     this.p(0, x, y);
                     break;
-                case MOUSE_RELEASED:
+                case MouseEvent.MOUSE_RELEASED:
                     if (this.psCount >= 0) {
                         if (this.m.iHint == M.H_SP) {
                             this.m.dNext(x, y, this.getS(), 0);
@@ -368,12 +361,12 @@ public class Mi extends LComponent implements ActionListener {
                         this.dEnd(true);
                         this.psCount = -1;
                     }
-                case MOUSE_MOVED:
-                case MOUSE_ENTERED:
-                case MOUSE_EXITED:
+                case MouseEvent.MOUSE_MOVED:
+                case MouseEvent.MOUSE_ENTERED:
+                case MouseEvent.MOUSE_EXITED:
                 default:
                     break;
-                case MOUSE_DRAGGED:
+                case MouseEvent.MOUSE_DRAGGED:
                     if (this.psCount >= 0 && this.isOKPo(x, y)) {
                         this.psCount = 0;
                         this.m.dNext(x, y, this.getS(), 0);
@@ -390,7 +383,7 @@ public class Mi extends LComponent implements ActionListener {
     private void dLine(int eventId, int x, int y) {
         try {
             switch (eventId) {
-                case MOUSE_PRESSED:
+                case MouseEvent.MOUSE_PRESSED:
                     this.setM();
 
                     for (int i = 0; i < 4; ++i) {
@@ -401,7 +394,7 @@ public class Mi extends LComponent implements ActionListener {
                     this.primary2.setColor(new Color(this.m.iColor));
                     this.primary2.drawLine(x, y, x, y);
                     break;
-                case MOUSE_RELEASED:
+                case MouseEvent.MOUSE_RELEASED:
                     if (this.psCount >= 0) {
                         int var4 = this.ps[0] >> 16;
                         short var5 = (short) this.ps[0];
@@ -419,12 +412,12 @@ public class Mi extends LComponent implements ActionListener {
 
                         this.psCount = -1;
                     }
-                case MOUSE_MOVED:
-                case MOUSE_ENTERED:
-                case MOUSE_EXITED:
+                case MouseEvent.MOUSE_MOVED:
+                case MouseEvent.MOUSE_ENTERED:
+                case MouseEvent.MOUSE_EXITED:
                 default:
                     break;
-                case MOUSE_DRAGGED:
+                case MouseEvent.MOUSE_DRAGGED:
                     if (this.psCount >= 0) {
                         this.primary2.drawLine(this.ps[0] >> 16, (short) this.ps[0], this.ps[1] >> 16, (short) this.ps[1]);
                         this.primary2.drawLine(this.ps[0] >> 16, (short) this.ps[0], x, y);
@@ -628,13 +621,13 @@ public class Mi extends LComponent implements ActionListener {
         try {
             int[] var4 = this.user.points;
             switch (eventId) {
-                case MOUSE_PRESSED:
+                case MouseEvent.MOUSE_PRESSED:
                     this.setM();
                     this.p(0, var2, var3);
                     this.m.memset((int[]) var4, (int) 0);
                     this.psCount = 1;
                     break;
-                case MOUSE_RELEASED:
+                case MouseEvent.MOUSE_RELEASED:
                     if (this.psCount > 0) {
                         this.p(1, var2, var3);
                         if (this.transRect()) {
@@ -650,12 +643,12 @@ public class Mi extends LComponent implements ActionListener {
                     }
 
                     this.psCount = -1;
-                case MOUSE_MOVED:
-                case MOUSE_ENTERED:
-                case MOUSE_EXITED:
+                case MouseEvent.MOUSE_MOVED:
+                case MouseEvent.MOUSE_ENTERED:
+                case MouseEvent.MOUSE_EXITED:
                 default:
                     break;
-                case MOUSE_DRAGGED:
+                case MouseEvent.MOUSE_DRAGGED:
                     if (this.psCount == 1) {
                         int var5 = var4[0];
                         int var6 = var4[1];
@@ -681,8 +674,8 @@ public class Mi extends LComponent implements ActionListener {
         if (var2 == 0 && var3 == 0) {
             int var4 = event.getID();
             Point var5 = event.getPoint();
-            if (var4 != MOUSE_RELEASED && var4 != MOUSE_DRAGGED) {
-                if (var4 == MOUSE_PRESSED) {
+            if (var4 != MouseEvent.MOUSE_RELEASED && var4 != MouseEvent.MOUSE_DRAGGED) {
+                if (var4 == MouseEvent.MOUSE_PRESSED) {
                     this.poS = var5;
                 }
             } else {
@@ -697,7 +690,7 @@ public class Mi extends LComponent implements ActionListener {
 
     public void dText(int eventId, int var2, int var3) {
         switch (eventId) {
-            case MOUSE_RELEASED:
+            case MouseEvent.MOUSE_RELEASED:
                 this.setM();
                 if (this.text == null) {
                     this.text = new TextField(16);
@@ -719,7 +712,7 @@ public class Mi extends LComponent implements ActionListener {
                 }
 
                 this.p(0, var2, var3);
-            case MOUSE_PRESSED:
+            case MouseEvent.MOUSE_PRESSED:
             default:
         }
     }
@@ -841,8 +834,8 @@ public class Mi extends LComponent implements ActionListener {
             int scale = this.info.scale;
             int sX = ev.getX() / scale * scale;
             int sY = ev.getY() / scale * scale;
-            boolean isMPress   = id == MOUSE_PRESSED;
-            boolean isMRelease = id == MOUSE_RELEASED;
+            boolean isMPress   = id == MouseEvent.MOUSE_PRESSED;
+            boolean isMRelease = id == MouseEvent.MOUSE_RELEASED;
             boolean isMDrag    = id == MouseEvent.MOUSE_DRAGGED;
             boolean isMRight   = this.isRight;
             if (ev.isAltDown() && ev.isControlDown()) {
@@ -920,18 +913,18 @@ public class Mi extends LComponent implements ActionListener {
             if (!this.isDrag) {
                 this.cursor(id, sX, sY);
                 switch (id) {
-                    case MOUSE_MOVED:
+                    case MouseEvent.MOUSE_MOVED:
                         this.dPre(sX, sY, this.isIn);
                         this.isIn = true;
                         break;
-                    case MOUSE_ENTERED:
+                    case MouseEvent.MOUSE_ENTERED:
                         if (this.text == null || !this.text.isVisible()) {
                             this.requestFocus();
                         }
 
                         this.getS();
                         break;
-                    case MOUSE_EXITED:
+                    case MouseEvent.MOUSE_EXITED:
                         if (this.isIn) {
                             this.isIn = false;
                             this.dPre(this.oldX, this.oldY, false);
@@ -988,7 +981,7 @@ public class Mi extends LComponent implements ActionListener {
                 }
             }
 
-            if (id == MOUSE_RELEASED && this.isIn) {
+            if (id == MouseEvent.MOUSE_RELEASED && this.isIn) {
                 this.dPre(sX, sY, false);
                 this.isDrag = false;
             }
@@ -1023,41 +1016,41 @@ public class Mi extends LComponent implements ActionListener {
                 keyEvent.consume();
                 label56:
                 switch (eventId) {
-                    case KEY_PRESSED:
+                    case KeyEvent.KEY_PRESSED:
                         switch (keyEvent.getKeyCode()) {
-                            case 9:
+                            case KeyEvent.VK_TAB:
                                 this.isVTool = !this.isVTool;
                                 this.tBox.mVisible(this.isVTool);
                                 break label56;
-                            case VK_SPACE:
+                            case KeyEvent.VK_SPACE:
                                 this.isSpace = true;
                                 break label56;
-                            case VK_LEFT:
+                            case KeyEvent.VK_LEFT:
                                 this.scroll(-5, 0);
                                 break label56;
-                            case VK_UP:
+                            case KeyEvent.VK_UP:
                                 this.scroll(0, -5);
                                 break label56;
-                            case VK_RIGHT:
+                            case KeyEvent.VK_RIGHT:
                                 this.scroll(5, 0);
                                 break label56;
-                            case VK_DOWN:
+                            case KeyEvent.VK_DOWN:
                                 this.scroll(0, 5);
                                 break label56;
-                            case VK_B:
+                            case KeyEvent.VK_B:
                                 this.dPre(this.oldX, this.oldY, false);
                                 this.tBox.selPix(false);
                                 this.dPre(this.oldX, this.oldY, false);
                                 break label56;
-                            case VK_E:
+                            case KeyEvent.VK_E:
                                 this.dPre(this.oldX, this.oldY, false);
                                 this.tBox.selPix(true);
                                 this.dPre(this.oldX, this.oldY, false);
                                 break label56;
-                            case VK_R:
-                            case VK_Y:
+                            case KeyEvent.VK_R:
+                            case KeyEvent.VK_Y:
                                 isUndo = false;
-                            case VK_Z:
+                            case KeyEvent.VK_Z:
                                 if (isAltDown) {
                                     isUndo = false;
                                 }
@@ -1066,24 +1059,24 @@ public class Mi extends LComponent implements ActionListener {
                                     this.imi.undo(isUndo);
                                 }
                                 break label56;
-                            case VK_ADD:
+                            case KeyEvent.VK_ADD:
                                 this.scaleChange(1, false);
                                 break label56;
-                            case VK_SUBTRACT:
+                            case KeyEvent.VK_SUBTRACT:
                                 this.scaleChange(-1, false);
                             default:
                                 break label56;
                         }
-                    case KEY_RELEASED:
+                    case KeyEvent.KEY_RELEASED:
                         switch (keyEvent.getKeyCode()) {
-                            case VK_SPACE:
+                            case KeyEvent.VK_SPACE:
                                 this.isSpace = false;
                         }
                 }
             } else if (super.isGUI) {
                 switch (eventId) {
-                    case COMPONENT_RESIZED:
-                    case COMPONENT_SHOWN:
+                    case ComponentEvent.COMPONENT_RESIZED:
+                    case ComponentEvent.COMPONENT_SHOWN:
                         this.resetGraphics();
                         this.repaint();
                 }

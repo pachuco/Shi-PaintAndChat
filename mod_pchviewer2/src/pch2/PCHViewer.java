@@ -2,12 +2,7 @@ package pch2;
 
 import jaba.applet.Applet;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Window;
+import java.awt.*;
 import java.awt.image.MemoryImageSource;
 import java.io.IOException;
 import java.net.URL;
@@ -15,8 +10,6 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Vector;
-
-import static java.awt.event.ComponentEvent.*;
 
 import paintchat.Res;
 import syi.util.ByteStream;
@@ -220,7 +213,7 @@ public class PCHViewer extends Applet implements Runnable {
 
     public void init() {
         try {
-            this.enableEvents(MOUSE_EVENT_MASK);
+            this.enableEvents(AWTEvent.MOUSE_EVENT_MASK);
             isJa = Locale.getDefault().getLanguage().equalsIgnoreCase("ja");
             isJa = this.p("ja", isJa);
             PCHProgress.isJa = isJa;

@@ -13,9 +13,6 @@ import java.awt.Rectangle;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 
-import static java.awt.event.ComponentEvent.*;
-import static java.awt.event.MouseEvent.*;
-
 public abstract class LComponent extends Canvas {
     protected static boolean isWin;
     private String title = null;
@@ -58,7 +55,7 @@ public abstract class LComponent extends Canvas {
         this.isRepaint = !isWin;
         Awt.getDef(this);
         this.clFrame = Awt.cF;
-        this.enableEvents(COMPONENT_EVENT_MASK | KEY_EVENT_MASK | MOUSE_EVENT_MASK | MOUSE_MOTION_EVENT_MASK);
+        this.enableEvents(AWTEvent.COMPONENT_EVENT_MASK | AWTEvent.KEY_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
     }
 
     public void escape(boolean var1) {
@@ -279,7 +276,7 @@ public abstract class LComponent extends Canvas {
             int var6;
             int var7;
             switch (awtEv.getID()) {
-                case COMPONENT_MOVED:
+                case ComponentEvent.COMPONENT_MOVED:
                     var4.setLocation(super.getLocation());
                     var7 = var4.x;
                     int var8 = var4.y;
@@ -288,7 +285,7 @@ public abstract class LComponent extends Canvas {
                         this.getParent().repaint(0L, var7, var8, var3.width, var3.height);
                     }
                     break;
-                case COMPONENT_RESIZED:
+                case ComponentEvent.COMPONENT_RESIZED:
                     var3.setSize(super.getSize());
                     int var5 = var3.width;
                     var6 = var3.height;

@@ -2,19 +2,7 @@ package pch;
 
 import jaba.applet.Applet;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.MediaTracker;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Window;
+import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
@@ -26,9 +14,6 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.zip.GZIPInputStream;
-
-import static java.awt.event.MouseEvent.*;
-import static java.awt.event.ComponentEvent.*;
 
 import paintchat.MgLine;
 
@@ -67,7 +52,7 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
     private Point oldPo = null;
 
     public PCHCanvas(Applet var1, boolean var2) {
-        this.enableEvents(COMPONENT_EVENT_MASK | MOUSE_EVENT_MASK | MOUSE_MOTION_EVENT_MASK);
+        this.enableEvents(AWTEvent.COMPONENT_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
         this.setCursor(Cursor.getPredefinedCursor(12));
         this.applet = var1;
     }
@@ -370,20 +355,20 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
     protected void processMouseMotionEvent(MouseEvent var1) {
         try {
             switch (var1.getID()) {
-                case MOUSE_PRESSED:
+                case MouseEvent.MOUSE_PRESSED:
                     this.oldPo = var1.getPoint();
                     this.setCursor(Cursor.getPredefinedCursor(12));
                     break;
-                case MOUSE_RELEASED:
+                case MouseEvent.MOUSE_RELEASED:
                     this.oldPo = null;
                     this.setCursor(Cursor.getDefaultCursor());
                     this.repaint();
-                case MOUSE_MOVED:
-                case MOUSE_ENTERED:
-                case MOUSE_EXITED   :
+                case MouseEvent.MOUSE_MOVED:
+                case MouseEvent.MOUSE_ENTERED:
+                case MouseEvent.MOUSE_EXITED:
                 default:
                     break;
-                case MOUSE_DRAGGED:
+                case MouseEvent.MOUSE_DRAGGED:
                     this.scroll(var1.getPoint(), true);
             }
         } catch (Throwable var3) {

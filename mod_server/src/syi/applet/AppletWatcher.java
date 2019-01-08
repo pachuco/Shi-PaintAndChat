@@ -1,19 +1,14 @@
 package syi.applet;
 
 import jaba.applet.Applet;
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Frame;
-import java.awt.Window;
+
+import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Hashtable;
-
-import static java.awt.event.WindowEvent.*;
-import static java.awt.event.ComponentEvent.*;
 
 import paintchat.Config;
 import syi.awt.Awt;
@@ -26,7 +21,7 @@ public class AppletWatcher extends Frame {
 
     public AppletWatcher(String var1, String var2, Config var3, Hashtable var4, boolean var5) throws ClassNotFoundException, Exception, IOException {
         super(var2);
-        this.enableEvents(WINDOW_EVENT_MASK);
+        this.enableEvents(AWTEvent.WINDOW_EVENT_MASK);
         this.bool_exit = var5;
         this.setLayout(new BorderLayout());
         this.applet = (Applet) Class.forName(var1).newInstance();
@@ -112,14 +107,14 @@ public class AppletWatcher extends Frame {
             int var2 = var1.getID();
             Window var3 = var1.getWindow();
             switch (var2) {
-                case WINDOW_OPENED:
+                case WindowEvent.WINDOW_OPENED:
                     this.applet.start();
                     break;
-                case WINDOW_CLOSING:
+                case WindowEvent.WINDOW_CLOSING:
                     var3.dispose();
                     this.applet.stop();
                     break;
-                case WINDOW_CLOSED:
+                case WindowEvent.WINDOW_CLOSED:
                     this.applet.destroy();
                     this.applet = null;
                     if (this.bool_exit) {

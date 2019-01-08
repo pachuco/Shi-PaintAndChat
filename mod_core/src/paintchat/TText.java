@@ -15,8 +15,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 
-import static java.awt.event.ComponentEvent.*;
-
 import syi.awt.Awt;
 
 public class TText extends Dialog implements SW, ActionListener, ItemListener {
@@ -109,7 +107,7 @@ public class TText extends Dialog implements SW, ActionListener, ItemListener {
         this.cIT.addItemListener(this);
         this.cV.addItemListener(this);
         this.pack();
-        this.enableEvents(WINDOW_EVENT_MASK);
+        this.enableEvents(WindowEvent.WINDOW_EVENT_MASK);
         this.setVisible(true);
     }
 

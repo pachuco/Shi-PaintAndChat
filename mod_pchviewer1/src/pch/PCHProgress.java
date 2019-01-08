@@ -1,20 +1,9 @@
 package pch;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.ImageObserver;
-
-import static java.awt.event.ComponentEvent.*;
-import static java.awt.event.MouseEvent.*;
 
 public class PCHProgress extends Canvas {
     private PCHCanvas pch;
@@ -47,7 +36,7 @@ public class PCHProgress extends Canvas {
     private static String[] JA_SPEED = {"最", "早", "既", "鈍"};
 
     public PCHProgress(boolean isBuffer) {
-        this.enableEvents(COMPONENT_EVENT_MASK | MOUSE_EVENT_MASK | MOUSE_MOTION_EVENT_MASK);
+        this.enableEvents(AWTEvent.COMPONENT_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
         this.isBuffer = isBuffer;
     }
 
@@ -285,7 +274,7 @@ public class PCHProgress extends Canvas {
                 return;
             }
 
-            if (id == COMPONENT_RESIZED) {
+            if (id == ComponentEvent.COMPONENT_RESIZED) {
                 this.upRect();
                 this.iPaint(this.back);
             }
@@ -300,23 +289,23 @@ public class PCHProgress extends Canvas {
             int id = mEv.getID();
             Point point = mEv.getPoint();
             switch (id) {
-                case MOUSE_PRESSED:
+                case MouseEvent.MOUSE_PRESSED:
                     this.action(point);
                     if (this.putTool == I_BAR) {
                         this.setMark(point);
                     }
                     break;
-                case MOUSE_RELEASED:
+                case MouseEvent.MOUSE_RELEASED:
                     this.action(point);
                     this.releaseIcon();
                     break;
-                case MOUSE_MOVED:
+                case MouseEvent.MOUSE_MOVED:
                     this.selIcon(point);
-                case MOUSE_ENTERED:
-                case MOUSE_EXITED:
+                case MouseEvent.MOUSE_ENTERED:
+                case MouseEvent.MOUSE_EXITED:
                 default:
                     break;
-                case MOUSE_DRAGGED:
+                case MouseEvent.MOUSE_DRAGGED:
                     if (this.putTool == I_BAR) {
                         this.setMark(point);
                     }

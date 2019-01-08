@@ -30,8 +30,6 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static java.awt.event.ComponentEvent.*;
-
 import paintchat.M;
 import paintchat.MgText;
 import paintchat.Res;
@@ -448,7 +446,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
 
     protected void processEvent(AWTEvent var1) {
         int var2 = var1.getID();
-        if (var2 == COMPONENT_RESIZED) {
+        if (var2 == ComponentEvent.COMPONENT_RESIZED) {
             this.dSize = super.getSize();
             Dimension var3 = this.getSize();
             this.setSize(var3.getSize());
@@ -554,7 +552,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
 
             this.mkTextPanel();
             this.tField.addKeyListener(this);
-            this.enableEvents(COMPONENT_EVENT_MASK | KEY_EVENT_MASK);
+            this.enableEvents(AWTEvent.COMPONENT_EVENT_MASK | AWTEvent.KEY_EVENT_MASK);
             this.isStart = true;
             this.add(this.tPanel);
             this.add(this.miPanel);

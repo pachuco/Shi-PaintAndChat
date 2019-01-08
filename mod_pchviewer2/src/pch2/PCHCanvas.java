@@ -2,18 +2,7 @@ package pch2;
 
 import jaba.applet.Applet;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Window;
+import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
@@ -27,9 +16,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.zip.Inflater;
-
-import static java.awt.event.MouseEvent.*;
-import static java.awt.event.ComponentEvent.*;
 
 import paintchat.LO;
 import paintchat.M;
@@ -74,7 +60,7 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
     private Point pressPo = null;
 
     public PCHCanvas(Applet var1, Object var2, boolean var3, Res var4) {
-        this.enableEvents(COMPONENT_EVENT_MASK | MOUSE_EVENT_MASK | MOUSE_MOTION_EVENT_MASK);
+        this.enableEvents(AWTEvent.COMPONENT_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
         this.setCursor(Cursor.getPredefinedCursor(12));
         this.cf = new Res(var1, var2, new ByteStream());
         Enumeration var6 = var4.keys();
@@ -505,7 +491,7 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
 
     protected void processComponentEvent(ComponentEvent var1) {
         try {
-            if (var1.getID() == COMPONENT_SHOWN || var1.getID() == COMPONENT_RESIZED) {
+            if (var1.getID() == ComponentEvent.COMPONENT_SHOWN || var1.getID() == ComponentEvent.COMPONENT_RESIZED) {
                 this.updateInfo();
             }
         } catch (Throwable var3) {
@@ -521,20 +507,20 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
     protected void processMouseMotionEvent(MouseEvent var1) {
         try {
             switch (var1.getID()) {
-                case MOUSE_PRESSED:
+                case MouseEvent.MOUSE_PRESSED:
                     this.pressPo = var1.getPoint();
                     this.setCursor(Cursor.getPredefinedCursor(12));
                     break;
-                case MOUSE_RELEASED:
+                case MouseEvent.MOUSE_RELEASED:
                     this.pressPo = null;
                     this.setCursor(Cursor.getDefaultCursor());
                     this.repaint();
-                case MOUSE_MOVED:
-                case MOUSE_ENTERED:
-                case MOUSE_EXITED:
+                case MouseEvent.MOUSE_MOVED:
+                case MouseEvent.MOUSE_ENTERED:
+                case MouseEvent.MOUSE_EXITED:
                 default:
                     break;
-                case MOUSE_DRAGGED:
+                case MouseEvent.MOUSE_DRAGGED:
                     this.scroll(var1.getPoint(), true, false);
             }
         } catch (Throwable var3) {

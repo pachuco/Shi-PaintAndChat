@@ -1,19 +1,6 @@
 package pbbs;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.LayoutManager;
-import java.awt.MediaTracker;
-import java.awt.Panel;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -23,9 +10,6 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Vector;
-
-import static java.awt.event.MouseEvent.*;
-import static java.awt.event.ComponentEvent.*;
 
 import paintchat.MgLine;
 import syi.util.ByteStream;
@@ -584,7 +568,7 @@ public class Pp extends Panel {
         }
 
         this.up_rect();
-        this.enableEvents(COMPONENT_EVENT_MASK | KEY_EVENT_MASK | MOUSE_EVENT_MASK | MOUSE_MOTION_EVENT_MASK);
+        this.enableEvents(AWTEvent.COMPONENT_EVENT_MASK | AWTEvent.KEY_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
         if (count_timer == 0L) {
             count_timer = System.currentTimeMillis();
         }
@@ -772,7 +756,7 @@ public class Pp extends Panel {
             Point var4 = var1.getPoint();
             Point var5;
             switch (var3) {
-                case MOUSE_PRESSED:
+                case MouseEvent.MOUSE_PRESSED:
                     label93:
                     for (this.old_point = new Point(var4); var2 < this.r_tools.length; ++var2) {
                         if (this.r_tools[var2].contains(var4)) {
@@ -821,7 +805,7 @@ public class Pp extends Panel {
                         this.mI.dispatchEvent(var1);
                     }
                     break;
-                case MOUSE_RELEASED:
+                case MouseEvent.MOUSE_RELEASED:
                     this.bool_mouse_tool = false;
                     if (this.mouse_now == -1) {
                         var5 = this.mI.getLocation();
@@ -838,7 +822,7 @@ public class Pp extends Panel {
                         this.mI.m_paint();
                     }
                     break;
-                case MOUSE_MOVED:
+                case MouseEvent.MOUSE_MOVED:
                     while (var2 < this.r_tools.length) {
                         if (var2 != this.select_now && this.r_tools[var2].contains(var4)) {
                             this.select_now = (byte) var2;
@@ -856,7 +840,7 @@ public class Pp extends Panel {
                         this.mI.dispatchEvent(var1);
                     }
                     break;
-                case MOUSE_DRAGGED:
+                case MouseEvent.MOUSE_DRAGGED:
                     switch (this.mouse_now) {
                         case -1:
                             var5 = this.mI.getLocation();
@@ -870,7 +854,7 @@ public class Pp extends Panel {
                     }
             }
 
-            if (var3 == MOUSE_RELEASED) {
+            if (var3 == MouseEvent.MOUSE_RELEASED) {
                 this.mouse_now = -1;
             }
 

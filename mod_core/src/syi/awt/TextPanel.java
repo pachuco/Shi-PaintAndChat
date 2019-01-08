@@ -28,9 +28,6 @@ import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static java.awt.event.MouseEvent.*;
-import static java.awt.event.ComponentEvent.*;
-
 import paintchat.Res;
 import syi.javascript.JSController;
 
@@ -319,7 +316,7 @@ public class TextPanel extends Canvas implements ActionListener, ItemListener {
     }
 
     public void init(Applet var1, int var2, Color var3, Color var4, TextField var5) {
-        this.enableEvents(COMPONENT_EVENT_MASK | MOUSE_EVENT_MASK | MOUSE_MOTION_EVENT_MASK);
+        this.enableEvents(AWTEvent.COMPONENT_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
         this.textField = var5;
         this.applet = var1;
         this.setBackground(var3);
@@ -482,21 +479,21 @@ public class TextPanel extends Canvas implements ActionListener, ItemListener {
                 int var3 = var2.getX();
                 int var4 = var2.getY();
                 switch (var1.getID()) {
-                    case MOUSE_PRESSED:
+                    case MouseEvent.MOUSE_PRESSED:
                         this.Y = var4;
                         this.isPress = !Awt.isR(var2);
                         if (!this.isPress) {
                             this.popup(var3, var4);
                         }
                         break;
-                    case MOUSE_RELEASED:
+                    case MouseEvent.MOUSE_RELEASED:
                         this.isPress = false;
-                    case MOUSE_MOVED:
-                    case MOUSE_ENTERED:
-                    case MOUSE_EXITED:
+                    case MouseEvent.MOUSE_MOVED:
+                    case MouseEvent.MOUSE_ENTERED:
+                    case MouseEvent.MOUSE_EXITED:
                     default:
                         break;
-                    case MOUSE_DRAGGED:
+                    case MouseEvent.MOUSE_DRAGGED:
                         if (this.isPress && this.Y != var4) {
                             int var5 = -(this.Y - var4);
                             if (!this.isSScroll) {

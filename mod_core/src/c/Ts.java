@@ -14,12 +14,8 @@ import java.awt.Graphics;
 import java.awt.LayoutManager;
 import java.awt.Panel;
 import java.awt.Window;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.Locale;
-
-import static java.awt.event.ComponentEvent.*;
-import static java.awt.event.WindowEvent.*;
-import static java.awt.event.MouseEvent.*;
 
 import paintchat.M;
 import paintchat.Res;
@@ -82,10 +78,10 @@ class Ts extends LComponent {
 
     private void ev(AWTEvent evt) {
         switch (evt.getID()) {
-            case COMPONENT_RESIZED:
+            case ComponentEvent.COMPONENT_RESIZED:
                 this.pack();
                 break;
-            case WINDOW_CLOSING:
+            case WindowEvent.WINDOW_CLOSING:
                 if (this.getV(2)) {
                     this.w(true);
                 }
@@ -266,12 +262,12 @@ class Ts extends LComponent {
         int x = evt.getX();
         int var3 = this.b(x);
         switch (evt.getID()) {
-            case MOUSE_PRESSED:
+            case MouseEvent.MOUSE_PRESSED:
                 if (this.getV(var3) && (this.nowButton = this.b(x)) >= 1) {
                     this.repaint();
                 }
                 break;
-            case MOUSE_RELEASED:
+            case MouseEvent.MOUSE_RELEASED:
                 if (this.nowButton >= 0) {
                     if (this.nowButton == this.b(x)) {
                         switch (this.nowButton) {
@@ -388,7 +384,7 @@ class Ts extends LComponent {
     private class W extends Dialog {
         W(String var2) {
             super(Awt.getPFrame(), var2, false);
-            this.enableEvents(COMPONENT_EVENT_MASK | WINDOW_EVENT_MASK);
+            this.enableEvents(AWTEvent.COMPONENT_EVENT_MASK | AWTEvent.WINDOW_EVENT_MASK);
         }
 
         protected void processEvent(AWTEvent var1) {
@@ -399,7 +395,7 @@ class Ts extends LComponent {
     private class WF extends Frame {
         WF(String var2) {
             super(var2);
-            this.enableEvents(COMPONENT_EVENT_MASK | WINDOW_EVENT_MASK);
+            this.enableEvents(AWTEvent.COMPONENT_EVENT_MASK | AWTEvent.WINDOW_EVENT_MASK);
         }
 
         protected void processEvent(AWTEvent var1) {

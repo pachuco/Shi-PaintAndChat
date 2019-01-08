@@ -1,14 +1,10 @@
 package syi.util;
 
 import jaba.applet.Applet;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Label;
+
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.net.URL;
-
-import static java.awt.event.MouseEvent.*;
-import static java.awt.event.ComponentEvent.*;
 
 public class LabelLink extends Label {
     private String strLink = null;
@@ -31,7 +27,7 @@ public class LabelLink extends Label {
     private void init() {
         if (!this.isMouse) {
             this.isMouse = true;
-            this.enableEvents(MOUSE_EVENT_MASK | MOUSE_MOTION_EVENT_MASK);
+            this.enableEvents(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
             this.clBack = this.getForeground();
         }
     }
@@ -44,16 +40,16 @@ public class LabelLink extends Label {
         if (this.isMouse) {
             try {
                 switch (var1.getID()) {
-                    case MOUSE_PRESSED:
+                    case MouseEvent.MOUSE_PRESSED:
                         this.applet.getAppletContext().showDocument(new URL(this.strLink), "top");
-                    case MOUSE_RELEASED:
-                    case MOUSE_MOVED:
+                    case MouseEvent.MOUSE_RELEASED:
+                    case MouseEvent.MOUSE_MOVED:
                     default:
                         break;
-                    case MOUSE_ENTERED:
+                    case MouseEvent.MOUSE_ENTERED:
                         this.setFont(true);
                         break;
-                    case MOUSE_EXITED:
+                    case MouseEvent.MOUSE_EXITED:
                         this.setFont(false);
                 }
             } catch (Throwable var3) {

@@ -1,14 +1,9 @@
 package paintchat_frame;
 
 import jaba.applet.Applet;
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dialog;
-import java.awt.Window;
-import java.awt.event.WindowEvent;
 
-import static java.awt.event.WindowEvent.*;
-import static java.awt.event.ComponentEvent.*;
+import java.awt.*;
+import java.awt.event.WindowEvent;
 
 import paintchat.Config;
 import paintchat.Res;
@@ -23,7 +18,7 @@ public class ConfigDialog extends Dialog {
         this.setModal(true);
         this.applet = (Applet) Class.forName(var1).newInstance();
         this.applet.setStub(ServerStub.getDefaultStub(var3, var4));
-        this.enableEvents(WINDOW_EVENT_MASK);
+        this.enableEvents(AWTEvent.WINDOW_EVENT_MASK);
         this.setLayout(new BorderLayout());
         this.add((Component) this.applet, (Object) "Center");
         this.applet.init();
@@ -36,20 +31,20 @@ public class ConfigDialog extends Dialog {
     protected void processWindowEvent(WindowEvent var1) {
         Window var2;
         switch (var1.getID()) {
-            case WINDOW_OPENED:
+            case WindowEvent.WINDOW_OPENED:
             default:
                 break;
-            case WINDOW_CLOSING:
+            case WindowEvent.WINDOW_CLOSING:
                 this.applet.stop();
                 var2 = var1.getWindow();
                 var2.dispose();
                 var2.removeAll();
                 break;
-            case WINDOW_CLOSED:
+            case WindowEvent.WINDOW_CLOSED:
                 this.applet.destroy();
         }
 
-        if (var1.getID() == WINDOW_CLOSING) {
+        if (var1.getID() == WindowEvent.WINDOW_CLOSING) {
             var2 = var1.getWindow();
             var2.dispose();
             var2.removeAll();

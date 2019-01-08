@@ -7,8 +7,6 @@ import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.image.ImageObserver;
 
-import static java.awt.event.MouseEvent.*;
-
 import syi.awt.Awt;
 import syi.awt.LComponent;
 
@@ -151,7 +149,7 @@ public class TPic extends LComponent implements SW {
         Dimension var7 = this.getSize();
         int var8 = var7.width - var5 - 1;
         int var9 = var7.height - var4 - 1;
-        if (me.getID() == MOUSE_PRESSED && meY > var9) {
+        if (me.getID() == MouseEvent.MOUSE_PRESSED && meY > var9) {
             int var10 = (int) ((float) (var8 - 8) * 0.7F);
             if (meX > var10) {
                 this.mg.iColorMask = this.mg.iColor;
@@ -162,21 +160,21 @@ public class TPic extends LComponent implements SW {
             meX = meX <= 0 ? 0 : (meX >= var8 ? var8 : meX);
             meY = meY <= 0 ? 0 : (meY >= var9 ? var9 : meY);
             switch (me.getID()) {
-                case MOUSE_PRESSED:
+                case MouseEvent.MOUSE_PRESSED:
                     this.iDrag = meX < var8 ? 0 : 1;
                     var6 = true;
                     break;
-                case MOUSE_RELEASED:
+                case MouseEvent.MOUSE_RELEASED:
                     if (this.iDrag >= 0) {
                         var6 = true;
                         this.iDrag = -1;
                     }
-                case MOUSE_MOVED:
-                case MOUSE_ENTERED:
-                case MOUSE_EXITED:
+                case MouseEvent.MOUSE_MOVED:
+                case MouseEvent.MOUSE_ENTERED:
+                case MouseEvent.MOUSE_EXITED:
                 default:
                     break;
-                case MOUSE_DRAGGED:
+                case MouseEvent.MOUSE_DRAGGED:
                     var6 = this.iDrag >= 0;
             }
 

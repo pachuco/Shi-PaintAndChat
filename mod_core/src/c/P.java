@@ -12,7 +12,7 @@ import java.awt.Panel;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.image.ImageObserver;
 import java.awt.image.MemoryImageSource;
 import java.io.*;
@@ -23,8 +23,6 @@ import java.net.URLConnection;
 import java.util.Locale;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
-
-import static java.awt.event.ComponentEvent.*;
 
 import paintchat.LO;
 import paintchat.M;
@@ -295,7 +293,7 @@ public class P extends Panel implements IMi {
     }
 
     public void init(Res config, Res res, Ts var3) throws Throwable {
-        this.enableEvents(COMPONENT_EVENT_MASK | MOUSE_EVENT_MASK | MOUSE_MOTION_EVENT_MASK);
+        this.enableEvents(AWTEvent.COMPONENT_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
         this.config = config;
         this.res = res;
         String var5 = "cursor_";
@@ -713,7 +711,7 @@ public class P extends Panel implements IMi {
                 return;
             }
 
-            if (var2 == COMPONENT_RESIZED) {
+            if (var2 == ComponentEvent.COMPONENT_RESIZED) {
                 Dimension var3 = this.getSize();
                 var3.setSize(super.getSize());
                 if (!var3.equals(this.dPack)) {

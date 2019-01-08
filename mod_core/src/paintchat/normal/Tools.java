@@ -17,15 +17,10 @@ import java.awt.Point;
 import java.awt.PopupMenu;
 import java.awt.Rectangle;
 import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.image.ImageObserver;
 import java.io.BufferedReader;
 import java.io.StringReader;
-
-import static java.awt.event.ComponentEvent.*;
-import static java.awt.event.MouseEvent.*;
 
 import paintchat.LO;
 import paintchat.M;
@@ -729,17 +724,17 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
 
             var5 = var1.getID();
             switch (var5) {
-                case MOUSE_PRESSED:
+                case MouseEvent.MOUSE_PRESSED:
                     this.mPress(var1);
                     break;
-                case MOUSE_RELEASED:
+                case MouseEvent.MOUSE_RELEASED:
                     this.nowButton = -1;
-                case MOUSE_MOVED:
-                case MOUSE_ENTERED:
-                case MOUSE_EXITED:
+                case MouseEvent.MOUSE_MOVED:
+                case MouseEvent.MOUSE_ENTERED:
+                case MouseEvent.MOUSE_EXITED:
                 default:
                     break;
-                case MOUSE_DRAGGED:
+                case MouseEvent.MOUSE_DRAGGED:
                     int var6 = this.nowButton;
                     if (var6 < this.list.length) {
                         return;
@@ -781,7 +776,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
 
     protected void processEvent(AWTEvent var1) {
         switch (var1.getID()) {
-            case COMPONENT_MOVED:
+            case ComponentEvent.COMPONENT_MOVED:
                 int var2 = this.getLocation().x;
                 int var3 = this.getParent().getSize().width / 2 - this.getSize().width / 2;
                 if (var2 < var3 && !this.isWest) {
@@ -792,8 +787,8 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
                     this.pack();
                 }
                 break;
-            case COMPONENT_RESIZED:
-            case COMPONENT_SHOWN:
+            case ComponentEvent.COMPONENT_RESIZED:
+            case ComponentEvent.COMPONENT_SHOWN:
                 if (this.primary != null) {
                     this.primary.dispose();
                     this.primary = null;

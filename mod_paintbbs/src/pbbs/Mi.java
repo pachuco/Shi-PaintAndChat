@@ -1,14 +1,6 @@
 package pbbs;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.TextField;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -19,9 +11,6 @@ import java.awt.image.ColorModel;
 import java.awt.image.DirectColorModel;
 import java.awt.image.ImageObserver;
 import java.awt.image.MemoryImageSource;
-
-import static java.awt.event.MouseEvent.*;
-import static java.awt.event.ComponentEvent.*;
 
 import paintchat.MgLine;
 
@@ -254,7 +243,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
     }
 
     public void init(PaintBBS var1, Pp var2, Tools var3) {
-        this.enableEvents(KEY_EVENT_MASK | MOUSE_EVENT_MASK | MOUSE_MOTION_EVENT_MASK);
+        this.enableEvents(AWTEvent.KEY_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
         this.tools = var3;
         this.pbbs = var1;
         this.pP = var2;
@@ -501,7 +490,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
             int var2 = var1.getID();
             var1.consume();
             switch (var2) {
-                case MOUSE_PRESSED:
+                case MouseEvent.MOUSE_PRESSED:
                     boolean var9 = var1.isControlDown();
                     boolean var11 = var1.isAltDown();
                     boolean var12 = var1.getModifiers() == 4;
@@ -546,7 +535,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
                         }
                     }
                     break;
-                case MOUSE_RELEASED:
+                case MouseEvent.MOUSE_RELEASED:
                     if (this.dHint == 0) {
                         if (this.tools.lMode == 2) {
                             this.dHint = -1;
@@ -579,7 +568,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
                     this.dHint = -1;
                     this.isPreD = true;
                     break;
-                case MOUSE_MOVED:
+                case MouseEvent.MOUSE_MOVED:
                     if (this.tools.lHints != 60 && this.tools.lMode != 40) {
                         this.move_draw(var1);
                     }
@@ -588,18 +577,18 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
                         this.dPre(var1);
                     }
                     break;
-                case MOUSE_ENTERED:
+                case MouseEvent.MOUSE_ENTERED:
                     this.isPreD = true;
                     this.requestFocus();
                     break;
-                case MOUSE_DRAGGED:
+                case MouseEvent.MOUSE_DRAGGED:
                     if (this.dHint == 0) {
                         this.move_draw(var1);
                         this.isPre = false;
                         this.dPre(var1);
                         break;
                     }
-                case MOUSE_EXITED:
+                case MouseEvent.MOUSE_EXITED:
                     this.isPreD = false;
             }
 

@@ -1,22 +1,17 @@
 package pch2;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.LayoutManager;
-import java.awt.Panel;
+import java.awt.*;
 import java.awt.event.ComponentEvent;
-
-import static java.awt.event.ComponentEvent.*;
 
 public class PCHPanel extends Panel {
     public PCHPanel() {
         super((LayoutManager) null);
-        this.enableEvents(COMPONENT_EVENT_MASK);
+        this.enableEvents(AWTEvent.COMPONENT_EVENT_MASK);
     }
 
     protected void processComponentEvent(ComponentEvent var1) {
         switch (var1.getID()) {
-            case COMPONENT_RESIZED:
+            case ComponentEvent.COMPONENT_RESIZED:
                 this.setVisible(false);
                 ((PCHCanvas) this.getComponent(0)).moveCenter();
                 this.setVisible(true);

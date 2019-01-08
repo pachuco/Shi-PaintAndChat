@@ -8,8 +8,6 @@ import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.image.ImageObserver;
 
-import static java.awt.event.MouseEvent.*;
-
 import syi.awt.Awt;
 import syi.awt.LComponent;
 
@@ -140,7 +138,7 @@ public class TPic extends LComponent {
         int var8 = var7.width - var5 - 1;
         int var9 = var7.height - var4 - 1;
         boolean var10 = (var1.getModifiers() & 4) != 0 || var1.isShiftDown() || var1.isControlDown();
-        if (var1.getID() == MOUSE_PRESSED && var3 > var9) {
+        if (var1.getID() == MouseEvent.MOUSE_PRESSED && var3 > var9) {
             int var11 = (int) ((float) (var8 - 8) * 0.7F);
             if (var2 > var11) {
                 this.tools.setMask(this, this.getRGB(), var2, var3, var10);
@@ -150,22 +148,22 @@ public class TPic extends LComponent {
             var2 = var2 <= 0 ? 0 : (var2 >= var8 ? var8 : var2);
             var3 = var3 <= 0 ? 0 : (var3 >= var9 ? var9 : var3);
             switch (var1.getID()) {
-                case MOUSE_PRESSED:
+                case MouseEvent.MOUSE_PRESSED:
                     this.iDrag = var2 < var8 ? 0 : 1;
                     var6 = true;
                     break;
-                case MOUSE_RELEASED:
+                case MouseEvent.MOUSE_RELEASED:
                     if (this.iDrag >= 0) {
                         var6 = true;
                         this.iDrag = -1;
                         this.tools.setRGB(Color.HSBtoRGB(fhsb[0], fhsb[1], fhsb[2]));
                     }
-                case MOUSE_MOVED:
-                case MOUSE_ENTERED:
-                case MOUSE_EXITED:
+                case MouseEvent.MOUSE_MOVED:
+                case MouseEvent.MOUSE_ENTERED:
+                case MouseEvent.MOUSE_EXITED:
                 default:
                     break;
-                case MOUSE_DRAGGED:
+                case MouseEvent.MOUSE_DRAGGED:
                     var6 = this.iDrag >= 0;
             }
 

@@ -1,20 +1,9 @@
 package paintchat_client;
 
-import java.awt.BorderLayout;
-import java.awt.Button;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dialog;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.Label;
-import java.awt.Panel;
-import java.awt.TextField;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
-
-import static java.awt.event.ComponentEvent.*;
 
 import paintchat.Res;
 import syi.awt.Awt;
@@ -33,7 +22,7 @@ public class Me extends Dialog implements ActionListener {
 
     public Me() {
         super(Awt.getPFrame());
-        this.enableEvents(WINDOW_EVENT_MASK);
+        this.enableEvents(AWTEvent.WINDOW_EVENT_MASK);
         this.setModal(true);
         this.setLayout(new BorderLayout(5, 5));
         String var1 = "yes";

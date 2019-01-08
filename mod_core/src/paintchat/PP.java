@@ -8,8 +8,6 @@ import java.awt.event.MouseEvent;
 import syi.awt.Awt;
 import syi.awt.LComponent;
 
-import static java.awt.event.MouseEvent.*;
-
 public class PP extends LComponent implements SW {
     private ToolBox tools;
     private int Len;
@@ -70,7 +68,7 @@ public class PP extends LComponent implements SW {
         int var2 = this.b(evt.getX(), evt.getY());
         if (var2 >= 0) {
             switch (evt.getID()) {
-                case MOUSE_PRESSED:
+                case MouseEvent.MOUSE_PRESSED:
                     if (Awt.isR(evt)) {
                         this.ms[var2].set(this.m);
                     } else {
