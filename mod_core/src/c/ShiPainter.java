@@ -10,6 +10,7 @@ import java.awt.event.WindowListener;
 import java.io.*;
 import java.net.URL;
 import java.util.Locale;
+import javax.imageio.ImageIO;
 
 import static java.awt.event.ComponentEvent.*;
 
@@ -21,7 +22,6 @@ import syi.awt.*;
 import syi.awt.cust.*;
 import syi.util.ByteStream;
 
-import javax.imageio.ImageIO;
 
 public class ShiPainter extends Applet implements Runnable, ActionListener, WindowListener {
     public int isStart = 0;
@@ -340,8 +340,8 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
                 paint(getGraphics());
                 rInit(dim.width, dim.height, null, mode);
             }
-        } catch (Throwable e) {
-            e.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
         lastMode = mode;
         lastFile = null;
@@ -391,10 +391,10 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
             fos.write(bs);
             fos.close();
 
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException ex) {
             return;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
             return;
         }
         lastFile = f;
@@ -427,8 +427,8 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
             lastType = getType(f);
             lastFile = f;
             rInit(imW, imH, path, lastMode);
-        } catch (Throwable e) {
-            e.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
     }
 

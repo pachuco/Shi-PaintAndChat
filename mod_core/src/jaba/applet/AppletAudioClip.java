@@ -65,10 +65,10 @@ public class AppletAudioClip implements AudioClip {
             InputStream in = url.openStream();
             createAppletAudioClip(in);
 
-        } catch (IOException e) {
+        } catch (IOException ex) {
                 /* just quell it */
             if (DEBUG) {
-                System.err.println("IOException creating AppletAudioClip" + e);
+                System.err.println("IOException creating AppletAudioClip" + ex);
             }
         }
     }
@@ -83,10 +83,10 @@ public class AppletAudioClip implements AudioClip {
             // in the clip.
             createAppletAudioClip(uc.getInputStream());
 
-        } catch (IOException e) {
+        } catch (IOException ex) {
                 /* just quell it */
             if (DEBUG) {
-                System.err.println("IOException creating AppletAudioClip" + e);
+                System.err.println("IOException creating AppletAudioClip" + ex);
             }
         }
     }
@@ -100,10 +100,10 @@ public class AppletAudioClip implements AudioClip {
             // use stream directly in the clip.
             createAppletAudioClip(in);
 
-        } catch (IOException e) {
+        } catch (IOException ex) {
                 /* just quell it */
             if (DEBUG) {
-                System.err.println("IOException creating AppletAudioClip" + e);
+                System.err.println("IOException creating AppletAudioClip" + ex);
             }
         }
     }
@@ -122,10 +122,10 @@ public class AppletAudioClip implements AudioClip {
 
             createAppletAudioClip(in);
 
-        } catch (IOException e) {
+        } catch (IOException ex) {
                 /* just quell it */
             if (DEBUG) {
-                System.err.println("IOException creating AppletAudioClip " + e);
+                System.err.println("IOException creating AppletAudioClip " + ex);
             }
         }
     }

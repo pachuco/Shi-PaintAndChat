@@ -224,10 +224,10 @@ public class Res extends Hashtable {
                     this.load((Reader) (new InputStreamReader(var4, "UTF8")));
                     break;
                 }
-            } catch (RuntimeException e) {
-                System.err.println(e.getMessage());
-            } catch (UnsupportedEncodingException e) {
-                System.err.println(e.getMessage());
+            } catch (RuntimeException ex) {
+                System.err.println(ex.getMessage());
+            } catch (UnsupportedEncodingException ex) {
+                System.err.println(ex.getMessage());
             }
 
             fName = defBase + ".txt";

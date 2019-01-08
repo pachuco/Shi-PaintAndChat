@@ -893,8 +893,8 @@ public class P extends Panel implements IMi {
         try {
             undoMgs[0].writeTo(undoMg0);
             undoMgs[1].writeTo(undoMg1);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
             return null;
         }
         undoMg0.seek(undoMgs[0].size());

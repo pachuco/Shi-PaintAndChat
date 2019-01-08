@@ -32,9 +32,9 @@ public class Applet extends java.applet.Applet implements WindowListener {
         if (isDesktop) {
             try {
                 inifile.openIni(openResFile(iniPath));
-            } catch (Exception e) {
+            } catch (Exception ex) {
                 System.out.println("Cannot load applet ini!");
-                System.out.println(e.getMessage());
+                System.out.println(ex.getMessage());
             }
             frame = new Frame();
             frame.add(this);
@@ -99,7 +99,7 @@ public class Applet extends java.applet.Applet implements WindowListener {
 
         try {
             return ImageIO.read(url);
-        } catch (IOException e) {
+        } catch (IOException ex) {
             return null;
         }
     }
@@ -110,7 +110,7 @@ public class Applet extends java.applet.Applet implements WindowListener {
 
         try {
             return getImage(new URL(url, name));
-        } catch (MalformedURLException e) {
+        } catch (MalformedURLException ex) {
             return null;
         }
     }
@@ -130,8 +130,8 @@ public class Applet extends java.applet.Applet implements WindowListener {
         url = getClass().getProtectionDomain().getCodeSource().getLocation();
         try {
             url = new URL("file://");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+        } catch (MalformedURLException ex) {
+            ex.printStackTrace();
         }
 
         return url;
@@ -157,8 +157,8 @@ public class Applet extends java.applet.Applet implements WindowListener {
 
         try {
             return new AppletAudioClip(new URL(url, name));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+        } catch (MalformedURLException ex) {
+            ex.printStackTrace();
         }
         return null;
     }
@@ -232,10 +232,10 @@ public class Applet extends java.applet.Applet implements WindowListener {
             public void showDocument(URL url, String target) {
                 try {
                     Desktop.getDesktop().browse(url.toURI());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (URISyntaxException ex) {
+                    ex.printStackTrace();
                 }
             }
 

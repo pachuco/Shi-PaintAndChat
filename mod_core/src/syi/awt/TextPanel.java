@@ -470,7 +470,7 @@ public class TextPanel extends Canvas implements ActionListener, ItemListener {
         try {
             new URL(str);
             return true;
-        } catch (MalformedURLException e) {
+        } catch (MalformedURLException ex) {
             return false;
         }
     }

@@ -380,7 +380,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
                     if (snd == null) {
                         try {
                             snd = this.applet.getAudioClip(new URL(this.applet.getCodeBase(), var2));
-                        } catch (MalformedURLException e) {
+                        } catch (MalformedURLException ex) {
                             snd = null;
                         }
                     }

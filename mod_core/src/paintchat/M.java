@@ -2808,14 +2808,13 @@ public class M {
             }
 
             //Field[] var2 = this.getClass().getDeclaredFields();
-            Field[] classFields = this.getClass().getFields();
+            Field[] fieldArr = this.getClass().getFields();
             int cmdLength = commands.indexOf('@');
             if (cmdLength < 0) {
                 cmdLength = commands.length();
             }
 
             int posEq;
-            int j;
             //TODO: could be simplified with a StringTokenizer
             for (int i = 0; i < cmdLength; i = posEq + 1) {
                 posEq = commands.indexOf('=', i);
@@ -2831,8 +2830,8 @@ public class M {
                 }
 
                 try {
-                    for (j = 0; j < classFields.length; ++j) {
-                        Field field = classFields[j];
+                    for (int j = 0; j < fieldArr.length; ++j) {
+                        Field field = fieldArr[j];
                         if (field.getName().equals(key)) {
                             String value = commands.substring(i, posEq);
                             Class fieldType = field.getType();
@@ -2846,9 +2845,9 @@ public class M {
                             break;
                         }
                     }
-                } catch (NumberFormatException e) {
+                } catch (NumberFormatException ex) {
                     ;
-                } catch (IllegalAccessException e) {
+                } catch (IllegalAccessException ex) {
                     ;
                 }
             }
@@ -2856,14 +2855,14 @@ public class M {
             if (cmdLength != commands.length()) {
                 ByteStream bs = this.getWork();
 
-                for (j = cmdLength + 1; j < commands.length(); j += 2) {
+                for (int j = cmdLength + 1; j < commands.length(); j += 2) {
                     bs.write(Character.digit((char) commands.charAt(j), 16) << 4 | Character.digit((char) commands.charAt(j + 1), 16));
                 }
 
                 this.offset = bs.toByteArray();
                 this.iOffset = this.offset.length;
             }
-        } catch (Throwable e) {
+        } catch (Throwable ex) {
             ;
         }
 

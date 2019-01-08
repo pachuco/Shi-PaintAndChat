@@ -48,8 +48,8 @@ public class IniFile {
 
             isLoaded = true;
             br.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 
