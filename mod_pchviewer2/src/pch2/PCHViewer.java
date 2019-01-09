@@ -286,18 +286,18 @@ public class PCHViewer extends Applet implements Runnable {
 
     }
 
-    public synchronized void loadPCH(String var1) {
+    public synchronized void loadPCH(String pchFile) {
         try {
             synchronized (this.vList) {
                 this.vList.addElement("");
-                this.vList.addElement(var1);
+                this.vList.addElement(pchFile);
             }
 
             synchronized (this.tLoad) {
                 this.tLoad.notify();
             }
-        } catch (Throwable var5) {
-            var5.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -551,9 +551,9 @@ public class PCHViewer extends Applet implements Runnable {
                     this.tLoad.setPriority(1);
                     this.tLoad.start();
                     this.showStatus(STR_VERSION);
-                    String var2 = this.p("pch_file", "");
-                    if (var2.length() > 0) {
-                        this.loadPCH(var2);
+                    String pchFile = this.p("pch_file", "");
+                    if (pchFile.length() > 0) {
+                        this.loadPCH(this.getCodeBase() + pchFile);
                     }
                 } catch (Throwable var3) {
                     var3.printStackTrace();
