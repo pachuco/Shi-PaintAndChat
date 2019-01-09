@@ -296,7 +296,7 @@ public class P extends Panel implements IMi {
         this.enableEvents(AWTEvent.COMPONENT_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
         this.config = config;
         this.res = res;
-        String var5 = "cursor_";
+        String cursorParamPrefix = "cursor_";
         ShiPainter app = this.app;
         this.ts = var3;
         this.isLeft = config.getP("isLeft", false);
@@ -306,11 +306,11 @@ public class P extends Panel implements IMi {
         int layNum = config.getP("layer_count", 2);
         this.clB = new Color(config.getP("color_bk2", 12303359));
         Cursor[] curArr = new Cursor[4];
-        int[] var12 = new int[]{0, 13, 0, 0};
+        int[] defaultCursors = new int[]{Cursor.DEFAULT_CURSOR, Cursor.MOVE_CURSOR, Cursor.DEFAULT_CURSOR, Cursor.DEFAULT_CURSOR};
 
         int i;
         for (i = 0; i < 4; ++i) {
-            curArr[i] = this.loadCursor(app.getParameter(var5 + (i + 1)), var12[i]);
+            curArr[i] = this.loadCursor(app.getParameter(cursorParamPrefix + (i + 1)), defaultCursors[i]);
         }
 
         this.mi = new Mi(this, res);
@@ -329,9 +329,9 @@ public class P extends Panel implements IMi {
         M.Info info = this.mi.info;
         M.User user = this.user = this.mi.user;
         app.mPermission(config.getP("permission", "layer_edit:t;fill:t;clean:t;layer:all;"));
-        String var15 = config.getP("mg_init");
-        if (var15 != null && var15.length() > 0) {
-            info.m.set(var15);
+        String mgInitParam = config.getP("mg_init");
+        if (mgInitParam != null && mgInitParam.length() > 0) {
+            info.m.set(mgInitParam);
         }
 
         this.m = new M(info, user);
@@ -404,10 +404,10 @@ public class P extends Panel implements IMi {
             user.wait = 0;
             int var26 = 0;
 
-            while ((var15 = config.getP("mg_" + var26)) != null && var15.length() > 0) {
+            while ((mgInitParam = config.getP("mg_" + var26)) != null && mgInitParam.length() > 0) {
                 ++var26;
                 M var27 = new M(info, user);
-                var27.set(var15);
+                var27.set(mgInitParam);
                 var27.draw();
                 this.send(var27);
             }

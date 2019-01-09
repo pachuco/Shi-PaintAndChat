@@ -152,17 +152,17 @@ public class Mi extends LComponent implements ActionListener {
         }
     }
 
-    private void cursor(int var1, int var2, int var3) {
-        if (var1 == MouseEvent.MOUSE_MOVED) {
+    private void cursor(int eventID, int x, int y) {
+        if (eventID == MouseEvent.MOUSE_MOVED) {
             Dimension var4 = this.info.getSize();
-            int var5 = this.sizeBar;
-            int var6 = var4.width;
-            int var7 = var4.height;
+            int sizeBar = this.sizeBar;
+            int width = var4.width;
+            int height = var4.height;
             int var8;
-            if (var2 <= var6 && var3 < var7) {
+            if (x <= width && y < height) {
                 var8 = 0;
             } else {
-                var8 = var2 < var5 ? 2 : (var3 < var5 ? 0 : (var2 > var6 && var3 > var7 ? 3 : 1));
+                var8 = x < sizeBar ? 2 : (y < sizeBar ? 0 : (x > width && y > height ? 3 : 1));
             }
 
             if (this.nowCur != var8) {
@@ -738,9 +738,9 @@ public class Mi extends LComponent implements ActionListener {
         return var1 >= 0 && var2 >= 0 && var1 < var3.width && var2 < var3.height;
     }
 
-    public void init(Applet app, Res res, int var3, int var4, int var5, int var6, Cursor[] var7) throws IOException {
+    public void init(Applet app, Res res, int var3, int var4, int var5, int var6, Cursor[] cursors) throws IOException {
         String var8 = "color_";
-        this.cursors = var7;
+        this.cursors = cursors;
         this.cls = new Color[6];
         this.cls[0] = new Color(res.getP(var8 + "frame", 0x505078));
         this.cls[1] = new Color(res.getP(var8 + "icon", 0xCCCCFF));
@@ -829,17 +829,17 @@ public class Mi extends LComponent implements ActionListener {
 
     }
 
-    public void pMouse(MouseEvent ev) {
+    public void pMouse(MouseEvent event) {
         try {
-            int id = ev.getID();
+            int id = event.getID();
             int scale = this.info.scale;
-            int sX = ev.getX() / scale * scale;
-            int sY = ev.getY() / scale * scale;
+            int sX = event.getX() / scale * scale;
+            int sY = event.getY() / scale * scale;
             boolean isMPress   = id == MouseEvent.MOUSE_PRESSED;
             boolean isMRelease = id == MouseEvent.MOUSE_RELEASED;
             boolean isMDrag    = id == MouseEvent.MOUSE_DRAGGED;
             boolean isMRight   = this.isRight;
-            if (ev.isAltDown() && ev.isControlDown()) {
+            if (event.isAltDown() && event.isControlDown()) {
                 if (this.psCount >= 0) {
                     this.reset();
                 }
@@ -864,7 +864,7 @@ public class Mi extends LComponent implements ActionListener {
             }
 
             if (isMPress) {
-                isMRight = this.isRight = Awt.isR(ev);
+                isMRight = this.isRight = Awt.isR(event);
                 if (!this.isDrag) {
                     this.dPre(this.oldX, this.oldY, false);
                 }
@@ -934,7 +934,7 @@ public class Mi extends LComponent implements ActionListener {
             }
 
             if (this.isScroll) {
-                this.dScroll(ev, 0, 0);
+                this.dScroll(event, 0, 0);
                 return;
             }
 

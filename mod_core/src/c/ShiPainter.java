@@ -99,13 +99,13 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
         Ts.run(this, 's', 2);
     }
 
-    protected void processEvent(AWTEvent evt) {
+    protected void processEvent(AWTEvent event) {
         try {
-            int id = evt.getID();
-            if (id == ComponentEvent.COMPONENT_RESIZED && this.ts != null) {
+            int eventID = event.getID();
+            if (eventID == ComponentEvent.COMPONENT_RESIZED && this.ts != null) {
                 this.ts.pack();
             }
-        } catch (Throwable var3) {
+        } catch (Throwable ex) {
             ;
         }
 

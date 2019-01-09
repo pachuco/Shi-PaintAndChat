@@ -76,8 +76,8 @@ class Ts extends LComponent {
         return Me.confirm(var0, true);
     }
 
-    private void ev(AWTEvent evt) {
-        switch (evt.getID()) {
+    private void ev(AWTEvent event) {
+        switch (event.getID()) {
             case ComponentEvent.COMPONENT_RESIZED:
                 this.pack();
                 break;
@@ -258,18 +258,18 @@ class Ts extends LComponent {
         }
     }
 
-    public void pMouse(MouseEvent evt) {
-        int x = evt.getX();
-        int var3 = this.b(x);
-        switch (evt.getID()) {
+    public void pMouse(MouseEvent event) {
+        int mouseX = event.getX();
+        int var3 = this.b(mouseX);
+        switch (event.getID()) {
             case MouseEvent.MOUSE_PRESSED:
-                if (this.getV(var3) && (this.nowButton = this.b(x)) >= 1) {
+                if (this.getV(var3) && (this.nowButton = this.b(mouseX)) >= 1) {
                     this.repaint();
                 }
                 break;
             case MouseEvent.MOUSE_RELEASED:
                 if (this.nowButton >= 0) {
-                    if (this.nowButton == this.b(x)) {
+                    if (this.nowButton == this.b(mouseX)) {
                         switch (this.nowButton) {
                             case 0: // Toggle top bar
                                 this.layout(0);
