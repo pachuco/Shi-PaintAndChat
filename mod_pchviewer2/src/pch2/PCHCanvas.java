@@ -61,7 +61,7 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
 
     public PCHCanvas(Applet var1, Object var2, boolean var3, Res var4) {
         this.enableEvents(AWTEvent.COMPONENT_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
-        this.setCursor(Cursor.getPredefinedCursor(12));
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         this.cf = new Res(var1, var2, new ByteStream());
         Enumeration var6 = var4.keys();
 
@@ -489,27 +489,27 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
 
     }
 
-    protected void processComponentEvent(ComponentEvent var1) {
+    protected void processComponentEvent(ComponentEvent event) {
         try {
-            if (var1.getID() == ComponentEvent.COMPONENT_SHOWN || var1.getID() == ComponentEvent.COMPONENT_RESIZED) {
+            if (event.getID() == ComponentEvent.COMPONENT_SHOWN || event.getID() == ComponentEvent.COMPONENT_RESIZED) {
                 this.updateInfo();
             }
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
 
-    protected void processMouseEvent(MouseEvent var1) {
-        this.processMouseMotionEvent(var1);
+    protected void processMouseEvent(MouseEvent event) {
+        this.processMouseMotionEvent(event);
     }
 
-    protected void processMouseMotionEvent(MouseEvent var1) {
+    protected void processMouseMotionEvent(MouseEvent event) {
         try {
-            switch (var1.getID()) {
+            switch (event.getID()) {
                 case MouseEvent.MOUSE_PRESSED:
-                    this.pressPo = var1.getPoint();
-                    this.setCursor(Cursor.getPredefinedCursor(12));
+                    this.pressPo = event.getPoint();
+                    this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                     break;
                 case MouseEvent.MOUSE_RELEASED:
                     this.pressPo = null;
@@ -521,10 +521,10 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
                 default:
                     break;
                 case MouseEvent.MOUSE_DRAGGED:
-                    this.scroll(var1.getPoint(), true, false);
+                    this.scroll(event.getPoint(), true, false);
             }
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }

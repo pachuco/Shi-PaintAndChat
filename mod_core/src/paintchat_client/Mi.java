@@ -340,9 +340,9 @@ public class Mi extends LComponent implements ActionListener {
 
     }
 
-    private void dFLine(int eventId, int x, int y) {
+    private void dFLine(int eventID, int x, int y) {
         try {
-            switch (eventId) {
+            switch (eventID) {
                 case MouseEvent.MOUSE_PRESSED:
                     this.poll();
                     this.setM();
@@ -380,9 +380,9 @@ public class Mi extends LComponent implements ActionListener {
 
     }
 
-    private void dLine(int eventId, int x, int y) {
+    private void dLine(int eventID, int x, int y) {
         try {
-            switch (eventId) {
+            switch (eventID) {
                 case MouseEvent.MOUSE_PRESSED:
                     this.setM();
 
@@ -617,10 +617,10 @@ public class Mi extends LComponent implements ActionListener {
 
     }
 
-    private void dRect(int eventId, int var2, int var3) {
+    private void dRect(int eventID, int var2, int var3) {
         try {
             int[] var4 = this.user.points;
-            switch (eventId) {
+            switch (eventID) {
                 case MouseEvent.MOUSE_PRESSED:
                     this.setM();
                     this.p(0, var2, var3);
@@ -688,8 +688,8 @@ public class Mi extends LComponent implements ActionListener {
         }
     }
 
-    public void dText(int eventId, int var2, int var3) {
-        switch (eventId) {
+    public void dText(int eventID, int var2, int var3) {
+        switch (eventID) {
             case MouseEvent.MOUSE_RELEASED:
                 this.setM();
                 if (this.text == null) {
@@ -1008,7 +1008,7 @@ public class Mi extends LComponent implements ActionListener {
 
     protected void processEvent(AWTEvent event) {
         try {
-            int eventId = event.getID();
+            int eventID = event.getID();
             if (event instanceof KeyEvent) {
                 KeyEvent keyEvent = (KeyEvent) event;
                 boolean isCtrlOrShiftDown = keyEvent.isControlDown() || keyEvent.isShiftDown();
@@ -1016,7 +1016,7 @@ public class Mi extends LComponent implements ActionListener {
                 boolean isUndo = true; // if false it'll do a redo
                 keyEvent.consume();
                 label56:
-                switch (eventId) {
+                switch (eventID) {
                     case KeyEvent.KEY_PRESSED:
                         switch (keyEvent.getKeyCode()) {
                             case KeyEvent.VK_TAB:
@@ -1075,7 +1075,7 @@ public class Mi extends LComponent implements ActionListener {
                         }
                 }
             } else if (super.isGUI) {
-                switch (eventId) {
+                switch (eventID) {
                     case ComponentEvent.COMPONENT_RESIZED:
                     case ComponentEvent.COMPONENT_SHOWN:
                         this.resetGraphics();

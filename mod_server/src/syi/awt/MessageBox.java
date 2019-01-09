@@ -160,14 +160,13 @@ public class MessageBox extends Dialog implements ActionListener {
         return var4;
     }
 
-    protected void processWindowEvent(WindowEvent var1) {
+    protected void processWindowEvent(WindowEvent event) {
         try {
-            int var2 = var1.getID();
-            Dialog var10000 = (Dialog) var1.getWindow();
-            if (var2 == 201) {
+            int eventID = event.getID();
+            if (eventID == WindowEvent.WINDOW_CLOSING) {
                 this.dispose();
             }
-        } catch (Throwable var3) {
+        } catch (Throwable ex) {
         }
 
     }

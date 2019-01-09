@@ -64,10 +64,10 @@ public class LPopup extends Component {
 
     }
 
-    protected void processMouseEvent(MouseEvent var1) {
+    protected void processMouseEvent(MouseEvent event) {
         try {
-            int var2 = var1.getID();
-        } catch (Throwable var3) {
+            int var2 = event.getID();
+        } catch (Throwable ex) {
         }
 
     }

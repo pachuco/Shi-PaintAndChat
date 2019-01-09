@@ -72,8 +72,8 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
         }
     }
 
-    private void dPre(MouseEvent var1) {
-        var1.getID();
+    private void dPre(MouseEvent event) {
+        event.getID();
         int var2 = this.pP.scale;
         int var3 = (this.tools.lSize - 1) * var2;
         var3 -= 3 - var3 % 3;
@@ -89,8 +89,8 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
         if (this.isPreD && var3 >= 5 && this.dHint <= 0 && this.tools.lHints == 60 && this.tools.lMode != -2 && var5 != null) {
             this.isPre = true;
             Point var6 = this.po_pre;
-            var6.x = var1.getX();
-            var6.y = var1.getY();
+            var6.x = event.getX();
+            var6.y = event.getY();
             var6.x = var6.x / var2 * var2;
             var6.y = var6.y / var2 * var2;
             var5.drawOval(var6.x - var4, var6.y - var4, var3, var3);
@@ -112,7 +112,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
 
     }
 
-    private void end_draw(MouseEvent var1) {
+    private void end_draw(MouseEvent event) {
         try {
             if (this.draw_flag == 0) {
                 return;
@@ -122,7 +122,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
             Graphics var2 = this.primary();
             int var3 = this.tools.visit0;
             int var4 = this.tools.visit1;
-            Point var5 = var1.getPoint();
+            Point mousePos = event.getPoint();
             var6 = new MgLine();
             var6.create(this.tools.lMode, this.tools.lMaskHints, this.tools.lSize, this.tools.clLine, this.tools.clMask, this.tools.clAlpha, this.tools.lLayer);
             int var10000 = this.tools.lMode;
@@ -142,7 +142,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
                         return;
                     }
 
-                    this.rect_re = this.t_getRect(this.pP.moveScale(this.old_po), this.pP.moveScale(var5));
+                    this.rect_re = this.t_getRect(this.pP.moveScale(this.old_po), this.pP.moveScale(mousePos));
                     if (!this.rect_re.isEmpty()) {
                         this.draw_flag = 2;
                     } else {
@@ -152,28 +152,28 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
                     return;
                 case 60:
                     this.draw_flag = 0;
-                    this.draw_line(this.pP.moveScale(var5));
+                    this.draw_line(this.pP.moveScale(mousePos));
                     var6.setData(this.points, this.seek_points);
                     break;
                 case 61:
                     this.draw_flag = 0;
-                    this.t_getRectT(this.old_po, var5);
-                    var6.setData(var6.line(this.pP.moveScale(this.old_po), this.pP.moveScale(var5)), 0);
+                    this.t_getRectT(this.old_po, mousePos);
+                    var6.setData(var6.line(this.pP.moveScale(this.old_po), this.pP.moveScale(mousePos)), 0);
                     var6.draw(this, var2, (Graphics) null, this.i_offs, var7, var8, var9, var10, var11, var3, var4, -1);
                     break;
                 case 62:
                     switch (this.draw_flag) {
                         case 1:
-                            this.rect_re = new Rectangle(this.old_po, new Dimension(var5.x, var5.y));
+                            this.rect_re = new Rectangle(this.old_po, new Dimension(mousePos.x, mousePos.y));
                             ++this.draw_flag;
                             return;
                         case 2:
-                            this.old_po3 = var5;
+                            this.old_po3 = mousePos;
                             ++this.draw_flag;
                             return;
                         case 3:
                             this.draw_flag = 0;
-                            var6.setData(var6.bezier(new Point[]{this.pP.moveScale(this.rect_re.getLocation()), this.pP.moveScale(this.old_po3), this.pP.moveScale(var5), this.pP.moveScale(new Point(this.rect_re.width, this.rect_re.height))}), 0);
+                            var6.setData(var6.bezier(new Point[]{this.pP.moveScale(this.rect_re.getLocation()), this.pP.moveScale(this.old_po3), this.pP.moveScale(mousePos), this.pP.moveScale(new Point(this.rect_re.width, this.rect_re.height))}), 0);
                             var6.draw(this, var2, (Graphics) null, this.i_offs, var7, var8, var9, var10, var11, var3, var4, -2);
                             this.m_paint();
                             this.rect_re = null;
@@ -184,8 +184,8 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
                     }
                 default:
                     this.draw_flag = 0;
-                    this.t_getRectT(this.old_po, var5);
-                    this.rect_re = this.t_getRect(this.pP.moveScale(this.old_po), this.pP.moveScale(var5));
+                    this.t_getRectT(this.old_po, mousePos);
+                    this.rect_re = this.t_getRect(this.pP.moveScale(this.old_po), this.pP.moveScale(mousePos));
                     if (this.rect_re.isEmpty()) {
                         return;
                     }
@@ -331,14 +331,14 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
 
     }
 
-    private void move_draw(MouseEvent var1) {
+    private void move_draw(MouseEvent event) {
         try {
             if (this.draw_flag == 0) {
                 return;
             }
 
-            Graphics var2 = this.primary();
-            Point var3 = var1.getPoint();
+            Graphics g = this.primary();
+            Point mousePos = event.getPoint();
             int var4 = this.pP.image_x;
             int var5 = this.pP.image_y;
             int var10000 = this.tools.lLayer;
@@ -362,35 +362,35 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
                                     int var22 = this.rect_re.width * var6;
                                     var15 = this.rect_re.height * var6;
                                     Rectangle var24 = this.getBounds();
-                                    var2.drawImage(this.pP.image_applet, var20, var21, var20 + var22, var21 + var15, var24.x + var20, var24.y + var21, var24.x + var20 + var22, var24.y + var21 + var15, (ImageObserver) null);
-                                    this.old_po2.translate(-(this.old_po.x - var3.x), -(this.old_po.y - var3.y));
+                                    g.drawImage(this.pP.image_applet, var20, var21, var20 + var22, var21 + var15, var24.x + var20, var24.y + var21, var24.x + var20 + var22, var24.y + var21 + var15, (ImageObserver) null);
+                                    this.old_po2.translate(-(this.old_po.x - mousePos.x), -(this.old_po.y - mousePos.y));
                                 } else {
                                     Image var23 = this.createImage(new MemoryImageSource(var11.width, var11.height, this.cm, this.i_offs[this.slayer], (this.rect_re.y + (var21 <= 0 ? this.rect_re.height - var11.height : 0)) * var4 + this.rect_re.x + (var20 <= 0 ? this.rect_re.width - var11.width : 0), var4));
-                                    var2.drawImage(var23, var20, var21, var11.width * var6, var11.height * var6, Color.white, (ImageObserver) null);
+                                    g.drawImage(var23, var20, var21, var11.width * var6, var11.height * var6, Color.white, (ImageObserver) null);
                                 }
                             }
                         }
 
-                        this.old_po = var3;
+                        this.old_po = mousePos;
                     } else {
-                        var2.setXORMode(new Color(~var9));
-                        var2.setColor(new Color(var9));
+                        g.setXORMode(new Color(~var9));
+                        g.setColor(new Color(var9));
 
                         for (var19 = 0; var19 < 2; ++var19) {
                             var11 = new Rectangle(this.t_getRectT(this.old_po, this.old_po2));
-                            var2.drawRect(var11.x, var11.y, var11.width, var11.height);
-                            this.old_po2 = var3;
+                            g.drawRect(var11.x, var11.y, var11.width, var11.height);
+                            this.old_po2 = mousePos;
                         }
 
-                        var2.setPaintMode();
+                        g.setPaintMode();
                     }
 
                     return;
                 case 60:
-                    var3 = this.pP.moveScale(var3);
-                    if (!var3.equals(this.old_po)) {
-                        this.draw_line(var3);
-                        this.old_po = var3;
+                    mousePos = this.pP.moveScale(mousePos);
+                    if (!mousePos.equals(this.old_po)) {
+                        this.draw_line(mousePos);
+                        this.old_po = mousePos;
                     }
                     break;
                 case 62:
@@ -401,7 +401,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
                         var11 = new Rectangle(0, 0, var10.width / var6, var10.height / var6);
                         Color var12 = new Color(var9);
                         Graphics var13 = this.pP.getCanvas(false);
-                        Point[] var14 = new Point[]{this.pP.moveScale(this.rect_re.getLocation()), this.pP.moveScale(this.draw_flag == 2 ? new Point(var3) : new Point(this.old_po3)), this.pP.moveScale(var3), this.pP.moveScale(new Point(this.rect_re.width, this.rect_re.height))};
+                        Point[] var14 = new Point[]{this.pP.moveScale(this.rect_re.getLocation()), this.pP.moveScale(this.draw_flag == 2 ? new Point(mousePos) : new Point(this.old_po3)), this.pP.moveScale(mousePos), this.pP.moveScale(new Point(this.rect_re.width, this.rect_re.height))};
                         var13.drawImage(this.image_b, 0, 0, Color.white, (ImageObserver) null);
                         var13.setXORMode(this.pP.cl_back);
                         var13.setColor(new Color(~this.pP.cl_back.getRGB()));
@@ -427,37 +427,37 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
                         return;
                     }
                 case 61:
-                    var2.setXORMode(new Color(~var9));
-                    var2.setColor(new Color(var9));
-                    var2.drawLine(this.old_po.x, this.old_po.y, this.old_po2.x, this.old_po2.y);
-                    var2.drawLine(this.old_po.x, this.old_po.y, var3.x, var3.y);
-                    var2.setPaintMode();
-                    this.old_po2 = var3;
+                    g.setXORMode(new Color(~var9));
+                    g.setColor(new Color(var9));
+                    g.drawLine(this.old_po.x, this.old_po.y, this.old_po2.x, this.old_po2.y);
+                    g.drawLine(this.old_po.x, this.old_po.y, mousePos.x, mousePos.y);
+                    g.setPaintMode();
+                    this.old_po2 = mousePos;
                     return;
                 default:
-                    var2.setXORMode(new Color(~var9));
-                    var2.setColor(new Color(this.tools.clLine));
+                    g.setXORMode(new Color(~var9));
+                    g.setColor(new Color(this.tools.clLine));
 
                     for (var19 = 0; var19 < 2; ++var19) {
                         var11 = new Rectangle(this.t_getRectT(this.old_po, this.old_po2));
                         switch (this.tools.lMode) {
                             case 20:
-                                var2.fillRect(var11.x, var11.y, var11.width, var11.height);
+                                g.fillRect(var11.x, var11.y, var11.width, var11.height);
                                 break;
                             case 22:
-                                var2.fillOval(var11.x, var11.y, var11.width, var11.height);
+                                g.fillOval(var11.x, var11.y, var11.width, var11.height);
                                 break;
                             case 23:
-                                var2.drawOval(var11.x, var11.y, var11.width, var11.height);
+                                g.drawOval(var11.x, var11.y, var11.width, var11.height);
                                 break;
                             default:
-                                var2.drawRect(var11.x, var11.y, var11.width, var11.height);
+                                g.drawRect(var11.x, var11.y, var11.width, var11.height);
                         }
 
-                        this.old_po2 = var3;
+                        this.old_po2 = mousePos;
                     }
 
-                    var2.setPaintMode();
+                    g.setPaintMode();
             }
         } catch (Exception var18) {
             var18.printStackTrace();
@@ -465,8 +465,8 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
 
     }
 
-    public void paint(Graphics var1) {
-        this.m_paint(var1, (Rectangle) null);
+    public void paint(Graphics g) {
+        this.m_paint(g, (Rectangle) null);
     }
 
     private Graphics primary() {
@@ -477,24 +477,24 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
         return this.p;
     }
 
-    protected void processKeyEvent(KeyEvent var1) {
-        this.pP.processKeyEvent(var1);
+    protected void processKeyEvent(KeyEvent event) {
+        this.pP.processKeyEvent(event);
     }
 
-    protected void processMouseEvent(MouseEvent var1) {
-        this.processMouseMotionEvent(var1);
+    protected void processMouseEvent(MouseEvent event) {
+        this.processMouseMotionEvent(event);
     }
 
-    protected void processMouseMotionEvent(MouseEvent var1) {
+    protected void processMouseMotionEvent(MouseEvent event) {
         try {
-            int var2 = var1.getID();
-            var1.consume();
+            int var2 = event.getID();
+            event.consume();
             switch (var2) {
                 case MouseEvent.MOUSE_PRESSED:
-                    boolean var9 = var1.isControlDown();
-                    boolean var11 = var1.isAltDown();
-                    boolean var12 = var1.getModifiers() == 4;
-                    if (this.dHint == 1) {
+                    boolean var9 = event.isControlDown();
+                    boolean var11 = event.isAltDown();
+                    boolean var12 = event.getModifiers() == 4;
+                    if (this.dHint == 1) { //TODO: magic number
                         if (this.draw_flag > 0) {
                             this.cancel();
                             this.isPreD = false;
@@ -514,11 +514,11 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
                     }
 
                     if (this.dHint == 0) {
-                        this.old_po = var1.getPoint();
+                        this.old_po = event.getPoint();
                         switch (this.tools.lMode) {
                             case -2:
                             case 100:
-                                Point var13 = this.pP.moveScale(var1.getPoint());
+                                Point var13 = this.pP.moveScale(event.getPoint());
                                 MgLine var7 = new MgLine();
                                 var7.create(this.tools.lMode, this.tools.lMaskHints, this.tools.lSize, this.tools.clLine, this.tools.clMask, this.tools.clAlpha, this.tools.lLayer);
                                 var7.setData(new Rectangle(var13));
@@ -528,9 +528,9 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
                             case 2:
                                 return;
                             default:
-                                this.start_draw(var1);
+                                this.start_draw(event);
                                 this.isPreD = false;
-                                this.dPre(var1);
+                                this.dPre(event);
                                 this.isPreD = true;
                         }
                     }
@@ -560,9 +560,9 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
                             break;
                         }
 
-                        this.end_draw(var1);
+                        this.end_draw(event);
                         this.isPre = false;
-                        this.dPre(var1);
+                        this.dPre(event);
                     }
 
                     this.dHint = -1;
@@ -570,11 +570,11 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
                     break;
                 case MouseEvent.MOUSE_MOVED:
                     if (this.tools.lHints != 60 && this.tools.lMode != 40) {
-                        this.move_draw(var1);
+                        this.move_draw(event);
                     }
 
                     if (this.dHint == -1) {
-                        this.dPre(var1);
+                        this.dPre(event);
                     }
                     break;
                 case MouseEvent.MOUSE_ENTERED:
@@ -583,9 +583,9 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
                     break;
                 case MouseEvent.MOUSE_DRAGGED:
                     if (this.dHint == 0) {
-                        this.move_draw(var1);
+                        this.move_draw(event);
                         this.isPre = false;
-                        this.dPre(var1);
+                        this.dPre(event);
                         break;
                     }
                 case MouseEvent.MOUSE_EXITED:
@@ -595,15 +595,15 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
             switch (this.dHint) {
                 case 1:
                     this.isPreD = false;
-                    this.dPre(var1);
-                    this.getPixel(this.pP.moveScale(var1.getPoint()));
+                    this.dPre(event);
+                    this.getPixel(this.pP.moveScale(event.getPoint()));
                     break;
                 case 2:
-                    this.pP.scroll(var1, this.old_po, true);
+                    this.pP.scroll(event, this.old_po, true);
                     break;
                 case 3:
-                    Point var10 = var1.getPoint();
-                    this.tools.setLineSize((Point) null, this.tools.lSize - (this.old_po.y - var10.y), var1.isShiftDown());
+                    Point var10 = event.getPoint();
+                    this.tools.setLineSize((Point) null, this.tools.lSize - (this.old_po.y - var10.y), event.isShiftDown());
                     this.tools.m_paint((Graphics) null);
                     this.old_po = var10;
             }
@@ -613,14 +613,14 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
 
     }
 
-    private void start_draw(MouseEvent var1) {
+    private void start_draw(MouseEvent event) {
         try {
             int var2 = this.pP.scale;
-            this.old_po = var1.getPoint();
-            this.old_po2 = var1.getPoint();
+            this.old_po = event.getPoint();
+            this.old_po2 = event.getPoint();
             this.mg_b.create(this.tools.lMode, this.tools.lMaskHints, this.tools.lSize, this.tools.clLine, this.tools.clMask, this.tools.clAlpha, this.tools.lLayer);
             switch (this.tools.lHints) {
-                case 2:
+                case 2: //TODO: magic numbers
                     this.draw_flag = 0;
                     this.m_paint();
                     return;

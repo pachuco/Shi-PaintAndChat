@@ -421,7 +421,7 @@ public class PConfig extends ConfigApplet implements ActionListener {
             var1.add((String) "Center", (Component) var2);
             var1.setSize(var2.getSize());
             var1.addWindowListener(new WindowAdapter() {
-                public void windowClosing(WindowEvent var1) {
+                public void windowClosing(WindowEvent event) {
                     System.exit(0);
                 }
             });

@@ -345,41 +345,41 @@ public class L extends LComponent implements ActionListener, ItemListener {
 
     }
 
-    public void pMouse(MouseEvent var1) {
+    public void pMouse(MouseEvent event) {
         try {
-            int var2 = this.Y = var1.getY();
-            int var3 = var1.getX();
-            M.Info var4 = this.mi.info;
-            boolean var5 = Awt.isR(var1);
+            int mouseY = this.Y = event.getY();
+            int mouseX = event.getX();
+            M.Info info = this.mi.info;
+            boolean var5 = Awt.isR(event);
             int var8;
             int var17;
-            switch (var1.getID()) {
+            switch (event.getID()) {
                 case MouseEvent.MOUSE_PRESSED:
                     if (this.mouse < 0) {
-                        int var6 = this.b(var2);
+                        int var6 = this.b(mouseY);
                         int var7 = var6 - 1;
                         if (var7 >= 0) {
-                            if (var3 > this.bW + 100 + 1) {
+                            if (mouseX > this.bW + 100 + 1) {
                                 var8 = this.mi.user.wait;
                                 this.mi.user.wait = -2;
                                 if (var5) {
-                                    for (var17 = 0; var17 < var4.L; ++var17) {
+                                    for (var17 = 0; var17 < info.L; ++var17) {
                                         this.setAlpha(var17, var17 == var7 ? 255 : 0, true);
                                     }
                                 } else {
-                                    this.setAlpha(var7, var4.layers[var7].iAlpha == 0.0F ? 255 : 0, true);
+                                    this.setAlpha(var7, info.layers[var7].iAlpha == 0.0F ? 255 : 0, true);
                                 }
 
                                 this.mi.user.wait = var8;
                                 this.mi.repaint();
                                 this.p();
-                            } else if (var1.getClickCount() < 2 && !var5) {
-                                this.isASlide = var3 >= this.bW;
+                            } else if (event.getClickCount() < 2 && !var5) {
+                                this.isASlide = mouseX >= this.bW;
                                 this.mouse = var6;
                                 this.m.iLayer = this.m.iLayerSrc = var7;
-                                this.YOFF = var2 % this.bH;
+                                this.YOFF = mouseY % this.bH;
                                 if (this.isASlide) {
-                                    this.setAlpha(var7, (int) ((float) (var3 - this.bW) / 100.0F * 255.0F), false);
+                                    this.setAlpha(var7, (int) ((float) (mouseX - this.bW) / 100.0F * 255.0F), false);
                                 } else {
                                     this.p();
                                 }
@@ -389,8 +389,8 @@ public class L extends LComponent implements ActionListener, ItemListener {
                             }
                         } else {
                             this.m.iLayerSrc = this.m.iLayer;
-                            if (var3 < this.bW && var2 > 2) {
-                                this.popup(new String[]{"AddLayer", "DelLayer", "CombineV", "PropertyLayer"}, var3, var2, true);
+                            if (mouseX < this.bW && mouseY > 2) {
+                                this.popup(new String[]{"AddLayer", "DelLayer", "CombineV", "PropertyLayer"}, mouseX, mouseY, true);
                             }
                         }
                     }
@@ -398,7 +398,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
                 case MouseEvent.MOUSE_RELEASED:
                     if (!var5) {
                         if (this.isASlide) {
-                            this.setAlpha(this.m.iLayer, (int) ((float) (var3 - this.bW) / 100.0F * 255.0F), true);
+                            this.setAlpha(this.m.iLayer, (int) ((float) (mouseX - this.bW) / 100.0F * 255.0F), true);
                             this.mouse = -1;
                             this.isASlide = false;
                         } else {
@@ -407,7 +407,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
                             if (var8 >= 0 && var17 >= 0 && var8 != var17) {
                                 this.m.iLayer = var17;
                                 this.m.iLayerSrc = var8;
-                                this.popup(new String[]{this.res.res("Shift"), this.res.res("Combine")}, var3, var2, false);
+                                this.popup(new String[]{this.res.res("Shift"), this.res.res("Combine")}, mouseX, mouseY, false);
                             }
 
                             this.mouse = -1;
@@ -416,8 +416,8 @@ public class L extends LComponent implements ActionListener, ItemListener {
                     }
                     break;
                 case MouseEvent.MOUSE_MOVED:
-                    var8 = this.b(var2) - 1;
-                    if (!this.is_pre || var8 < 0 || var3 >= this.bW) {
+                    var8 = this.b(mouseY) - 1;
+                    if (!this.is_pre || var8 < 0 || mouseX >= this.bW) {
                         if (this.is_DIm) {
                             this.is_DIm = false;
                             this.repaint();
@@ -452,7 +452,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
                 case MouseEvent.MOUSE_DRAGGED:
                     if (this.mouse > 0) {
                         if (this.isASlide) {
-                            this.setAlpha(this.m.iLayer, (int) ((float) (var3 - this.bW) / 100.0F * 255.0F), false);
+                            this.setAlpha(this.m.iLayer, (int) ((float) (mouseX - this.bW) / 100.0F * 255.0F), false);
                         } else {
                             this.m.iLayer = this.b(this.Y) - 1;
                             this.repaint();

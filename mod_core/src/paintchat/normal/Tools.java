@@ -705,28 +705,28 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
 
     }
 
-    public void pMouse(MouseEvent var1) {
+    public void pMouse(MouseEvent event) {
         try {
             if (this.rects == null) {
                 return;
             }
 
-            int var2 = var1.getX();
-            int var3 = var1.getY();
-            boolean var4 = Awt.isR(var1);
-            int var5;
+            int mouseX = event.getX();
+            int mouseY = event.getY();
+            boolean var4 = Awt.isR(event);
+
             if (this.list != null) {
-                for (var5 = 0; var5 < this.list.length; ++var5) {
-                    if (!this.list[var5].isMask || !var4) {
-                        this.list[var5].pMouse(var1);
+                for (int i = 0; i < this.list.length; ++i) {
+                    if (!this.list[i].isMask || !var4) {
+                        this.list[i].pMouse(event);
                     }
                 }
             }
 
-            var5 = var1.getID();
-            switch (var5) {
+            int eventID = event.getID();
+            switch (eventID) {
                 case MouseEvent.MOUSE_PRESSED:
-                    this.mPress(var1);
+                    this.mPress(event);
                     break;
                 case MouseEvent.MOUSE_RELEASED:
                     this.nowButton = -1;
@@ -748,7 +748,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
 
                     var6 -= 14;
                     if (var6 - 4 < 0) {
-                        this.setRGB(var6, 0, var2);
+                        this.setRGB(var6, 0, mouseX);
                         this.mPaint(-1);
                         this.upCS();
                         return;
@@ -756,7 +756,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
 
                     var6 -= 4;
                     if (var6 - 1 < 0) {
-                        this.setLineSize(var3, -1);
+                        this.setLineSize(mouseY, -1);
                         this.mPaint(this.nowButton);
                         return;
                     }

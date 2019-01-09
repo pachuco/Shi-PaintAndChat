@@ -698,7 +698,7 @@ public class Pp extends Panel {
                             break label34;
                         case 32:
                             this.mI.isSpace = true;
-                            this.setCursor(Cursor.getPredefinedCursor(12));
+                            this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                             break label34;
                         case 85:
                         case 90:
@@ -741,25 +741,25 @@ public class Pp extends Panel {
 
     }
 
-    protected void processMouseEvent(MouseEvent var1) {
-        this.processMouseMotionEvent(var1);
+    protected void processMouseEvent(MouseEvent event) {
+        this.processMouseMotionEvent(event);
     }
 
-    protected void processMouseMotionEvent(MouseEvent var1) {
+    protected void processMouseMotionEvent(MouseEvent event) {
         try {
             if (this.isSend) {
                 return;
             }
 
             int var2 = 0;
-            int var3 = var1.getID();
-            Point var4 = var1.getPoint();
+            int eventID = event.getID();
+            Point mousePos = event.getPoint();
             Point var5;
-            switch (var3) {
+            switch (eventID) {
                 case MouseEvent.MOUSE_PRESSED:
                     label93:
-                    for (this.old_point = new Point(var4); var2 < this.r_tools.length; ++var2) {
-                        if (this.r_tools[var2].contains(var4)) {
+                    for (this.old_point = new Point(mousePos); var2 < this.r_tools.length; ++var2) {
+                        if (this.r_tools[var2].contains(mousePos)) {
                             this.mouse_now = var2;
                             this.drawButton((Graphics) null, this.mouse_now);
                             switch (var2) {
@@ -778,19 +778,19 @@ public class Pp extends Panel {
                                 case 3:
                                     this.pbbs.popup(true);
                                     break label93;
-                                case 4:
+                                case 4: // exit
                                     this.pbbs.pExit();
                                     break label93;
-                                case 5:
+                                case 5: // open website
                                     String var9 = "http://shichan.jp/";
                                     if (this.tools.messageEx(var9 + (this.isJp ? "\nしぃちゃんのホームページを表示しますか？" : "Visit external site?"))) {
                                         this.pbbs.getAppletContext().showDocument(new URL(var9), "_blank");
                                     }
                                     break label93;
-                                case 6:
+                                case 6: // zoom in
                                     this.scaleChange(1);
                                     break label93;
-                                case 7:
+                                case 7: // zoom out
                                     this.scaleChange(-1);
                                 default:
                                     break label93;
@@ -801,16 +801,16 @@ public class Pp extends Panel {
                     if (var2 >= this.r_tools.length) {
                         this.mouse_now = -1;
                         var5 = this.mI.getLocation();
-                        var1.translatePoint(-var5.x, -var5.y);
-                        this.mI.dispatchEvent(var1);
+                        event.translatePoint(-var5.x, -var5.y);
+                        this.mI.dispatchEvent(event);
                     }
                     break;
                 case MouseEvent.MOUSE_RELEASED:
                     this.bool_mouse_tool = false;
                     if (this.mouse_now == -1) {
                         var5 = this.mI.getLocation();
-                        var1.translatePoint(-var5.x, -var5.y);
-                        this.mI.dispatchEvent(var1);
+                        event.translatePoint(-var5.x, -var5.y);
+                        this.mI.dispatchEvent(event);
                     } else {
                         int var8 = this.mouse_now;
                         this.mouse_now = -1;
@@ -824,7 +824,7 @@ public class Pp extends Panel {
                     break;
                 case MouseEvent.MOUSE_MOVED:
                     while (var2 < this.r_tools.length) {
-                        if (var2 != this.select_now && this.r_tools[var2].contains(var4)) {
+                        if (var2 != this.select_now && this.r_tools[var2].contains(mousePos)) {
                             this.select_now = (byte) var2;
                             this.drawButton(this.back, -1);
                             this.m_paint((Graphics) null);
@@ -836,29 +836,29 @@ public class Pp extends Panel {
 
                     if (this.mouse_now == -1) {
                         Point var6 = this.mI.getLocation();
-                        var1.translatePoint(-var6.x, -var6.y);
-                        this.mI.dispatchEvent(var1);
+                        event.translatePoint(-var6.x, -var6.y);
+                        this.mI.dispatchEvent(event);
                     }
                     break;
                 case MouseEvent.MOUSE_DRAGGED:
                     switch (this.mouse_now) {
                         case -1:
                             var5 = this.mI.getLocation();
-                            var1.translatePoint(-var5.x, -var5.y);
-                            this.mI.dispatchEvent(var1);
+                            event.translatePoint(-var5.x, -var5.y);
+                            this.mI.dispatchEvent(event);
                             break;
                         case 8:
                         case 9:
-                            this.scroll(var1, this.old_point, this.mI.isSpace);
-                            this.old_point = var4;
+                            this.scroll(event, this.old_point, this.mI.isSpace);
+                            this.old_point = mousePos;
                     }
             }
 
-            if (var3 == MouseEvent.MOUSE_RELEASED) {
+            if (eventID == MouseEvent.MOUSE_RELEASED) {
                 this.mouse_now = -1;
             }
 
-            var1.consume();
+            event.consume();
         } catch (Throwable var7) {
             var7.printStackTrace();
         }
@@ -929,19 +929,19 @@ public class Pp extends Panel {
         this.scale_y = var5;
     }
 
-    public synchronized void scroll(MouseEvent var1, Point var2, boolean var3) {
-        Point var4 = var1.getPoint();
+    public synchronized void scroll(MouseEvent event, Point var2, boolean var3) {
+        Point mousePos = event.getPoint();
         Dimension var5 = this.mI.getSize();
         Graphics var6 = this.mI.p;
         int var7 = this.scale_x;
         int var8 = this.scale_y;
-        float var9 = (float) (var4.x - var2.x) * ((float) this.image_x / (float) var5.width);
+        float var9 = (float) (mousePos.x - var2.x) * ((float) this.image_x / (float) var5.width);
         if (var9 != 0.0F) {
             var9 = var9 > 0.0F && var9 < 1.0F ? 1.0F : (var9 < 0.0F && var9 > -1.0F ? -1.0F : var9);
         }
 
         int var10 = (int) var9;
-        var9 = (float) (var4.y - var2.y) * ((float) this.image_y / (float) var5.height);
+        var9 = (float) (mousePos.y - var2.y) * ((float) this.image_y / (float) var5.height);
         if (var9 != 0.0F) {
             var9 = var9 > 0.0F && var9 < 1.0F ? 1.0F : (var9 < 0.0F && var9 > -1.0F ? -1.0F : var9);
         }
@@ -952,7 +952,7 @@ public class Pp extends Panel {
             var11 = -var11;
         }
 
-        var2.setLocation(var4);
+        var2.setLocation(mousePos);
         this.scale_x = Math.max(var7 + var10, 0);
         this.scale_y = Math.max(var8 + var11, 0);
         this.drawScroll((Graphics) null);

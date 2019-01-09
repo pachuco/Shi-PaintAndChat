@@ -181,7 +181,7 @@ public class TPalette extends LComponent {
     }
 
     public void pMouse(MouseEvent event) {
-        int eventId = event.getID();
+        int eventID = event.getID();
         int mouseX = event.getX();
         int mouseY = event.getY();
         Dimension var5 = this.getSize();
@@ -192,7 +192,7 @@ public class TPalette extends LComponent {
         boolean var10 = this.mg.isText();
         int var11 = var10 ? 0xFF : this.info.getPenMask()[this.mg.iPenM].length;
         int var12 = Math.min(var6 * 6, var11 * 8 + 1);
-        if (mouseX <= var8 && eventId == MouseEvent.MOUSE_PRESSED) {
+        if (mouseX <= var8 && eventID == MouseEvent.MOUSE_PRESSED) {
             this.iDrag = -1;
             int var18 = Math.min(mouseY / var6 * 2 + mouseX / var7, 19);
             if (var9) {
@@ -207,7 +207,7 @@ public class TPalette extends LComponent {
             this.repaint();
         } else {
             boolean var13 = false;
-            switch (eventId) {
+            switch (eventID) {
                 case MouseEvent.MOUSE_PRESSED:
                     if (mouseY < var12) {
                         if (var9) {
