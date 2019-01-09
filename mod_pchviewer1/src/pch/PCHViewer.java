@@ -523,9 +523,9 @@ public class PCHViewer extends Applet implements Runnable {
                     this.tLoad.start();
                     this.showStatus(STR_VERSION);
                     MgLine.setup(this, 2);
-                    String var2 = this.p("pch_file", "");
-                    if (var2.length() > 0) {
-                        this.loadPCH(var2);
+                    String pchFile = this.p("pch_file", "");
+                    if (pchFile.length() > 0) {
+                        this.loadPCH(this.getCodeBase() + pchFile);
                     }
                 } catch (Throwable var3) {
                     var3.printStackTrace();
