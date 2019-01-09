@@ -33,13 +33,13 @@ public class Mg {
     public int iColorMask = 0;
     public int iAlpha = 255;
     public int iAlpha2;
-    public int iSA = 65280;
+    public int iSA = 0xFF00;
     public int iLayer = 0;
     public int iLayerSrc = 1;
     public int iMask = M_N;
     public int iSize = 0;
-    public int iSS = 65280;
-    public int iCount = -8;
+    public int iSS = 0xFF00;
+    public int iCount = DEF_COUNT;
     public int iSOB;
     public boolean isAFix;
     public boolean isOver;
@@ -50,6 +50,7 @@ public class Mg {
     private int iSeek;
     private int iOffset;
     private byte[] offset;
+    // iHint
     public static final int H_FLINE = 0;
     public static final int H_LINE = 1;
     public static final int H_BEZI = 2;
@@ -63,6 +64,7 @@ public class Mg {
     public static final int H_CLEAR = 10;
     public static final int H_SP = 11;
     public static final int H_L = 14;
+    // iPen
     public static final int P_SOLID = 0;
     public static final int P_PEN = 1;
     public static final int P_SUISAI = 2;
@@ -74,22 +76,34 @@ public class Mg {
     public static final int P_BOKASHI = 8;
     public static final int P_MOSAIC = 9;
     public static final int P_FILL = 10;
+    public static final int P_LPEN = 11;
+    public static final int P_UNKNOWN12 = 12;
+    public static final int P_UNKNOWN13 = 13;
+    public static final int P_NULL = 14;
+    public static final int P_UNKNOWN15 = 15;
+    public static final int P_UNKNOWN16 = 16;
     public static final int P_LR = 17;
     public static final int P_UD = 18;
     public static final int P_R = 19;
     public static final int P_FUSION = 20;
+    // iPenM
     public static final int PM_PEN = 0;
-    public static final int PM_SUISAI = 1;
+    public static final int PM_SUISAI = 1; // Suisai means watercolor
     public static final int PM_MANY = 2;
-    public static final int M_N = 0;
-    public static final int M_M = 1;
-    public static final int M_R = 2;
-    public static final int M_ADD = 3;
-    public static final int M_SUB = 4;
+    // iMask
+    public static final int M_N = 0; // Normal
+    public static final int M_M = 1; // Multiply
+    public static final int M_R = 2; // Invert
+    public static final int M_ADD = 3; // Additive
+    public static final int M_SUB = 4; // Subtract
+    // Flags group 1 (iSOB)
+    public static final int F1_ALL_LAYERS = 1;
+    private static final int F1_AFIX = 2;
     private static final int F1O = 4;
     private static final int F1C = 8;
     private static final int F1A = 16;
     private static final int F1S = 32;
+    // Flags group 2
     private static final int F2H = 1;
     private static final int F2PM = 2;
     private static final int F2M = 4;
@@ -97,6 +111,7 @@ public class Mg {
     private static final int F2T = 16;
     private static final int F2L = 32;
     private static final int F2LS = 64;
+    // Flags group 3
     private static final int F3A = 1;
     private static final int F3C = 2;
     private static final int F3CM = 4;
@@ -148,58 +163,58 @@ public class Mg {
         this.dBuffer(!this.user.isDirect, this.user.dX, this.user.dY, this.user.dW, this.user.dH);
     }
 
-    private final void dBuffer(boolean var1, int var2, int var3, int var4, int var5) {
+    private final void dBuffer(boolean isDirect, int x1, int y1, int x2, int y2) {
         try {
-            int var6 = this.info.scale;
-            int var7 = this.info.Q;
-            int var8 = this.info.W;
-            int var9 = this.info.H;
-            int var10 = this.info.scaleX;
-            int var11 = this.info.scaleY;
-            boolean var13 = var6 == 1;
+            int scale = this.info.scale;
+            int quality = this.info.Q;
+            int w = this.info.W;
+            int h = this.info.H;
+            int scaleX = this.info.scaleX;
+            int scaleY = this.info.scaleY;
+            boolean isUnscaled = scale == 1;
             int[] var14 = this.user.buffer;
-            Color var15 = Color.white;
-            Graphics var16 = this.info.g;
-            if (var16 == null) {
+            Color colorWhite = Color.white;
+            Graphics g = this.info.g;
+            if (g == null) {
                 return;
             }
 
-            var2 /= var7;
-            var3 /= var7;
-            var4 /= var7;
-            var5 /= var7;
-            var2 = var2 <= var10 ? var10 : var2;
-            var3 = var3 <= var11 ? var11 : var3;
-            int var12 = this.info.vWidth / var6 + var10;
-            var4 = var4 > var12 ? var12 : var4;
-            var4 = var4 > var8 ? var8 : var4;
-            var12 = this.info.vHeight / var6 + var11;
-            var5 = var5 > var12 ? var12 : var5;
-            var5 = var5 > var9 ? var9 : var5;
-            if (var4 <= var2 || var5 <= var3) {
+            x1 /= quality;
+            y1 /= quality;
+            x2 /= quality;
+            y2 /= quality;
+            x1 = x1 <= scaleX ? scaleX : x1;
+            y1 = y1 <= scaleY ? scaleY : y1;
+            int var12 = this.info.vWidth / scale + scaleX;
+            x2 = x2 > var12 ? var12 : x2;
+            x2 = x2 > w ? w : x2;
+            var12 = this.info.vHeight / scale + scaleY;
+            y2 = y2 > var12 ? var12 : y2;
+            y2 = y2 > h ? h : y2;
+            if (x2 <= x1 || y2 <= y1) {
                 return;
             }
 
-            var8 = var4 - var2;
-            int var17 = var8 * var6;
-            int var18 = (var2 - var10) * var6;
-            int var19 = var3;
-            var12 = var14.length / (var8 * var7 * var7);
+            w = x2 - x1;
+            int var17 = w * scale;
+            int var18 = (x1 - scaleX) * scale;
+            int var19 = y1;
+            var12 = var14.length / (w * quality * quality);
 
             while (true) {
-                var9 = Math.min(var12, var5 - var19);
-                if (var9 <= 0) {
+                h = Math.min(var12, y2 - var19);
+                if (h <= 0) {
                     break;
                 }
 
-                Image var20 = var1 ? this.mkMPic(var2, var19, var8, var9, var7) : this.mkLPic((int[]) null, var2, var19, var8, var9, var7);
-                if (var13) {
-                    var16.drawImage(var20, var18, var19 - var11, var15, (ImageObserver) null);
+                Image var20 = isDirect ? this.mkMPic(x1, var19, w, h, quality) : this.mkLPic((int[]) null, x1, var19, w, h, quality);
+                if (isUnscaled) {
+                    g.drawImage(var20, var18, var19 - scaleY, colorWhite, (ImageObserver) null);
                 } else {
-                    var16.drawImage(var20, var18, (var19 - var11) * var6, var17, var9 * var6, var15, (ImageObserver) null);
+                    g.drawImage(var20, var18, (var19 - scaleY) * scale, var17, h * scale, colorWhite, (ImageObserver) null);
                 }
 
-                var19 += var9;
+                var19 += h;
             }
         } catch (RuntimeException var21) {
             var21.printStackTrace();
@@ -483,7 +498,6 @@ public class Mg {
     private void dFill(int var1, int var2) {
         int var3 = this.info.W;
         int var4 = this.info.H;
-        int[] var10000 = this.info.iOffs[this.iLayer];
         byte var5 = (byte) this.iAlpha;
         byte[] var6 = this.info.iMOffs;
 
@@ -589,8 +603,7 @@ public class Mg {
         int var31;
         for (var31 = 0; var31 < var30; ++var31) {
             if (var14 != var12 || var15 != var13) {
-                Mg.User var10000 = this.user;
-                var10000.count = var10000.count - 1;
+                this.user.count = this.user.count - 1;
                 var14 = var12;
                 var15 = var13;
             }
@@ -696,8 +709,7 @@ public class Mg {
         int var27;
         for (var27 = 0; var27 < var9; ++var27) {
             if (var12 != var10 || var13 != var11) {
-                Mg.User var10000 = this.user;
-                var10000.count = var10000.count - 1;
+                this.user.count = this.user.count - 1;
                 var12 = var10;
                 var13 = var11;
                 if (this.user.count <= 0) {
@@ -818,8 +830,7 @@ public class Mg {
                         } else {
                             var29 = var32;
                             var30 = var33;
-                            Mg.User var10000 = this.user;
-                            var10000.count = var10000.count - 1;
+                            this.user.count = this.user.count - 1;
                         }
 
                         if (this.user.count > 0) {
@@ -900,13 +911,12 @@ public class Mg {
     }
 
     private final void dFlush() {
-        int var10000 = this.info.Q;
-        int var3 = this.info.W;
-        int var4 = this.info.H;
-        int var5 = this.user.dX <= 0 ? 0 : this.user.dX;
-        int var6 = this.user.dY <= 0 ? 0 : this.user.dY;
-        int var7 = this.user.dW >= var3 ? var3 : this.user.dW;
-        int var8 = this.user.dH >= var4 ? var4 : this.user.dH;
+        int width = this.info.W;
+        int height = this.info.H;
+        int x = this.user.dX <= 0 ? 0 : this.user.dX;
+        int y = this.user.dY <= 0 ? 0 : this.user.dY;
+        int x2 = this.user.dW >= width ? width : this.user.dW;
+        int y2 = this.user.dH >= height ? height : this.user.dH;
         byte[] var9 = this.info.iMOffs;
         int[] var10 = this.info.iOffs[this.iLayer];
         int var1;
@@ -921,16 +931,16 @@ public class Mg {
         int var25;
         int var26;
         switch (this.iPen) {
-            case 9:
+            case P_MOSAIC:
                 var11 = this.iAlpha / 10 + 1;
-                var5 = var5 / var11 * var11;
-                var6 = var6 / var11 * var11;
+                x = x / var11 * var11;
+                y = y / var11 * var11;
                 int[] var28 = this.user.argb;
 
-                for (var12 = var6; var12 < var8; var12 += var11) {
-                    for (var2 = var5; var2 < var7; var2 += var11) {
-                        var15 = Math.min(var11, var3 - var2);
-                        var23 = Math.min(var11, var4 - var12);
+                for (var12 = y; var12 < y2; var12 += var11) {
+                    for (var2 = x; var2 < x2; var2 += var11) {
+                        var15 = Math.min(var11, width - var2);
+                        var23 = Math.min(var11, height - var12);
 
                         int var24;
                         for (var24 = 0; var24 < 4; ++var24) {
@@ -942,7 +952,7 @@ public class Mg {
                         for (var14 = 0; var14 < var23; ++var14) {
                             for (var13 = 0; var13 < var15; ++var13) {
                                 var26 = this.pix(var2 + var13, var12 + var14);
-                                var1 = (var12 + var14) * var3 + var2 + var13;
+                                var1 = (var12 + var14) * width + var2 + var13;
 
                                 for (var24 = 0; var24 < 4; ++var24) {
                                     var28[var24] += var26 >>> var24 * 8 & 255;
@@ -955,7 +965,7 @@ public class Mg {
                         var26 = var28[3] << 24 | var28[2] / var25 << 16 | var28[1] / var25 << 8 | var28[0] / var25;
 
                         for (var14 = var12; var14 < var12 + var23; ++var14) {
-                            var1 = var3 * var14 + var2;
+                            var1 = width * var14 + var2;
 
                             for (var13 = 0; var13 < var15; ++var13) {
                                 if (var9[var1] != 0) {
@@ -970,33 +980,33 @@ public class Mg {
                 }
 
                 if (this.user.wait >= 0) {
-                    this.dBuffer(true, var5, var6, var7, var8);
+                    this.dBuffer(true, x, y, x2, y2);
                 }
                 break;
-            case 10:
-            case 11:
-            case 12:
-            case 13:
-            case 14:
-            case 15:
-            case 16:
+            case P_FILL:
+            case P_LPEN:
+            case P_UNKNOWN12:
+            case P_UNKNOWN13:
+            case P_NULL:
+            case P_UNKNOWN15:
+            case P_UNKNOWN16:
             default:
-                while (var6 < var8) {
-                    var1 = var6 * var3 + var5;
+                while (y < y2) {
+                    var1 = y * width + x;
 
-                    for (var2 = var5; var2 < var7; ++var2) {
+                    for (var2 = x; var2 < x2; ++var2) {
                         var10[var1] = this.getM(var10[var1], var9[var1] & 255, var1);
                         var9[var1] = 0;
                         ++var1;
                     }
 
-                    ++var6;
+                    ++y;
                 }
                 break;
-            case 17:
-                for (var13 = (var7 - var5) / 2 + 1; var6 < var8; ++var6) {
-                    var1 = var6 * var3 + var5;
-                    var12 = var1 + (var7 - var5) - 1;
+            case P_LR:
+                for (var13 = (x2 - x) / 2 + 1; y < y2; ++y) {
+                    var1 = y * width + x;
+                    var12 = var1 + (x2 - x) - 1;
 
                     for (var2 = 0; var2 < var13; ++var2) {
                         var11 = var10[var1];
@@ -1012,64 +1022,64 @@ public class Mg {
                 }
 
                 return;
-            case 18:
-                for (var13 = (var8 - var6) / 2; var5 < var7; ++var5) {
-                    var1 = var6 * var3 + var5;
-                    var12 = var1 + (var8 - var6 - 1) * var3;
+            case P_UD:
+                for (var13 = (y2 - y) / 2; x < x2; ++x) {
+                    var1 = y * width + x;
+                    var12 = var1 + (y2 - y - 1) * width;
 
                     for (var2 = 0; var2 < var13; ++var2) {
                         var11 = var10[var1];
                         var10[var1] = var10[var12];
                         var10[var12] = var11;
                         var9[var1] = var9[var12] = 0;
-                        var1 += var3;
-                        var12 -= var3;
+                        var1 += width;
+                        var12 -= width;
                     }
                 }
 
                 return;
-            case 19:
-                var12 = var7 - var5;
-                var13 = var8 - var6;
-                var14 = var6 * var3 + var5;
+            case P_R:
+                var12 = x2 - x;
+                var13 = y2 - y;
+                var14 = y * width + x;
                 var15 = var12 * var13;
                 var17 = new int[var15];
 
                 for (var23 = 0; var23 < var13; ++var23) {
-                    System.arraycopy(var10, var14 + var3 * var23, var17, var12 * var23, var12);
+                    System.arraycopy(var10, var14 + width * var23, var17, var12 * var23, var12);
                 }
 
                 for (var23 = 0; var23 < var12; ++var23) {
-                    var10[var5 + var23] = 0xFFFFFF;
+                    var10[x + var23] = 0xFFFFFF;
                     var9[var14 + var23] = 0;
                 }
 
                 for (var23 = 1; var23 < var13; ++var23) {
-                    System.arraycopy(var10, var14, var10, var14 + var23 * var3, var12);
-                    System.arraycopy(var9, var14, var9, var14 + var23 * var3, var12);
+                    System.arraycopy(var10, var14, var10, var14 + var23 * width, var12);
+                    System.arraycopy(var9, var14, var9, var14 + var23 * width, var12);
                 }
 
                 boolean var22 = false;
-                var15 = var3 * var4;
+                var15 = width * height;
 
                 for (var25 = 0; var25 < var13; ++var25) {
                     var1 = var12 * var25;
                     var11 = var14 + var13 - var25;
 
                     for (var26 = 0; var26 < var12; ++var26) {
-                        int var27 = var26 + var5;
-                        if (var27 <= var3 && var27 >= 0 && var11 < var15) {
+                        int var27 = var26 + x;
+                        if (var27 <= width && var27 >= 0 && var11 < var15) {
                             var10[var11] = var17[var1];
                         }
 
-                        var11 += var3;
+                        var11 += width;
                         ++var1;
                     }
                 }
 
-                this.addD(var5, var6, var5 + Math.max(var12, var13), var6 + var12);
+                this.addD(x, y, x + Math.max(var12, var13), y + var12);
                 break;
-            case 20:
+            case P_FUSION:
                 if (this.iLayerSrc != this.iLayer) {
                     int[] var16 = this.info.iOffs[this.iLayerSrc];
                     var17 = var10;
@@ -1083,10 +1093,10 @@ public class Mg {
                         var20 = b255[this.iAlpha2 >>> 8];
                     }
 
-                    while (var6 < var8) {
-                        var1 = var6 * var3 + var5;
+                    while (y < y2) {
+                        var1 = y * width + x;
 
-                        for (var2 = var5; var2 < var7; ++var2) {
+                        for (var2 = x; var2 < x2; ++var2) {
                             if (var9[var1] != 0) {
                                 var13 = (int) ((float) (var17[var1] >>> 24) * var19);
                                 var12 = (int) ((float) (var18[var1] >>> 24) * b255[255 - var13] * var20);
@@ -1108,7 +1118,7 @@ public class Mg {
                             ++var1;
                         }
 
-                        ++var6;
+                        ++y;
                     }
                 }
 
@@ -1127,9 +1137,8 @@ public class Mg {
             int var2 = this.user.pY[3] + this.rPo();
             int var3 = this.iSOB != 0 ? this.ru() : 0;
             this.shift(var1, var2);
-            Mg.User var10000 = this.user;
-            var10000.iDCount = var10000.iDCount + 1;
-            if (this.iHint != 11) {
+            this.user.iDCount = this.user.iDCount + 1;
+            if (this.iHint != H_SP) {
                 if (this.isAnti) {
                     this.dFLine((float) var1 - 0.5F, (float) var2 - 0.5F, var3);
                 } else {
@@ -1143,29 +1152,28 @@ public class Mg {
         }
     }
 
-    public final void dNext(int var1, int var2, int var3, int var4) throws InterruptedException, IOException {
+    public final void dNext(int x, int y, int pressure, int step) throws InterruptedException, IOException {
         int var5 = this.info.scale;
         //this.user.pW;
-        var1 = (var1 / var5 + this.info.scaleX) * this.info.Q;
-        var2 = (var2 / var5 + this.info.scaleY) * this.info.Q;
-        if (Math.abs(var1 - this.user.pX[3]) + Math.abs(var2 - this.user.pY[3]) >= var4) {
-            this.wPo(var1 - this.user.pX[3]);
-            this.wPo(var2 - this.user.pY[3]);
-            this.shift(var1, var2);
-            Mg.User var10000 = this.user;
-            var10000.iDCount = var10000.iDCount + 1;
+        x = (x / var5 + this.info.scaleX) * this.info.Q;
+        y = (y / var5 + this.info.scaleY) * this.info.Q;
+        if (Math.abs(x - this.user.pX[3]) + Math.abs(y - this.user.pY[3]) >= step) {
+            this.wPo(x - this.user.pX[3]);
+            this.wPo(y - this.user.pY[3]);
+            this.shift(x, y);
+            this.user.iDCount = this.user.iDCount + 1;
             if (this.iSOB != 0) {
-                this.info.workOut.write(var3);
+                this.info.workOut.write(pressure);
             }
 
-            if (this.iHint == 11) {
+            if (this.iHint == H_SP) {
                 if (this.user.iDCount >= 2) {
-                    this.dFLine2(var3);
+                    this.dFLine2(pressure);
                 }
             } else if (this.isAnti) {
-                this.dFLine((float) var1 - 0.5F, (float) var2 - 0.5F, var3);
+                this.dFLine((float) x - 0.5F, (float) y - 0.5F, pressure);
             } else {
-                this.dFLine(var1, var2, var3);
+                this.dFLine(x, y, pressure);
             }
 
         }
@@ -1185,7 +1193,6 @@ public class Mg {
 
     private final void dPenM(int var1, int var2, float var3) {
         boolean var7 = false;
-        int var10000 = this.info.Q;
         int[] var10 = this.getPM();
         int var11 = this.info.W;
         int var12 = this.user.pW;
@@ -1214,14 +1221,14 @@ public class Mg {
                             ++var6;
                         } else {
                             switch (this.iPen) {
-                                case 1:
-                                case 20:
+                                case P_PEN:
+                                case P_FUSION:
                                     var17[var6++] = (byte) (var8 + (int) ((float) var9 * b255[255 - var8 >>> 1] * var3));
                                     break;
-                                case 2:
-                                case 5:
-                                case 6:
-                                case 7:
+                                case P_SUISAI:
+                                case P_SWHITE:
+                                case P_LIGHT:
+                                case P_DARK:
                                     if ((var9 = (int) ((float) var9 * this.getTT(var4, var5))) != 0) {
                                         var17[var6] = (byte) Math.min(var8 + Math.max((int) ((float) var9 * b255[255 - var8 >>> 2]), 1), 255);
                                     }
@@ -1400,9 +1407,9 @@ public class Mg {
             this.iSeek = 0;
             label23:
             switch (this.iHint) {
-                case 0:
-                case 1:
-                case 11:
+                case H_FLINE:
+                case H_LINE:
+                case H_SP:
                     this.dStart();
 
                     while (true) {
@@ -1410,7 +1417,7 @@ public class Mg {
                             break label23;
                         }
                     }
-                case 10:
+                case H_CLEAR:
                     this.dClear(false);
                     break;
                 default:
@@ -1458,7 +1465,7 @@ public class Mg {
             int var18;
             label108:
             switch (this.iHint) {
-                case 3:
+                case H_RECT:
                     var13 = var2;
 
                     while (true) {
@@ -1478,7 +1485,7 @@ public class Mg {
 
                         ++var13;
                     }
-                case 4:
+                case H_FRECT:
                     var13 = var1;
                     var14 = var2;
                     var15 = var3;
@@ -1532,8 +1539,8 @@ public class Mg {
 
                         ++var17;
                     }
-                case 5:
-                case 6:
+                case H_OVAL:
+                case H_FOVAL:
                     var13 = var3 - var1 - 1;
                     var14 = var4 - var2 - 1;
                     var17 = var13 / 2;
@@ -1545,7 +1552,7 @@ public class Mg {
                         var10[var5 * var16 + var15] = var12;
                     }
 
-                    if (this.iHint == 5 && var17 > 0 && var18 > 0) {
+                    if (this.iHint == H_OVAL && var17 > 0 && var18 > 0) {
                         this.dFill(var10, var1, var2, var3, var4);
                     }
             }
@@ -1603,7 +1610,7 @@ public class Mg {
             var7 = var6[0] >> 16;
             short var16 = (short) var6[0];
             switch (this.iHint) {
-                case 2:
+                case H_BEZI:
                     var9 = this.user.wait;
                     this.user.wait = -2;
                     this.dStart(var7 + var5, var16 + var5, 0, false, false);

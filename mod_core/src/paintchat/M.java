@@ -204,28 +204,29 @@ public class M {
 
                 var19 += h;
             }
-        } catch (RuntimeException var21) {
-            var21.printStackTrace();
+        } catch (RuntimeException ex) {
+            ex.printStackTrace();
         }
 
     }
 
-    private final void dBz(int[] var1) throws InterruptedException {
+    /** Draws a bezier */
+    private final void dBz(int[] points) throws InterruptedException {
         try {
-            int var2 = var1[0];
-            int var3 = 0;
 
-            float var6;
-            float var7;
+            int distXY = 0;
+
+            float pointX;
+            float pointY;
             int var8;
             for (var8 = 1; var8 < 4; ++var8) {
-                var6 = (float) (var1[var8] >> 16);
-                var7 = (float) ((short) var1[var8]);
-                var3 = (int) ((double) var3 + Math.sqrt((double) (var6 * var6 + var7 * var7)));
-                int var10000 = var1[var8];
+                pointX = (float) (points[var8] >> 16);
+                pointY = (float) ((short) points[var8]);
+                distXY = (int) ((double) distXY + Math.sqrt((double) (pointX * pointX + pointY * pointY)));
+                int var10000 = points[var8];
             }
 
-            if (var3 <= 0) {
+            if (distXY <= 0) {
                 return;
             }
 
@@ -234,27 +235,27 @@ public class M {
             int var10 = -1000;
             int var11 = -1000;
             int var12 = 0;
-            boolean var13 = this.isAnti;
+            boolean isAntialias = this.isAnti;
             int var14 = this.user.pW / 2;
 
-            for (var2 = var3; var2 > 0; --var2) {
-                float var5 = (float) var2 / (float) var3;
+            for (int i = distXY; i > 0; --i) {
+                float var5 = (float) i / (float) distXY;
                 float var4 = (float) Math.pow((double) (1.0F - var5), 3.0D);
-                var6 = var4 * (float) (var1[3] >> 16);
-                var7 = var4 * (float) ((short) var1[3]);
+                pointX = var4 * (float) (points[3] >> 16);
+                pointY = var4 * (float) ((short) points[3]);
                 var4 = 3.0F * (1.0F - var5) * (1.0F - var5) * var5;
-                var6 += var4 * (float) (var1[2] >> 16);
-                var7 += var4 * (float) ((short) var1[2]);
+                pointX += var4 * (float) (points[2] >> 16);
+                pointY += var4 * (float) ((short) points[2]);
                 var4 = 3.0F * var5 * var5 * (1.0F - var5);
-                var6 += var4 * (float) (var1[1] >> 16);
-                var7 += var4 * (float) ((short) var1[1]);
+                pointX += var4 * (float) (points[1] >> 16);
+                pointY += var4 * (float) ((short) points[1]);
                 var4 = var5 * var5 * var5;
-                var6 += var4 * (float) (var1[0] >> 16);
-                var7 += var4 * (float) ((short) var1[0]);
-                var8 = (int) var6 + var14;
-                int var17 = (int) var7 + var14;
+                pointX += var4 * (float) (points[0] >> 16);
+                pointY += var4 * (float) ((short) points[0]);
+                var8 = (int) pointX + var14;
+                int var17 = (int) pointY + var14;
                 if (var8 != var10 || var17 != var11) {
-                    if (var13) {
+                    if (isAntialias) {
                         this.shift(var8, var17);
                         ++var12;
                         if (var12 >= 4) {
@@ -879,40 +880,40 @@ public class M {
 
     private final void dFlush() {
         if (!this.user.isPre) {
-            int var3 = this.info.W;
-            int var4 = this.info.H;
-            int var5 = this.user.X <= 0 ? 0 : this.user.X;
-            int var6 = this.user.Y <= 0 ? 0 : this.user.Y;
-            int var7 = this.user.X2 >= var3 ? var3 : this.user.X2;
-            int var8 = this.user.Y2 >= var4 ? var4 : this.user.Y2;
-            if (var7 - var5 > 0 && var8 - var6 > 0 && this.iLayer < this.info.L) {
+            int width = this.info.W;
+            int height = this.info.H;
+            int x = this.user.X <= 0 ? 0 : this.user.X;
+            int y = this.user.Y <= 0 ? 0 : this.user.Y;
+            int x2 = this.user.X2 >= width ? width : this.user.X2;
+            int y2 = this.user.Y2 >= height ? height : this.user.Y2;
+            if (x2 - x > 0 && y2 - y > 0 && this.iLayer < this.info.L) {
                 byte[] var9 = this.info.iMOffs;
-                LO var10 = this.info.layers[this.iLayer];
+                LO currentLayer = this.info.layers[this.iLayer];
                 int var1;
                 int var2;
                 int[] var22;
                 label156:
                 switch (this.iPen) {
                     case P_SUISAI2:
-                        this.dCMask(var5, var6, var7, var8);
+                        this.dCMask(x, y, x2, y2);
                         break;
                     case P_MOSAIC:
-                        var10.reserve();
-                        var22 = var10.offset;
+                        currentLayer.reserve();
+                        var22 = currentLayer.offset;
                         int var23 = this.iAlpha / 10 + 1;
-                        var5 = var5 / var23 * var23;
-                        var6 = var6 / var23 * var23;
+                        x = x / var23 * var23;
+                        y = y / var23 * var23;
                         int[] var21 = this.user.argb;
-                        int var13 = var6;
+                        int var13 = y;
 
                         while (true) {
-                            if (var13 >= var8) {
+                            if (var13 >= y2) {
                                 break label156;
                             }
 
-                            for (var2 = var5; var2 < var7; var2 += var23) {
-                                int var26 = Math.min(var23, var3 - var2);
-                                int var27 = Math.min(var23, var4 - var13);
+                            for (var2 = x; var2 < x2; var2 += var23) {
+                                int var26 = Math.min(var23, width - var2);
+                                int var27 = Math.min(var23, height - var13);
 
                                 int var18;
                                 for (var18 = 0; var18 < 4; ++var18) {
@@ -921,31 +922,31 @@ public class M {
 
                                 int var19 = 0;
 
-                                int var20;
+                                int pixel;
                                 int var24;
                                 int var25;
                                 for (var25 = 0; var25 < var27; ++var25) {
                                     for (var24 = 0; var24 < var26; ++var24) {
-                                        var20 = this.pix(var2 + var24, var13 + var25);
-                                        var1 = (var13 + var25) * var3 + var2 + var24;
+                                        pixel = this.pix(var2 + var24, var13 + var25);
+                                        var1 = (var13 + var25) * width + var2 + var24;
 
                                         for (var18 = 0; var18 < 4; ++var18) {
-                                            var21[var18] += var20 >>> var18 * 8 & 255;
+                                            var21[var18] += pixel >>> var18 * 8 & 255;
                                         }
 
                                         ++var19;
                                     }
                                 }
 
-                                var20 = var21[3] << 24 | var21[2] / var19 << 16 | var21[1] / var19 << 8 | var21[0] / var19;
+                                pixel = var21[3] << 24 | var21[2] / var19 << 16 | var21[1] / var19 << 8 | var21[0] / var19;
 
                                 for (var25 = var13; var25 < var13 + var27; ++var25) {
-                                    var1 = var3 * var25 + var2;
+                                    var1 = width * var25 + var2;
 
                                     for (var24 = 0; var24 < var26; ++var24) {
                                         if (var9[var1] != 0) {
                                             var9[var1] = 0;
-                                            var22[var1] = var20;
+                                            var22[var1] = pixel;
                                         }
 
                                         ++var1;
@@ -956,32 +957,32 @@ public class M {
                             var13 += var23;
                         }
                     case P_LR:
-                        var10.dLR(var5, var6, var7, var8);
-                        this.dCMask(var5, var6, var7, var8);
+                        currentLayer.dLR(x, y, x2, y2);
+                        this.dCMask(x, y, x2, y2);
                         break;
                     case P_UD:
-                        var10.dUD(var5, var6, var7, var8);
-                        this.dCMask(var5, var6, var7, var8);
+                        currentLayer.dUD(x, y, x2, y2);
+                        this.dCMask(x, y, x2, y2);
                         break;
                     case P_R:
-                        var10.dR(var5, var6, var7, var8, (int[]) null);
-                        this.dCMask(var5, var6, var7, var8);
-                        this.addD(var5, var6, var5 + Math.max(var7 - var5, var8 - var6), var6 + Math.max(var7 - var5, var8 - var6));
+                        currentLayer.dR(x, y, x2, y2, (int[]) null);
+                        this.dCMask(x, y, x2, y2);
+                        this.addD(x, y, x + Math.max(x2 - x, y2 - y), y + Math.max(x2 - x, y2 - y));
                         break;
                     case P_FUSION:
                         byte var11 = this.iOffset > 8 ? this.offset[8] : 0;
                         LO var12 = this.info.layers[this.iLayerSrc];
-                        var12.normalize(b255[this.iAlpha2 & 255], var5, var6, var7, var8);
-                        var10.normalize(b255[this.iAlpha2 >>> 8], var5, var6, var7, var8);
+                        var12.normalize(b255[this.iAlpha2 & 255], x, y, x2, y2);
+                        currentLayer.normalize(b255[this.iAlpha2 >>> 8], x, y, x2, y2);
                         if (var12.offset == null) {
-                            this.dCMask(var5, var6, var7, var8);
+                            this.dCMask(x, y, x2, y2);
                         } else {
-                            var10.reserve();
-                            LO var14 = var10;
+                            currentLayer.reserve();
+                            LO var14 = currentLayer;
                             LO var15 = var12;
                             if (this.iLayer < this.iLayerSrc) {
                                 var14 = var12;
-                                var15 = var10;
+                                var15 = currentLayer;
                             }
 
                             LO var16 = new LO();
@@ -990,33 +991,33 @@ public class M {
                             var17.setField(var15);
                             var14.iCopy = var11;
                             var15.reserve();
-                            var14.dAdd(var15.offset, var5, var6, var7, var8, (int[]) null);
-                            if (var10 != var15) {
-                                var15.copyTo(var5, var6, var7, var8, var14, var5, var6, (int[]) null);
+                            var14.dAdd(var15.offset, x, y, x2, y2, (int[]) null);
+                            if (currentLayer != var15) {
+                                var15.copyTo(x, y, x2, y2, var14, x, y, (int[]) null);
                             }
 
-                            var12.clear(var5, var6, var7, var8);
+                            var12.clear(x, y, x2, y2);
                             var12.isDraw = true;
-                            this.dCMask(var5, var6, var7, var8);
+                            this.dCMask(x, y, x2, y2);
                             var14.setField(var16);
                             var15.setField(var17);
                         }
                         break;
                     default:
                         if (this.iHint != H_L && this.iHint != H_COPY) {
-                            var10.reserve();
+                            currentLayer.reserve();
 
-                            for (var22 = var10.offset; var6 < var8; ++var6) {
-                                var1 = var6 * var3 + var5;
+                            for (var22 = currentLayer.offset; y < y2; ++y) {
+                                var1 = y * width + x;
 
-                                for (var2 = var5; var2 < var7; ++var2) {
+                                for (var2 = x; var2 < x2; ++var2) {
                                     var22[var1] = this.getM(var22[var1], var9[var1] & 255, var1);
                                     var9[var1] = 0;
                                     ++var1;
                                 }
                             }
                         } else {
-                            this.dCMask(var5, var6, var7, var8);
+                            this.dCMask(x, y, x2, y2);
                         }
                 }
 
@@ -1072,27 +1073,27 @@ public class M {
         }
     }
 
-    public final void dNext(int var1, int var2, int var3, int var4) throws InterruptedException, IOException {
+    public final void dNext(int x, int y, int pressure, int step) throws InterruptedException, IOException {
         int var5 = this.info.scale;
-        var1 = (var1 / var5 + this.info.scaleX) * this.info.Q;
-        var2 = (var2 / var5 + this.info.scaleY) * this.info.Q;
-        if (Math.abs(var1 - this.user.pX[3]) + Math.abs(var2 - this.user.pY[3]) >= var4) {
-            this.wPo(var1 - this.user.pX[3]);
-            this.wPo(var2 - this.user.pY[3]);
-            this.shift(var1, var2);
+        x = (x / var5 + this.info.scaleX) * this.info.Q;
+        y = (y / var5 + this.info.scaleY) * this.info.Q;
+        if (Math.abs(x - this.user.pX[3]) + Math.abs(y - this.user.pY[3]) >= step) {
+            this.wPo(x - this.user.pX[3]);
+            this.wPo(y - this.user.pY[3]);
+            this.shift(x, y);
             this.user.iDCount = this.user.iDCount + 1;
             if (this.iSOB != 0) {
-                this.info.workOut.write(var3);
+                this.info.workOut.write(pressure);
             }
 
             if (this.iHint == H_SP) {
                 if (this.user.iDCount >= 2) {
-                    this.dFLine2(var3);
+                    this.dFLine2(pressure);
                 }
             } else if (this.isAnti) {
-                this.dFLine((float) var1, (float) var2, var3);
+                this.dFLine((float) x, (float) y, pressure);
             } else {
-                this.dFLine(var1, var2, var3);
+                this.dFLine(x, y, pressure);
             }
 
         }
@@ -1462,25 +1463,25 @@ public class M {
             int var3 = this.info.H;
             LO[] var4 = this.info.layers;
             this.setD(0, 0, 0, 0);
-            int[] var5 = this.user.points;
+            int[] points = this.user.points; // coordinates of two short x,y for each int
             int var6 = this.isText() ? 1 : 4;
 
-            int var7;
-            for (var7 = 0; var7 < var6 && this.iSeek < this.iOffset; ++var7) {
-                var5[var7] = (this.r2() & '\uffff') << 16 | this.r2() & '\uffff';
+            int pointX;
+            for (pointX = 0; pointX < var6 && this.iSeek < this.iOffset; ++pointX) {
+                points[pointX] = (this.r2() & '\uffff') << 16 | this.r2() & '\uffff';
             }
 
             label99:
             {
-                var7 = var5[0] >> 16;
-                short var8 = (short) var5[0];
+                pointX = points[0] >> 16;
+                short pointY = (short) points[0];
                 int var21;
                 switch (this.iHint) {
                     case H_BEZI:
                         int var9 = this.user.wait;
                         this.user.wait = -2;
-                        this.dStart(var7 + var1, var8 + var1, 0, false, false);
-                        this.dBz(var5);
+                        this.dStart(pointX + var1, pointY + var1, 0, false, false);
+                        this.dBz(points);
                         this.user.wait = var9;
                         break label99;
                     case H_RECT:
@@ -1491,30 +1492,30 @@ public class M {
                     case H_SP:
                     case H_UNKNOWN13:
                     default:
-                        this.dRect(var7, var8, var5[1] >> 16, (short) var5[1]);
+                        this.dRect(pointX, pointY, points[1] >> 16, (short) points[1]);
                         break label99;
                     case H_FILL:
-                        this.dFill(var7, var8);
+                        this.dFill(pointX, pointY);
                         break label99;
                     case H_TEXT:
                     case H_VTEXT:
                         String var18 = new String(this.offset, this.iSeek, this.iOffset - this.iSeek, ENCODE);
                         var21 = var18.indexOf(0);
-                        this.dText(var18.substring(var21 + 1), var7, var8);
+                        this.dText(var18.substring(var21 + 1), pointX, pointY);
                         break label99;
                     case H_COPY:
-                        this.dCopy(var5);
+                        this.dCopy(points);
                         break label99;
                     case H_L:
                 }
 
                 LO var10 = var4[this.iLayer];
-                switch (var8) {
+                switch (pointY) {
                     case 0:
                         this.info.swapL(this.iLayerSrc, this.iLayer);
                         break;
                     case 1:
-                        this.info.setL(var5[1]);
+                        this.info.setL(points[1]);
                         break;
                     case 2:
                         this.info.delL(this.iLayerSrc);
@@ -1541,10 +1542,10 @@ public class M {
                     case 6:
                         try {
                             Toolkit var20 = this.info.component.getToolkit();
-                            var7 = var5[1] >> 16;
-                            var8 = (short) var5[1];
+                            pointX = points[1] >> 16;
+                            pointY = (short) points[1];
                             Image var19;
-                            if ((var5[2] & 255) == 1) {
+                            if ((points[2] & 255) == 1) {
                                 var19 = var20.createImage(this.offset, this.iSeek, this.iOffset - this.iSeek);
                             } else {
                                 var19 = var20.createImage((byte[]) this.info.cnf.getRes(new String(this.offset, this.iSeek, this.iOffset - this.iSeek, ENCODE)));
@@ -1558,7 +1559,7 @@ public class M {
                                 var19.flush();
                                 var19 = null;
                                 if (var13 > 0 && var14 > 0) {
-                                    var4[this.iLayer].toCopy(var13, var14, var15, var7, var8);
+                                    var4[this.iLayer].toCopy(var13, var14, var15, pointX, pointY);
                                 }
                             }
                         } catch (Throwable var16) {
@@ -2989,11 +2990,12 @@ public class M {
         this.user = user;
     }
 
-    private final void shift(int var1, int var2) {
+    /** Shifts left the arrays pX,pY then adds x,y at their 4th position */
+    private final void shift(int x, int y) {
         System.arraycopy(this.user.pX, 1, this.user.pX, 0, 3);
         System.arraycopy(this.user.pY, 1, this.user.pY, 0, 3);
-        this.user.pX[3] = var1;
-        this.user.pY[3] = var2;
+        this.user.pX[3] = x;
+        this.user.pY[3] = y;
     }
 
     private final int ss(int var1) {
@@ -3007,31 +3009,33 @@ public class M {
 
     private final void t() {
         if (this.iTT != 0) {
-            byte[] var1 = this.info.iMOffs;
-            int var4 = this.info.W;
-            int var5 = this.user.X;
-            int var6 = this.user.Y;
-            int var7 = this.user.X2;
-            int var8 = this.user.Y2;
+            byte[] mOffs = this.info.iMOffs;
+            int width = this.info.W;
+            int x = this.user.X;
+            int y = this.user.Y;
+            int x2 = this.user.X2;
+            int y2 = this.user.Y2;
 
-            for (int var9 = var6; var9 < var8; ++var9) {
-                int var3 = var4 * var9 + var5;
+            for (int j = y; j < y2; ++j) {
+                int offset = width * j + x;
 
-                for (int var2 = var5; var2 < var7; ++var2) {
-                    var1[var3] = (byte) ((int) ((float) (var1[var3++] & 255) * this.getTT(var2, var9)));
+                for (int i = x; i < x2; ++i) {
+                    mOffs[offset] = (byte) ((int) ((float) (mOffs[offset++] & 255) * this.getTT(i, j)));
                 }
             }
 
         }
     }
 
-    private final void wPo(int var1) throws IOException {
-        ByteStream var2 = this.info.workOut;
-        if (var1 <= 127 && var1 >= -127) {
-            var2.write(var1);
+    /** Writes a X or Y coordinate, must be obviously used in pairs */
+    private final void wPo(int coord) throws IOException {
+        ByteStream bs = this.info.workOut;
+        // this must be an attempt at compressing data
+        if (coord <= 127 && coord >= -127) {
+            bs.write(coord);
         } else {
-            var2.write(-128);
-            var2.w((long) var1, 2);
+            bs.write(-128); // this is a magic value so rPo() will recognize that the next value is a long
+            bs.w((long) coord, 2);
         }
 
     }
@@ -3045,7 +3049,7 @@ public class M {
             if (this.strHint != null) {
                 return Font.decode(new String(this.strHint, ENCODE) + var1);
             }
-        } catch (IOException var2) {
+        } catch (IOException ex) {
             ;
         }
 
@@ -3375,36 +3379,36 @@ public class M {
             return !this.m.isText() && (this.m.iHint < H_RECT || this.m.iHint > H_FOVAL) ? this.bPen[this.m.iPenM].length : 255;
         }
 
-        public float[] getTT(int var1) {
-            var1 -= 12;
-            if (this.bTT[var1] == null) {
+        public float[] getTT(int index) {
+            index -= 12;
+            if (this.bTT[index] == null) {
                 if (this.dirTT != null) {
-                    String var2 = this.dirTT;
+                    String dirTT = this.dirTT;
                     this.dirTT = null;
 
                     try {
-                        this.cnf.loadZip(var2);
-                    } catch (IOException var6) {
-                        var6.printStackTrace();
+                        this.cnf.loadZip(dirTT);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
 
-                int[] var7 = M.this.loadIm("tt/" + var1 + ".gif", false);
-                if (var7 == null) {
+                int[] texture = M.this.loadIm("tt/" + index + ".gif", false);
+                if (texture == null) {
                     return null;
                 }
 
-                int var3 = var7.length;
-                float[] var4 = new float[var3];
+                int textureLength = texture.length;
+                float[] alphaTexture = new float[textureLength];
 
-                for (int var5 = 0; var5 < var3; ++var5) {
-                    var4[var5] = M.b255[var7[var5]];
+                for (int i = 0; i < textureLength; ++i) {
+                    alphaTexture[i] = M.b255[texture[i]];
                 }
 
-                this.bTT[var1] = var4;
+                this.bTT[index] = alphaTexture;
             }
 
-            return this.bTT[var1];
+            return this.bTT[index];
         }
     }
 }

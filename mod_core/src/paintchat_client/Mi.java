@@ -723,6 +723,7 @@ public class Mi extends LComponent implements ActionListener {
         this.oldY = -1000;
     }
 
+    /** Gets current pressure level */
     private final int getS() {
         try {
             return this.tab != null && this.tab != this ? (Integer) this.mGet.invoke(this.tab, (Object[]) null) : 255;
