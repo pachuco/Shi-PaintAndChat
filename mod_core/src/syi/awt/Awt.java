@@ -105,8 +105,8 @@ public class Awt {
         return main_frame;
     }
 
-    public static boolean isR(MouseEvent var0) {
-        return var0.isAltDown() || var0.isControlDown() || (var0.getModifiers() & 4) != 0;
+    public static boolean isR(MouseEvent event) {
+        return event.isAltDown() || event.isControlDown() || (event.getModifiers() & 4) != 0;
     }
 
     public static boolean isWin() {

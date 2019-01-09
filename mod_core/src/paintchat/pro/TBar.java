@@ -88,10 +88,10 @@ public class TBar extends LComponent {
         this.setDimension((Dimension) null, new Dimension(10, 10), (Dimension) null);
     }
 
-    public void mouseO(MouseEvent var1) {
-        if (var1.getID() == 501) {
-            int var2 = var1.getY();
-            if (var2 <= this.H) {
+    public void mouseO(MouseEvent event) {
+        if (event.getID() == MouseEvent.MOUSE_PRESSED) {
+            int mouseY = event.getY();
+            if (mouseY <= this.H) {
                 Dimension var3 = new Dimension(this.mi.getSize());
                 boolean var4 = !this.flags[0];
                 this.mi.isGUI = var4;
@@ -104,10 +104,10 @@ public class TBar extends LComponent {
                 this.mi.setVisible(true);
                 this.mi.resetGraphics();
                 this.tools.pack();
-            } else if (var2 <= this.H * 2) {
+            } else if (mouseY <= this.H * 2) {
                 this.z();
                 this.repaint();
-            } else if (var2 > this.H * 3) {
+            } else if (mouseY > this.H * 3) {
                 try {
                     String var6 = this.config.getP("app_url", "http://shichan.jp/");
                     if ((var6.length() != 1 || var6.charAt(0) != '_') && this.mi.alert("kakunin_0", true)) {
@@ -222,20 +222,20 @@ public class TBar extends LComponent {
         var1.drawString(this.strAuthor, (var14.width - var1.getFontMetrics().stringWidth(this.strAuthor)) / 2, var14.height - 2);
     }
 
-    public void pMouse(MouseEvent var1) {
+    public void pMouse(MouseEvent event) {
         if (this.isOption) {
-            this.mouseO(var1);
+            this.mouseO(event);
         } else {
-            int var2 = var1.getID();
+            int var2 = event.getID();
             int var3 = this.W;
             int var4 = this.H;
             Dimension var5 = this.getSize();
-            if (var2 == 504) {
+            if (var2 == MouseEvent.MOUSE_ENTERED) {
                 this.repaint();
             }
 
-            if (var2 == 501) {
-                int var6 = var5.width / var3 * (var1.getY() / var4) + var1.getX() / var3;
+            if (var2 == MouseEvent.MOUSE_PRESSED) {
+                int var6 = var5.width / var3 * (event.getY() / var4) + event.getX() / var3;
                 if (var6 >= this.cs.length || this.cs[var6] == this) {
                     return;
                 }

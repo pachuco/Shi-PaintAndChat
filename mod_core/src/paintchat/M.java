@@ -28,7 +28,7 @@ public class M {
     public int iHint = H_FLINE;
     public int iPen = P_SOLID;
     public int iPenM = PM_PEN;
-    public int iTT = 0;
+    public int iTT = 0; // selected texture index
     public int iColor = 0;
     public int iColorMask = 0;
     public int iAlpha = 255;
@@ -3108,46 +3108,46 @@ public class M {
         private int count = 0;
         private int countMax;
 
-        private void setup(M var1) {
-            this.pV = M.b255[var1.info.bPen[var1.iPenM].length - 1];
-            var1.getPM();
+        private void setup(M mg) {
+            this.pV = M.b255[mg.info.bPen[mg.iPenM].length - 1];
+            mg.getPM();
             this.count = 0;
             this.iDCount = 0;
             this.oX = -1000;
             this.oY = -1000;
-            this.isDirect = var1.iPen == P_SUISAI2 || var1.iHint == H_COPY || var1.isOver;
-            if (M.this.info.L <= var1.iLayer) {
-                M.this.info.setL(var1.iLayer + 1);
+            this.isDirect = mg.iPen == P_SUISAI2 || mg.iHint == H_COPY || mg.isOver;
+            if (M.this.info.L <= mg.iLayer) {
+                M.this.info.setL(mg.iLayer + 1);
             }
 
-            M.this.info.layers[var1.iLayer].isDraw = true;
-            if (var1.iTT >= 12) {
-                this.pTT = M.this.info.getTT(var1.iTT);
+            M.this.info.layers[mg.iLayer].isDraw = true;
+            if (mg.iTT >= 12) {
+                this.pTT = M.this.info.getTT(mg.iTT);
                 this.pTTW = (int) Math.sqrt((double) this.pTT.length);
             }
 
         }
 
-        public void setIm(M var1) {
-            if (!var1.isText()) {
-                if (this.pM != var1.iPenM || this.pA != var1.iAlpha || this.pS != var1.iSize) {
-                    int[] var2 = var1.info.bPen[var1.iPenM][var1.iSize];
+        public void setIm(M mg) {
+            if (!mg.isText()) {
+                if (this.pM != mg.iPenM || this.pA != mg.iAlpha || this.pS != mg.iSize) {
+                    int[] var2 = mg.info.bPen[mg.iPenM][mg.iSize];
                     int var3 = var2.length;
                     if (this.p == null || this.p.length < var3) {
                         this.p = new int[var3];
                     }
 
-                    float var4 = M.b255[var1.iAlpha];
+                    float var4 = M.b255[mg.iAlpha];
 
                     for (int var6 = 0; var6 < var3; ++var6) {
                         float var5 = (float) var2[var6] * var4;
                         this.p[var6] = var5 <= 1.0F && var5 > 0.0F ? 1 : (int) var5;
                     }
 
-                    this.pW = var1.iPen = (int) Math.sqrt((double) var3);
-                    this.pM = var1.iPenM;
-                    this.pA = var1.iAlpha;
-                    this.pS = var1.iSize;
+                    this.pW = mg.iPen = (int) Math.sqrt((double) var3);
+                    this.pM = mg.iPenM;
+                    this.pA = mg.iAlpha;
+                    this.pS = mg.iSize;
                 }
 
             }

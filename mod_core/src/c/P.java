@@ -699,15 +699,15 @@ public class P extends Panel implements IMi {
         throw new InterruptedException(var22.toString());
     }
 
-    protected void processEvent(AWTEvent var1) {
+    protected void processEvent(AWTEvent awtEvent) {
         try {
-            int var2 = var1.getID();
-            if (this.mi != null && var1 instanceof MouseEvent) {
-                MouseEvent var6 = (MouseEvent) var1;
+            int var2 = awtEvent.getID();
+            if (this.mi != null && awtEvent instanceof MouseEvent) {
+                MouseEvent mouseEvent = (MouseEvent) awtEvent;
                 Point var4 = this.mi.getLocation();
-                var6.translatePoint(-var4.x, -var4.y);
-                this.mi.dispatchEvent(var1);
-                var6.translatePoint(var4.x, var4.y);
+                mouseEvent.translatePoint(-var4.x, -var4.y);
+                this.mi.dispatchEvent(awtEvent);
+                mouseEvent.translatePoint(var4.x, var4.y);
                 return;
             }
 
@@ -722,7 +722,7 @@ public class P extends Panel implements IMi {
                 return;
             }
 
-            super.processEvent(var1);
+            super.processEvent(awtEvent);
         } catch (Throwable var5) {
             ;
         }

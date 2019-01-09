@@ -216,11 +216,11 @@ public abstract class LComponent extends Canvas {
         }
     }
 
-    public void paint(Graphics var1) {
+    public void paint(Graphics g) {
         if (this.isVisible()) {
             Dimension var2 = this.getSizeW();
             if (!this.isPaint && this.isMove) {
-                var1.drawRect(0, 0, var2.width - 1, var2.height - 1);
+                g.drawRect(0, 0, var2.width - 1, var2.height - 1);
             } else {
                 int var3 = this.iBSize;
                 int var4 = this.iGap;
@@ -228,46 +228,46 @@ public abstract class LComponent extends Canvas {
                 int var5 = var2.width;
                 int var6 = var2.height;
                 if (this.isFrame) {
-                    var1.setColor(this.clFrame);
-                    var1.drawRect(0, 0, var5 - 1, var6 - 1);
+                    g.setColor(this.clFrame);
+                    g.drawRect(0, 0, var5 - 1, var6 - 1);
                 }
 
                 if (this.isGUI) {
-                    var1.fillRect(1, var3, var5 - 2, 1);
-                    var1.fillRect(var5 - var3 - 1, 1, 1, var3 - 1);
-                    var1.setColor(this.clLBar);
-                    var1.fillRect(1, 1, var5 - 2, 1);
-                    var1.setColor(this.clBar);
-                    var1.fillRect(1, 2, var5 - 2 - this.iBSize, this.iBSize - 2);
-                    var1.drawLine(var5 - var3 + 1, 2, var5 - 2, var3 - 1);
-                    var1.drawLine(var5 - var3 + 1, var3 - 1, var5 - 2, 1);
+                    g.fillRect(1, var3, var5 - 2, 1);
+                    g.fillRect(var5 - var3 - 1, 1, 1, var3 - 1);
+                    g.setColor(this.clLBar);
+                    g.fillRect(1, 1, var5 - 2, 1);
+                    g.setColor(this.clBar);
+                    g.fillRect(1, 2, var5 - 2 - this.iBSize, this.iBSize - 2);
+                    g.drawLine(var5 - var3 + 1, 2, var5 - 2, var3 - 1);
+                    g.drawLine(var5 - var3 + 1, var3 - 1, var5 - 2, 1);
                     if (this.title != null && this.title.length() > 0) {
-                        var1.setClip(1, 1, var5 - 1 - this.iBSize, this.iBSize - 1);
-                        var1.setFont(fontBar);
-                        var1.setColor(this.clBarT);
-                        var1.drawString(this.title, var4, var3 - 1);
-                        var1.setClip(0, 0, var2.width, var2.height);
+                        g.setClip(1, 1, var5 - 1 - this.iBSize, this.iBSize - 1);
+                        g.setFont(fontBar);
+                        g.setColor(this.clBarT);
+                        g.drawString(this.title, var4, var3 - 1);
+                        g.setClip(0, 0, var2.width, var2.height);
                     }
                 }
 
                 int var7 = this.getGapX();
                 int var8 = this.getGapY();
-                var1.translate(var7, var8);
+                g.translate(var7, var8);
 
                 try {
-                    this.paint2(var1);
+                    this.paint2(g);
                 } catch (Throwable var9) {
                     ;
                 }
 
-                var1.translate(-var7, -var8);
+                g.translate(-var7, -var8);
             }
         }
     }
 
-    public abstract void paint2(Graphics var1);
+    public abstract void paint2(Graphics g);
 
-    public abstract void pMouse(MouseEvent var1);
+    public abstract void pMouse(MouseEvent event);
 
     protected void processEvent(AWTEvent awtEv) {
         try {

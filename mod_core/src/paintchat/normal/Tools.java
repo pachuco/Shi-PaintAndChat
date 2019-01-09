@@ -270,24 +270,25 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
         var1.add(this, 0);
     }
 
-    private int isClick(int var1, int var2) {
+    /** Returns id of the clicked tool or -1 if empty */
+    private int isClick(int x, int y) {
         if (this.rects == null) {
             return -1;
         } else {
-            int var3 = this.rects.length;
-            int var4 = this.list.length;
+            int rectsCount = this.rects.length;
+            int toolsCount = this.list.length;
 
-            int var6;
-            for (var6 = 0; var6 < var4; ++var6) {
-                if (this.list[var6].r.contains(var1, var2)) {
-                    return var6;
+            int i;
+            for (i = 0; i < toolsCount; ++i) {
+                if (this.list[i].r.contains(x, y)) {
+                    return i;
                 }
             }
 
-            for (var6 = 0; var6 < var3; ++var6) {
-                Rectangle var5 = this.rects[var6];
-                if (var5 != null && var5.contains(var1, var2)) {
-                    return var6 + var4;
+            for (i = 0; i < rectsCount; ++i) {
+                Rectangle rect = this.rects[i];
+                if (rect != null && rect.contains(x, y)) {
+                    return i + toolsCount;
                 }
             }
 
@@ -552,12 +553,12 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
         }
     }
 
-    private void mPress(MouseEvent var1) {
-        int var2 = var1.getX();
-        int var3 = var1.getY();
-        int var4 = this.isClick(var2, var3);
+    private void mPress(MouseEvent event) {
+        int mouseX = event.getX();
+        int mouseY = event.getY();
+        int var4 = this.isClick(mouseX, mouseY);
         int var5 = var4;
-        boolean var6 = Awt.isR(var1);
+        boolean var6 = Awt.isR(event);
         this.nowButton = var4;
         if (var4 >= 0) {
             if (var4 - this.list.length < 0) {
@@ -576,7 +577,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
                 if (var4 - 14 < 0) {
                     if (var6) {
                         COLORS[var4] = this.mg.iColor;
-                    } else if (var1.isShiftDown()) {
+                    } else if (event.isShiftDown()) {
                         COLORS[var4] = DEFC[var4];
                     } else {
                         this.nowColor = var4;
@@ -590,7 +591,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
                     var4 -= 14;
                     int var8;
                     if (var4 - 4 < 0) {
-                        var8 = var2 <= 5 ? -1 : (var2 >= var7.width - 5 ? 1 : 0);
+                        var8 = mouseX <= 5 ? -1 : (mouseX >= var7.width - 5 ? 1 : 0);
                         if (var8 != 0) {
                             this.nowButton = -1;
                             if (var6) {
@@ -603,19 +604,19 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
                             return;
                         }
 
-                        this.setRGB(var4, var8, var2);
+                        this.setRGB(var4, var8, mouseX);
                     } else {
                         var4 -= 4;
                         if (var4 - 1 < 0) {
                             if (var6) {
                                 this.nowButton = -1;
-                                this.menu(var2, var3, 2);
+                                this.menu(mouseX, mouseY, 2);
                             } else {
-                                if (var2 >= var7.x + var7.width - 10) {
-                                    this.setLineSize(0, Math.max(this.mg.iSize + ((var7.y + var7.height - var3) / 2 >= 10 ? -1 : 1), 0));
+                                if (mouseX >= var7.x + var7.width - 10) {
+                                    this.setLineSize(0, Math.max(this.mg.iSize + ((var7.y + var7.height - mouseY) / 2 >= 10 ? -1 : 1), 0));
                                     this.nowButton = -1;
                                 } else {
-                                    this.setLineSize(var3, -1);
+                                    this.setLineSize(mouseY, -1);
                                 }
 
                                 this.mPaint(var5);

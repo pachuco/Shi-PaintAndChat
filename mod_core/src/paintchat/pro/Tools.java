@@ -167,13 +167,13 @@ public class Tools implements ToolBox, ActionListener {
         ((TPen) this.components[0]).undo(var1);
     }
 
-    public void setARGB(int var1) {
+    public void setARGB(int col) {
         int var2 = this.mg.iAlpha << 24 | this.mg.iColor;
-        this.mg.iAlpha = var1 >>> 24;
-        this.mg.iColor = var1 & 0xFFFFFF;
-        if (var2 != var1) {
-            this.tPic.setColor(var1);
-            this.tPalette.setColor(var1);
+        this.mg.iAlpha = col >>> 24;
+        this.mg.iColor = col & 0xFFFFFF;
+        if (var2 != col) {
+            this.tPic.setColor(col);
+            this.tPalette.setColor(col);
             this.tP.repaint();
         }
 

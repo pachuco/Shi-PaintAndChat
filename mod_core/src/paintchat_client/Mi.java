@@ -66,9 +66,9 @@ public class Mi extends LComponent implements ActionListener {
         Me.res = var2;
     }
 
-    public void actionPerformed(ActionEvent var1) {
+    public void actionPerformed(ActionEvent event) {
         if (this.text != null) {
-            this.addText(var1.getActionCommand());
+            this.addText(event.getActionCommand());
             if (this.isText) {
                 this.text.setVisible(false);
             }
@@ -234,7 +234,7 @@ public class Mi extends LComponent implements ActionListener {
 
     private void dCopy(int var1, int var2, int var3) throws InterruptedException {
         if (this.psCount <= 1) {
-            if (var1 == 502) {
+            if (var1 == MouseEvent.MOUSE_RELEASED) {
                 if (this.psCount <= 0) {
                     return;
                 }

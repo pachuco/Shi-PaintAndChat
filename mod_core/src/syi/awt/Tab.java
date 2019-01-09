@@ -114,20 +114,20 @@ public class Tab extends LComponent {
 
     }
 
-    public void pMouse(MouseEvent var1) {
-        int var2 = var1.getX();
-        int var3 = var1.getY();
-        int var4 = this.sizeBar;
-        switch (var1.getID()) {
+    public void pMouse(MouseEvent event) {
+        int mouseX = event.getX();
+        int mouseY = event.getY();
+        int sizeBar = this.sizeBar;
+        switch (event.getID()) {
             case MouseEvent.MOUSE_PRESSED:
                 if (this.iDrag < 0) {
-                    int var5 = this.at(var3);
+                    int var5 = this.at(mouseY);
                     this.iDrag = var5;
-                    if ((var5 == 0 || var5 == 3) && var2 <= var4) {
+                    if ((var5 == 0 || var5 == 3) && mouseX <= sizeBar) {
                         this.iSOB = (byte) (this.iSOB ^ M.F1_ALL_LAYERS << (var5 == 0 ? 0 : 1));
                         this.repaint();
                     } else {
-                        this.drag(var2);
+                        this.drag(mouseX);
                     }
                 }
                 break;
@@ -139,7 +139,7 @@ public class Tab extends LComponent {
             default:
                 break;
             case MouseEvent.MOUSE_DRAGGED:
-                this.drag(var2);
+                this.drag(mouseX);
         }
 
     }

@@ -472,18 +472,18 @@ public class TextPanel extends Canvas implements ActionListener, ItemListener {
         }
     }
 
-    protected void processEvent(AWTEvent var1) {
+    protected void processEvent(AWTEvent awtEvent) {
         try {
-            if (var1 instanceof MouseEvent) {
-                MouseEvent var2 = (MouseEvent) var1;
-                int var3 = var2.getX();
-                int var4 = var2.getY();
-                switch (var1.getID()) {
+            if (awtEvent instanceof MouseEvent) {
+                MouseEvent mouseEvent = (MouseEvent) awtEvent;
+                int mouseX = mouseEvent.getX();
+                int mouseY = mouseEvent.getY();
+                switch (awtEvent.getID()) {
                     case MouseEvent.MOUSE_PRESSED:
-                        this.Y = var4;
-                        this.isPress = !Awt.isR(var2);
+                        this.Y = mouseY;
+                        this.isPress = !Awt.isR(mouseEvent);
                         if (!this.isPress) {
-                            this.popup(var3, var4);
+                            this.popup(mouseX, mouseY);
                         }
                         break;
                     case MouseEvent.MOUSE_RELEASED:
@@ -494,14 +494,14 @@ public class TextPanel extends Canvas implements ActionListener, ItemListener {
                     default:
                         break;
                     case MouseEvent.MOUSE_DRAGGED:
-                        if (this.isPress && this.Y != var4) {
-                            int var5 = -(this.Y - var4);
+                        if (this.isPress && this.Y != mouseY) {
+                            int var5 = -(this.Y - mouseY);
                             if (!this.isSScroll) {
                                 var5 *= this.H + this.Gap * 2;
                             }
 
                             this.scrollPos = Math.max(Math.min(this.scrollPos + var5, this.scrollMax), 0);
-                            this.Y = var4;
+                            this.Y = mouseY;
                             if (this.primary == null) {
                                 this.primary = this.getGraphics();
                             }
@@ -513,10 +513,10 @@ public class TextPanel extends Canvas implements ActionListener, ItemListener {
                 return;
             }
 
-            if (var1 instanceof ComponentEvent) {
-                switch (var1.getID()) {
-                    case 101:
-                    case 102:
+            if (awtEvent instanceof ComponentEvent) {
+                switch (awtEvent.getID()) {
+                    case ComponentEvent.COMPONENT_RESIZED:
+                    case ComponentEvent.COMPONENT_SHOWN:
                         this.isGetSize = false;
                         if (this.primary != null) {
                             this.primary.dispose();
@@ -531,9 +531,9 @@ public class TextPanel extends Canvas implements ActionListener, ItemListener {
                 }
             }
 
-            super.processEvent(var1);
-        } catch (Throwable var6) {
-            var6.printStackTrace();
+            super.processEvent(awtEvent);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }

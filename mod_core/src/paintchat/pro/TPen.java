@@ -48,18 +48,18 @@ public class TPen extends LComponent implements Runnable {
         super.isBar = true;
     }
 
-    private int getIndex(int var1, int var2, int var3) {
-        Dimension var4 = this.getSize();
-        int var5 = this.imW;
-        int var6 = this.imH;
+    private int getIndex(int x, int y, int var3) {
+        Dimension dim = this.getSize();
+        int width = this.imW;
+        int height = this.imH;
         if (this.iType != 2) {
-            var5 += 3;
-            var6 += 3;
+            width += 3;
+            height += 3;
         }
 
-        var1 -= var3;
-        int var7 = (var4.width - var3) / var5;
-        return var2 / var6 * var7 + Math.min(var1 / var5, var7);
+        x -= var3;
+        int var7 = (dim.width - var3) / width;
+        return y / height * var7 + Math.min(x / width, var7);
     }
 
     public void init(int var1) {
@@ -165,9 +165,9 @@ public class TPen extends LComponent implements Runnable {
 
     }
 
-    private void mouseH(MouseEvent var1) {
-        if (var1.getID() == 501) {
-            int var2 = this.getIndex(var1.getX(), var1.getY(), 0);
+    private void mouseH(MouseEvent event) {
+        if (event.getID() == MouseEvent.MOUSE_PRESSED) {
+            int var2 = this.getIndex(event.getX(), event.getY(), 0);
             if (var2 < 7) {
                 this.mg.iHint = var2;
                 this.repaint();
@@ -175,9 +175,9 @@ public class TPen extends LComponent implements Runnable {
         }
     }
 
-    private void mousePen(MouseEvent var1) {
-        if (var1.getID() == 501) {
-            int var2 = this.getIndex(var1.getX(), var1.getY(), 0);
+    private void mousePen(MouseEvent event) {
+        if (event.getID() == MouseEvent.MOUSE_PRESSED) {
+            int var2 = this.getIndex(event.getX(), event.getY(), 0);
             if (var2 >= this.imCount) {
                 return;
             }
@@ -187,10 +187,10 @@ public class TPen extends LComponent implements Runnable {
 
     }
 
-    private void mouseTT(MouseEvent var1) {
-        if (var1.getID() == 501) {
+    private void mouseTT(MouseEvent event) {
+        if (event.getID() == MouseEvent.MOUSE_PRESSED) {
             this.getSize();
-            int var2 = this.getIndex(var1.getX(), var1.getY(), 0);
+            int var2 = this.getIndex(event.getX(), event.getY(), 0);
             if (var2 >= this.images.length + 12) {
                 return;
             }
@@ -307,16 +307,16 @@ public class TPen extends LComponent implements Runnable {
         }
     }
 
-    public void pMouse(MouseEvent var1) {
+    public void pMouse(MouseEvent event) {
         switch (this.iType) {
             case 2:
-                this.mouseTT(var1);
+                this.mouseTT(event);
                 break;
             case 3:
-                this.mouseH(var1);
+                this.mouseH(event);
                 break;
             default:
-                this.mousePen(var1);
+                this.mousePen(event);
         }
 
     }
