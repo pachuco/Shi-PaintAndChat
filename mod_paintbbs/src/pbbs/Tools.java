@@ -474,11 +474,11 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
         }
     }
 
-    private void m_click(MouseEvent var1) {
+    private void m_click(MouseEvent event) {
         try {
-            Point var2 = var1.getPoint();
-            boolean var3 = (var1.getModifiers() & 4) != 0;
-            boolean var4 = var3 || var1.isControlDown() || var1.isAltDown();
+            Point var2 = event.getPoint();
+            boolean var3 = (event.getModifiers() & 4) != 0;
+            boolean var4 = var3 || event.isControlDown() || event.isAltDown();
             int var5 = -1;
 
             for (int var6 = 0; var6 < this.tools.length; ++var6) {
@@ -516,10 +516,10 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
                     case 8:
                     case 9:
                     case 10:
-                        this.setRGB(var5, var2, var1.isShiftDown() ? 256 : 0);
+                        this.setRGB(var5, var2, event.isShiftDown() ? 256 : 0);
                         break;
                     case 11:
-                        this.setLineSize(var2, 0, var1.isShiftDown());
+                        this.setLineSize(var2, 0, event.isShiftDown());
                         break;
                     case 12:
                         this.cash(var2, var4);
@@ -543,7 +543,7 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
                             COLORS[this.now_color] = this.clLine;
                         }
 
-                        if (var1.isShiftDown()) {
+                        if (event.isShiftDown()) {
                             COLORS[this.now_color] = DEFC[this.now_color];
                         }
 
@@ -573,18 +573,18 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
 
     }
 
-    private void m_drag(MouseEvent var1) {
-        if (!var1.isShiftDown() && !var1.isAltDown() && !var1.isControlDown()) {
-            Point var2 = var1.getPoint();
-            switch (this.sel_tool) {
+    private void m_drag(MouseEvent event) {
+        if (!event.isShiftDown() && !event.isAltDown() && !event.isControlDown()) {
+            Point mousePos = event.getPoint();
+            switch (this.sel_tool) { //TODO: magic numbers
                 case 7:
                 case 8:
                 case 9:
                 case 10:
-                    this.setRGB(this.sel_tool, var2, 0);
+                    this.setRGB(this.sel_tool, mousePos, 0);
                     break;
                 case 11:
-                    this.setLineSize(var2, 0, false);
+                    this.setLineSize(mousePos, 0, false);
                     break;
                 default:
                     return;
@@ -594,10 +594,10 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
         }
     }
 
-    public synchronized void m_paint(Graphics var1) {
+    public synchronized void m_paint(Graphics g) {
         boolean var2 = false;
-        if (var1 == null) {
-            var1 = this.getGraphics();
+        if (g == null) {
+            g = this.getGraphics();
             var2 = true;
         }
 
@@ -749,7 +749,7 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
                     var10.drawString(var13, 2, var7 - 3);
                 }
 
-                var1.drawImage(var11, var12.x, var12.y, var12.x + var6, var12.y + var7, 0, 0, var6, var7, (ImageObserver) null);
+                g.drawImage(var11, var12.x, var12.y, var12.x + var6, var12.y + var7, 0, 0, var6, var7, (ImageObserver) null);
             }
 
             boolean var19 = false;
@@ -772,7 +772,7 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
                 var10.setColor(this.cl_text);
                 var10.drawString((var5 == 0 ? "R" : (var5 == 1 ? "G" : (var5 == 2 ? "B" : "A"))) + var15, 2, var7 - 3);
                 var12 = this.tools[var4];
-                var1.drawImage(var11, var12.x, var12.y, var12.x + var6, var12.y + var7, 0, 0, var6, var7, (ImageObserver) null);
+                g.drawImage(var11, var12.x, var12.y, var12.x + var6, var12.y + var7, 0, 0, var6, var7, (ImageObserver) null);
                 ++var4;
             }
 
@@ -790,7 +790,7 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
             var10.drawString(this.lSize + "px", 2, var7 - 3);
             var10.setColor(this.cl_frame);
             var10.drawRect(0, 0, var6 - 1, var7 - 1);
-            var1.drawImage(var11, var12.x, var12.y, var12.x + var6, var12.y + var7, 0, 0, var6, var7, (ImageObserver) null);
+            g.drawImage(var11, var12.x, var12.y, var12.x + var6, var12.y + var7, 0, 0, var6, var7, (ImageObserver) null);
             ++var4;
             var12 = this.tools[var4];
             var6 = var12.width;
@@ -810,7 +810,7 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
                 var10.fillRect(4 + 15 * var5, 3, 11, var9 - 2);
             }
 
-            var1.drawImage(var11, var12.x, var12.y, var12.x + var6, var12.y + var7, 0, 0, var6, var7, (ImageObserver) null);
+            g.drawImage(var11, var12.x, var12.y, var12.x + var6, var12.y + var7, 0, 0, var6, var7, (ImageObserver) null);
             ++var4;
             var12 = this.tools[var4];
             var7 = var12.height / 2;
@@ -830,7 +830,7 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
                 var10.drawLine(1, var7, var12.width, var12.height);
             }
 
-            var1.drawImage(var11, var12.x, var12.y, var12.x + var12.width, var12.y + var12.height, 0, 0, var12.width, var12.height, (ImageObserver) null);
+            g.drawImage(var11, var12.x, var12.y, var12.x + var12.width, var12.y + var12.height, 0, 0, var12.width, var12.height, (ImageObserver) null);
             ++var4;
             var6 = this.tools[var4].width;
             var7 = this.tools[var4].height;
@@ -842,7 +842,7 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
                 var10.fillRect(2, 2, var6 - 2, var7 - 2);
                 var10.setColor(this.cl_frame);
                 var10.drawRect(0, 0, this.D_MINI.width - 1, this.D_MINI.height - 1);
-                var1.drawImage(var11, var12.x, var12.y, var12.x + var6, var12.y + var7, 0, 0, var6, var7, (ImageObserver) null);
+                g.drawImage(var11, var12.x, var12.y, var12.x + var6, var12.y + var7, 0, 0, var6, var7, (ImageObserver) null);
                 ++var4;
             }
         } catch (Exception var18) {
@@ -850,7 +850,7 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
         }
 
         if (var2) {
-            var1.dispose();
+            g.dispose();
         }
 
     }
@@ -1019,22 +1019,22 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
         this.m_paint(var1);
     }
 
-    protected void processEvent(AWTEvent var1) {
+    protected void processEvent(AWTEvent awtEvent) {
         if (this.back != null) {
-            if (var1 instanceof MouseEvent) {
-                MouseEvent var2 = (MouseEvent) var1;
-                var2.consume();
-                switch (var1.getID()) {
+            if (awtEvent instanceof MouseEvent) {
+                MouseEvent mouseEvent = (MouseEvent) awtEvent;
+                mouseEvent.consume();
+                switch (awtEvent.getID()) {
                     case MouseEvent.MOUSE_PRESSED:
-                        this.m_click(var2);
+                        this.m_click(mouseEvent);
                         break;
                     case MouseEvent.MOUSE_DRAGGED:
-                        this.m_drag(var2);
+                        this.m_drag(mouseEvent);
                 }
 
             } else {
-                if (var1 instanceof KeyEvent) {
-                    this.getParent().dispatchEvent(var1);
+                if (awtEvent instanceof KeyEvent) {
+                    this.getParent().dispatchEvent(awtEvent);
                 }
 
             }
@@ -1075,8 +1075,8 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
             if (var1 < 0) {
                 this.sel_button = var1;
             } else {
-                MouseEvent var2 = new MouseEvent(this, 0, 0L, 0, this.tools[var1].x, this.tools[var1].y, 1, false);
-                this.m_click(var2);
+                MouseEvent event = new MouseEvent(this, 0, 0L, 0, this.tools[var1].x, this.tools[var1].y, 1, false);
+                this.m_click(event);
             }
         }
     }

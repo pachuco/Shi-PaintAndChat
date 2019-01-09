@@ -66,9 +66,9 @@ public class Mi extends LComponent implements ActionListener {
         Me.res = var2;
     }
 
-    public void actionPerformed(ActionEvent var1) {
+    public void actionPerformed(ActionEvent event) {
         if (this.text != null) {
-            this.addText(var1.getActionCommand());
+            this.addText(event.getActionCommand());
             if (this.isText) {
                 this.text.setVisible(false);
             }
@@ -152,17 +152,17 @@ public class Mi extends LComponent implements ActionListener {
         }
     }
 
-    private void cursor(int var1, int var2, int var3) {
-        if (var1 == MouseEvent.MOUSE_MOVED) {
+    private void cursor(int eventID, int x, int y) {
+        if (eventID == MouseEvent.MOUSE_MOVED) {
             Dimension var4 = this.info.getSize();
-            int var5 = this.sizeBar;
-            int var6 = var4.width;
-            int var7 = var4.height;
+            int sizeBar = this.sizeBar;
+            int width = var4.width;
+            int height = var4.height;
             int var8;
-            if (var2 <= var6 && var3 < var7) {
+            if (x <= width && y < height) {
                 var8 = 0;
             } else {
-                var8 = var2 < var5 ? 2 : (var3 < var5 ? 0 : (var2 > var6 && var3 > var7 ? 3 : 1));
+                var8 = x < sizeBar ? 2 : (y < sizeBar ? 0 : (x > width && y > height ? 3 : 1));
             }
 
             if (this.nowCur != var8) {
@@ -234,7 +234,7 @@ public class Mi extends LComponent implements ActionListener {
 
     private void dCopy(int var1, int var2, int var3) throws InterruptedException {
         if (this.psCount <= 1) {
-            if (var1 == 502) {
+            if (var1 == MouseEvent.MOUSE_RELEASED) {
                 if (this.psCount <= 0) {
                     return;
                 }
@@ -340,9 +340,9 @@ public class Mi extends LComponent implements ActionListener {
 
     }
 
-    private void dFLine(int eventId, int x, int y) {
+    private void dFLine(int eventID, int x, int y) {
         try {
-            switch (eventId) {
+            switch (eventID) {
                 case MouseEvent.MOUSE_PRESSED:
                     this.poll();
                     this.setM();
@@ -380,9 +380,9 @@ public class Mi extends LComponent implements ActionListener {
 
     }
 
-    private void dLine(int eventId, int x, int y) {
+    private void dLine(int eventID, int x, int y) {
         try {
-            switch (eventId) {
+            switch (eventID) {
                 case MouseEvent.MOUSE_PRESSED:
                     this.setM();
 
@@ -617,10 +617,10 @@ public class Mi extends LComponent implements ActionListener {
 
     }
 
-    private void dRect(int eventId, int var2, int var3) {
+    private void dRect(int eventID, int var2, int var3) {
         try {
             int[] var4 = this.user.points;
-            switch (eventId) {
+            switch (eventID) {
                 case MouseEvent.MOUSE_PRESSED:
                     this.setM();
                     this.p(0, var2, var3);
@@ -688,8 +688,8 @@ public class Mi extends LComponent implements ActionListener {
         }
     }
 
-    public void dText(int eventId, int var2, int var3) {
-        switch (eventId) {
+    public void dText(int eventID, int var2, int var3) {
+        switch (eventID) {
             case MouseEvent.MOUSE_RELEASED:
                 this.setM();
                 if (this.text == null) {
@@ -738,9 +738,9 @@ public class Mi extends LComponent implements ActionListener {
         return var1 >= 0 && var2 >= 0 && var1 < var3.width && var2 < var3.height;
     }
 
-    public void init(Applet app, Res res, int var3, int var4, int var5, int var6, Cursor[] var7) throws IOException {
+    public void init(Applet app, Res res, int var3, int var4, int var5, int var6, Cursor[] cursors) throws IOException {
         String var8 = "color_";
-        this.cursors = var7;
+        this.cursors = cursors;
         this.cls = new Color[6];
         this.cls[0] = new Color(res.getP(var8 + "frame", 0x505078));
         this.cls[1] = new Color(res.getP(var8 + "icon", 0xCCCCFF));
@@ -829,17 +829,17 @@ public class Mi extends LComponent implements ActionListener {
 
     }
 
-    public void pMouse(MouseEvent ev) {
+    public void pMouse(MouseEvent event) {
         try {
-            int id = ev.getID();
+            int id = event.getID();
             int scale = this.info.scale;
-            int sX = ev.getX() / scale * scale;
-            int sY = ev.getY() / scale * scale;
+            int sX = event.getX() / scale * scale;
+            int sY = event.getY() / scale * scale;
             boolean isMPress   = id == MouseEvent.MOUSE_PRESSED;
             boolean isMRelease = id == MouseEvent.MOUSE_RELEASED;
             boolean isMDrag    = id == MouseEvent.MOUSE_DRAGGED;
             boolean isMRight   = this.isRight;
-            if (ev.isAltDown() && ev.isControlDown()) {
+            if (event.isAltDown() && event.isControlDown()) {
                 if (this.psCount >= 0) {
                     this.reset();
                 }
@@ -864,7 +864,7 @@ public class Mi extends LComponent implements ActionListener {
             }
 
             if (isMPress) {
-                isMRight = this.isRight = Awt.isR(ev);
+                isMRight = this.isRight = Awt.isR(event);
                 if (!this.isDrag) {
                     this.dPre(this.oldX, this.oldY, false);
                 }
@@ -934,7 +934,7 @@ public class Mi extends LComponent implements ActionListener {
             }
 
             if (this.isScroll) {
-                this.dScroll(ev, 0, 0);
+                this.dScroll(event, 0, 0);
                 return;
             }
 
@@ -1008,7 +1008,7 @@ public class Mi extends LComponent implements ActionListener {
 
     protected void processEvent(AWTEvent event) {
         try {
-            int eventId = event.getID();
+            int eventID = event.getID();
             if (event instanceof KeyEvent) {
                 KeyEvent keyEvent = (KeyEvent) event;
                 boolean isCtrlOrShiftDown = keyEvent.isControlDown() || keyEvent.isShiftDown();
@@ -1016,7 +1016,7 @@ public class Mi extends LComponent implements ActionListener {
                 boolean isUndo = true; // if false it'll do a redo
                 keyEvent.consume();
                 label56:
-                switch (eventId) {
+                switch (eventID) {
                     case KeyEvent.KEY_PRESSED:
                         switch (keyEvent.getKeyCode()) {
                             case KeyEvent.VK_TAB:
@@ -1075,7 +1075,7 @@ public class Mi extends LComponent implements ActionListener {
                         }
                 }
             } else if (super.isGUI) {
-                switch (eventId) {
+                switch (eventID) {
                     case ComponentEvent.COMPONENT_RESIZED:
                     case ComponentEvent.COMPONENT_SHOWN:
                         this.resetGraphics();

@@ -90,9 +90,9 @@ public class DCF extends Dialog implements ItemListener, ActionListener {
         this.up();
     }
 
-    protected void processWindowEvent(WindowEvent var1) {
-        switch (var1.getID()) {
-            case 201:
+    protected void processWindowEvent(WindowEvent event) {
+        switch (event.getID()) {
+            case WindowEvent.WINDOW_CLOSING:
                 this.mReset();
                 this.dispose();
             default:

@@ -53,7 +53,7 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
 
     public PCHCanvas(Applet var1, boolean var2) {
         this.enableEvents(AWTEvent.COMPONENT_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
-        this.setCursor(Cursor.getPredefinedCursor(12));
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         this.applet = var1;
     }
 
@@ -348,16 +348,16 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
 
     }
 
-    protected void processMouseEvent(MouseEvent var1) {
-        this.processMouseMotionEvent(var1);
+    protected void processMouseEvent(MouseEvent event) {
+        this.processMouseMotionEvent(event);
     }
 
-    protected void processMouseMotionEvent(MouseEvent var1) {
+    protected void processMouseMotionEvent(MouseEvent event) {
         try {
-            switch (var1.getID()) {
+            switch (event.getID()) {
                 case MouseEvent.MOUSE_PRESSED:
-                    this.oldPo = var1.getPoint();
-                    this.setCursor(Cursor.getPredefinedCursor(12));
+                    this.oldPo = event.getPoint();
+                    this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                     break;
                 case MouseEvent.MOUSE_RELEASED:
                     this.oldPo = null;
@@ -369,7 +369,7 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
                 default:
                     break;
                 case MouseEvent.MOUSE_DRAGGED:
-                    this.scroll(var1.getPoint(), true);
+                    this.scroll(event.getPoint(), true);
             }
         } catch (Throwable var3) {
             var3.printStackTrace();

@@ -145,31 +145,31 @@ public class ConfigApplet extends Applet implements MouseListener, FocusListener
 
     }
 
-    public void mouseClicked(MouseEvent var1) {
+    public void mouseClicked(MouseEvent event) {
     }
 
-    public void mouseEntered(MouseEvent var1) {
-        Component var2 = var1.getComponent();
-        if (!(var2 instanceof Container)) {
-            String var3 = var2.getName();
-            if (var3 != null && var3.length() > 0) {
-                Point var4 = var2.getLocationOnScreen();
-                Point var5 = var1.getPoint();
-                var4.translate(var5.x + 10, var5.y);
-                this.getHelp().startHelp(new HelpWindowContent(var3, true, var4, this.res));
+    public void mouseEntered(MouseEvent event) {
+        Component component = event.getComponent();
+        if (!(component instanceof Container)) {
+            String name = component.getName();
+            if (name != null && name.length() > 0) {
+                Point var4 = component.getLocationOnScreen();
+                Point mousePos = event.getPoint();
+                var4.translate(mousePos.x + 10, mousePos.y);
+                this.getHelp().startHelp(new HelpWindowContent(name, true, var4, this.res));
             }
 
         }
     }
 
-    public void mouseExited(MouseEvent var1) {
+    public void mouseExited(MouseEvent event) {
         this.getHelp().reset();
     }
 
-    public void mousePressed(MouseEvent var1) {
+    public void mousePressed(MouseEvent event) {
     }
 
-    public void mouseReleased(MouseEvent var1) {
+    public void mouseReleased(MouseEvent event) {
     }
 
     public void setMouseListener(Component var1, MouseListener var2) {

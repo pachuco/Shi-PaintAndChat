@@ -64,12 +64,12 @@ public class PP extends LComponent implements SW {
         }
     }
 
-    public void pMouse(MouseEvent evt) {
-        int var2 = this.b(evt.getX(), evt.getY());
+    public void pMouse(MouseEvent event) {
+        int var2 = this.b(event.getX(), event.getY());
         if (var2 >= 0) {
-            switch (evt.getID()) {
+            switch (event.getID()) {
                 case MouseEvent.MOUSE_PRESSED:
-                    if (Awt.isR(evt)) {
+                    if (Awt.isR(event)) {
                         this.ms[var2].set(this.m);
                     } else {
                         this.tools.lift();

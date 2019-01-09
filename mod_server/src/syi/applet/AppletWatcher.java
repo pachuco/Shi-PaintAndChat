@@ -102,16 +102,16 @@ public class AppletWatcher extends Frame {
     public static void main(String[] var0) {
     }
 
-    protected void processWindowEvent(WindowEvent var1) {
+    protected void processWindowEvent(WindowEvent event) {
         try {
-            int var2 = var1.getID();
-            Window var3 = var1.getWindow();
-            switch (var2) {
+            int eventID = event.getID();
+            Window window = event.getWindow();
+            switch (eventID) {
                 case WindowEvent.WINDOW_OPENED:
                     this.applet.start();
                     break;
                 case WindowEvent.WINDOW_CLOSING:
-                    var3.dispose();
+                    window.dispose();
                     this.applet.stop();
                     break;
                 case WindowEvent.WINDOW_CLOSED:
@@ -121,7 +121,7 @@ public class AppletWatcher extends Frame {
                         System.exit(0);
                     }
             }
-        } catch (Throwable var4) {
+        } catch (Throwable ex) {
         }
 
     }

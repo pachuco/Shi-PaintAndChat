@@ -126,9 +126,9 @@ public class Me extends Dialog implements ActionListener {
         return isD;
     }
 
-    protected void processWindowEvent(WindowEvent var1) {
-        if (var1.getID() == WindowEvent.WINDOW_CLOSING) {
-            var1.getWindow().dispose();
+    protected void processWindowEvent(WindowEvent event) {
+        if (event.getID() == WindowEvent.WINDOW_CLOSING) {
+            event.getWindow().dispose();
         }
 
     }

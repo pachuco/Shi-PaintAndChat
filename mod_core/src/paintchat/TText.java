@@ -111,8 +111,8 @@ public class TText extends Dialog implements SW, ActionListener, ItemListener {
         this.setVisible(true);
     }
 
-    protected void processWindowEvent(WindowEvent var1) {
-        if (var1.getID() == 201) {
+    protected void processWindowEvent(WindowEvent event) {
+        if (event.getID() == WindowEvent.WINDOW_CLOSING) {
             //this.setVisible(false);
             this.dispose();
         }

@@ -13,6 +13,7 @@ import java.awt.image.MemoryImageSource;
 import syi.awt.Awt;
 import syi.awt.LComponent;
 
+/** Texture toolbar for normal UI */
 public class TT extends LComponent implements SW, Runnable {
     private ToolBox ts;
     private M.Info info;
@@ -140,15 +141,15 @@ public class TT extends LComponent implements SW, Runnable {
         }
     }
 
-    public void pMouse(MouseEvent var1) {
-        if (var1.getID() == 501) {
+    public void pMouse(MouseEvent event) {
+        if (event.getID() == MouseEvent.MOUSE_PRESSED) {
             this.getSize();
-            int var2 = this.getIndex(var1.getX(), var1.getY(), 0);
-            if (var2 >= this.images.length + 12) {
+            int indexTT = this.getIndex(event.getX(), event.getY(), 0);
+            if (indexTT >= this.images.length + 12) {
                 return;
             }
 
-            this.mg.iTT = var2;
+            this.mg.iTT = indexTT;
             this.repaint();
         }
 

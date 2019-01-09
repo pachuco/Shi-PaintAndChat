@@ -32,14 +32,14 @@ public class LabelLink extends Label {
         }
     }
 
-    protected void processMouseEvent(MouseEvent var1) {
-        this.processMouseMotionEvent(var1);
+    protected void processMouseEvent(MouseEvent event) {
+        this.processMouseMotionEvent(event);
     }
 
-    protected void processMouseMotionEvent(MouseEvent var1) {
+    protected void processMouseMotionEvent(MouseEvent event) {
         if (this.isMouse) {
             try {
-                switch (var1.getID()) {
+                switch (event.getID()) {
                     case MouseEvent.MOUSE_PRESSED:
                         this.applet.getAppletContext().showDocument(new URL(this.strLink), "top");
                     case MouseEvent.MOUSE_RELEASED:
@@ -52,8 +52,8 @@ public class LabelLink extends Label {
                     case MouseEvent.MOUSE_EXITED:
                         this.setFont(false);
                 }
-            } catch (Throwable var3) {
-                var3.printStackTrace();
+            } catch (Throwable ex) {
+                ex.printStackTrace();
             }
 
         }

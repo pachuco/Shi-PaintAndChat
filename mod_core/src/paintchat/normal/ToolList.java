@@ -248,19 +248,19 @@ public class ToolList {
 
     }
 
-    public void pMouse(MouseEvent ev) {
-        int var2 = ev.getX();
-        int var3 = ev.getY();
-        int var4 = var2 - this.r.x;
-        int var5 = var3 - this.r.y;
-        switch (ev.getID()) {
+    public void pMouse(MouseEvent event) {
+        int mouseX = event.getX();
+        int mouseY = event.getY();
+        int var4 = mouseX - this.r.x;
+        int var5 = mouseY - this.r.y;
+        switch (event.getID()) {
             case MouseEvent.MOUSE_PRESSED:
-                if (this.r.contains(var2, var3)) {
+                if (this.r.contains(mouseX, mouseY)) {
                     this.press();
                 }
                 break;
             case MouseEvent.MOUSE_RELEASED:
-                this.release(var4, var5, this.r.contains(var2, var3));
+                this.release(var4, var5, this.r.contains(mouseX, mouseY));
             case MouseEvent.MOUSE_MOVED:
             case MouseEvent.MOUSE_ENTERED:
             case MouseEvent.MOUSE_EXITED:

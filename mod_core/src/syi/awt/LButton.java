@@ -29,7 +29,7 @@ public class LButton extends Canvas {
         this((String) null);
     }
 
-    public LButton(String var1) {
+    public LButton(String text) {
         this.size = null;
         this.BackImage = null;
         this.Text = null;
@@ -39,8 +39,8 @@ public class LButton extends Canvas {
         this.isPress = false;
         this.dkBackColor = Color.darkGray;
         this.enableEvents(AWTEvent.COMPONENT_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK);
-        this.setBackground(new Color(13619151));
-        this.setText(var1);
+        this.setBackground(new Color(0xCFCFCF));
+        this.setText(text);
     }
 
     public void addActionListener(ActionListener var1) {
@@ -67,29 +67,29 @@ public class LButton extends Canvas {
     }
 
     public Dimension getPreferredSize() {
-        int var1 = 50;
-        int var2 = 10;
+        int txtWidth = 50;
+        int txtHeight = 10;
         if (this.BackImage != null) {
-            var1 = this.BackImage.getWidth((ImageObserver) null);
-            var2 = this.BackImage.getHeight((ImageObserver) null);
+            txtWidth = this.BackImage.getWidth((ImageObserver) null);
+            txtHeight = this.BackImage.getHeight((ImageObserver) null);
         } else {
-            Font var3 = this.getFont();
+            Font font = this.getFont();
             int var4 = this.Gap * 2;
-            if (var3 != null) {
-                FontMetrics var5 = this.getFontMetrics(this.getFont());
-                if (var5 != null) {
-                    var2 = var5.getMaxAscent() + var5.getMaxDescent();
+            if (font != null) {
+                FontMetrics fontMetrics = this.getFontMetrics(this.getFont());
+                if (fontMetrics != null) {
+                    txtHeight = fontMetrics.getMaxAscent() + fontMetrics.getMaxDescent();
                 }
 
                 if (this.Text != null) {
-                    var1 = var5.stringWidth(this.Text) + var4;
+                    txtWidth = fontMetrics.stringWidth(this.Text) + var4;
                 }
             }
 
-            var2 += var4;
+            txtHeight += var4;
         }
 
-        return new Dimension(var1, var2);
+        return new Dimension(txtWidth, txtHeight);
     }
 
     public Dimension getSize() {
@@ -104,46 +104,46 @@ public class LButton extends Canvas {
         return this.Text == null ? "" : this.Text;
     }
 
-    public void paint(Graphics var1) {
+    public void paint(Graphics g) {
         try {
             Dimension var2 = this.getSize();
             if (this.BackImage != null) {
-                Awt.drawFrame(var1, this.isPress, 0, 0, var2.width, var2.height);
-                var1.drawImage(this.BackImage, 1, 1, (ImageObserver) null);
+                Awt.drawFrame(g, this.isPress, 0, 0, var2.width, var2.height);
+                g.drawImage(this.BackImage, 1, 1, (ImageObserver) null);
             } else {
-                Awt.fillFrame(var1, this.isPress, 0, 0, var2.width, var2.height);
+                Awt.fillFrame(g, this.isPress, 0, 0, var2.width, var2.height);
             }
 
             if (this.Text == null) {
                 return;
             }
 
-            FontMetrics var3 = var1.getFontMetrics();
+            FontMetrics fontMetrics = g.getFontMetrics();
             if (this.textWidth == -1) {
-                this.textWidth = var3.stringWidth(this.Text);
+                this.textWidth = fontMetrics.stringWidth(this.Text);
             }
 
-            var1.setColor(this.getForeground());
-            var1.drawString(this.Text, (this.size.width - this.textWidth) / 2, var3.getMaxAscent() + this.Gap + 1);
+            g.setColor(this.getForeground());
+            g.drawString(this.Text, (this.size.width - this.textWidth) / 2, fontMetrics.getMaxAscent() + this.Gap + 1);
         } catch (Throwable var4) {
             ;
         }
 
     }
 
-    protected void processEvent(AWTEvent ev) {
+    protected void processEvent(AWTEvent awtEvent) {
         try {
-            int id = ev.getID();
-            if (ev instanceof MouseEvent) {
-                MouseEvent mev = (MouseEvent) ev;
-                mev.consume();
+            int id = awtEvent.getID();
+            if (awtEvent instanceof MouseEvent) {
+                MouseEvent mouseEvent = (MouseEvent) awtEvent;
+                mouseEvent.consume();
                 if (id == MouseEvent.MOUSE_PRESSED) {
                     this.isPress = true;
                     this.repaint();
                 }
 
                 if (id == MouseEvent.MOUSE_RELEASED) {
-                    if (this.contains(((MouseEvent) ev).getPoint())) {
+                    if (this.contains(((MouseEvent) awtEvent).getPoint())) {
                         this.doAction();
                     }
 
@@ -154,7 +154,7 @@ public class LButton extends Canvas {
                 return;
             }
 
-            if (ev instanceof ComponentEvent) {
+            if (awtEvent instanceof ComponentEvent) {
                 if (id == ComponentEvent.COMPONENT_RESIZED || id == ComponentEvent.COMPONENT_SHOWN) {
                     this.size = null;
                     this.repaint();
@@ -163,7 +163,7 @@ public class LButton extends Canvas {
                 return;
             }
 
-            super.processEvent(ev);
+            super.processEvent(awtEvent);
         } catch (Throwable var4) {
             var4.printStackTrace();
         }
@@ -174,33 +174,33 @@ public class LButton extends Canvas {
         super.setSize(this.getPreferredSize());
     }
 
-    public void setBackground(Color var1) {
-        if (var1 != null) {
-            this.dkBackColor = var1.darker();
-            super.setBackground(var1);
+    public void setBackground(Color color) {
+        if (color != null) {
+            this.dkBackColor = color.darker();
+            super.setBackground(color);
         }
     }
 
-    public void setBackImage(Image var1) {
-        this.BackImage = var1;
+    public void setBackImage(Image img) {
+        this.BackImage = img;
         if (this.isShowing()) {
             this.repaint();
         }
 
     }
 
-    public void setGap(int var1) {
-        this.Gap = var1;
+    public void setGap(int gap) {
+        this.Gap = gap;
         this.resetSize();
     }
 
-    public void setText(String var1) {
-        this.Text = var1;
+    public void setText(String text) {
+        this.Text = text;
         this.textWidth = -1;
         this.invalidate();
-        Component var2 = Awt.getParent(this);
-        if (var2 != null) {
-            var2.validate();
+        Component parent = Awt.getParent(this);
+        if (parent != null) {
+            parent.validate();
         }
 
         if (this.isShowing()) {
@@ -209,7 +209,7 @@ public class LButton extends Canvas {
 
     }
 
-    public void update(Graphics var1) {
-        this.paint(var1);
+    public void update(Graphics g) {
+        this.paint(g);
     }
 }

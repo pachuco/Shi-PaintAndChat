@@ -94,131 +94,131 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
         super(var1);
     }
 
-    public void actionPerformed(ActionEvent var1) {
-        if (var1.getSource() == this.getMenuItem6()) {
-            this.connEtoC2(var1);
+    public void actionPerformed(ActionEvent event) {
+        if (event.getSource() == this.getMenuItem6()) {
+            this.connEtoC2(event);
         }
 
-        if (var1.getSource() == this.getMenuItem4()) {
-            this.connEtoC6(var1);
+        if (event.getSource() == this.getMenuItem4()) {
+            this.connEtoC6(event);
         }
 
-        if (var1.getSource() == this.getMenuHelpDocument()) {
-            this.connEtoC7(var1);
+        if (event.getSource() == this.getMenuHelpDocument()) {
+            this.connEtoC7(event);
         }
 
-        if (var1.getSource() == this.getMenuItem1()) {
-            this.connEtoC11(var1);
+        if (event.getSource() == this.getMenuItem1()) {
+            this.connEtoC11(event);
         }
 
-        if (var1.getSource() == this.getMenuItem2()) {
-            this.connEtoC12(var1);
+        if (event.getSource() == this.getMenuItem2()) {
+            this.connEtoC12(event);
         }
 
-        if (var1.getSource() == this.getMenuItem9()) {
-            this.connEtoC16(var1);
+        if (event.getSource() == this.getMenuItem9()) {
+            this.connEtoC16(event);
         }
 
-        if (var1.getSource() == this.getMenuItem10()) {
-            this.connEtoC18(var1);
+        if (event.getSource() == this.getMenuItem10()) {
+            this.connEtoC18(event);
         }
 
-        if (var1.getSource() == this.getMenuItem3()) {
-            this.connEtoC9(var1);
+        if (event.getSource() == this.getMenuItem3()) {
+            this.connEtoC9(event);
         }
 
-        if (var1.getSource() == this.getMenu_FilesCopy()) {
-            this.connEtoC13(var1);
+        if (event.getSource() == this.getMenu_FilesCopy()) {
+            this.connEtoC13(event);
         }
 
-        String var2;
-        if (var1.getSource() == this.getPaintchat_Port()) {
+        String actionCommand;
+        if (event.getSource() == this.getPaintchat_Port()) {
             try {
-                var2 = var1.getActionCommand();
-                Integer.parseInt(var2);
-            } catch (NumberFormatException var4) {
-                var2 = "41411";
+                actionCommand = event.getActionCommand();
+                Integer.parseInt(actionCommand);
+            } catch (NumberFormatException ex) {
+                actionCommand = "41411";
             }
 
-            this.getPaintchat_Port().setText(var2);
-            this.config.put("Connection_Port_PaintChat", var2);
+            this.getPaintchat_Port().setText(actionCommand);
+            this.config.put("Connection_Port_PaintChat", actionCommand);
             this.config.saveConfig((File) null, (String) null);
         }
 
-        if (var1.getSource() == this.getHttp_Port()) {
+        if (event.getSource() == this.getHttp_Port()) {
             try {
-                var2 = var1.getActionCommand();
-                Integer.parseInt(var2);
+                actionCommand = event.getActionCommand();
+                Integer.parseInt(actionCommand);
             } catch (NumberFormatException var3) {
-                var2 = "80";
+                actionCommand = "80";
             }
 
-            this.getHttp_Port().setText(var2);
-            this.config.put("Connection_Port_Http", var2);
+            this.getHttp_Port().setText(actionCommand);
+            this.config.put("Connection_Port_Http", actionCommand);
             this.config.saveConfig((File) null, (String) null);
         }
 
     }
 
-    private void connEtoC1(WindowEvent var1) {
+    private void connEtoC1(WindowEvent event) {
         try {
             this.destroy();
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
 
-    private void connEtoC11(ActionEvent var1) {
+    private void connEtoC11(ActionEvent event) {
         try {
             this.startHttp();
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
 
-    private void connEtoC12(ActionEvent var1) {
+    private void connEtoC12(ActionEvent event) {
         try {
             this.startServer();
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
 
-    private void connEtoC13(ActionEvent var1) {
+    private void connEtoC13(ActionEvent event) {
         try {
             this.setupWWWFolder();
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
 
-    private void connEtoC16(ActionEvent var1) {
+    private void connEtoC16(ActionEvent event) {
         try {
             this.startClient();
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
 
-    private void connEtoC17(WindowEvent var1) {
+    private void connEtoC17(WindowEvent event) {
         try {
-            this.pFrame_WindowClosed(var1);
-        } catch (Throwable var3) {
-            this.handleException(var3);
+            this.pFrame_WindowClosed(event);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
 
-    private void connEtoC18(ActionEvent var1) {
+    private void connEtoC18(ActionEvent event) {
         try {
             this.menuItem10_ActionPerformed1();
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
@@ -228,35 +228,35 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
             if (var1) {
                 new ConfigDialog("paintchat.config.PConfig", "cnf/dialogs.jar", this.config, this.res, "(C)しぃちゃん PaintChatApp v3.66");
             }
-        } catch (Exception var3) {
-            var3.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
 
     }
 
-    private void connEtoC2(ActionEvent var1) {
+    private void connEtoC2(ActionEvent event) {
         try {
             this.menuItem6_ActionPerformed();
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
 
-    private void connEtoC3(MouseEvent var1) {
+    private void connEtoC3(MouseEvent event) {
         try {
             this.iP_MouseClicked();
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
 
-    private void connEtoC4(ItemEvent var1) {
+    private void connEtoC4(ItemEvent event) {
         try {
             this.showConsole();
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
@@ -264,98 +264,98 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
     private void connEtoC5(ItemEvent var1) {
         try {
             this.showHelp();
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
 
-    private void connEtoC6(ActionEvent var1) {
+    private void connEtoC6(ActionEvent event) {
         try {
             this.menuItem4_ActionPerformed();
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
 
-    private void connEtoC7(ActionEvent var1) {
+    private void connEtoC7(ActionEvent event) {
         try {
             this.menuHelpDocument_ActionPerformed();
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
 
-    private void connEtoC8(WindowEvent var1) {
+    private void connEtoC8(WindowEvent event) {
         try {
-            this.pFrame_WindowIconified(var1);
-        } catch (Throwable var3) {
-            this.handleException(var3);
+            this.pFrame_WindowIconified(event);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
 
-    private void connEtoC9(ActionEvent var1) {
+    private void connEtoC9(ActionEvent event) {
         try {
-            this.menuItem3_ActionPerformed(var1);
-        } catch (Throwable var3) {
-            this.handleException(var3);
+            this.menuItem3_ActionPerformed(event);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
 
-    private void connEtoM1(MouseEvent var1) {
+    private void connEtoM1(MouseEvent event) {
         try {
-            this.getHelp().startHelp(new HelpWindowContent(var1.getComponent().getName(), true, Gui.getScreenPos(var1), this.res));
-        } catch (Throwable var3) {
-            this.handleException(var3);
+            this.getHelp().startHelp(new HelpWindowContent(event.getComponent().getName(), true, Gui.getScreenPos(event), this.res));
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
 
-    private void connEtoM2(MouseEvent var1) {
+    private void connEtoM2(MouseEvent event) {
         try {
-            this.getHelp().startHelp(new HelpWindowContent(var1.getComponent().getName(), true, Gui.getScreenPos(var1), this.res));
-        } catch (Throwable var3) {
-            this.handleException(var3);
+            this.getHelp().startHelp(new HelpWindowContent(event.getComponent().getName(), true, Gui.getScreenPos(event), this.res));
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
 
-    private void connEtoM3(MouseEvent var1) {
+    private void connEtoM3(MouseEvent event) {
         try {
-            this.getHelp().startHelp(new HelpWindowContent(var1.getComponent().getName(), true, Gui.getScreenPos(var1), this.res));
-        } catch (Throwable var3) {
-            this.handleException(var3);
+            this.getHelp().startHelp(new HelpWindowContent(event.getComponent().getName(), true, Gui.getScreenPos(event), this.res));
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
 
-    private void connEtoM4(MouseEvent var1) {
+    private void connEtoM4(MouseEvent event) {
         try {
-            this.getHelp().startHelp(new HelpWindowContent(var1.getComponent().getName(), true, Gui.getScreenPos(var1), this.res));
-        } catch (Throwable var3) {
-            this.handleException(var3);
+            this.getHelp().startHelp(new HelpWindowContent(event.getComponent().getName(), true, Gui.getScreenPos(event), this.res));
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
 
-    private void connEtoM5(MouseEvent var1) {
+    private void connEtoM5(MouseEvent event) {
         try {
-            this.getHelp().startHelp(new HelpWindowContent(var1.getComponent().getName(), true, Gui.getScreenPos(var1), this.res));
-        } catch (Throwable var3) {
-            this.handleException(var3);
+            this.getHelp().startHelp(new HelpWindowContent(event.getComponent().getName(), true, Gui.getScreenPos(event), this.res));
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
 
-    private void connEtoM6(MouseEvent var1) {
+    private void connEtoM6(MouseEvent event) {
         try {
-            this.getHelp().startHelp(new HelpWindowContent(var1.getComponent().getName(), true, Gui.getScreenPos(var1), this.res));
-        } catch (Throwable var3) {
-            this.handleException(var3);
+            this.getHelp().startHelp(new HelpWindowContent(event.getComponent().getName(), true, Gui.getScreenPos(event), this.res));
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
@@ -973,76 +973,76 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
         MessageBox.alert(var1.toString(), "(C)しぃちゃん PaintChatApp v3.66");
     }
 
-    public void mouseClicked(MouseEvent var1) {
-        if (var1.getSource() == this.getIp()) {
-            this.connEtoC3(var1);
+    public void mouseClicked(MouseEvent event) {
+        if (event.getSource() == this.getIp()) {
+            this.connEtoC3(event);
         }
 
     }
 
-    public void mouseEntered(MouseEvent var1) {
-        if (var1.getSource() == this.getIp()) {
-            this.connEtoM1(var1);
+    public void mouseEntered(MouseEvent event) {
+        if (event.getSource() == this.getIp()) {
+            this.connEtoM1(event);
         }
 
-        if (var1.getSource() == this.getHttp_Port()) {
-            this.connEtoM2(var1);
+        if (event.getSource() == this.getHttp_Port()) {
+            this.connEtoM2(event);
         }
 
-        if (var1.getSource() == this.getPaintchat_Port()) {
-            this.connEtoM3(var1);
+        if (event.getSource() == this.getPaintchat_Port()) {
+            this.connEtoM3(event);
         }
 
-        if (var1.getSource() == this.getPaintchat_Button()) {
-            this.connEtoM4(var1);
+        if (event.getSource() == this.getPaintchat_Button()) {
+            this.connEtoM4(event);
         }
 
-        if (var1.getSource() == this.getHttp_Button()) {
-            this.connEtoM5(var1);
+        if (event.getSource() == this.getHttp_Button()) {
+            this.connEtoM5(event);
         }
 
-        if (var1.getSource() == this.getLobby_Button()) {
-            this.connEtoM6(var1);
+        if (event.getSource() == this.getLobby_Button()) {
+            this.connEtoM6(event);
         }
 
     }
 
-    public void mouseExited(MouseEvent var1) {
+    public void mouseExited(MouseEvent event) {
         this.getHelp().reset();
     }
 
-    public void mousePressed(MouseEvent var1) {
+    public void mousePressed(MouseEvent event) {
     }
 
-    public void mouseReleased(MouseEvent var1) {
+    public void mouseReleased(MouseEvent event) {
     }
 
-    public void panel3_MouseReleased(MouseEvent var1) {
-        MenuBar var2 = this.getMenuBar();
-        if (!this.ivjMenuShowConsole.getState() && var2 == null) {
-            var2 = this.getPFrameMenuBar();
-            var2.remove(0);
-            var2.remove(0);
-            var2.remove(0);
-            PopupMenu var3 = new PopupMenu();
-            var3.addActionListener(this);
-            var3.add((MenuItem) this.getMenu1());
-            var3.add((MenuItem) this.getMenu2());
-            var3.add((MenuItem) this.getMenu3());
-            this.add(var3);
-            var3.show(var1.getComponent(), var1.getX(), var1.getY());
-            var3.removeAll();
-            var2.add(this.getMenu1());
-            var2.add(this.getMenu2());
-            var2.add(this.getMenu3());
+    public void panel3_MouseReleased(MouseEvent event) {
+        MenuBar menuBar = this.getMenuBar();
+        if (!this.ivjMenuShowConsole.getState() && menuBar == null) {
+            menuBar = this.getPFrameMenuBar();
+            menuBar.remove(0);
+            menuBar.remove(0);
+            menuBar.remove(0);
+            PopupMenu popupMenu = new PopupMenu();
+            popupMenu.addActionListener(this);
+            popupMenu.add((MenuItem) this.getMenu1());
+            popupMenu.add((MenuItem) this.getMenu2());
+            popupMenu.add((MenuItem) this.getMenu3());
+            this.add(popupMenu);
+            popupMenu.show(event.getComponent(), event.getX(), event.getY());
+            popupMenu.removeAll();
+            menuBar.add(this.getMenu1());
+            menuBar.add(this.getMenu2());
+            menuBar.add(this.getMenu3());
         }
     }
 
-    public void pFrame_WindowClosed(WindowEvent var1) {
+    public void pFrame_WindowClosed(WindowEvent event) {
         System.exit(0);
     }
 
-    public void pFrame_WindowIconified(WindowEvent var1) {
+    public void pFrame_WindowIconified(WindowEvent event) {
         if (this.getData().getIsNativeWindows()) {
             this.setVisible(false);
         }

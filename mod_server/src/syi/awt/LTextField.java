@@ -125,46 +125,46 @@ public class LTextField extends Component {
 
     }
 
-    protected void processEvent(AWTEvent var1) {
+    protected void processEvent(AWTEvent awtEvent) {
         try {
-            int var2 = var1.getID();
-            if (var1 instanceof MouseEvent) {
-                MouseEvent var3 = (MouseEvent) var1;
-                var3.consume();
-                if (this.edit && var2 == MouseEvent.MOUSE_PRESSED) {
+            int eventID = awtEvent.getID();
+            if (awtEvent instanceof MouseEvent) {
+                MouseEvent mouseEvent = (MouseEvent) awtEvent;
+                mouseEvent.consume();
+                if (this.edit && eventID == MouseEvent.MOUSE_PRESSED) {
                     this.isPress = true;
                     this.repaint();
                 }
 
-                if (this.edit && var2 == MouseEvent.MOUSE_RELEASED) {
-                    var3.consume();
+                if (this.edit && eventID == MouseEvent.MOUSE_RELEASED) {
+                    mouseEvent.consume();
                     this.repaint();
                     this.isPress = false;
-                    Point var4 = var3.getPoint();
-                    if (this.contains(var4)) {
-                        String var5 = this.getText();
-                        Point var6 = this.getLocationOnScreen();
-                        var4.translate(var6.x, var6.y);
+                    Point mousePos = mouseEvent.getPoint();
+                    if (this.contains(mousePos)) {
+                        String text = this.getText();
+                        Point locationOnScreen = this.getLocationOnScreen();
+                        mousePos.translate(locationOnScreen.x, locationOnScreen.y);
                         this.setText(MessageBox.getString(this.getText(), this.getTitle()));
-                        if (!var5.equals(this.getText()) && this.actionListener != null) {
+                        if (!text.equals(this.getText()) && this.actionListener != null) {
                             this.actionListener.actionPerformed(new ActionEvent(this, 1001, this.getText()));
                         }
                     }
                 }
             }
 
-            if (var1 instanceof ComponentEvent && (var2 == 101 || var2 == 102)) {
+            if (awtEvent instanceof ComponentEvent && (eventID == 101 || eventID == 102)) {
                 this.size = null;
             }
 
-            super.processEvent(var1);
+            super.processEvent(awtEvent);
         } catch (Throwable var7) {
             var7.printStackTrace();
         }
 
     }
 
-    public void pMouse(MouseEvent var1) {
+    public void pMouse(MouseEvent event) {
     }
 
     public void setBk(Color var1) {

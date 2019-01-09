@@ -124,32 +124,32 @@ public class TPic extends LComponent {
         var1.setClip(0, 0, var2.width, var2.height);
     }
 
-    public void paint2(Graphics var1) {
-        this.mPaint(var1);
+    public void paint2(Graphics g) {
+        this.mPaint(g);
     }
 
-    public void pMouse(MouseEvent var1) {
-        int var2 = var1.getX();
-        int var3 = var1.getY();
+    public void pMouse(MouseEvent event) {
+        int mouseX = event.getX();
+        int mouseY = event.getY();
         int var4 = (int) (22.0F * LComponent.Q);
         int var5 = (int) (25.0F * LComponent.Q);
         boolean var6 = false;
         Dimension var7 = this.getSize();
         int var8 = var7.width - var5 - 1;
         int var9 = var7.height - var4 - 1;
-        boolean var10 = (var1.getModifiers() & 4) != 0 || var1.isShiftDown() || var1.isControlDown();
-        if (var1.getID() == MouseEvent.MOUSE_PRESSED && var3 > var9) {
+        boolean var10 = (event.getModifiers() & 4) != 0 || event.isShiftDown() || event.isControlDown();
+        if (event.getID() == MouseEvent.MOUSE_PRESSED && mouseY > var9) {
             int var11 = (int) ((float) (var8 - 8) * 0.7F);
-            if (var2 > var11) {
-                this.tools.setMask(this, this.getRGB(), var2, var3, var10);
+            if (mouseX > var11) {
+                this.tools.setMask(this, this.getRGB(), mouseX, mouseY, var10);
             }
 
         } else {
-            var2 = var2 <= 0 ? 0 : (var2 >= var8 ? var8 : var2);
-            var3 = var3 <= 0 ? 0 : (var3 >= var9 ? var9 : var3);
-            switch (var1.getID()) {
+            mouseX = mouseX <= 0 ? 0 : (mouseX >= var8 ? var8 : mouseX);
+            mouseY = mouseY <= 0 ? 0 : (mouseY >= var9 ? var9 : mouseY);
+            switch (event.getID()) {
                 case MouseEvent.MOUSE_PRESSED:
-                    this.iDrag = var2 < var8 ? 0 : 1;
+                    this.iDrag = mouseX < var8 ? 0 : 1;
                     var6 = true;
                     break;
                 case MouseEvent.MOUSE_RELEASED:
@@ -169,10 +169,10 @@ public class TPic extends LComponent {
 
             if (var6 && this.iDrag >= 0) {
                 if (this.iDrag == 0) {
-                    fhsb[1] = 1.0F - (float) var2 / (float) var8;
-                    fhsb[2] = (float) var3 / (float) var9;
+                    fhsb[1] = 1.0F - (float) mouseX / (float) var8;
+                    fhsb[2] = (float) mouseY / (float) var9;
                 } else {
-                    fhsb[0] = (float) var3 / (float) var9;
+                    fhsb[0] = (float) mouseY / (float) var9;
                 }
 
                 this.mPaint();

@@ -72,26 +72,26 @@ public abstract class LComponent extends Canvas {
         }
     }
 
-    private Cursor getCur(int var1, int var2) {
-        byte var3;
-        switch (this.inCorner(var1, var2)) {
+    private Cursor getCur(int x, int y) {
+        byte cursor;
+        switch (this.inCorner(x, y)) {
             case 1:
-                var3 = 6;
+                cursor = Cursor.NW_RESIZE_CURSOR;
                 break;
             case 2:
-                var3 = 7;
+                cursor = Cursor.NE_RESIZE_CURSOR;
                 break;
             case 3:
-                var3 = 4;
+                cursor = Cursor.SW_RESIZE_CURSOR;
                 break;
             case 4:
-                var3 = 5;
+                cursor = Cursor.SE_RESIZE_CURSOR;
                 break;
             default:
-                var3 = 0;
+                cursor = Cursor.DEFAULT_CURSOR;
         }
 
-        return Cursor.getPredefinedCursor(var3);
+        return Cursor.getPredefinedCursor(cursor);
     }
 
     public Graphics getG() {
@@ -216,11 +216,11 @@ public abstract class LComponent extends Canvas {
         }
     }
 
-    public void paint(Graphics var1) {
+    public void paint(Graphics g) {
         if (this.isVisible()) {
             Dimension var2 = this.getSizeW();
             if (!this.isPaint && this.isMove) {
-                var1.drawRect(0, 0, var2.width - 1, var2.height - 1);
+                g.drawRect(0, 0, var2.width - 1, var2.height - 1);
             } else {
                 int var3 = this.iBSize;
                 int var4 = this.iGap;
@@ -228,78 +228,78 @@ public abstract class LComponent extends Canvas {
                 int var5 = var2.width;
                 int var6 = var2.height;
                 if (this.isFrame) {
-                    var1.setColor(this.clFrame);
-                    var1.drawRect(0, 0, var5 - 1, var6 - 1);
+                    g.setColor(this.clFrame);
+                    g.drawRect(0, 0, var5 - 1, var6 - 1);
                 }
 
                 if (this.isGUI) {
-                    var1.fillRect(1, var3, var5 - 2, 1);
-                    var1.fillRect(var5 - var3 - 1, 1, 1, var3 - 1);
-                    var1.setColor(this.clLBar);
-                    var1.fillRect(1, 1, var5 - 2, 1);
-                    var1.setColor(this.clBar);
-                    var1.fillRect(1, 2, var5 - 2 - this.iBSize, this.iBSize - 2);
-                    var1.drawLine(var5 - var3 + 1, 2, var5 - 2, var3 - 1);
-                    var1.drawLine(var5 - var3 + 1, var3 - 1, var5 - 2, 1);
+                    g.fillRect(1, var3, var5 - 2, 1);
+                    g.fillRect(var5 - var3 - 1, 1, 1, var3 - 1);
+                    g.setColor(this.clLBar);
+                    g.fillRect(1, 1, var5 - 2, 1);
+                    g.setColor(this.clBar);
+                    g.fillRect(1, 2, var5 - 2 - this.iBSize, this.iBSize - 2);
+                    g.drawLine(var5 - var3 + 1, 2, var5 - 2, var3 - 1);
+                    g.drawLine(var5 - var3 + 1, var3 - 1, var5 - 2, 1);
                     if (this.title != null && this.title.length() > 0) {
-                        var1.setClip(1, 1, var5 - 1 - this.iBSize, this.iBSize - 1);
-                        var1.setFont(fontBar);
-                        var1.setColor(this.clBarT);
-                        var1.drawString(this.title, var4, var3 - 1);
-                        var1.setClip(0, 0, var2.width, var2.height);
+                        g.setClip(1, 1, var5 - 1 - this.iBSize, this.iBSize - 1);
+                        g.setFont(fontBar);
+                        g.setColor(this.clBarT);
+                        g.drawString(this.title, var4, var3 - 1);
+                        g.setClip(0, 0, var2.width, var2.height);
                     }
                 }
 
                 int var7 = this.getGapX();
                 int var8 = this.getGapY();
-                var1.translate(var7, var8);
+                g.translate(var7, var8);
 
                 try {
-                    this.paint2(var1);
+                    this.paint2(g);
                 } catch (Throwable var9) {
                     ;
                 }
 
-                var1.translate(-var7, -var8);
+                g.translate(-var7, -var8);
             }
         }
     }
 
-    public abstract void paint2(Graphics var1);
+    public abstract void paint2(Graphics g);
 
-    public abstract void pMouse(MouseEvent var1);
+    public abstract void pMouse(MouseEvent event);
 
     protected void processEvent(AWTEvent awtEv) {
         try {
             Dimension var3 = this.getSizeW();
             Point var4 = this.getLocation();
-            int var6;
-            int var7;
+            int mouseX;
+            int mouseY;
             switch (awtEv.getID()) {
                 case ComponentEvent.COMPONENT_MOVED:
                     var4.setLocation(super.getLocation());
-                    var7 = var4.x;
+                    mouseY = var4.x;
                     int var8 = var4.y;
                     this.inParent();
                     if (this.isRepaint) {
-                        this.getParent().repaint(0L, var7, var8, var3.width, var3.height);
+                        this.getParent().repaint(0L, mouseY, var8, var3.width, var3.height);
                     }
                     break;
                 case ComponentEvent.COMPONENT_RESIZED:
                     var3.setSize(super.getSize());
                     int var5 = var3.width;
-                    var6 = var3.height;
+                    mouseX = var3.height;
                     this.inParent();
                     if (this.isRepaint) {
-                        this.getParent().repaint(0L, var4.x, var4.y, var5, var6);
+                        this.getParent().repaint(0L, var4.x, var4.y, var5, mouseX);
                     }
             }
 
             if (awtEv instanceof MouseEvent) {
                 MouseEvent mEv = (MouseEvent) awtEv;
                 mEv.consume();
-                var6 = mEv.getX();
-                var7 = mEv.getY();
+                mouseX = mEv.getX();
+                mouseY = mEv.getY();
                 if (this.isGUI) {
                     var3 = this.getSizeW();
                     Dimension var21 = this.getSize();
@@ -310,9 +310,9 @@ public abstract class LComponent extends Canvas {
                     Dimension var14;
                     switch (mEv.getID()) {
                         case MouseEvent.MOUSE_PRESSED:
-                            this.oldX = var6;
-                            this.oldY = var7;
-                            if (this.inCorner(var6, var7) != 0) {
+                            this.oldX = mouseX;
+                            this.oldY = mouseY;
+                            if (this.inCorner(mouseX, mouseY) != 0) {
                                 this.isMove = true;
                                 this.isResize = true;
                                 this.isPaint = false;
@@ -321,8 +321,8 @@ public abstract class LComponent extends Canvas {
                             }
 
                             Container parent = this.getParent();
-                            if (var7 <= this.iBSize) {
-                                if (var6 >= var3.width - this.iBSize) {
+                            if (mouseY <= this.iBSize) {
+                                if (mouseX >= var3.width - this.iBSize) {
                                     if (this.isHide) {
                                         //this.setVisible(false);
                                         //tablet widget expects visibility change instead of removal
@@ -366,8 +366,8 @@ public abstract class LComponent extends Canvas {
                             }
                             break;
                         case MouseEvent.MOUSE_MOVED:
-                            if (!this.getCursor().equals(this.getCur(var6, var7))) {
-                                this.setCursor(this.getCur(var6, var7));
+                            if (!this.getCursor().equals(this.getCur(mouseX, mouseY))) {
+                                this.setCursor(this.getCur(mouseX, mouseY));
                             }
 
                             if (this.isUpDown) {
@@ -397,19 +397,19 @@ public abstract class LComponent extends Canvas {
                         if (this.isResize) {
                             Dimension var24 = this.dL;
                             var14 = this.dS;
-                            int var26 = var21.width + (var6 - this.oldX);
-                            int var27 = var21.height + (var7 - this.oldY);
+                            int var26 = var21.width + (mouseX - this.oldX);
+                            int var27 = var21.height + (mouseY - this.oldY);
                             this.setSize(var26 < var14.width ? var14.width : (var26 > var24.width ? var24.width : var26), var27 < var14.height ? var14.height : (var27 > var24.height ? var24.height : var27));
-                            this.oldX = var6;
-                            this.oldY = var7;
+                            this.oldX = mouseX;
+                            this.oldY = mouseY;
                         } else {
                             Point var25 = this.getLocation();
                             var14 = this.getParent().getSize();
-                            var6 = var25.x + var6 - this.oldX;
-                            var6 = var6 <= 0 ? 0 : (var6 + var3.width >= var14.width ? var14.width - var3.width : var6);
-                            var7 = var25.y + var7 - this.oldY;
-                            var7 = var7 <= 0 ? 0 : (var7 + var3.height >= var14.height ? var14.height - var3.height : var7);
-                            this.setLocation(var6, var7);
+                            mouseX = var25.x + mouseX - this.oldX;
+                            mouseX = mouseX <= 0 ? 0 : (mouseX + var3.width >= var14.width ? var14.width - var3.width : mouseX);
+                            mouseY = var25.y + mouseY - this.oldY;
+                            mouseY = mouseY <= 0 ? 0 : (mouseY + var3.height >= var14.height ? var14.height - var3.height : mouseY);
+                            this.setLocation(mouseX, mouseY);
                         }
 
                         if (this.isPaint) {
@@ -418,12 +418,12 @@ public abstract class LComponent extends Canvas {
                     }
                 }
 
-                var6 = this.getGapX();
-                var7 = this.getGapY();
+                mouseX = this.getGapX();
+                mouseY = this.getGapY();
                 if (!this.isMove) {
-                    mEv.translatePoint(-var6, -var7);
+                    mEv.translatePoint(-mouseX, -mouseY);
                     this.pMouse(mEv);
-                    mEv.translatePoint(var6, var7);
+                    mEv.translatePoint(mouseX, mouseY);
                 }
             }
 

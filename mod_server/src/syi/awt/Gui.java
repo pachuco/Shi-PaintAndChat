@@ -82,9 +82,9 @@ public class Gui extends Awt {
         return var2;
     }
 
-    public static Point getScreenPos(MouseEvent var0) {
-        Point var1 = var0.getComponent().getLocationOnScreen();
-        var1.translate(var0.getX(), var0.getY());
+    public static Point getScreenPos(MouseEvent event) {
+        Point var1 = event.getComponent().getLocationOnScreen();
+        var1.translate(event.getX(), event.getY());
         return var1;
     }
 

@@ -180,24 +180,24 @@ public class TPalette extends LComponent {
         return var3;
     }
 
-    public void pMouse(MouseEvent var1) {
-        int var2 = var1.getID();
-        int var3 = var1.getX();
-        int var4 = var1.getY();
+    public void pMouse(MouseEvent event) {
+        int eventID = event.getID();
+        int mouseX = event.getX();
+        int mouseY = event.getY();
         Dimension var5 = this.getSize();
         int var6 = (var5.height - 1) / 10;
         int var7 = (int) ((float) var6 * 1.5F);
         int var8 = var7 * 2 + 1;
-        boolean var9 = Awt.isR(var1);
+        boolean var9 = Awt.isR(event);
         boolean var10 = this.mg.isText();
         int var11 = var10 ? 0xFF : this.info.getPenMask()[this.mg.iPenM].length;
         int var12 = Math.min(var6 * 6, var11 * 8 + 1);
-        if (var3 <= var8 && var2 == MouseEvent.MOUSE_PRESSED) {
+        if (mouseX <= var8 && eventID == MouseEvent.MOUSE_PRESSED) {
             this.iDrag = -1;
-            int var18 = Math.min(var4 / var6 * 2 + var3 / var7, 19);
+            int var18 = Math.min(mouseY / var6 * 2 + mouseX / var7, 19);
             if (var9) {
                 this.cls[var18] = new Color(this.mg.iColor);
-            } else if (var1.isShiftDown()) {
+            } else if (event.isShiftDown()) {
                 this.cls[var18] = new Color(DEFC[var18]);
             } else {
                 this.selPalette = var18;
@@ -207,11 +207,11 @@ public class TPalette extends LComponent {
             this.repaint();
         } else {
             boolean var13 = false;
-            switch (var2) {
+            switch (eventID) {
                 case MouseEvent.MOUSE_PRESSED:
-                    if (var4 < var12) {
+                    if (mouseY < var12) {
                         if (var9) {
-                            this.tools.setField(this, "iPenM", "penm_", var3, var4);
+                            this.tools.setField(this, "iPenM", "penm_", mouseX, mouseY);
                             return;
                         }
 
@@ -222,7 +222,7 @@ public class TPalette extends LComponent {
                             return;
                         }
 
-                        this.iDrag = (var4 - var12) / var6;
+                        this.iDrag = (mouseY - var12) / var6;
                         this.iDrag = (this.iDrag <= 0 ? 0 : (this.iDrag >= 3 ? 3 : this.iDrag)) + 1;
                     }
 
@@ -243,9 +243,9 @@ public class TPalette extends LComponent {
 
             if (var13) {
                 if (this.iDrag == 0) {
-                    this.setLineSize((int) ((float) var4 / (float) var12 * (float) var11));
+                    this.setLineSize((int) ((float) mouseY / (float) var12 * (float) var11));
                 } else {
-                    int var14 = (int) ((float) (var3 - var8) / (float) (var5.width - var8) * 255.0F);
+                    int var14 = (int) ((float) (mouseX - var8) / (float) (var5.width - var8) * 255.0F);
                     int var15 = 24 - 8 * (this.iDrag - 1);
                     int var16 = this.iColor << 8 | this.mg.iAlpha;
                     var16 = var16 & ~(0xFF << var15) | Math.max(Math.min(var14, 0xFF), 0) << var15;
