@@ -41,16 +41,16 @@ public class TBar extends LComponent {
         this.H = (int) (19.0F * LComponent.Q);
     }
 
-    public final void drawFrame(Graphics var1, boolean var2, int var3, int var4, int var5, int var6) {
+    public final void drawFrame(Graphics g, boolean var2, int var3, int var4, int var5, int var6) {
         Color[] var7 = this.cls[var2 ? 1 : 0];
-        Awt.drawFrame(var1, var2, var3, var4, var5, var6, var7[2], var7[1]);
+        Awt.drawFrame(g, var2, var3, var4, var5, var6, var7[2], var7[1]);
     }
 
-    public final void fillFrame(Graphics var1, boolean var2, int var3, int var4, int var5, int var6) {
-        this.drawFrame(var1, var2, var3, var4, var5, var6);
+    public final void fillFrame(Graphics g, boolean var2, int var3, int var4, int var5, int var6) {
+        this.drawFrame(g, var2, var3, var4, var5, var6);
         Color[] var7 = this.cls[var2 ? 1 : 0];
         Awt.setup();
-        Awt.fillFrame(var1, var2, var3, var4, var5, var6, this.cls[0][0], this.cls[1][0], var7[2], var7[1]);
+        Awt.fillFrame(g, var2, var3, var4, var5, var6, this.cls[0][0], this.cls[1][0], var7[2], var7[1]);
     }
 
     public void init() {
@@ -122,64 +122,62 @@ public class TBar extends LComponent {
         }
     }
 
-    public void paint2(Graphics var1) {
-        this.getSize();
+    public void paint2(Graphics g) {
+        //this.getSize();
         if (this.isOption) {
-            this.paintO(var1);
+            this.paintO(g);
         } else {
-            this.paintBar(var1);
+            this.paintBar(g);
         }
 
     }
 
-    private void paintBar(Graphics var1) {
+    private void paintBar(Graphics g) {
         int var2 = 0;
         int var3 = 0;
         int var4 = 0;
-        Dimension var5 = this.getSize();
-        int var6 = this.W;
-        int var7 = this.H;
+        Dimension dim = this.getSize();
+        int w = this.W;
+        int h = this.H;
 
-        for (int var9 = 0; var9 < this.cs.length; ++var9) {
-            if (this.cs[var9] != null && this.cs[var9] != this) {
-                boolean var8 = this.cs[var9].getParent() == null;
-                this.fillFrame(var1, var8, var2, var3, var6, var7);
+        for (int i = 0; i < this.cs.length; ++i) {
+            if (this.cs[i] != null && this.cs[i] != this) {
+                boolean var8 = this.cs[i].getParent() == null;
+                this.fillFrame(g, var8, var2, var3, w, h);
                 if (var8) {
-                    var1.setColor(Awt.cFore);
-                    var1.drawLine(var2 + 4, var3 + 4, var2 + var6 - 4, var3 + var7 - 4);
+                    g.setColor(Awt.cFore);
+                    g.drawLine(var2 + 4, var3 + 4, var2 + w - 4, var3 + h - 4);
                 }
 
-                var1.setColor(this.clT == null ? Awt.cFore : this.clT);
-                var1.drawString(this.strs[var4++], var2 + 2, var3 + var7 - 3);
-                if ((var2 += var6) + var6 > var5.width) {
+                g.setColor(this.clT == null ? Awt.cFore : this.clT);
+                g.drawString(this.strs[var4++], var2 + 2, var3 + h - 3);
+                if ((var2 += w) + w > dim.width) {
                     var2 = 0;
-                    var3 += var7;
+                    var3 += h;
                 }
             }
         }
 
     }
 
-    private void paintO(Graphics var1) {
-        int var6;
-        int var7;
+    private void paintO(Graphics g) {
         if (this.image == null) {
             try {
                 FontMetrics var3 = this.getFontMetrics(this.getFont());
                 int var4 = this.strs.length;
                 int var5 = 0;
 
-                for (var6 = 0; var6 < var4; ++var6) {
-                    String var2 = this.res.res("option_" + var6);
+                for (int i = 0; i < var4; ++i) {
+                    String var2 = this.res.res("option_" + i);
                     var5 = Math.max(var3.stringWidth(var2 + " OFF") + var2.length() + 3, var5);
-                    this.strs[var6] = var2;
+                    this.strs[i] = var2;
                 }
 
                 var5 = Math.max(var3.stringWidth(this.strAuthor) + this.strAuthor.length(), var5);
                 this.image = this.getToolkit().createImage((byte[]) this.config.getRes("bn.gif"));
                 Awt.wait(this.image);
-                var6 = this.image.getWidth((ImageObserver) null);
-                var7 = this.image.getHeight((ImageObserver) null);
+                int var6 = this.image.getWidth(null);
+                int var7 = this.image.getHeight(null);
                 if (LComponent.Q > 1.0F) {
                     var6 = (int) ((float) var6 * LComponent.Q);
                     var7 = (int) ((float) var7 * LComponent.Q);
@@ -194,32 +192,32 @@ public class TBar extends LComponent {
             }
         }
 
-        int var12 = this.image.getWidth((ImageObserver) null);
-        int var13 = this.image.getHeight((ImageObserver) null);
+        int imW = this.image.getWidth(null);
+        int imH = this.image.getHeight(null);
         if (LComponent.Q > 1.0F) {
-            var12 = (int) ((float) var12 * LComponent.Q);
-            var13 = (int) ((float) var13 * LComponent.Q);
+            imW = (int) ((float) imW * LComponent.Q);
+            imH = (int) ((float) imH * LComponent.Q);
         }
 
         Dimension var14 = this.getSize();
-        var1.setFont(this.getFont());
+        g.setFont(this.getFont());
         byte var15 = 0;
-        var6 = 0;
-        var7 = this.W;
-        int var16 = this.H;
-        int var9 = this.strs.length;
+        int var6 = 0;
+        int w = this.W;
+        int h = this.H;
+        int strLen = this.strs.length;
 
-        for (int var10 = 0; var10 < var9; ++var10) {
-            this.fillFrame(var1, this.flags[var10], var15, var6, var7, var16);
-            var1.setColor(this.clT == null ? this.getForeground() : this.clT);
-            var1.drawString(this.strs[var10] + (this.flags[var10] ? " ON" : " OFF"), var15 + 2, var6 + var16 - 3);
-            var6 += var16;
+        for (int i = 0; i < strLen; ++i) {
+            this.fillFrame(g, this.flags[i], var15, var6, w, h);
+            g.setColor(this.clT == null ? this.getForeground() : this.clT);
+            g.drawString(this.strs[i] + (this.flags[i] ? " ON" : " OFF"), var15 + 2, var6 + h - 3);
+            var6 += h;
         }
 
-        var6 = var14.height - this.H - var13 - 2;
-        var1.drawRect(var15, var6, var7 - 1, var14.height - var6 - 1);
-        var1.drawImage(this.image, (var14.width - var12) / 2, var6 + 2, var12, var13, this.getBackground(), (ImageObserver) null);
-        var1.drawString(this.strAuthor, (var14.width - var1.getFontMetrics().stringWidth(this.strAuthor)) / 2, var14.height - 2);
+        var6 = var14.height - this.H - imH - 2;
+        g.drawRect(var15, var6, w - 1, var14.height - var6 - 1);
+        g.drawImage(this.image, (var14.width - imW) / 2, var6 + 2, imW, imH, this.getBackground(), null);
+        g.drawString(this.strAuthor, (var14.width - g.getFontMetrics().stringWidth(this.strAuthor)) / 2, var14.height - 2);
     }
 
     public void pMouse(MouseEvent event) {

@@ -1246,7 +1246,7 @@ public class Mg {
         }
     }
 
-    public void dPre(Graphics var1, int[] var2) {
+    public void dPre(Graphics g, int[] var2) {
         try {
             int var4 = var2[0];
             int var5 = var2[1];
@@ -1288,7 +1288,7 @@ public class Mg {
                 var9 = (int) var15;
                 int var19 = (int) var16;
                 if (var9 != var11 || var19 != var12) {
-                    var1.fillRect(var9, var19, 1, 1);
+                    g.fillRect(var9, var19, 1, 1);
                     var11 = var9;
                     var12 = var19;
                 }

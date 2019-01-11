@@ -84,26 +84,25 @@ public class TPalette extends LComponent {
         this.setDimension(new Dimension((int) (42.0F * LComponent.Q), (int) (42.0F * LComponent.Q)), new Dimension((int) (112.0F * LComponent.Q), (int) (202.0F * LComponent.Q)), new Dimension((int) (300.0F * LComponent.Q), (int) (300.0F * LComponent.Q)));
     }
 
-    public void paint2(Graphics var1) {
+    public void paint2(Graphics g) {
         try {
             this.initP();
-            Dimension var2 = this.getSize();
-            int var3 = Math.min((var2.height - 1) / 10, 64);
+            Dimension dim = this.getSize();
+            int var3 = Math.min((dim.height - 1) / 10, 64);
             int var4 = (int) ((float) var3 * 1.5F);
             int var5 = var3 <= 12 ? 0 : 2;
             int var6 = this.cls.length;
             int var7 = 0;
             int var8 = 0;
 
-            int var9;
-            for (var9 = 0; var9 < var6; ++var9) {
-                var1.setColor(this.cls[var9]);
-                var1.fillRect(var7 + 1, var8 + 1, var4 - 1 - var5, var3 - 1 - var5);
-                var1.setColor(Awt.cF);
-                var1.drawRect(var7, var8, var4 - var5, var3 - var5);
-                if (this.selPalette == var9) {
-                    var1.setColor(Awt.cFSel);
-                    var1.drawRect(var7 + 1, var8 + 1, var4 - var5 - 2, var3 - var5 - 2);
+            for (int i = 0; i < var6; ++i) {
+                g.setColor(this.cls[i]);
+                g.fillRect(var7 + 1, var8 + 1, var4 - 1 - var5, var3 - 1 - var5);
+                g.setColor(Awt.cF);
+                g.drawRect(var7, var8, var4 - var5, var3 - var5);
+                if (this.selPalette == i) {
+                    g.setColor(Awt.cFSel);
+                    g.drawRect(var7 + 1, var8 + 1, var4 - var5 - 2, var3 - var5 - 2);
                 }
 
                 if (var7 == 0) {
@@ -114,22 +113,22 @@ public class TPalette extends LComponent {
                 }
             }
 
-            var9 = var4 * 2;
-            var8 = this.pBar(var1, var9, 0, var3);
-            var1.setColor(this.getBackground());
-            var1.fillRect(var7 + var9, var8, var2.width - var9, var2.height - var8);
+            int var9 = var4 * 2;
+            var8 = this.pBar(g, var9, 0, var3);
+            g.setColor(this.getBackground());
+            g.fillRect(var7 + var9, var8, dim.width - var9, dim.height - var8);
         } catch (Throwable var10) {
             var10.printStackTrace();
         }
 
     }
 
-    private int pBar(Graphics var1, int var2, int var3, int var4) {
-        Dimension var5 = this.getSize();
-        int var6 = var5.width - var2 - 1;
-        int var10000 = var5.height - var3;
-        Color var7 = this.getBackground();
-        Color var8 = Awt.cFore;
+    private int pBar(Graphics g, int var2, int var3, int var4) {
+        Dimension dim = this.getSize();
+        int var6 = dim.width - var2 - 1;
+        int var10000 = dim.height - var3;
+        Color colBckg = this.getBackground();
+        Color colFore = Awt.cFore;
         boolean var9 = this.mg.isText();
         int var10 = var9 ? 0xFF : this.info.getPenMask()[this.mg.iPenM].length;
         int var11 = Math.min(var4 * 6, var10 * 8 + 1);
@@ -137,42 +136,42 @@ public class TPalette extends LComponent {
         var12 = var12 <= 0 ? 0 : (var12 >= var10 ? var10 - 1 : var12);
         this.mg.iSize = var12;
         String var13 = var9 ? this.mg.iSize + "pt" : (int) Math.sqrt((double) this.info.getPenMask()[this.mg.iPenM][this.mg.iSize].length) + "px";
-        var1.setColor(Awt.cF);
-        var1.drawRect(var2, var3, var6, var11);
+        g.setColor(Awt.cF);
+        g.drawRect(var2, var3, var6, var11);
         int var14 = (int) ((float) var11 * ((float) (var12 + 1) / (float) var10));
-        var1.setColor(this.cls[this.selPalette]);
-        var1.fillRect(var2 + 1, var3 + 1, var6 - 1, var14 - 1);
-        var1.setColor(var7);
-        var1.fillRect(var2 + 1, var3 + 1 + var14, var6 - 1, var11 - var14 - 1);
-        var1.setColor(var8);
-        var1.setFont(Awt.getDefFont());
-        var1.setXORMode(var7);
-        var1.drawString(var13, var2 + 2, var3 + var11 - 2);
-        var1.setPaintMode();
+        g.setColor(this.cls[this.selPalette]);
+        g.fillRect(var2 + 1, var3 + 1, var6 - 1, var14 - 1);
+        g.setColor(colBckg);
+        g.fillRect(var2 + 1, var3 + 1 + var14, var6 - 1, var11 - var14 - 1);
+        g.setColor(colFore);
+        g.setFont(Awt.getDefFont());
+        g.setXORMode(colBckg);
+        g.drawString(var13, var2 + 2, var3 + var11 - 2);
+        g.setPaintMode();
         if (clFont == null || clFont.getSize() != Math.max(var4 - 2, 1)) {
             clFont = new Font("sansserif", 0, Math.max(var4 - 4, 1));
         }
 
-        var1.setFont(clFont);
+        g.setFont(clFont);
         int var15 = this.iColor << 8 | this.mg.iAlpha;
         int var16 = 24;
         var3 += var11;
 
-        for (int var17 = 0; var17 < 4; ++var17) {
-            var1.setColor(Awt.cF);
-            var1.drawRect(var2, var3 + 1, var6, var4 - 2);
-            var1.setColor(Color.white);
-            var1.fillRect(var2 + 1, var3 + 2, var6 - 1, 1);
-            var1.fillRect(var2 + 1, var3 + 3, 1, var4 - 4);
+        for (int i = 0; i < 4; ++i) {
+            g.setColor(Awt.cF);
+            g.drawRect(var2, var3 + 1, var6, var4 - 2);
+            g.setColor(Color.white);
+            g.fillRect(var2 + 1, var3 + 2, var6 - 1, 1);
+            g.fillRect(var2 + 1, var3 + 3, 1, var4 - 4);
             var14 = (int) ((float) (var6 - 2) * ((float) (var15 >>> var16 & 0xFF) / 255.0F));
-            var1.setColor(clRGB[this.isRGB][var17]);
-            var1.fillRect(var2 + 2, var3 + 3, var14, var4 - 4);
-            var1.setColor(Color.gray);
-            var1.fillRect(var2 + 1 + var14, var3 + 3, 1, var4 - 4);
-            var1.setColor(var7);
-            var1.fillRect(var2 + 2 + var14, var3 + 3, var6 - var14 - 2, var4 - 4);
-            var1.setColor(var8);
-            var1.drawString(String.valueOf(clValue[this.isRGB][var17]) + (var15 >>> var16 & 0xFF), var2 + 2, var3 + var4 - 2);
+            g.setColor(clRGB[this.isRGB][i]);
+            g.fillRect(var2 + 2, var3 + 3, var14, var4 - 4);
+            g.setColor(Color.gray);
+            g.fillRect(var2 + 1 + var14, var3 + 3, 1, var4 - 4);
+            g.setColor(colBckg);
+            g.fillRect(var2 + 2 + var14, var3 + 3, var6 - var14 - 2, var4 - 4);
+            g.setColor(colFore);
+            g.drawString(String.valueOf(clValue[this.isRGB][i]) + (var15 >>> var16 & 0xFF), var2 + 2, var3 + var4 - 2);
             var3 += var4;
             var16 -= 8;
         }

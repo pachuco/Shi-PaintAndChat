@@ -158,6 +158,7 @@ public class MgLine {
         }
     }
 
+    //why is var1 left unplugged?
     private void clear(Graphics var1, int[][] var2, int var3, int var4) {
         int[] var5 = var2[0];
         int var6 = 0xFFFFFF;

@@ -74,7 +74,7 @@ public class TT extends LComponent implements SW, Runnable {
 
     }
 
-    public void paint2(Graphics var1) {
+    public void paint2(Graphics g) {
         if (this.images != null) {
             if (!this.isRun) {
                 Thread var2 = new Thread(this);
@@ -94,17 +94,17 @@ public class TT extends LComponent implements SW, Runnable {
             int[] var11 = this.user.getBuffer();
             Color var12 = this.getBackground();
             short var13 = 255;
-            var12.getRGB();
+            //var12.getRGB();
             Dimension var14 = this.getSize();
-            this.getToolkit();
+            //this.getToolkit();
             this.iLast = var10.iTT;
 
             for (int var16 = -1; var16 < var21; ++var16) {
-                var1.setColor(var16 + 1 == var10.iTT ? Awt.cFSel : Awt.cF);
-                var1.drawRect(var3 + 1, var4 + 1, var5 - 2, var6 - 2);
+                g.setColor(var16 + 1 == var10.iTT ? Awt.cFSel : Awt.cF);
+                g.drawRect(var3 + 1, var4 + 1, var5 - 2, var6 - 2);
                 if (var16 == -1) {
-                    var1.setColor(Color.blue);
-                    var1.fillRect(var3 + 2, var4 + 2, var5 - 3, var6 - 3);
+                    g.setColor(Color.blue);
+                    g.fillRect(var3 + 2, var4 + 2, var5 - 3, var6 - 3);
                 } else if (var16 < 11) {
                     synchronized (var11) {
                         int var18 = 0;
@@ -116,15 +116,15 @@ public class TT extends LComponent implements SW, Runnable {
                             }
                         }
 
-                        var1.drawImage(this.user.mkImage(var7, var7), var3 + 2, var4 + 2, var12, (ImageObserver) null);
+                        g.drawImage(this.user.mkImage(var7, var7), var3 + 2, var4 + 2, var12, (ImageObserver) null);
                     }
                 } else {
                     Image var15 = this.images[var16 - 11];
                     if (var15 == null) {
-                        var1.setColor(Color.blue);
-                        var1.fillRect(var3 + 2, var4 + 2, var5 - 3, var6 - 3);
+                        g.setColor(Color.blue);
+                        g.fillRect(var3 + 2, var4 + 2, var5 - 3, var6 - 3);
                     } else {
-                        var1.drawImage(var15, var3 + 2, var4 + 2, var12, (ImageObserver) null);
+                        g.drawImage(var15, var3 + 2, var4 + 2, var12, (ImageObserver) null);
                     }
                 }
 

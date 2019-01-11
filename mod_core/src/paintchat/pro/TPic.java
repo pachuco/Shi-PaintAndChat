@@ -78,18 +78,18 @@ public class TPic extends LComponent {
 
     public void mPaint() {
         try {
-            Graphics var1 = this.getG();
-            if (var1 == null) return;
+            Graphics g = this.getG();
+            if (g == null) return;
 
-            this.mPaint(var1);
-            var1.dispose();
+            this.mPaint(g);
+            g.dispose();
         } catch (RuntimeException var2) {
             var2.printStackTrace();
         }
 
     }
 
-    public void mPaint(Graphics var1) {
+    public void mPaint(Graphics g) {
         Dimension var2 = this.getSize();
         int var3 = (int) (22.0F * LComponent.Q);
         int var4 = var3;
@@ -100,28 +100,28 @@ public class TPic extends LComponent {
         int var13;
         synchronized (this.tools.iBuffer) {
             Image var10 = this.cMk();
-            var1.drawImage(var10, var5, var6, var7, var8, Color.white, (ImageObserver) null);
+            g.drawImage(var10, var5, var6, var7, var8, Color.white, (ImageObserver) null);
             var10 = this.cMkB();
-            var1.drawImage(var10, var7 + 1, var6, var4, var8, Color.white, (ImageObserver) null);
+            g.drawImage(var10, var7 + 1, var6, var4, var8, Color.white, (ImageObserver) null);
             var13 = var6 + var8;
         }
 
-        Awt.drawFrame(var1, false, var5, var13 + 1, var7, var3);
+        Awt.drawFrame(g, false, var5, var13 + 1, var7, var3);
         int var14 = (int) ((float) (var7 - 8) * 0.7F);
-        var1.setColor(new Color(this.tools.info.m.iColorMask));
-        var1.fillRect(var5 + var14 + 6, var13 + 4, (int) ((float) (var7 - 8) * 0.3F), var3 - 6);
-        var1.setColor(Color.getHSBColor(fhsb[0], fhsb[1], fhsb[2]));
-        var1.fillRect(var5 + 3, var13 + 4, var14, var3 - 6);
-        var1.setColor(Color.blue);
-        var1.setXORMode(Color.white);
+        g.setColor(new Color(this.tools.info.m.iColorMask));
+        g.fillRect(var5 + var14 + 6, var13 + 4, (int) ((float) (var7 - 8) * 0.3F), var3 - 6);
+        g.setColor(Color.getHSBColor(fhsb[0], fhsb[1], fhsb[2]));
+        g.fillRect(var5 + 3, var13 + 4, var14, var3 - 6);
+        g.setColor(Color.blue);
+        g.setXORMode(Color.white);
         int var15 = Math.max((int) (10.0F * LComponent.Q), 2);
         int var11 = var15 >>> 1;
-        var1.setClip(var7 + 1, 0, var3, var8);
-        var1.drawOval(var7 + 1 + var3 / 2 - var11, (int) ((float) var8 * fhsb[0]) - var11, var15, var15);
-        var1.setClip(0, 0, var7, var8);
-        var1.drawOval((int) ((float) var7 * (1.0F - fhsb[1])) - var11, (int) ((float) var8 * fhsb[2]) - var11, var15, var15);
-        var1.setPaintMode();
-        var1.setClip(0, 0, var2.width, var2.height);
+        g.setClip(var7 + 1, 0, var3, var8);
+        g.drawOval(var7 + 1 + var3 / 2 - var11, (int) ((float) var8 * fhsb[0]) - var11, var15, var15);
+        g.setClip(0, 0, var7, var8);
+        g.drawOval((int) ((float) var7 * (1.0F - fhsb[1])) - var11, (int) ((float) var8 * fhsb[2]) - var11, var15, var15);
+        g.setPaintMode();
+        g.setClip(0, 0, var2.width, var2.height);
     }
 
     public void paint2(Graphics g) {

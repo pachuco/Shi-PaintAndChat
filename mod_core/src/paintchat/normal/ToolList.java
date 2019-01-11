@@ -44,22 +44,22 @@ public class ToolList {
     private int imIndex;
     public Rectangle r = new Rectangle();
 
-    private void dImage(Graphics var1, Color var2, int var3, int var4) {
+    private void dImage(Graphics g, Color var2, int var3, int var4) {
         int var5 = this.r.height;
         int var6 = this.r.width;
-        var1.setColor(var2);
-        var1.fillRect(2, var3 + 2, this.r.width - 4, var5 - 4);
+        g.setColor(var2);
+        g.fillRect(2, var3 + 2, this.r.width - 4, var5 - 4);
         if (this.isMask) {
-            var1.setColor(new Color(this.info.iColorMask));
-            var1.fillRect(var6 - this.imW - 3, var3 + 3, this.imW, (var5 - 4) / 2);
+            g.setColor(new Color(this.info.iColorMask));
+            g.fillRect(var6 - this.imW - 3, var3 + 3, this.imW, (var5 - 4) / 2);
         }
 
-        if (this.isIm && this.image != null && var4 < this.image.getHeight((ImageObserver) null) / this.imH) {
+        if (this.isIm && this.image != null && var4 < this.image.getHeight(null) / this.imH) {
             int var7 = this.imIndex * this.imW;
             int var8 = var4 * this.imH;
             int var9 = this.r.x + 2;
             int var10 = var3 + 2;
-            var1.drawImage(this.image, var9, var10, var9 + var6 - 4, var10 + var5 - 4, var7, var8, var7 + this.imW, var8 + this.imH, var2, (ImageObserver) null);
+            g.drawImage(this.image, var9, var10, var9 + var6 - 4, var10 + var5 - 4, var7, var8, var7 + this.imW, var8 + this.imH, var2, (ImageObserver) null);
         }
     }
 

@@ -423,25 +423,25 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
         this.mPaint(this.primary(), var5);
     }
 
-    private void mPaint(Graphics var1, Rectangle var2) {
-        if (this.rects != null && var1 != null && this.list != null) {
+    private void mPaint(Graphics g, Rectangle rect) {
+        if (this.rects != null && g != null && this.list != null) {
             Graphics var3 = this.getBack();
-            if (var2 == null) {
-                var2 = var1.getClipBounds();
-                if (var2 == null || var2.isEmpty()) {
-                    var2 = new Rectangle(this.getSize());
+            if (rect == null) {
+                rect = g.getClipBounds();
+                if (rect == null || rect.isEmpty()) {
+                    rect = new Rectangle(this.getSize());
                 }
             }
 
-            if (!var2.isEmpty()) {
+            if (!rect.isEmpty()) {
                 int var6 = this.list.length;
                 Dimension var7 = this.getSize();
                 var3.setFont(this.fDef);
 
                 int var4;
                 for (var4 = 0; var4 < var6; ++var4) {
-                    if (this.list[var4].r.intersects(var2)) {
-                        this.list[var4].paint(var1, var3);
+                    if (this.list[var4].r.intersects(rect)) {
+                        this.list[var4].paint(g, var3);
                     }
                 }
 
@@ -451,7 +451,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
                 for (var4 = 0; var4 < this.rects.length; ++var4) {
                     Rectangle var8 = this.rects[var4];
                     int var5 = var4 + var6;
-                    if (var8.intersects(var2)) {
+                    if (var8.intersects(rect)) {
                         if (var4 < 14) {
                             Color var10 = new Color(COLORS[var4]);
                             var3.setColor(var4 == this.nowColor ? var10.darker() : var10.brighter());
@@ -545,7 +545,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
                         }
 
                         var3.drawRect(0, 0, var8.width - 1, var8.height - 1);
-                        var1.drawImage(this.imBack, var8.x, var8.y, var8.x + var8.width, var8.y + var8.height, 0, 0, var8.width, var8.height, Color.white, (ImageObserver) null);
+                        g.drawImage(this.imBack, var8.x, var8.y, var8.x + var8.width, var8.y + var8.height, 0, 0, var8.width, var8.height, Color.white, (ImageObserver) null);
                     }
                 }
 
@@ -691,10 +691,10 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
 
     }
 
-    public void paint2(Graphics var1) {
+    public void paint2(Graphics g) {
         try {
-            var1.setFont(this.fDef);
-            this.mPaint(var1, var1.getClipBounds());
+            g.setFont(this.fDef);
+            this.mPaint(g, g.getClipBounds());
             if (this.primary != null) {
                 this.primary.dispose();
                 this.primary = null;
@@ -1085,8 +1085,8 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
         }
     }
 
-    public void update(Graphics var1) {
-        this.paint(var1);
+    public void update(Graphics g) {
+        this.paint(g);
     }
 
     public void mVisible(boolean var1) {

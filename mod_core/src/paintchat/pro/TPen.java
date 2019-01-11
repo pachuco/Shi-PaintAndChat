@@ -201,50 +201,48 @@ public class TPen extends LComponent implements Runnable {
 
     }
 
-    public void paint2(Graphics var1) {
+    public void paint2(Graphics g) {
         switch (this.iType) {
             case 2:
-                this.paintTT(var1);
+                this.paintTT(g);
                 break;
             case 3:
                 this.selItem = this.mg.iHint;
             default:
-                this.paintPen(var1);
+                this.paintPen(g);
         }
 
     }
 
-    private void paintPen(Graphics var1) {
+    private void paintPen(Graphics g) {
         if (this.image != null) {
             int var2 = 0;
             int var3 = 0;
-            int var4 = this.imW;
-            int var5 = this.imH;
-            int var6 = this.imW + 3;
-            int var7 = this.imH + 3;
-            Dimension var8 = this.getSize();
+            int w = this.imW;
+            int h = this.imH;
+            int wPadded = this.imW + 3;
+            int hPadded = this.imH + 3;
+            Dimension dim = this.getSize();
 
-            for (int var9 = 0; var9 < this.imCount; ++var9) {
-                var1.setColor(this.selItem == var9 ? Awt.cFSel : Awt.cF);
-                var1.drawRect(var2 + 1, var3 + 1, var4 + 1, var5 + 1);
-                var1.drawImage(this.image, var2 + 2, var3 + 2, var2 + var4 + 2, var3 + var5 + 2, 0, var9 * var5, var4, (var9 + 1) * var5, (ImageObserver) null);
-                if (this.selItem == var9) {
-                    var1.setColor(Color.black);
-                    var1.fillRect(var2 + 2, var3 + 2, var4, 1);
-                    var1.fillRect(var2 + 2, var3 + 3, 1, var5 - 1);
+            for (int i = 0; i < this.imCount; ++i) {
+                g.setColor(this.selItem == i ? Awt.cFSel : Awt.cF);
+                g.drawRect(var2 + 1, var3 + 1, w + 1, h + 1);
+                g.drawImage(this.image, var2 + 2, var3 + 2, var2 + w + 2, var3 + h + 2, 0, i * h, w, (i + 1) * h, null);
+                if (this.selItem == i) {
+                    g.setColor(Color.black);
+                    g.fillRect(var2 + 2, var3 + 2, w, 1);
+                    g.fillRect(var2 + 2, var3 + 3, 1, h - 1);
                 }
 
-                var2 = var2 + var6 * 2 >= var8.width ? 0 : var2 + var6;
-                var3 = var2 == 0 ? var3 + var7 : var3;
-                if (var3 + var7 >= var8.height) {
-                    break;
-                }
+                var2 = var2 + wPadded * 2 >= dim.width ? 0 : var2 + wPadded;
+                var3 = var2 == 0 ? var3 + hPadded : var3;
+                if (var3 + hPadded >= dim.height) break;
             }
 
         }
     }
 
-    private void paintTT(Graphics var1) {
+    private void paintTT(Graphics g) {
         if (this.images != null) {
             if (!this.isRun) {
                 Thread var2 = new Thread(this);
@@ -257,20 +255,20 @@ public class TPen extends LComponent implements Runnable {
             int var19 = this.images.length + 11;
             int var3 = 0;
             int var4 = 0;
-            int var5 = this.imW;
-            int var6 = this.imH;
-            int var7 = var5 - 3;
+            int w = this.imW;
+            int h = this.imH;
+            int var7 = w - 3;
             int[] var10 = this.tools.iBuffer;
             Dimension var11 = this.getSize();
             this.getToolkit();
             int var12 = this.getBackground().getRGB();
 
             for (int var14 = -1; var14 < var19; ++var14) {
-                var1.setColor(var14 + 1 == this.mg.iTT ? Awt.cFSel : Awt.cF);
-                var1.drawRect(var3 + 1, var4 + 1, var5 - 2, var6 - 2);
+                g.setColor(var14 + 1 == this.mg.iTT ? Awt.cFSel : Awt.cF);
+                g.drawRect(var3 + 1, var4 + 1, w - 2, h - 2);
                 if (var14 == -1) {
-                    var1.setColor(Color.blue);
-                    var1.fillRect(var3 + 2, var4 + 2, var5 - 3, var6 - 3);
+                    g.setColor(Color.blue);
+                    g.fillRect(var3 + 2, var4 + 2, w - 3, h - 3);
                 } else if (var14 < 11) {
                     synchronized (var10) {
                         int var16 = 0;
@@ -282,23 +280,23 @@ public class TPen extends LComponent implements Runnable {
                             }
                         }
 
-                        var1.drawImage(this.tools.mkImage(var7, var7), var3 + 2, var4 + 2, this.getBackground(), (ImageObserver) null);
+                        g.drawImage(this.tools.mkImage(var7, var7), var3 + 2, var4 + 2, this.getBackground(), null);
                     }
                 } else {
                     Image var13 = this.images[var14 - 11];
                     if (var13 == null) {
-                        var1.setColor(Color.blue);
-                        var1.fillRect(var3 + 2, var4 + 2, var5 - 3, var6 - 3);
+                        g.setColor(Color.blue);
+                        g.fillRect(var3 + 2, var4 + 2, w - 3, h - 3);
                     } else {
-                        var1.drawImage(var13, var3 + 2, var4 + 2, this.getBackground(), (ImageObserver) null);
+                        g.drawImage(var13, var3 + 2, var4 + 2, this.getBackground(), null);
                     }
                 }
 
-                var3 += var5;
-                if (var3 + var5 >= var11.width) {
+                var3 += w;
+                if (var3 + w >= var11.width) {
                     var3 = 0;
-                    var4 += var6;
-                    if (var4 + var6 >= var11.height) {
+                    var4 += h;
+                    if (var4 + h >= var11.height) {
                         break;
                     }
                 }
