@@ -387,8 +387,8 @@ class Ts extends LComponent {
             this.enableEvents(AWTEvent.COMPONENT_EVENT_MASK | AWTEvent.WINDOW_EVENT_MASK);
         }
 
-        protected void processEvent(AWTEvent var1) {
-            Ts.this.ev(var1);
+        protected void processEvent(AWTEvent event) {
+            Ts.this.ev(event);
         }
     }
 
@@ -398,8 +398,8 @@ class Ts extends LComponent {
             this.enableEvents(AWTEvent.COMPONENT_EVENT_MASK | AWTEvent.WINDOW_EVENT_MASK);
         }
 
-        protected void processEvent(AWTEvent var1) {
-            Ts.this.ev(var1);
+        protected void processEvent(AWTEvent event) {
+            Ts.this.ev(event);
         }
     }
 }

@@ -64,21 +64,21 @@ public class Ao extends ConfigApplet implements ActionListener {
     private Label ivjlobby_setup = null;
     private FlowLayout ivjpanelBottomFlowLayout = null;
 
-    public void actionPerformed(ActionEvent var1) {
-        if (var1.getSource() == this.getButton2()) {
-            this.connEtoC1(var1);
+    public void actionPerformed(ActionEvent event) {
+        if (event.getSource() == this.getButton2()) {
+            this.connEtoC1(event);
         }
 
-        if (var1.getSource() == this.getbu_ok()) {
-            this.connEtoC2(var1);
+        if (event.getSource() == this.getbu_ok()) {
+            this.connEtoC2(event);
         }
 
-        if (var1.getSource() == this.getOk()) {
+        if (event.getSource() == this.getOk()) {
             this.save();
             this.m_destroy();
         }
 
-        if (var1.getSource() == this.getCancel()) {
+        if (event.getSource() == this.getCancel()) {
             this.m_destroy();
         }
 
@@ -93,7 +93,7 @@ public class Ao extends ConfigApplet implements ActionListener {
         this.getOk().addActionListener(this);
     }
 
-    private void connEtoC1(ActionEvent var1) {
+    private void connEtoC1(ActionEvent event) {
         try {
             this.m_destroy();
         } catch (Throwable var3) {
@@ -102,7 +102,7 @@ public class Ao extends ConfigApplet implements ActionListener {
 
     }
 
-    private void connEtoC2(ActionEvent var1) {
+    private void connEtoC2(ActionEvent event) {
         try {
             this.save();
             this.connEtoC3();
@@ -672,7 +672,7 @@ public class Ao extends ConfigApplet implements ActionListener {
             var1.add((String) "Center", (Component) var2);
             var1.setSize(var2.getSize());
             var1.addWindowListener(new WindowAdapter() {
-                public void windowClosing(WindowEvent var1) {
+                public void windowClosing(WindowEvent event) {
                     System.exit(0);
                 }
             });

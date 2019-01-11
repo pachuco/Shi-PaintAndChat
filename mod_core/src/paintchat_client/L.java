@@ -82,9 +82,9 @@ public class L extends LComponent implements ActionListener, ItemListener {
         this.setSize(this.getMaximumSize());
     }
 
-    public void actionPerformed(ActionEvent var1) {
+    public void actionPerformed(ActionEvent event) {
         try {
-            String var2 = var1.getActionCommand();
+            String var2 = event.getActionCommand();
             int var3 = this.popup.getItemCount();
 
             int var4;
@@ -277,7 +277,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
         return var1;
     }
 
-    public void itemStateChanged(ItemEvent var1) {
+    public void itemStateChanged(ItemEvent event) {
         this.is_pre = !this.is_pre;
     }
 
@@ -295,7 +295,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
         this.tool.up();
     }
 
-    public void paint2(Graphics var1) {
+    public void paint2(Graphics g) {
         try {
             int var2 = this.mi.info.L;
 
@@ -315,13 +315,13 @@ public class L extends LComponent implements ActionListener, ItemListener {
             Dimension var8 = this.getSize();
             int var5 = var2 - 1;
             int var6 = this.bH;
-            var1.setFont(this.bFont);
-            var1.setColor(Awt.cBk);
-            var1.fillRect(0, 0, var8.width, var8.height);
+            g.setFont(this.bFont);
+            g.setColor(Awt.cBk);
+            g.fillRect(0, 0, var8.width, var8.height);
 
             while (var6 < var8.height) {
                 if (this.isASlide || var5 != this.mouse - 1) {
-                    this.dL(var1, var6, var5);
+                    this.dL(g, var6, var5);
                 }
 
                 --var5;
@@ -333,12 +333,12 @@ public class L extends LComponent implements ActionListener, ItemListener {
             }
 
             if (!this.isASlide && this.mouse > 0) {
-                this.dL(var1, this.Y - this.YOFF, this.mouse - 1);
+                this.dL(g, this.Y - this.YOFF, this.mouse - 1);
             }
 
-            Awt.drawFrame(var1, this.mouse == 0, 0, 0, this.bW, this.bH - 2);
-            var1.setColor(Awt.cFore);
-            var1.drawString((String) this.strMenu, 3, this.bH - 6);
+            Awt.drawFrame(g, this.mouse == 0, 0, 0, this.bW, this.bH - 2);
+            g.setColor(Awt.cFore);
+            g.drawString((String) this.strMenu, 3, this.bH - 6);
         } catch (Throwable var7) {
             ;
         }

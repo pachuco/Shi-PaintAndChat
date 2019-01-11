@@ -39,15 +39,15 @@ public class Tools implements ToolBox, ActionListener {
     private Image image = null;
     private SRaster raster;
 
-    public void actionPerformed(ActionEvent var1) {
+    public void actionPerformed(ActionEvent event) {
         try {
-            PopupMenu var2 = (PopupMenu) var1.getSource();
-            int var3 = var2.getItemCount();
-            String var4 = var1.getActionCommand();
+            PopupMenu var2 = (PopupMenu) event.getSource();
+            int itemCount = var2.getItemCount();
+            String actCom = event.getActionCommand();
 
-            for (int var5 = 0; var5 < var3; ++var5) {
-                if (var2.getItem(var5).getLabel().equals(var4)) {
-                    this.mg.set(var2.getName() + '=' + var5);
+            for (int i = 0; i < itemCount; ++i) {
+                if (var2.getItem(i).getLabel().equals(actCom)) {
+                    this.mg.set(var2.getName() + '=' + i);
                     this.repaint();
                     break;
                 }

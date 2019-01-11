@@ -775,8 +775,8 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
         return this.primary;
     }
 
-    protected void processEvent(AWTEvent var1) {
-        switch (var1.getID()) {
+    protected void processEvent(AWTEvent event) {
+        switch (event.getID()) {
             case ComponentEvent.COMPONENT_MOVED:
                 int var2 = this.getLocation().x;
                 int var3 = this.getParent().getSize().width / 2 - this.getSize().width / 2;
@@ -796,7 +796,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
                 }
         }
 
-        super.processEvent(var1);
+        super.processEvent(event);
     }
 
     private void sCMode(boolean var1) {

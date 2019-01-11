@@ -28,26 +28,26 @@ public class ConfigDialog extends Dialog {
         this.applet.start();
     }
 
-    protected void processWindowEvent(WindowEvent var1) {
-        Window var2;
-        switch (var1.getID()) {
+    protected void processWindowEvent(WindowEvent event) {
+        Window window;
+        switch (event.getID()) {
             case WindowEvent.WINDOW_OPENED:
             default:
                 break;
             case WindowEvent.WINDOW_CLOSING:
                 this.applet.stop();
-                var2 = var1.getWindow();
-                var2.dispose();
-                var2.removeAll();
+                window = event.getWindow();
+                window.dispose();
+                window.removeAll();
                 break;
             case WindowEvent.WINDOW_CLOSED:
                 this.applet.destroy();
         }
 
-        if (var1.getID() == WindowEvent.WINDOW_CLOSING) {
-            var2 = var1.getWindow();
-            var2.dispose();
-            var2.removeAll();
+        if (event.getID() == WindowEvent.WINDOW_CLOSING) {
+            window = event.getWindow();
+            window.dispose();
+            window.removeAll();
         }
 
     }

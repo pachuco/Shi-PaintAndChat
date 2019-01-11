@@ -50,23 +50,23 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
     private Checkbox ivjClient_Sound = null;
     private LTextField textPermission;
 
-    public void actionPerformed(ActionEvent var1) {
-        if (var1.getSource() == this.getButton1()) {
-            this.connEtoM1(var1);
+    public void actionPerformed(ActionEvent event) {
+        if (event.getSource() == this.getButton1()) {
+            this.connEtoM1(event);
         }
 
-        if (var1.getSource() == this.getOk()) {
+        if (event.getSource() == this.getOk()) {
             this.mSave();
             this.mDestroy();
         }
 
-        if (var1.getSource() == this.getCancel()) {
+        if (event.getSource() == this.getCancel()) {
             this.mDestroy();
         }
 
     }
 
-    public void button1_ActionPerformed(ActionEvent var1) {
+    public void button1_ActionPerformed(ActionEvent event) {
     }
 
     private void connEtoC1() {
@@ -78,7 +78,7 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
 
     }
 
-    private void connEtoM1(ActionEvent var1) {
+    private void connEtoM1(ActionEvent event) {
         try {
             this.stop();
         } catch (Throwable var3) {
@@ -461,7 +461,7 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
             var1.add((String) "Center", (Component) var2);
             var1.setSize(var2.getSize());
             var1.addWindowListener(new WindowAdapter() {
-                public void windowClosing(WindowEvent var1) {
+                public void windowClosing(WindowEvent event) {
                     System.exit(0);
                 }
             });

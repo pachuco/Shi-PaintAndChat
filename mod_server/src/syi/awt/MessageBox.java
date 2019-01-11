@@ -19,10 +19,10 @@ public class MessageBox extends Dialog implements ActionListener {
     private TextField textField = new TextField();
     private TextCanvas textCanvas = new TextCanvas();
 
-    public MessageBox(Frame var1) {
-        super(var1);
-        this.setForeground(var1.getForeground());
-        this.setBackground(var1.getBackground());
+    public MessageBox(Frame frame) {
+        super(frame);
+        this.setForeground(frame.getForeground());
+        this.setBackground(frame.getBackground());
         super.enableEvents(AWTEvent.WINDOW_EVENT_MASK);
         this.setLayout(new BorderLayout());
         this.setModal(true);
@@ -32,17 +32,17 @@ public class MessageBox extends Dialog implements ActionListener {
         this.textField.setColumns(64);
         this.panelUnder = new Panel();
         this.panelUnder.setLayout(new FlowLayout());
-        String var2 = "Ok";
-        String var3 = "Cancel";
-        this.b_ok = new LButton(var2);
-        this.b_cancel = new LButton(var3);
+        String strOk = "Ok";
+        String strCancel = "Cancel";
+        this.b_ok = new LButton(strOk);
+        this.b_cancel = new LButton(strCancel);
         if (res != null) {
-            String var4 = (String) res.get(var2);
+            String var4 = (String) res.get(strOk);
             if (var4 != null) {
                 this.b_ok.setText(var4);
             }
 
-            var4 = (String) res.get(var3);
+            var4 = (String) res.get(strCancel);
             if (var4 != null) {
                 this.b_cancel.setText(var4);
             }
@@ -57,12 +57,12 @@ public class MessageBox extends Dialog implements ActionListener {
         Awt.setDef(this, false);
     }
 
-    public void actionPerformed(ActionEvent var1) {
-        Object var2 = var1.getSource();
+    public void actionPerformed(ActionEvent event) {
+        Object var2 = event.getSource();
         this.bool = var2 == this.b_ok || var2 == this.textField;
 
         try {
-            Object var3 = (Component) var1.getSource();
+            Object var3 = (Component) event.getSource();
 
             for (int var4 = 0; var4 < 10 && var3 != null && var3 != this; ++var4) {
                 var3 = ((Component) var3).getParent();

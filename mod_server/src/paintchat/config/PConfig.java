@@ -46,17 +46,17 @@ public class PConfig extends ConfigApplet implements ActionListener {
     private Checkbox ivjAdmin_ChatMaster = null;
     private Checkbox ivjApp_Get_Index = null;
 
-    public void actionPerformed(ActionEvent var1) {
-        if (var1.getSource() == this.getButton1()) {
-            this.connEtoM1(var1);
+    public void actionPerformed(ActionEvent event) {
+        if (event.getSource() == this.getButton1()) {
+            this.connEtoM1(event);
         }
 
-        if (var1.getSource() == this.getOk()) {
+        if (event.getSource() == this.getOk()) {
             this.m_save();
             this.m_dispose();
         }
 
-        if (var1.getSource() == this.getCancel()) {
+        if (event.getSource() == this.getCancel()) {
             this.m_dispose();
         }
 
@@ -83,11 +83,11 @@ public class PConfig extends ConfigApplet implements ActionListener {
         var1.setText(var4.getAbsolutePath());
     }
 
-    private void connEtoM1(ActionEvent var1) {
+    private void connEtoM1(ActionEvent event) {
         try {
             this.stop();
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }

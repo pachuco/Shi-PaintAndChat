@@ -865,32 +865,32 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
         this.paint(var1);
     }
 
-    public void windowActivated(WindowEvent var1) {
+    public void windowActivated(WindowEvent event) {
     }
 
-    public void windowClosed(WindowEvent var1) {
+    public void windowClosed(WindowEvent event) {
     }
 
-    public void windowClosing(WindowEvent var1) {
+    public void windowClosing(WindowEvent event) {
         try {
             this.suspendDraw();
             this.stopLoad();
-            var1.getWindow().dispose();
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+            event.getWindow().dispose();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
 
-    public void windowDeactivated(WindowEvent var1) {
+    public void windowDeactivated(WindowEvent event) {
     }
 
-    public void windowDeiconified(WindowEvent var1) {
+    public void windowDeiconified(WindowEvent event) {
     }
 
-    public void windowIconified(WindowEvent var1) {
+    public void windowIconified(WindowEvent event) {
     }
 
-    public void windowOpened(WindowEvent var1) {
+    public void windowOpened(WindowEvent event) {
     }
 }

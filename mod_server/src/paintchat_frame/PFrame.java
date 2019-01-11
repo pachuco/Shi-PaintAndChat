@@ -261,7 +261,7 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
 
     }
 
-    private void connEtoC5(ItemEvent var1) {
+    private void connEtoC5(ItemEvent event) {
         try {
             this.showHelp();
         } catch (Throwable ex) {
@@ -890,13 +890,13 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
         var1.show(this, this.ivjIp, 0, 0);
     }
 
-    public void itemStateChanged(ItemEvent var1) {
-        if (var1.getSource() == this.getMenuShowConsole()) {
-            this.connEtoC4(var1);
+    public void itemStateChanged(ItemEvent event) {
+        if (event.getSource() == this.getMenuShowConsole()) {
+            this.connEtoC4(event);
         }
 
-        if (var1.getSource() == this.getMenuShowHelp()) {
-            this.connEtoC5(var1);
+        if (event.getSource() == this.getMenuShowHelp()) {
+            this.connEtoC5(event);
         }
 
     }
@@ -920,7 +920,7 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
         ThreadPool.poolStartThread(this.getData(), 'h');
     }
 
-    public void menuItem10_ActionPerformed(ActionEvent var1) {
+    public void menuItem10_ActionPerformed(ActionEvent event) {
         try {
             new ConfigDialog("paintchat.config.ConfigServer", "cnf/dialogs.jar", this.config, this.res, "(C)しぃちゃん PaintChatApp v3.66");
         } catch (Exception var3) {
@@ -941,7 +941,7 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
 
     }
 
-    public void menuItem3_ActionPerformed(ActionEvent var1) {
+    public void menuItem3_ActionPerformed(ActionEvent event) {
         try {
             new ConfigDialog("paintchat.config.PConfig", "cnf/dialogs.jar", this.config, this.res, "(C)しぃちゃん PaintChatApp v3.66");
         } catch (Throwable var3) {
@@ -1237,37 +1237,37 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
     public void startViewer() {
     }
 
-    public void windowActivated(WindowEvent var1) {
+    public void windowActivated(WindowEvent event) {
     }
 
-    public void windowClosed(WindowEvent var1) {
-        if (var1.getSource() == this) {
-            this.connEtoC17(var1);
+    public void windowClosed(WindowEvent event) {
+        if (event.getSource() == this) {
+            this.connEtoC17(event);
         }
 
     }
 
-    public void windowClosing(WindowEvent var1) {
-        if (var1.getSource() == this) {
-            this.connEtoC1(var1);
+    public void windowClosing(WindowEvent event) {
+        if (event.getSource() == this) {
+            this.connEtoC1(event);
         }
 
     }
 
-    public void windowDeactivated(WindowEvent var1) {
+    public void windowDeactivated(WindowEvent event) {
     }
 
-    public void windowDeiconified(WindowEvent var1) {
+    public void windowDeiconified(WindowEvent event) {
         this.setVisible(true);
     }
 
-    public void windowIconified(WindowEvent var1) {
-        if (var1.getSource() == this) {
-            this.connEtoC8(var1);
+    public void windowIconified(WindowEvent event) {
+        if (event.getSource() == this) {
+            this.connEtoC8(event);
         }
 
     }
 
-    public void windowOpened(WindowEvent var1) {
+    public void windowOpened(WindowEvent event) {
     }
 }

@@ -38,8 +38,8 @@ public class Me extends Dialog implements ActionListener {
         this.add((Component) this.pBotton, (Object) "South");
     }
 
-    public void actionPerformed(ActionEvent var1) {
-        this.isOk = var1.getSource() == this.bOk || var1.getSource() instanceof TextField;
+    public void actionPerformed(ActionEvent event) {
+        this.isOk = event.getSource() == this.bOk || event.getSource() instanceof TextField;
         this.dispose();
     }
 

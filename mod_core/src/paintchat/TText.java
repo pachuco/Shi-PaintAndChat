@@ -32,7 +32,7 @@ public class TText extends Dialog implements SW, ActionListener, ItemListener {
         super(Awt.getPFrame());
     }
 
-    public void actionPerformed(ActionEvent var1) {
+    public void actionPerformed(ActionEvent event) {
         try {
             this.ts.lift();
             this.mg.iPen = Integer.parseInt(this.cFill.getText());
@@ -122,7 +122,7 @@ public class TText extends Dialog implements SW, ActionListener, ItemListener {
     public void up() {
     }
 
-    public void itemStateChanged(ItemEvent var1) {
-        this.actionPerformed((ActionEvent) null);
+    public void itemStateChanged(ItemEvent event) {
+        this.actionPerformed(null);
     }
 }

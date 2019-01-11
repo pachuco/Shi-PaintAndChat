@@ -35,9 +35,9 @@ public class PopupMenuPaintChat implements ActionListener {
         this.res = var3;
     }
 
-    public void actionPerformed(ActionEvent var1) {
+    public void actionPerformed(ActionEvent event) {
         try {
-            this.doAction(var1.getActionCommand());
+            this.doAction(event.getActionCommand());
         } catch (Throwable var3) {
             var3.printStackTrace();
         }

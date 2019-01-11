@@ -670,15 +670,15 @@ public class Pp extends Panel {
         }
     }
 
-    protected void processComponentEvent(ComponentEvent var1) {
+    protected void processComponentEvent(ComponentEvent event) {
         if (this.image_applet != null && count_timer != 0L) {
-            int var2 = var1.getID();
-            if (this.isPack && var2 == 102) {
+            int id = event.getID();
+            if (this.isPack && id == ComponentEvent.COMPONENT_SHOWN) {
                 this.isPack = false;
-                Container var3 = this.getParent();
-                var3.invalidate();
-                var3.validate();
-            } else if (var1.getID() == 101) {
+                Container cont = this.getParent();
+                cont.invalidate();
+                cont.validate();
+            } else if (event.getID() == ComponentEvent.COMPONENT_RESIZED) {
                 this.primary = null;
                 this.mI.p = null;
                 this.pack(false);
@@ -686,13 +686,13 @@ public class Pp extends Panel {
         }
     }
 
-    public void processKeyEvent(KeyEvent var1) {
+    public void processKeyEvent(KeyEvent event) {
         try {
-            int var2 = var1.getID();
+            int id = event.getID();
             label34:
-            switch (var2) {
+            switch (id) {
                 case 401:
-                    switch (var1.getKeyCode()) {
+                    switch (event.getKeyCode()) {
                         case 27:
                             this.mI.cancel();
                             break label34;
@@ -702,8 +702,8 @@ public class Pp extends Panel {
                             break label34;
                         case 85:
                         case 90:
-                            if (var1.isControlDown()) {
-                                if (var1.isAltDown()) {
+                            if (event.isControlDown()) {
+                                if (event.isAltDown()) {
                                     this.undo(false);
                                 } else {
                                     this.undo(true);
@@ -713,7 +713,7 @@ public class Pp extends Panel {
                             this.mI.m_paint();
                             break label34;
                         case 89:
-                            if (var1.isControlDown()) {
+                            if (event.isControlDown()) {
                                 this.undo(false);
                             }
 
@@ -734,7 +734,7 @@ public class Pp extends Panel {
                     this.setCursor(Cursor.getDefaultCursor());
             }
 
-            var1.consume();
+            event.consume();
         } catch (Throwable var4) {
             var4.printStackTrace();
         }

@@ -69,17 +69,17 @@ public class TextPanel extends Canvas implements ActionListener, ItemListener {
         this.init(var1, var2, var3, var4, var5);
     }
 
-    public void actionPerformed(ActionEvent var1) {
+    public void actionPerformed(ActionEvent event) {
         try {
-            String var2 = var1.getActionCommand();
-            if (var2 == null || var2.length() <= 0) {
+            String actCom = event.getActionCommand();
+            if (actCom == null || actCom.length() <= 0) {
                 return;
             }
 
             PopupMenu var3 = popup;
-            if (var3.getItem(0).getLabel().equals(var2)) {
-                if ((var2 = this.getLine(this.Y)) != null) {
-                    this.textField.setText(var2);
+            if (var3.getItem(0).getLabel().equals(actCom)) {
+                if ((actCom = this.getLine(this.Y)) != null) {
+                    this.textField.setText(actCom);
                 }
 
                 return;
@@ -87,7 +87,7 @@ public class TextPanel extends Canvas implements ActionListener, ItemListener {
 
             int var6;
             String var9;
-            if (var3.getItem(2).getLabel().equals(var2)) {
+            if (var3.getItem(2).getLabel().equals(actCom)) {
                 var9 = this.getLine(this.Y);
                 int var10 = var9.indexOf("http://");
                 var6 = var9.indexOf(32, var10);
@@ -96,18 +96,18 @@ public class TextPanel extends Canvas implements ActionListener, ItemListener {
                 return;
             }
 
-            if (var3.getItem(3).getLabel().equals(var2)) {
+            if (var3.getItem(3).getLabel().equals(actCom)) {
                 var9 = System.getProperty("line.separator");
                 StringBuffer var5 = new StringBuffer();
                 var5.append("<html><body>");
                 var5.append(var9);
 
                 for (var6 = 0; var6 < this.iSeek; ++var6) {
-                    var2 = this.strings[var6];
-                    if (var2 != null) {
-                        var2 = Awt.replaceText(var2, "&lt;", "<");
-                        var2 = Awt.replaceText(var2, "&gt;", ">");
-                        var5.append(var2);
+                    actCom = this.strings[var6];
+                    if (actCom != null) {
+                        actCom = Awt.replaceText(actCom, "&lt;", "<");
+                        actCom = Awt.replaceText(actCom, "&gt;", ">");
+                        var5.append(actCom);
                         var5.append("<br>");
                         var5.append(var9);
                     }
@@ -122,17 +122,17 @@ public class TextPanel extends Canvas implements ActionListener, ItemListener {
                 return;
             }
 
-            if (var3.getItem(7).getLabel().equals(var2)) {
+            if (var3.getItem(7).getLabel().equals(actCom)) {
                 this.clear();
                 this.repaint();
                 return;
             }
 
-            if (var2.charAt(0) == '+') {
-                var2 = var2.substring(1);
+            if (actCom.charAt(0) == '+') {
+                actCom = actCom.substring(1);
             }
 
-            int var4 = Math.min(Math.max(this.font.getSize() + Integer.parseInt(var2), 4), 256);
+            int var4 = Math.min(Math.max(this.font.getSize() + Integer.parseInt(actCom), 4), 256);
             this.setFont(new Font(this.font.getName(), this.font.getStyle(), var4));
             this.repaint();
         } catch (Throwable var8) {
@@ -325,9 +325,9 @@ public class TextPanel extends Canvas implements ActionListener, ItemListener {
         this.setMaxLabel(var2);
     }
 
-    public void itemStateChanged(ItemEvent var1) {
+    public void itemStateChanged(ItemEvent event) {
         try {
-            this.isSScroll = var1.getStateChange() == 1;
+            this.isSScroll = event.getStateChange() == 1;
             this.scrollPos = 0;
             this.paint(this.primary);
         } catch (Throwable var3) {
@@ -336,22 +336,16 @@ public class TextPanel extends Canvas implements ActionListener, ItemListener {
 
     }
 
-    public void paint(Graphics var1) {
+    public void paint(Graphics g) {
         try {
             Dimension var2 = this.getSize();
             if (!this.isView) {
-                var1.setColor(this.getBackground());
-                var1.fillRect(0, 0, var2.width, var2.height);
+                g.setColor(this.getBackground());
+                g.fillRect(0, 0, var2.width, var2.height);
                 return;
             }
 
-            if (this.strings == null) {
-                return;
-            }
-
-            if (var1 == null) {
-                return;
-            }
+            if (this.strings == null || g == null) return;
 
             int var3 = this.Gap * 2;
             int var10000 = this.strings.length;
@@ -361,14 +355,14 @@ public class TextPanel extends Canvas implements ActionListener, ItemListener {
                     this.font = super.getFont();
                 }
 
-                FontMetrics var5 = var1.getFontMetrics();
+                FontMetrics var5 = g.getFontMetrics();
                 this.As = var5.getMaxAscent();
                 this.Ds = var5.getMaxDescent();
                 this.H = this.As + this.Ds;
                 this.scrollPos = 0;
             }
 
-            var1.setFont(this.font);
+            g.setFont(this.font);
             int var4 = this.H + var3;
             this.scrollMax = var4 * this.iSeek;
             if (var2.height <= 0 || var2.width <= 0) {
@@ -380,45 +374,45 @@ public class TextPanel extends Canvas implements ActionListener, ItemListener {
             int var7 = Math.max(this.scrollPos / var4, 0);
             int var8 = var7 + var2.height / var4 + 2;
             int var9 = var7 * var4 - this.scrollPos;
-            var1.setClip(1, 1, var6, var2.height - 2);
+            g.setClip(1, 1, var6, var2.height - 2);
             Color var10 = this.getBackground();
-            var1.setColor(var10);
+            g.setColor(var10);
 
             int var11;
             for (var11 = var7; var11 < var8; ++var11) {
                 if (var11 < this.strings.length && this.strings[var11] != null) {
-                    var1.fillRect(1, var9, var6, this.H + var3);
-                    var1.setColor(this.colors[var11]);
-                    var1.drawString((String) this.strings[var11], 1, var9 + this.Gap + this.H - this.Ds);
-                    var1.setColor(var10);
+                    g.fillRect(1, var9, var6, this.H + var3);
+                    g.setColor(this.colors[var11]);
+                    g.drawString((String) this.strings[var11], 1, var9 + this.Gap + this.H - this.Ds);
+                    g.setColor(var10);
                 } else {
-                    var1.fillRect(1, var9, var6, this.H + var3);
+                    g.fillRect(1, var9, var6, this.H + var3);
                 }
 
                 var9 += var4;
             }
 
             if (var9 > 0) {
-                var1.setColor(Color.black);
-                var1.fillRect(1, var9, var6 - 1, var2.height - var9 - 1);
+                g.setColor(Color.black);
+                g.fillRect(1, var9, var6 - 1, var2.height - var9 - 1);
             }
 
-            var1.setClip(0, 0, var2.width, var2.height);
+            g.setClip(0, 0, var2.width, var2.height);
             if (this.isVisitScroll) {
                 var11 = var2.height / (this.H + var3);
                 int var12 = (int) ((float) var2.height * ((float) var11 / (float) (this.iSeek + var11)));
                 var9 = (int) ((float) this.scrollPos / (float) this.scrollMax * (float) (var2.height - var12 - 1));
                 ++var6;
                 --var14;
-                var1.setColor(this.getForeground());
-                var1.fillRect(var6, 1, 1, var2.height - 2);
-                var1.fillRect(var6 + 1, var9, var14, var12);
-                var1.setColor(var10);
-                var1.setColor(this.getBackground());
-                var1.fillRect(var6 + 1, 1, var14, var9);
-                var1.fillRect(var6 + 1, var9 + var12 + 1, var14, var2.height - var12 - var9 - 1);
-                var1.setColor(this.getForeground());
-                var1.drawRect(0, 0, var2.width - 1, var2.height - 1);
+                g.setColor(this.getForeground());
+                g.fillRect(var6, 1, 1, var2.height - 2);
+                g.fillRect(var6 + 1, var9, var14, var12);
+                g.setColor(var10);
+                g.setColor(this.getBackground());
+                g.fillRect(var6 + 1, 1, var14, var9);
+                g.fillRect(var6 + 1, var9 + var12 + 1, var14, var2.height - var12 - var9 - 1);
+                g.setColor(this.getForeground());
+                g.drawRect(0, 0, var2.width - 1, var2.height - 1);
             }
         } catch (Throwable var13) {
             var13.printStackTrace();

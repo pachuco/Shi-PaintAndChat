@@ -9,8 +9,8 @@ public class PCHPanel extends Panel {
         this.enableEvents(AWTEvent.COMPONENT_EVENT_MASK);
     }
 
-    protected void processComponentEvent(ComponentEvent var1) {
-        switch (var1.getID()) {
+    protected void processComponentEvent(ComponentEvent event) {
+        switch (event.getID()) {
             case ComponentEvent.COMPONENT_RESIZED:
                 this.setVisible(false);
                 ((PCHCanvas) this.getComponent(0)).moveCenter();
@@ -20,7 +20,7 @@ public class PCHPanel extends Panel {
     }
 
     public Dimension getPreferredSize() {
-        Component var1 = this.getComponent(0);
-        return var1 == null ? new Dimension(300, 300) : var1.getSize();
+        Component comp = this.getComponent(0);
+        return comp == null ? new Dimension(300, 300) : comp.getSize();
     }
 }

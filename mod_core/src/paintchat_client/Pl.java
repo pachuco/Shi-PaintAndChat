@@ -73,9 +73,9 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
         this.applet = var1;
     }
 
-    public void actionPerformed(ActionEvent var1) {
+    public void actionPerformed(ActionEvent event) {
         try {
-            Object var2 = var1.getSource();
+            Object var2 = event.getSource();
             if (var2 instanceof LButton) {
                 switch (Integer.parseInt(((Component) var2).getName())) {
                     case 0:
@@ -255,25 +255,25 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
         }
     }
 
-    public void keyPressed(KeyEvent var1) {
+    public void keyPressed(KeyEvent event) {
         try {
-            boolean var2 = var1.isAltDown() || var1.isControlDown();
-            int var3 = var1.getKeyCode();
-            if (var2) {
+            boolean isCtrlOrAltDown = event.isAltDown() || event.isControlDown();
+            int var3 = event.getKeyCode();
+            if (isCtrlOrAltDown) {
                 if (var3 == 38) {
-                    var1.consume();
+                    event.consume();
                     this.iCenter = Math.max(this.iCenter - 4, 0);
                     this.pack();
                 }
 
                 if (var3 == 40) {
-                    var1.consume();
+                    event.consume();
                     this.iCenter = Math.min(this.iCenter + 4, 100);
                     this.pack();
                 }
 
                 if (var3 == 83) {
-                    var1.consume();
+                    event.consume();
                     this.typed();
                 }
             } else {
@@ -293,10 +293,10 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
 
     }
 
-    public void keyReleased(KeyEvent var1) {
+    public void keyReleased(KeyEvent event) {
     }
 
-    public void keyTyped(KeyEvent var1) {
+    public void keyTyped(KeyEvent event) {
     }
 
     private Cursor loadCursor(String var1, int var2) {
@@ -444,8 +444,8 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
         var1.drawRect(0, 0, var2.width - 1, var2.height - 1);
     }
 
-    protected void processEvent(AWTEvent var1) {
-        int var2 = var1.getID();
+    protected void processEvent(AWTEvent event) {
+        int var2 = event.getID();
         if (var2 == ComponentEvent.COMPONENT_RESIZED) {
             this.dSize = super.getSize();
             Dimension var3 = this.getSize();
@@ -453,13 +453,13 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
             if (this.dPack != null && !this.dPack.equals(var3)) {
                 this.pack();
             }
-        } else if (this.mi != null && var1 instanceof MouseEvent) {
+        } else if (this.mi != null && event instanceof MouseEvent) {
             Point var4 = this.mi.getLocation();
-            ((MouseEvent) var1).translatePoint(-var4.x, -var4.y);
-            this.mi.dispatchEvent(var1);
+            ((MouseEvent) event).translatePoint(-var4.x, -var4.y);
+            this.mi.dispatchEvent(event);
         }
 
-        super.processEvent(var1);
+        super.processEvent(event);
     }
 
     public void repaint(long var1, int var3, int var4, int var5, int var6) {

@@ -183,10 +183,10 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
 
     }
 
-    public void actionPerformed(ActionEvent var1) {
+    public void actionPerformed(ActionEvent event) {
         try {
-            this.isD = var1.getActionCommand().equals("  Yes  ") || var1.getActionCommand().equals(" OK ");
-            ((Dialog) ((Component) var1.getSource()).getParent().getParent()).dispose();
+            this.isD = event.getActionCommand().equals("  Yes  ") || event.getActionCommand().equals(" OK ");
+            ((Dialog) ((Component) event.getSource()).getParent().getParent()).dispose();
         } catch (Throwable var3) {
             var3.printStackTrace();
         }
@@ -1235,25 +1235,25 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
         }
     }
 
-    public void windowActivated(WindowEvent var1) {
+    public void windowActivated(WindowEvent event) {
     }
 
-    public void windowClosed(WindowEvent var1) {
+    public void windowClosed(WindowEvent event) {
     }
 
-    public void windowClosing(WindowEvent var1) {
-        var1.getWindow().dispose();
+    public void windowClosing(WindowEvent event) {
+        event.getWindow().dispose();
     }
 
-    public void windowDeactivated(WindowEvent var1) {
+    public void windowDeactivated(WindowEvent event) {
     }
 
-    public void windowDeiconified(WindowEvent var1) {
+    public void windowDeiconified(WindowEvent event) {
     }
 
-    public void windowIconified(WindowEvent var1) {
+    public void windowIconified(WindowEvent event) {
     }
 
-    public void windowOpened(WindowEvent var1) {
+    public void windowOpened(WindowEvent event) {
     }
 }

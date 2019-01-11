@@ -27,10 +27,10 @@ public class ConfigApplet extends Applet implements MouseListener, FocusListener
     Res res = Resource.loadResource("Config");
     private HelpWindow helpWindow = null;
 
-    public void focusGained(FocusEvent var1) {
+    public void focusGained(FocusEvent event) {
     }
 
-    public void focusLost(FocusEvent var1) {
+    public void focusLost(FocusEvent event) {
         this.getHelp().reset();
     }
 

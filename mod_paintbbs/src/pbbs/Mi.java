@@ -39,11 +39,11 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
     public boolean isSpace = false;
     private Image image_b = null;
 
-    public void actionPerformed(ActionEvent var1) {
+    public void actionPerformed(ActionEvent event) {
         try {
             MgLine var2 = new MgLine();
             var2.create(2, this.tools.lMaskHints, Tools.getDefFont(this.tools.lSize - 5).getSize(), this.tools.clLine, this.tools.clMask, this.tools.clAlpha, this.tools.lLayer);
-            var2.setData(this.pP.moveScale(this.old_po), var1.getActionCommand());
+            var2.setData(this.pP.moveScale(this.old_po), event.getActionCommand());
             var2.draw(this, (Graphics) null, (Graphics) null, this.i_offs, this.pP.image_x, this.pP.image_y, this.pP.scale_x, this.pP.scale_y, this.pP.scale, 255, 255, -2);
             this.pP.undo_in(var2);
             this.tF.setVisible(false);
@@ -704,13 +704,13 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
         this.paint(var1);
     }
 
-    public void windowActivated(WindowEvent var1) {
+    public void windowActivated(WindowEvent event) {
     }
 
-    public void windowClosed(WindowEvent var1) {
+    public void windowClosed(WindowEvent event) {
     }
 
-    public void windowClosing(WindowEvent var1) {
+    public void windowClosing(WindowEvent event) {
         try {
             this.pbbs.popup(true);
         } catch (Throwable var2) {
@@ -718,15 +718,15 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
 
     }
 
-    public void windowDeactivated(WindowEvent var1) {
+    public void windowDeactivated(WindowEvent event) {
     }
 
-    public void windowDeiconified(WindowEvent var1) {
+    public void windowDeiconified(WindowEvent event) {
     }
 
-    public void windowIconified(WindowEvent var1) {
+    public void windowIconified(WindowEvent event) {
     }
 
-    public void windowOpened(WindowEvent var1) {
+    public void windowOpened(WindowEvent event) {
     }
 }

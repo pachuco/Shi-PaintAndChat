@@ -37,9 +37,9 @@ public class Data implements Runnable, ActionListener {
         this.setIsNativeWindows(var1.isFile());
     }
 
-    public void actionPerformed(ActionEvent var1) {
+    public void actionPerformed(ActionEvent event) {
         try {
-            Object var2 = var1.getSource();
+            Object var2 = event.getSource();
             ThreadPool.poolStartThread(this, (char) (var2 == this.bChat ? 'c' : (var2 == this.bHttp ? 'h' : 'l')));
         } catch (Throwable var3) {
             this.debug.log(var3.getMessage());

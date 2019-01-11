@@ -35,8 +35,8 @@ public class DCF extends Dialog implements ItemListener, ActionListener {
         this.res = var1;
     }
 
-    public void itemStateChanged(ItemEvent var1) {
-        if (var1.getStateChange() == 1) {
+    public void itemStateChanged(ItemEvent event) {
+        if (event.getStateChange() == 1) {
             this.pText.add(this.lPas);
             this.pText.add(this.tPas);
         } else {
@@ -47,7 +47,7 @@ public class DCF extends Dialog implements ItemListener, ActionListener {
         this.pack();
     }
 
-    public void actionPerformed(ActionEvent var1) {
+    public void actionPerformed(ActionEvent event) {
         String var2 = this.tName.getText().trim();
         if (var2.length() > 0) {
             this.up();
