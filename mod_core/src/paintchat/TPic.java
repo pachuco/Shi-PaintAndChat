@@ -10,6 +10,7 @@ import java.awt.image.ImageObserver;
 import syi.awt.Awt;
 import syi.awt.LComponent;
 
+/** Color picker window */
 public class TPic extends LComponent implements SW {
     private ToolBox ts;
     private M.Info info;

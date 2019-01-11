@@ -17,6 +17,7 @@ import java.awt.event.WindowEvent;
 
 import syi.awt.Awt;
 
+/** Font options window */
 public class TText extends Dialog implements SW, ActionListener, ItemListener {
     ToolBox ts;
     M mg;

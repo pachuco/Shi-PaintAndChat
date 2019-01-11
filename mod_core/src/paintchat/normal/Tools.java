@@ -50,8 +50,8 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
     private Rectangle[] rects = null;
     private int fit_w = -1;
     private int fit_h = -1;
-    private int nowButton = -1;
-    private int nowColor = -1;
+    private int nowButton = -1; // current GUI button index
+    private int nowColor = -1; // current palette index
     private int oldPen;
     Color clFrame;
     Color clB;
@@ -85,12 +85,12 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
 
     static {
         System.arraycopy(DEFC, 0, COLORS, 0, 14);
-        clRGB = new Color[][]{{Color.magenta, Color.cyan, Color.white, Color.lightGray}, {new Color(16422550), new Color(8581688), new Color(8421631), Color.lightGray}};
+        clRGB = new Color[][]{{Color.magenta, Color.cyan, Color.white, Color.lightGray}, {new Color(0xfa9696), new Color(0x82f238), new Color(0x8080ff), Color.lightGray}};
         clERGB = new Color[2][4];
 
-        for (int var0 = 0; var0 < 2; ++var0) {
-            for (int var1 = 0; var1 < 4; ++var1) {
-                clERGB[var0][var1] = clRGB[var0][var1].darker();
+        for (int i = 0; i < 2; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                clERGB[i][j] = clRGB[i][j].darker();
             }
         }
 
@@ -116,7 +116,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
         }
 
         switch (Integer.parseInt(menu.getLabel())) {
-            case 2:
+            case 2: // pen mask change from the menu from menu()
                 this.mg.iPenM = penMask;
                 this.setLineSize(0, this.mg.iSize);
                 this.repaint();
@@ -124,6 +124,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
         }
     }
 
+    /** Adds a component */
     public void addC(Object var1) {
         int var2;
         if (var1 instanceof LComponent) {
@@ -225,49 +226,52 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
         return !this.isRGB ? Color.HSBtoRGB((float) (this.iColor >>> 16 & 255) / 255.0F, (float) (this.iColor >>> 8 & 255) / 255.0F, (float) (this.iColor & 255) / 255.0F) & 0xFFFFFF : this.iColor & 0xFFFFFF;
     }
 
+
+    //FIXME: Why is this called "i"?
     private int i(String var1, int var2) {
         return this.config.getP(var1, var2);
     }
 
+    //FIXME: Why is this called "i"?
     public boolean i(String var1, boolean var2) {
         return this.config.getP(var1, var2);
     }
 
-    public void init(Container var1, Applet var2, Res var3, Res var4, Mi var5) {
-        this.applet = var2;
-        this.parent = var1;
-        this.res = var4;
-        this.config = var3;
-        this.info = var5.info;
-        this.mi = var5;
+    public void init(Container parent, Applet app, Res config, Res res, Mi mi) {
+        this.applet = app;
+        this.parent = parent;
+        this.res = res;
+        this.config = config;
+        this.info = mi.info;
+        this.mi = mi;
         this.mg = this.info.m;
         this.W = this.i("tool_width", 48) + 4;
         this.H = this.i("tool_height", 470);
 
-        for (int var7 = 0; var7 < DEFC.length; var7 += 2) {
-            DEFC[var7] = var3.getP("color_" + (var7 + 2), DEFC[var7]);
-            DEFC[var7 + 1] = var3.getP("color_" + (var7 + 1), DEFC[var7 + 1]);
+        for (int i = 0; i < DEFC.length; i += 2) {
+            DEFC[i] = config.getP("color_" + (i + 2), DEFC[i]);
+            DEFC[i + 1] = config.getP("color_" + (i + 1), DEFC[i + 1]);
         }
 
         System.arraycopy(DEFC, 0, COLORS, 0, 14);
         this.sCMode(false);
         String var6 = "tool_color_";
-        this.setBackground(new Color(this.i(var6 + "bk", this.i(var6 + "back", 10066363))));
-        this.clB = new Color(this.i(var6 + "button", -1515602));
-        this.clB2 = new Color(this.i(var6 + "button" + '2', 16308906));
-        this.clFrame = new Color(this.i(var6 + "frame", 0));
-        this.clText = new Color(this.i(var6 + "text", 7811891));
-        this.clBar = new Color(this.i(var6 + "bar", 14540287));
-        this.clSel = new Color(this.i(var6 + "iconselect", this.i("color_iconselect", 15610675)));
+        this.setBackground(new Color(this.i(var6 + "bk", this.i(var6 + "back", 0x9999bb))));
+        this.clB = new Color(this.i(var6 + "button", 0xffe8dfae));
+        this.clB2 = new Color(this.i(var6 + "button" + '2', 0xf8daaa));
+        this.clFrame = new Color(this.i(var6 + "frame", 0x000000));
+        this.clText = new Color(this.i(var6 + "text", 0x773333));
+        this.clBar = new Color(this.i(var6 + "bar", 0xddddff));
+        this.clSel = new Color(this.i(var6 + "iconselect", this.i("color_iconselect", 0xee3333)));
         this.clBL = new Color(this.i(var6 + "button" + "_hl", this.clB.brighter().getRGB()));
         this.clBD = new Color(this.i(var6 + "button" + "_dk", this.clB.darker().getRGB()));
-        this.isWest = "left".equals(var3.getP("tool_align"));
-        this.isLarge = var3.getP("icon_enlarge", true);
-        this.is_l = var3.getP("tool_layer", true);
+        this.isWest = "left".equals(config.getP("tool_align"));
+        this.isLarge = config.getP("icon_enlarge", true);
+        this.is_l = config.getP("tool_layer", true);
         this.setDimension(new Dimension(this.W, 42), new Dimension(this.W, this.H), new Dimension(this.W, (int) ((float) this.H * 1.25F)));
         this.list[0].select();
         this.addC(this);
-        var1.add(this, 0);
+        parent.add(this, 0);
     }
 
     /** Returns id of the clicked tool or -1 if empty */
@@ -332,73 +336,75 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
 
     }
 
-    private void menu(int var1, int var2, int var3) {
+    /** A menu to change the brush set for this tool? */
+    private void menu(int x, int y, int menuType) {
+        // Note: menuType can only be 2, so the other two menus are probably deprecated
         if (this.popup == null) {
-            this.popup = new PopupMenu(String.valueOf(var3));
+            this.popup = new PopupMenu(String.valueOf(menuType));
             this.popup.addActionListener(this);
         } else {
             this.remove(this.popup);
             this.popup.removeAll();
-            this.popup.setLabel(String.valueOf(var3));
+            this.popup.setLabel(String.valueOf(menuType));
         }
 
-        String var4;
-        int var5;
-        int var6;
+        String menuItem;
+        int ttSize;
+        int i;
         label60:
-        switch (var3) {
-            case 0:
-                var5 = 0;
+        switch (menuType) {
+            case 0: // unused - shows percentages from 5% to 100%
+                ttSize = 0;
 
                 while (true) {
-                    if (var5 >= 11) {
+                    if (ttSize >= 11) {
                         break label60;
                     }
 
-                    var4 = String.valueOf(var5 == 0 ? 5 : var5 * 10) + '%';
-                    if (this.mg.iTT - 1 == var5) {
-                        this.popup.add((MenuItem) (new CheckboxMenuItem(var4, true)));
+                    menuItem = String.valueOf(ttSize == 0 ? 5 : ttSize * 10) + '%';
+                    if (this.mg.iTT - 1 == ttSize) {
+                        this.popup.add((MenuItem) (new CheckboxMenuItem(menuItem, true)));
                     } else {
-                        this.popup.add(var4);
+                        this.popup.add(menuItem);
                     }
 
-                    ++var5;
+                    ++ttSize;
                 }
-            case 1:
-                var5 = this.config.getInt("tt_size");
-                var6 = 0;
+            case 1: // unused - list of textures?
+                ttSize = this.config.getInt("tt_size");
+                i = 0;
 
                 while (true) {
-                    if (var6 >= var5) {
+                    if (i >= ttSize) {
                         break label60;
                     }
 
-                    var4 = this.res.res("t042" + var6);
-                    if (this.mg.iTT - 12 == var6) {
-                        this.popup.add((MenuItem) (new CheckboxMenuItem(var4, true)));
+                    menuItem = this.res.res("t042" + i);
+                    if (this.mg.iTT - 12 == i) {
+                        this.popup.add((MenuItem) (new CheckboxMenuItem(menuItem, true)));
                     } else {
-                        this.popup.add(var4);
+                        this.popup.add(menuItem);
                     }
 
-                    ++var6;
+                    ++i;
                 }
-            case 2:
-                for (var6 = 0; var6 < 16; ++var6) {
-                    var4 = (String) this.res.get("penm_" + var6);
-                    if (var4 == null) {
+            case 2: // Pen Masks
+                for (i = 0; i < 4; ++i) {
+                    menuItem = (String) this.res.get("penm_" + i);
+                    if (menuItem == null) {
                         break;
                     }
 
-                    if (this.mg.iPenM == var6) {
-                        this.popup.add((MenuItem) (new CheckboxMenuItem(var4, true)));
+                    if (this.mg.iPenM == i) {
+                        this.popup.add((MenuItem) (new CheckboxMenuItem(menuItem, true)));
                     } else {
-                        this.popup.add(var4);
+                        this.popup.add(menuItem);
                     }
                 }
         }
 
         this.add(this.popup);
-        this.popup.show(this, var1, var2);
+        this.popup.show(this, x, y);
     }
 
     public void mPaint(int var1) {
@@ -556,59 +562,59 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
     private void mPress(MouseEvent event) {
         int mouseX = event.getX();
         int mouseY = event.getY();
-        int var4 = this.isClick(mouseX, mouseY);
-        int var5 = var4;
-        boolean var6 = Awt.isR(event);
-        this.nowButton = var4;
-        if (var4 >= 0) {
-            if (var4 - this.list.length < 0) {
-                if (var6) {
-                    if (this.list[var4].isField && this.list[var4].isMask) {
+        int id = this.isClick(mouseX, mouseY); // -1 if nothing
+        int toolID = id; // id value is changed during computations thus the original must be saved
+        boolean isModifier = Awt.isR(event);
+        this.nowButton = id;
+        if (id >= 0) {
+            if (id - this.list.length < 0) { // tool buttons
+                if (isModifier) {
+                    if (this.list[id].isField && this.list[id].isMask) {
                         this.mg.iColorMask = this.mg.iColor;
-                        this.mPaint(var4);
+                        this.mPaint(id);
                     }
 
                     this.nowButton = -1;
                 }
 
             } else {
-                var4 -= this.list.length;
-                Rectangle var7 = this.rects[var4];
-                if (var4 - 14 < 0) {
-                    if (var6) {
-                        COLORS[var4] = this.mg.iColor;
+                id -= this.list.length;
+                Rectangle var7 = this.rects[id];
+                if (id - 14 < 0) { // palette buttons
+                    if (isModifier) {
+                        COLORS[id] = this.mg.iColor; // replaces palette color
                     } else if (event.isShiftDown()) {
-                        COLORS[var4] = DEFC[var4];
-                    } else {
-                        this.nowColor = var4;
+                        COLORS[id] = DEFC[id]; // restores default color
+                    } else { // select color
+                        this.nowColor = id;
                         this.mg.iColor = COLORS[this.nowColor];
                         this.selPix(false);
                         this.toColor(this.mg.iColor);
                     }
 
                     this.up();
-                } else {
-                    var4 -= 14;
-                    int var8;
-                    if (var4 - 4 < 0) {
-                        var8 = mouseX <= 5 ? -1 : (mouseX >= var7.width - 5 ? 1 : 0);
-                        if (var8 != 0) {
+                } else { // color sliders
+                    id -= 14;
+                    int currentLayerIndex;
+                    if (id - 4 < 0) {
+                        currentLayerIndex = mouseX <= 5 ? -1 : (mouseX >= var7.width - 5 ? 1 : 0);
+                        if (currentLayerIndex != 0) {
                             this.nowButton = -1;
-                            if (var6) {
-                                var8 *= 5;
+                            if (isModifier) {
+                                currentLayerIndex *= 5;
                             }
-                        } else if (var6) {
+                        } else if (isModifier) { // switch between RGB and HSB
                             this.sCMode(this.isRGB);
                             this.nowButton = -1;
                             this.mPaint(-1);
                             return;
                         }
 
-                        this.setRGB(var4, var8, mouseX);
-                    } else {
-                        var4 -= 4;
-                        if (var4 - 1 < 0) {
-                            if (var6) {
+                        this.setRGB(id, currentLayerIndex, mouseX);
+                    } else { // line size slider
+                        id -= 4;
+                        if (id - 1 < 0) {
+                            if (isModifier) {
                                 this.nowButton = -1;
                                 this.menu(mouseX, mouseY, 2);
                             } else {
@@ -619,17 +625,17 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
                                     this.setLineSize(mouseY, -1);
                                 }
 
-                                this.mPaint(var5);
+                                this.mPaint(toolID);
                             }
-                        } else {
-                            --var4;
-                            if (var4 - 1 < 0) {
-                                var8 = this.mg.iLayer;
-                                if (var6) {
-                                    LO var9 = this.info.layers[var8];
-                                    var9.iAlpha = (float) (var9.iAlpha == 0.0F ? 1 : 0);
+                        } else { // layer
+                            --id;
+                            if (id - 1 < 0) {
+                                currentLayerIndex = this.mg.iLayer;
+                                if (isModifier) { // hide/show current layer
+                                    LO currentLayer = this.info.layers[currentLayerIndex];
+                                    currentLayer.iAlpha = (float) (currentLayer.iAlpha == 0.0F ? 1 : 0);
                                     this.mi.repaint();
-                                } else {
+                                } else { // open layers window or cycle between layers if already open
                                     if (this.L == null) {
                                         this.L = new L(this.mi, this, this.res, this.config);
                                         this.addC(this.L);
@@ -651,7 +657,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
                                     this.L.repaint();
                                 }
 
-                                this.mPaint(var5);
+                                this.mPaint(toolID);
                             }
                         }
                     }
@@ -662,27 +668,27 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
 
     public void pack() {
         try {
-            Container var1 = this.parent;
-            Dimension var2 = var1.getSize();
-            this.setSize(Math.min(this.W, var2.width), Math.min(this.H, var2.height));
+            Container parent = this.parent;
+            Dimension parentSize = parent.getSize();
+            this.setSize(Math.min(this.W, parentSize.width), Math.min(this.H, parentSize.height));
             if (this.L != null) {
                 this.L.inParent();
             }
 
-            Dimension var3 = this.getCSize();
-            Dimension var4 = this.getSizeW();
+            Dimension cSize = this.getCSize();
+            Dimension sizeW = this.getSizeW();
             if (!this.mi.isGUI) {
-                this.mi.setDimension((Dimension) null, var3, var3);
-                var3 = this.mi.getSizeW();
-                this.mi.setLocation((var2.width - var4.width - var3.width) / 2 + (this.isWest ? var4.width : 0), (var2.height - var3.height) / 2);
+                this.mi.setDimension((Dimension) null, cSize, cSize);
+                cSize = this.mi.getSizeW();
+                this.mi.setLocation((parentSize.width - sizeW.width - cSize.width) / 2 + (this.isWest ? sizeW.width : 0), (parentSize.height - cSize.height) / 2);
             }
 
-            var3 = this.mi.getSizeW();
-            Point var5 = this.mi.getLocation();
-            this.setLocation(this.isWest ? Math.max(0, var5.x - var4.width - 10) : Math.min(var5.x + var3.width + 10, var2.width - var4.width), (var2.height - var4.height) / 2);
+            cSize = this.mi.getSizeW();
+            Point location = this.mi.getLocation();
+            this.setLocation(this.isWest ? Math.max(0, location.x - sizeW.width - 10) : Math.min(location.x + cSize.width + 10, parentSize.width - sizeW.width), (parentSize.height - sizeW.height) / 2);
             if (this.cs != null) {
-                for (int var6 = 2; var6 < this.cs.length; ++var6) {
-                    ((SW) this.cs[var6]).mPack();
+                for (int i = 2; i < this.cs.length; ++i) {
+                    ((SW) this.cs[i]).mPack();
                 }
             }
         } catch (Throwable ex) {
@@ -713,11 +719,11 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
 
             int mouseX = event.getX();
             int mouseY = event.getY();
-            boolean var4 = Awt.isR(event);
+            boolean isModifier = Awt.isR(event);
 
             if (this.list != null) {
                 for (int i = 0; i < this.list.length; ++i) {
-                    if (!this.list[i].isMask || !var4) {
+                    if (!this.list[i].isMask || !isModifier) {
                         this.list[i].pMouse(event);
                     }
                 }
@@ -736,26 +742,30 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
                 default:
                     break;
                 case MouseEvent.MOUSE_DRAGGED:
-                    int var6 = this.nowButton;
-                    if (var6 < this.list.length) {
+                    int id = this.nowButton;
+                    // tool buttons
+                    if (id < this.list.length) {
                         return;
                     }
 
-                    var6 -= this.list.length;
-                    if (var6 - 14 < 0) {
+                    // palette buttons
+                    id -= this.list.length;
+                    if (id - 14 < 0) {
                         return;
                     }
 
-                    var6 -= 14;
-                    if (var6 - 4 < 0) {
-                        this.setRGB(var6, 0, mouseX);
+                    // color sliders
+                    id -= 14;
+                    if (id - 4 < 0) {
+                        this.setRGB(id, 0, mouseX);
                         this.mPaint(-1);
                         this.upCS();
                         return;
                     }
 
-                    var6 -= 4;
-                    if (var6 - 1 < 0) {
+                    // line size slider
+                    id -= 4;
+                    if (id - 1 < 0) {
                         this.setLineSize(mouseY, -1);
                         this.mPaint(this.nowButton);
                         return;
@@ -866,39 +876,42 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
         this.mPaint(this.list.length + 5);
     }
 
-    public void setLineSize(int var1, int var2) {
-        int var3 = this.info.getPMMax();
-        Rectangle var4 = this.rects[18];
-        if (var2 == -1) {
-            var2 = (int) ((float) (var1 - var4.y) / (float) var4.height * (float) var3);
+    /** Sets line size according to the maximum allowed by the current pen mask */
+    public void setLineSize(int mouseY, int size) {
+        int maxSize = this.info.getPMMax();
+        Rectangle sliderRect = this.rects[18]; //TODO: magic number
+        if (size == -1) {
+            size = (int) ((float) (mouseY - sliderRect.y) / (float) sliderRect.height * (float) maxSize);
         }
 
-        var2 = var2 <= 0 ? 0 : (var2 >= var3 ? var3 - 1 : var2);
-        this.mg.iSize = var2;
+        size = size <= 0 ? 0 : (size >= maxSize ? maxSize - 1 : size);
+        this.mg.iSize = size;
         this.upCS();
     }
 
-    private void setRGB(int var1, int var2, int var3) {
-        int var5 = var1 == 3 ? 24 : (2 - var1) * 8;
-        int var6 = this.mg.iAlpha << 24 | this.iColor;
-        int var4;
-        if (var2 != 0) {
-            var4 = var6 >>> var5 & 255;
-            var4 += var2;
+    /** Changes the current color, either by increment/decrement or by mouse position on the slider rect */
+    private void setRGB(int channel, int increment, int mouseX) {
+        int bitShift = channel == 3 ? 24 : (2 - channel) * 8; // a=24, r=16, g=8, b=0
+        int color = this.mg.iAlpha << 24 | this.iColor;
+        int channelValue;
+        if (increment != 0) {
+            channelValue = color >>> bitShift & 255;
+            channelValue += increment;
         } else {
-            Rectangle var7 = this.rects[14 + var1];
-            var3 = var3 - var7.x - 4;
-            var4 = var3 > 0 ? (int) ((float) var3 / (float) (this.W - 8) * 255.0F) : 0;
+            Rectangle sliderRect = this.rects[14 + channel];
+            mouseX = mouseX - sliderRect.x - 4;
+            channelValue = mouseX > 0 ? (int) ((float) mouseX / (float) (this.W - 8) * 255.0F) : 0;
         }
 
-        var4 = var4 <= 0 ? 0 : (var4 >= 255 ? 255 : var4);
-        int var8 = 255 << var5;
-        var8 = ~var8;
-        var6 = var6 & var8 | var4 << var5;
-        this.iColor = var6 & 0xFFFFFF;
+        channelValue = channelValue <= 0 ? 0 : (channelValue >= 255 ? 255 : channelValue);
+        int otherChannelsMask = (255 << bitShift);
+        otherChannelsMask = ~otherChannelsMask;
+        color = color & otherChannelsMask | channelValue << bitShift;
+        this.iColor = color & 0xFFFFFF;
         this.mg.iColor = this.getRGB();
-        this.mg.iAlpha = Math.max(var6 >>> 24, 1);
-        this.mPaint(var1);
+        this.mg.iAlpha = Math.max(color >>> 24, 1); // it doesn't make sense to draw with 0 opacity
+        this.mPaint(channel);
+        // update current palette if selected
         if (this.nowColor >= 0) {
             COLORS[this.nowColor] = this.mg.iColor;
         }
@@ -978,30 +991,31 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
         }
     }
 
-    public void showW(String var1) {
+    /** Shows a window by class name */
+    public void showW(String className) {
         if (this.isVisible) {
-            int var2 = 0;
+            int maxY = 0;
             if (this.cs != null) {
-                for (int var4 = 0; var4 < this.cs.length; ++var4) {
-                    LComponent var3 = this.cs[var4];
-                    if (var3.getClass().getName().equals(var1)) {
-                        if (var3.getParent() == null) {
-                            var3.setVisible(this.isVisible);
-                            this.parent.add(var3, 0);
+                for (int i = 0; i < this.cs.length; ++i) {
+                    LComponent component = this.cs[i];
+                    if (component.getClass().getName().equals(className)) {
+                        if (component.getParent() == null) {
+                            component.setVisible(this.isVisible);
+                            this.parent.add(component, 0);
                         }
 
                         return;
                     }
 
-                    var2 = Math.max(var2, var3.getLocation().y);
+                    maxY = Math.max(maxY, component.getLocation().y);
                 }
             }
 
             if (this.ws != null) {
-                for (int var6 = 0; var6 < this.ws.length; ++var6) {
-                    if (this.ws[var6].getClass().getName().equals(var1)) {
-                        if (!this.ws[var6].isVisible()) {
-                            this.ws[var6].setVisible(true);
+                for (int i = 0; i < this.ws.length; ++i) {
+                    if (this.ws[i].getClass().getName().equals(className)) {
+                        if (!this.ws[i].isVisible()) {
+                            this.ws[i].setVisible(true);
                         }
 
                         return;
@@ -1010,20 +1024,20 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
             }
 
             try {
-                SW var7 = (SW) Class.forName(var1).newInstance();
-                if (var7 instanceof Window) {
-                    this.addC(var7);
-                    var7.mSetup(this, this.info, this.mi.user, this.mg, this.res, this.config);
+                SW window = (SW) Class.forName(className).newInstance();
+                if (window instanceof Window) {
+                    this.addC(window);
+                    window.mSetup(this, this.info, this.mi.user, this.mg, this.res, this.config);
                 } else {
-                    LComponent var8 = (LComponent) var7;
-                    this.addC(var8);
-                    var8.setVisible(false);
-                    var7.mSetup(this, this.info, this.mi.user, this.mg, this.res, this.config);
-                    this.parent.add(var8, 0);
-                    var8.setLocation(0, var2);
-                    var8.inParent();
-                    var7.mPack();
-                    var8.setVisible(this.isVisible);
+                    LComponent component = (LComponent) window;
+                    this.addC(component);
+                    component.setVisible(false);
+                    window.mSetup(this, this.info, this.mi.user, this.mg, this.res, this.config);
+                    this.parent.add(component, 0);
+                    component.setLocation(0, maxY);
+                    component.inParent();
+                    window.mPack();
+                    component.setVisible(this.isVisible);
                 }
             } catch (Throwable ex) {
                 this.mi.alert(ex.getLocalizedMessage(), false);
@@ -1032,25 +1046,26 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
         }
     }
 
-    private void toColor(int var1) {
+    /** Changes the current RGB/HSB color applying the current alpha */
+    private void toColor(int rgb) {
         if (!this.isRGB) {
-            Color.RGBtoHSB(var1 >>> 16 & 255, var1 >>> 8 & 255, var1 & 255, this.fhsb);
+            Color.RGBtoHSB(rgb >>> 16 & 255, rgb >>> 8 & 255, rgb & 255, this.fhsb);
             this.iColor = this.mg.iAlpha << 24 | (int) (this.fhsb[0] * 255.0F) << 16 | (int) (this.fhsb[1] * 255.0F) << 8 | (int) (this.fhsb[2] * 255.0F);
         } else {
-            this.iColor = this.mg.iAlpha << 24 | var1;
+            this.iColor = this.mg.iAlpha << 24 | rgb;
         }
 
     }
 
     public void unSelect() {
-        for (int var2 = 0; var2 < this.list.length; ++var2) {
-            ToolList var1 = this.list[var2];
-            if (var1.isSelect) {
-                if (!var1.isEraser) {
-                    this.oldPen = var2;
+        for (int i = 0; i < this.list.length; ++i) {
+            ToolList toolList = this.list[i];
+            if (toolList.isSelect) {
+                if (!toolList.isEraser) {
+                    this.oldPen = i;
                 }
 
-                var1.unSelect();
+                toolList.unSelect();
             }
         }
 
@@ -1072,9 +1087,9 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
 
     public void upCS() {
         if (this.cs != null) {
-            for (int var1 = 2; var1 < this.cs.length; ++var1) {
-                if (this.cs[var1] instanceof SW) {
-                    ((SW) this.cs[var1]).up();
+            for (int i = 2; i < this.cs.length; ++i) {
+                if (this.cs[i] instanceof SW) {
+                    ((SW) this.cs[i]).up();
                 }
             }
 
@@ -1089,12 +1104,13 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
         this.paint(g);
     }
 
-    public void mVisible(boolean var1) {
-        this.isVisible = var1;
+    /** Shows/hides various tool windows */
+    public void mVisible(boolean isVisible) {
+        this.isVisible = isVisible;
         if (this.cs != null) {
-            for (int var2 = 0; var2 < this.cs.length; ++var2) {
-                if (this.cs[var2] != this) {
-                    this.cs[var2].setVisible(var1);
+            for (int i = 0; i < this.cs.length; ++i) {
+                if (this.cs[i] != this) {
+                    this.cs[i].setVisible(isVisible);
                 }
             }
         }
