@@ -126,15 +126,11 @@ public class Applet extends java.applet.Applet implements WindowListener {
     public URL getCodeBase() {
         if (!isDesktop) return super.getCodeBase();
 
-        URL url = null;
-        url = getClass().getProtectionDomain().getCodeSource().getLocation();
         try {
-            url = new URL("file://");
+            return new URL("file:/"+ getAppPath() + "/");
         } catch (MalformedURLException ex) {
-            ex.printStackTrace();
+            return null;
         }
-
-        return url;
     }
 
     @Override
