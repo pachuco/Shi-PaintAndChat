@@ -169,12 +169,12 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
 
             if (this.back != null) {
                 this.back.setColor(Color.white);
-                this.back.fillRect(0, 0, this.image.getWidth((ImageObserver) null), this.image.getHeight((ImageObserver) null));
+                this.back.fillRect(0, 0, this.image.getWidth(null), this.image.getHeight(null));
             }
 
             this.repaint();
-        } catch (Throwable var9) {
-            var9.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -212,7 +212,7 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
                     }
                 }
             }
-        } catch (Throwable var4) {
+        } catch (Throwable ex) {
         }
 
     }
@@ -231,8 +231,8 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
             this.back.drawString(STR_VERSION, 5, 32);
             this.back.drawString(var1, 5, 64);
             this.repaint();
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -256,7 +256,7 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
             }
 
             return (Window) var1;
-        } catch (Throwable var2) {
+        } catch (Throwable ex) {
             return null;
         }
     }
@@ -421,8 +421,8 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
                     }
                 }
             }
-        } catch (Throwable var13) {
-            var13.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -466,8 +466,8 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
     public void paint(Graphics var1) {
         try {
             this.m_paint(var1, var1.getClipBounds());
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -659,20 +659,20 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
                     }
                 }
             }
-        } catch (EOFException var13) {
-        } catch (Throwable var14) {
-            var14.printStackTrace();
+        } catch (EOFException ex) {
+        } catch (Throwable ex) {
+            ex.printStackTrace();
             if (Thread.currentThread().isInterrupted()) {
                 throw new InterruptedException();
             }
 
-            this.error(var14.getMessage());
+            this.error(ex.getMessage());
         }
 
         if (var3 != null) {
             try {
                 var3.close();
-            } catch (IOException var12) {
+            } catch (IOException ex) {
             }
         }
 
@@ -688,9 +688,9 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
                 case 'l':
                     this.rLoad();
             }
-        } catch (InterruptedException var2) {
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (InterruptedException ex) {
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -855,7 +855,7 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
                     var4.setSize(var1, var2 + 60);
                     var4.setVisible(true);
                 }
-            } catch (Throwable var5) {
+            } catch (Throwable ex) {
             }
 
         }

@@ -65,7 +65,7 @@ public class HelpWindow extends Window implements Runnable {
             }
 
             this.reset();
-        } catch (Throwable var5) {
+        } catch (Throwable ex) {
         }
 
     }

@@ -83,8 +83,8 @@ public class TPic extends LComponent implements SW {
 
             this.mPaint(g);
             g.dispose();
-        } catch (Throwable var2) {
-            var2.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -101,9 +101,9 @@ public class TPic extends LComponent implements SW {
         int var14;
         synchronized (var9) {
             Image var11 = this.cMk();
-            g.drawImage(var11, var5, var6, var7, var8, Color.white, (ImageObserver) null);
+            g.drawImage(var11, var5, var6, var7, var8, Color.white, null);
             var11 = this.cMkB();
-            g.drawImage(var11, var7 + 1, var6, var4, var8, Color.white, (ImageObserver) null);
+            g.drawImage(var11, var7 + 1, var6, var4, var8, Color.white, null);
             var14 = var6 + var8;
         }
 

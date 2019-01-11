@@ -72,7 +72,7 @@ public abstract class XMLTalker extends DefaultHandler implements Runnable {
 
             this.status = var4 == null ? new Res() : var4;
             ThreadPool.poolStartThread(this, 'l');
-        } catch (Throwable var5) {
+        } catch (Throwable ex) {
             this.mStop();
         }
 
@@ -173,9 +173,9 @@ public abstract class XMLTalker extends DefaultHandler implements Runnable {
                     Thread.sleep((long) (var2 < 1000L ? 200 : (var2 < 5000L ? 400 : (var2 < 10000L ? 600 : (var2 < 20000L ? 1200 : 2400)))));
                 }
             }
-        } catch (InterruptedException var8) {
-        } catch (Throwable var9) {
-            var9.printStackTrace();
+        } catch (InterruptedException ex) {
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
         this.mStop();
@@ -325,11 +325,11 @@ public abstract class XMLTalker extends DefaultHandler implements Runnable {
             }
 
             if (var3.equals("leave")) {
-                this.mRead(var3, (String) null, (Res) null);
+                this.mRead(var3, null, null);
                 this.mStop();
                 return;
             }
-        } catch (Throwable var5) {
+        } catch (Throwable ex) {
             this.mStop();
         }
 

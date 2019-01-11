@@ -72,8 +72,8 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
     private void connEtoC1() {
         try {
             this.initValue();
-        } catch (Throwable var2) {
-            this.handleException(var2);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
@@ -81,8 +81,8 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
     private void connEtoM1(ActionEvent event) {
         try {
             this.stop();
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
@@ -98,8 +98,8 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
                 this.ivjButton1.setName("Button1");
                 this.ivjButton1.setBounds(134, 283, 56, 20);
                 this.ivjButton1.setLabel("Button1");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -112,8 +112,8 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
                 this.ivjCancel = new LButton();
                 this.ivjCancel.setName("Cancel");
                 this.ivjCancel.setText("Cancel");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -125,8 +125,8 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
             try {
                 this.ivjClient_Image_Height = new TextField();
                 this.ivjClient_Image_Height.setName("Client_Image_Height");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -138,8 +138,8 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
             try {
                 this.ivjClient_Image_Width = new TextField();
                 this.ivjClient_Image_Width.setName("Client_Image_Width");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -152,8 +152,8 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
                 this.ivjClient_Sound = new Checkbox();
                 this.ivjClient_Sound.setName("Client_Sound");
                 this.ivjClient_Sound.setLabel("Client_Sound");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -167,8 +167,8 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
                 this.ivjLabel1.setName("Label1");
                 this.ivjLabel1.setAlignment(2);
                 this.ivjLabel1.setText("Client_Image_Width");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -182,8 +182,8 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
                 this.ivjLabel2.setName("Label2");
                 this.ivjLabel2.setAlignment(2);
                 this.ivjLabel2.setText("Client_Image_Height");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -196,8 +196,8 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
                 this.ivjOk = new LButton();
                 this.ivjOk.setName("Ok");
                 this.ivjOk.setText("Ok");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -217,8 +217,8 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
                 this.getPanel1().add((Component) this.getServer_Load_Text(), (Object) this.getServer_Load_Text().getName());
                 this.getPanel1().add((Component) this.getServer_Load_Line(), (Object) this.getServer_Load_Line().getName());
                 this.getPanel1().add((Component) this.getClient_Sound(), (Object) this.getClient_Sound().getName());
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -230,8 +230,8 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
 
         try {
             var1 = new GridLayout(0, 2);
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
         return var1;
@@ -251,8 +251,8 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
                 var1.setText("Client_Permission");
                 var1.setName(var1.getText());
                 this.getPanel2().add((Component) var1, (Object) var1.getName());
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -264,8 +264,8 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
 
         try {
             var1 = new GridLayout(0, 1);
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
         return var1;
@@ -279,8 +279,8 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
                 this.ivjPanel3.setLayout(new FlowLayout());
                 this.getPanel3().add((Component) this.getOk(), (Object) this.getOk().getName());
                 this.getPanel3().add((Component) this.getCancel(), (Object) this.getCancel().getName());
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -297,8 +297,8 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
                 this.getPanel4().add((Component) this.getClient_Image_Width(), (Object) this.getClient_Image_Width().getName());
                 this.getPanel4().add((Component) this.getLabel2(), (Object) this.getLabel2().getName());
                 this.getPanel4().add((Component) this.getClient_Image_Height(), (Object) this.getClient_Image_Height().getName());
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -311,8 +311,8 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
                 this.ivjServer_Cash_Line = new Checkbox();
                 this.ivjServer_Cash_Line.setName("Server_Cash_Line");
                 this.ivjServer_Cash_Line.setLabel("Server_Cash_Line");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -325,8 +325,8 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
                 this.ivjServer_Cash_Line_Size = new LTextField();
                 this.ivjServer_Cash_Line_Size.setName("Server_Cash_Line_Size");
                 this.ivjServer_Cash_Line_Size.setText("Server_Cash_Text_Size");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -339,8 +339,8 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
                 this.ivjServer_Cash_Text = new Checkbox();
                 this.ivjServer_Cash_Text.setName("Server_Cash_Text");
                 this.ivjServer_Cash_Text.setLabel("Server_Cash_Text");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -353,8 +353,8 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
                 this.ivjServer_Cash_Text_Size = new LTextField();
                 this.ivjServer_Cash_Text_Size.setName("Server_Cash_Text_Size");
                 this.ivjServer_Cash_Text_Size.setText("Server_Cash_Text_Size");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -367,8 +367,8 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
                 this.ivjServer_Load_Line = new Checkbox();
                 this.ivjServer_Load_Line.setName("Server_Load_Line");
                 this.ivjServer_Load_Line.setLabel("Server_Load_Line");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -381,8 +381,8 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
                 this.ivjServer_Load_Text = new Checkbox();
                 this.ivjServer_Load_Text.setName("Server_Load_Text");
                 this.ivjServer_Load_Text.setLabel("Server_Load_Text");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -395,8 +395,8 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
                 this.ivjServer_Log_Line = new Checkbox();
                 this.ivjServer_Log_Line.setName("Server_Log_Line");
                 this.ivjServer_Log_Line.setLabel("Server_Log_Line");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -409,15 +409,15 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
                 this.ivjServer_Log_Text = new Checkbox();
                 this.ivjServer_Log_Text.setName("Server_Log_Text");
                 this.ivjServer_Log_Text.setLabel("Server_Log_Text");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
         return this.ivjServer_Log_Text;
     }
 
-    private void handleException(Throwable var1) {
+    private void handleException(Throwable ex) {
     }
 
     public void init() {
@@ -431,8 +431,8 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
             this.initConnections();
             this.connEtoC1();
             Gui.giveDef(this);
-        } catch (Throwable var2) {
-            this.handleException(var2);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
@@ -466,9 +466,9 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
                 }
             });
             var1.setVisible(true);
-        } catch (Throwable var5) {
+        } catch (Throwable ex) {
             System.err.println("paintchat.config.ConfigApplet の main() で例外が発生しました");
-            var5.printStackTrace(System.out);
+            ex.printStackTrace(System.out);
         }
 
     }
@@ -488,8 +488,8 @@ public class ConfigServer extends ConfigApplet implements ActionListener {
             this.setParameter(this);
             Config var1 = (Config) ((ServerStub) this.getAppletContext()).getHashTable();
             var1.save(new FileOutputStream(var1.getString("File_Config", "cnf/paintchat.cf")), Resource.loadResource("Config"));
-        } catch (Throwable var2) {
-            var2.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }

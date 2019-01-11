@@ -131,8 +131,8 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
             }
 
             this.repaint();
-        } catch (Throwable var7) {
-            var7.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -183,8 +183,8 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
             this.back.drawString(STR_VERSION, 5, 32);
             this.back.drawString(var1, 5, 64);
             this.repaint();
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -208,7 +208,7 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
             }
 
             return (Window) var1;
-        } catch (Throwable var2) {
+        } catch (Throwable ex) {
             return null;
         }
     }
@@ -255,8 +255,8 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
             }
 
             this.m_po(var1, var1.getClipBounds());
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -314,8 +314,8 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
             synchronized (var1) {
                 this.m_paint(var1);
             }
-        } catch (Throwable var4) {
-            var4.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -371,8 +371,8 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
                 case MouseEvent.MOUSE_DRAGGED:
                     this.scroll(event.getPoint(), true);
             }
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -441,9 +441,9 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
                 case 'l':
                     this.rLoad();
             }
-        } catch (InterruptedException var2) {
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (InterruptedException ex) {
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -581,8 +581,8 @@ public class PCHCanvas extends Canvas implements Runnable, WindowListener {
             }
 
             event.getWindow().dispose();
-        } catch (Throwable var4) {
-            var4.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }

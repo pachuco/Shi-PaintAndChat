@@ -102,8 +102,8 @@ public class ToolList {
     private int getValue() {
         try {
             return this.isField ? M.class.getField(this.strField).getInt(this.info) : this.iSelect;
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
             return 0;
         }
     }
@@ -161,8 +161,8 @@ public class ToolList {
                 var3.remove(var8);
                 var2.remove(var8);
             }
-        } catch (Throwable var11) {
-            var11.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -242,8 +242,8 @@ public class ToolList {
             }
 
             var1.drawImage(this.tools.imBack, this.r.x, this.r.y, this.r.x + var4, this.r.y + var5, 0, 0, var4, var5, this.tools.clB, (ImageObserver) null);
-        } catch (Throwable var13) {
-            var13.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -383,7 +383,7 @@ public class ToolList {
             }
 
             this.tools.upCS();
-        } catch (Throwable var10) {
+        } catch (Throwable ex) {
             ;
         }
 

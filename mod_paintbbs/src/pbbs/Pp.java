@@ -306,8 +306,8 @@ public class Pp extends Panel {
             for (var15 = 0; var15 < 2; ++var15) {
                 var1.drawImage(this.image_applet, var9[var15].x, var9[var15].y, var9[var15].x + var9[var15].width, var9[var15].y + var9[var15].height, var9[var15].x, var9[var15].y, var9[var15].x + var9[var15].width, var9[var15].y + var9[var15].height, Color.white, (ImageObserver) null);
             }
-        } catch (Throwable var14) {
-            var14.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -465,7 +465,7 @@ public class Pp extends Panel {
                 var20.waitForID(0);
                 this.image_brush = var19;
             }
-        } catch (Throwable var32) {
+        } catch (Throwable ex) {
         }
 
         for (int var35 = 0; var35 < this.r_tools.length; ++var35) {
@@ -539,8 +539,8 @@ public class Pp extends Panel {
                     Object var40 = null;
                     this.copy(this.mI.i_offs, this.uimage[0]);
                 }
-            } catch (Throwable var34) {
-                var34.printStackTrace();
+            } catch (Throwable ex) {
+                ex.printStackTrace();
             }
 
             if (var4 != null) {
@@ -593,8 +593,8 @@ public class Pp extends Panel {
             var1.drawImage(this.image_applet, 0, var2.y, var2.x, var5, 0, var2.y, var2.x, var5, Color.white, (ImageObserver) null);
             var1.drawImage(this.image_applet, var4, var2.y, var3.width, var5, var4, var2.y, var3.width, var5, Color.white, (ImageObserver) null);
             var1.drawImage(this.image_applet, 0, var5, var3.width, var3.height, 0, var5, var3.width, var3.height, Color.white, (ImageObserver) null);
-        } catch (Throwable var6) {
-            var6.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -625,7 +625,7 @@ public class Pp extends Panel {
                     var1[var3].getData(this.b_ani);
                 }
             }
-        } catch (Throwable var4) {
+        } catch (Throwable ex) {
         }
 
     }
@@ -735,8 +735,8 @@ public class Pp extends Panel {
             }
 
             event.consume();
-        } catch (Throwable var4) {
-            var4.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -859,8 +859,8 @@ public class Pp extends Panel {
             }
 
             event.consume();
-        } catch (Throwable var7) {
-            var7.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -985,8 +985,8 @@ public class Pp extends Panel {
 
                 this.mI.m_paint(var6, var14);
             }
-        } catch (Throwable var15) {
-            System.out.println(var15);
+        } catch (Throwable ex) {
+            System.out.println(ex);
         }
 
     }
@@ -1027,12 +1027,12 @@ public class Pp extends Panel {
                     break;
                 }
 
-                var2.draw((Component) null, (Graphics) null, (Graphics) null, this.mI.i_offs, this.image_x, this.image_y, 0, 0, 1, 255, 255, -2);
+                var2.draw(null, null, null, this.mI.i_offs, this.image_x, this.image_y, 0, 0, 1, 255, 255, -2);
             }
 
             this.mI.m_paint();
-        } catch (Throwable var6) {
-            var6.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -1076,8 +1076,8 @@ public class Pp extends Panel {
             }
 
             this.uline[this.seek_box][this.seek_line] = null;
-        } catch (Throwable var8) {
-            var8.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -1107,7 +1107,7 @@ public class Pp extends Panel {
                         if (var11 != null) {
                             var10 = (Image) var11.invoke(this, new Integer(var7), new Integer(var8));
                         }
-                    } catch (Throwable var15) {
+                    } catch (Throwable ex) {
                     }
 
                     if (var10 == null) {
@@ -1175,8 +1175,8 @@ public class Pp extends Panel {
             var19 = var22 + var8 + 15;
             var8 = var2.stringWidth(var24[5]) + 10;
             var14[var21].setBounds(var19, var12, var8, var18);
-        } catch (Throwable var16) {
-            var16.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }

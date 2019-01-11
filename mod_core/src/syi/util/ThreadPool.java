@@ -64,8 +64,8 @@ public class ThreadPool extends Thread {
                     super.interrupt();
                 }
             }
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -229,7 +229,7 @@ public class ThreadPool extends Thread {
                             continue;
                         }
                     }
-                } catch (Throwable var3) {
+                } catch (Throwable ex) {
                     this.kill();
                     return;
                 }
@@ -244,7 +244,7 @@ public class ThreadPool extends Thread {
             if (this.runnable != null) {
                 this.runnable.run();
             }
-        } catch (Throwable var1) {
+        } catch (Throwable ex) {
             ;
         }
 

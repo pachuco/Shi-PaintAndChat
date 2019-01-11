@@ -68,8 +68,8 @@ public class TextCanvas extends Canvas {
             for (int var6 = 0; var6 < this.seek; ++var6) {
                 var1.drawString(this.strs[var6], this.Gap + 2, var4 * var6 + var5 + this.Gap + 2);
             }
-        } catch (Throwable var7) {
-            var7.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }

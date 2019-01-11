@@ -96,8 +96,8 @@ public class Mi extends LComponent implements ActionListener {
     public boolean alert(String var1, boolean var2) {
         try {
             return Me.confirm(var1, var2);
-        } catch (Throwable var4) {
-            var4.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
             return true;
         }
     }
@@ -128,7 +128,7 @@ public class Mi extends LComponent implements ActionListener {
                             this.tab = (LComponent) var6.getConstructors()[0].newInstance(this.getParent(), this.info);
                             this.mGet = var6.getMethod("strange", (Class[]) null);
                             this.mPoll = var6.getMethod("poll", (Class[]) null);
-                        } catch (Throwable var7) {
+                        } catch (Throwable ex) {
                             this.tab = this;
                         }
                     } else {
@@ -217,8 +217,8 @@ public class Mi extends LComponent implements ActionListener {
             }
 
             this.dPreB(false);
-        } catch (Throwable var5) {
-            var5.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -374,8 +374,8 @@ public class Mi extends LComponent implements ActionListener {
                         ++this.psCount;
                     }
             }
-        } catch (Throwable var5) {
-            var5.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -424,8 +424,8 @@ public class Mi extends LComponent implements ActionListener {
                         this.p(1, x, y);
                     }
             }
-        } catch (Throwable var10) {
-            var10.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -611,8 +611,8 @@ public class Mi extends LComponent implements ActionListener {
             g.fillRect(var19 + 1, var20 + var18[3] - 3, var14 - 1, 1);
             g.fillRect(var21 + var18[6] - 3, var22 + 1, 1, var15 - 1);
             g.fillRect(var21 + 1, var22 + var15, var18[6] - 3, 1);
-        } catch (Throwable var23) {
-            var23.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -664,8 +664,8 @@ public class Mi extends LComponent implements ActionListener {
                         this.primary2.drawRect(var7, var8, (var6 >> 16) - var7 - 1, (short) var6 - var8 - 1);
                     }
             }
-        } catch (Throwable var9) {
-            var9.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -727,7 +727,7 @@ public class Mi extends LComponent implements ActionListener {
     private final int getS() {
         try {
             return this.tab != null && this.tab != this ? (Integer) this.mGet.invoke(this.tab, (Object[]) null) : 255;
-        } catch (Throwable var1) {
+        } catch (Throwable ex) {
             this.tab = this;
             return 255;
         }
@@ -760,8 +760,8 @@ public class Mi extends LComponent implements ActionListener {
         try {
             Method var10 = this.getClass().getMethod("setFocusTraversalKeys", Integer.TYPE, Class.forName("java.util.Set"));
             var10.invoke(this, 0, Class.forName("java.util.Collections").getField("EMPTY_SET").get((Object) null));
-        } catch (Throwable var11) {
-            var11.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -823,8 +823,8 @@ public class Mi extends LComponent implements ActionListener {
             int var3 = (this.info == null ? 0 : this.info.scale) * 2;
             var1.setClip(var2.x - var3, var2.y - var3, var2.width + var3 * 2, var2.height + var3 * 2);
             this.mPaint(var1);
-        } catch (Throwable var4) {
-            var4.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -986,8 +986,8 @@ public class Mi extends LComponent implements ActionListener {
                 this.dPre(sX, sY, false);
                 this.isDrag = false;
             }
-        } catch (Throwable var13) {
-            var13.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -998,8 +998,8 @@ public class Mi extends LComponent implements ActionListener {
                 if ((Boolean) this.mPoll.invoke(this.tab, (Object[]) null)) {
                     return;
                 }
-            } catch (Throwable var2) {
-                var2.printStackTrace();
+            } catch (Throwable ex) {
+                ex.printStackTrace();
             }
 
             this.mgInfo.iSOB = 0;
@@ -1082,8 +1082,8 @@ public class Mi extends LComponent implements ActionListener {
                         this.repaint();
                 }
             }
-        } catch (Throwable var7) {
-            var7.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
         super.processEvent(event);
@@ -1251,8 +1251,8 @@ public class Mi extends LComponent implements ActionListener {
                 }
 
                 this.imi.scroll(true, var13, var14);
-            } catch (Throwable var16) {
-                var16.printStackTrace();
+            } catch (Throwable ex) {
+                ex.printStackTrace();
             }
 
         }
@@ -1268,7 +1268,7 @@ public class Mi extends LComponent implements ActionListener {
             mg.set(var1);
             mg.draw();
             this.send(mg);
-        } catch (Throwable var3) {
+        } catch (Throwable ex) {
             ;
         }
 

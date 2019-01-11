@@ -154,8 +154,8 @@ public class L extends LComponent implements ActionListener, ItemListener {
             this.repaint();
             this.mi.user.wait = var12;
             this.mi.repaint();
-        } catch (Throwable var14) {
-            var14.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -175,7 +175,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
             var3.draw();
             //MAGIC: layer alpha and mix mode are local if layer editing is disabled
             if (info.isLEdit) this.mi.send(var3);
-        } catch (Throwable var5) {
+        } catch (Throwable ex) {
             ;
         }
 
@@ -224,8 +224,8 @@ public class L extends LComponent implements ActionListener, ItemListener {
                 var5.draw();
                 this.mi.send(var5);
                 this.mi.user.wait = var4;
-            } catch (Throwable var10) {
-                var10.printStackTrace();
+            } catch (Throwable ex) {
+                ex.printStackTrace();
             }
 
         }
@@ -339,7 +339,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
             Awt.drawFrame(g, this.mouse == 0, 0, 0, this.bW, this.bH - 2);
             g.setColor(Awt.cFore);
             g.drawString((String) this.strMenu, 3, this.bH - 6);
-        } catch (Throwable var7) {
+        } catch (Throwable ex) {
             ;
         }
 
@@ -459,8 +459,8 @@ public class L extends LComponent implements ActionListener, ItemListener {
                         }
                     }
             }
-        } catch (Throwable var16) {
-            var16.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -536,7 +536,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
             if (!var7.equals(var2.name)) {
                 try {
                     this.send(new int[]{10}, var7.getBytes("UTF8"));
-                } catch (Throwable var9) {
+                } catch (Throwable ex) {
                     ;
                 }
             }

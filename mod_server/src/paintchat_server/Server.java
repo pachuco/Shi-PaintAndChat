@@ -76,7 +76,7 @@ public class Server implements Runnable {
                 this.lineServer.mStop();
                 this.textServer.mStop();
                 this.debug.log("PaintChatサーバーを終了させます");
-            } catch (Throwable var5) {
+            } catch (Throwable ex) {
             }
 
             if (this.isOnlyServer) {
@@ -145,8 +145,8 @@ public class Server implements Runnable {
                 var8.flush();
                 var8.close();
             }
-        } catch (Throwable var13) {
-            this.debug.log(var13);
+        } catch (Throwable ex) {
+            this.debug.log(ex);
         }
 
     }
@@ -170,7 +170,7 @@ public class Server implements Runnable {
             }
 
             return var2;
-        } catch (Throwable var6) {
+        } catch (Throwable ex) {
             if (var2) {
                 this.debug.log("server have work now.");
             }
@@ -213,8 +213,8 @@ public class Server implements Runnable {
             }
 
             var5.init();
-        } catch (Throwable var6) {
-            System.out.println("server_main" + var6.toString());
+        } catch (Throwable ex) {
+            System.out.println("server_main" + ex.toString());
             System.exit(0);
         }
 
@@ -263,8 +263,8 @@ public class Server implements Runnable {
                 case 'i':
                     this.rInit();
             }
-        } catch (Throwable var2) {
-            var2.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -281,11 +281,11 @@ public class Server implements Runnable {
                 }
 
                 this.talkerInstance.newTalker(var1);
-            } catch (Throwable var5) {
+            } catch (Throwable ex1) {
                 try {
                     Thread.currentThread();
                     Thread.sleep(5000L);
-                } catch (Throwable var3) {
+                } catch (Throwable ex2) {
                 }
             }
         }
@@ -340,14 +340,12 @@ public class Server implements Runnable {
                     this.debug.newLogFile(Io.getDateString("pserv_", "log", this.config.getString("Server_Log_Server_Dir", "save_server")));
                     this.textServer.clearKillIP();
                 }
-            } catch (Throwable var11) {
-                Throwable var7 = var11;
-
+            } catch (Throwable ex1) {
                 try {
-                    this.debug.log(var7);
+                    this.debug.log(ex1);
                     Thread.currentThread();
                     Thread.sleep(1000L);
-                } catch (Throwable var10) {
+                } catch (Throwable ex2) {
                     break;
                 }
             }

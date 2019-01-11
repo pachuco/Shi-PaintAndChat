@@ -61,8 +61,8 @@ public class HttpServer implements Runnable {
                 }
 
                 this.debug.log(res.get("Exit"));
-            } catch (Throwable var2) {
-                this.debug.log(res.get("Error") + var2.getMessage());
+            } catch (Throwable ex) {
+                this.debug.log(res.get("Error") + ex.getMessage());
             }
 
             if (this.isOnlyServer) {
@@ -166,25 +166,25 @@ public class HttpServer implements Runnable {
     }
 
     public void run() {
-        long var1 = System.currentTimeMillis();
+        long curTime = System.currentTimeMillis();
 
         while (this.live) {
             try {
-                Socket var3 = null;
-                var3 = this.ssocket.accept();
-                var3.setSoTimeout(30000);
-                new TalkerHttp(var3, this, this.httpFiles);
-            } catch (InterruptedIOException var5) {
-                if (System.currentTimeMillis() - var1 > 86400000L) {
-                    var1 = System.currentTimeMillis();
+                Socket sock = null;
+                sock = this.ssocket.accept();
+                sock.setSoTimeout(30000);
+                new TalkerHttp(sock, this, this.httpFiles);
+            } catch (InterruptedIOException ex) {
+                if (System.currentTimeMillis() - curTime > 86400000L) {
+                    curTime = System.currentTimeMillis();
                     this.debug.newLogFile(this.getLogName("phttpd", "log", this.dirLog));
                 }
-            } catch (Throwable var6) {
+            } catch (Throwable ex) {
                 if (!this.live) {
                     break;
                 }
 
-                this.debug.log(res.get("Error") + var6.getMessage());
+                this.debug.log(res.get("Error") + ex.getMessage());
             }
         }
 

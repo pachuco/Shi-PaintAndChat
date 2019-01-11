@@ -162,8 +162,8 @@ public class Gui extends Awt {
             } else {
                 return false;
             }
-        } catch (Throwable var9) {
-            System.out.println((Object) var9);
+        } catch (Throwable ex) {
+            System.out.println((Object) ex);
             return false;
         }
     }

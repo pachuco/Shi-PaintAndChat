@@ -1295,10 +1295,10 @@ public class M {
                 default:
                     this.dRetouch();
             }
-        } catch (InterruptedException var2) {
+        } catch (InterruptedException ex) {
             ;
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
         this.dEnd();
@@ -1562,8 +1562,8 @@ public class M {
                                     var4[this.iLayer].toCopy(var13, var14, var15, pointX, pointY);
                                 }
                             }
-                        } catch (Throwable var16) {
-                            var16.printStackTrace();
+                        } catch (Throwable ex) {
+                            ex.printStackTrace();
                         }
                         break;
                     case 7:
@@ -1589,8 +1589,8 @@ public class M {
             if (this.user.wait >= 0) {
                 this.dBuffer();
             }
-        } catch (Throwable var17) {
-            var17.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -2968,8 +2968,8 @@ public class M {
             this.offset = var18.writeTo(this.offset, 0);
             this.iOffset = var18.size();
             var18.reset();
-        } catch (Throwable var17) {
-            var17.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -3070,8 +3070,8 @@ public class M {
                     return false;
                 }
             }
-        } catch (Throwable var5) {
-            var5.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
         return true;

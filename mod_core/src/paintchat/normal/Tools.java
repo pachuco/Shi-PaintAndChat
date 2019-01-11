@@ -207,7 +207,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
             }
 
             return var2.toString();
-        } catch (Throwable var4) {
+        } catch (Throwable ex) {
             return null;
         }
     }
@@ -685,7 +685,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
                     ((SW) this.cs[var6]).mPack();
                 }
             }
-        } catch (Throwable var7) {
+        } catch (Throwable ex) {
             ;
         }
 
@@ -699,8 +699,8 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
                 this.primary.dispose();
                 this.primary = null;
             }
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -761,8 +761,8 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
                         return;
                     }
             }
-        } catch (Throwable var7) {
-            var7.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -855,8 +855,8 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
 
             System.arraycopy(DEFC, 0, COLORS, 0, COLORS.length);
             this.repaint();
-        } catch (Throwable var4) {
-            var4.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -1025,8 +1025,8 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
                     var7.mPack();
                     var8.setVisible(this.isVisible);
                 }
-            } catch (Throwable var5) {
-                this.mi.alert(var5.getLocalizedMessage(), false);
+            } catch (Throwable ex) {
+                this.mi.alert(ex.getLocalizedMessage(), false);
             }
 
         }
@@ -1064,8 +1064,8 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
             if (this.L != null) {
                 this.L.repaint();
             }
-        } catch (Throwable var2) {
-            var2.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }

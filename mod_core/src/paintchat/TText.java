@@ -40,8 +40,8 @@ public class TText extends Dialog implements SW, ActionListener, ItemListener {
             this.mg.iHint = this.cV.getState() ? M.H_VTEXT : M.H_TEXT;
             this.mg.strHint = (this.cName.getSelectedItem() + '-' + (this.cBL.getState() ? "BOLD" : "") + (this.cIT.getState() ? "ITALIC" : "") + '-').getBytes("UTF8");
             this.mg.iCount = Integer.parseInt(this.cSpace.getText());
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -62,7 +62,7 @@ public class TText extends Dialog implements SW, ActionListener, ItemListener {
             Class var8 = Class.forName("java.awt.GraphicsEnvironment");
             Object var9 = var8.getMethod("getLocalGraphicsEnvironment", (Class[]) null).invoke((Object) null, (Object[]) null);
             var7 = (String[]) var8.getMethod("getAvailableFontFamilyNames", (Class[]) null).invoke(var9, (Object[]) null);
-        } catch (Throwable var13) {
+        } catch (Throwable ex) {
             ;
         }
 

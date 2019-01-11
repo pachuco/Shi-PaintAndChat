@@ -139,7 +139,7 @@ public class HttpFiles {
                         var5 = Math.max(0, this.indexOf(var3, var6.getBytes())) + var6.length();
                         this.bErrorBottom = new byte[var3.length - var5];
                         System.arraycopy(var3, var5, this.bErrorBottom, 0, var3.length - var5);
-                    } catch (Throwable var7) {
+                    } catch (Throwable ex) {
                         this.bErrorUpper = new byte[0];
                         this.bErrorBottom = new byte[0];
                     }

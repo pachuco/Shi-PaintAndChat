@@ -46,7 +46,7 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
             this.p = null;
             this.ts = null;
             this.mbar = null;
-        } catch (Throwable var1) {
+        } catch (Throwable ex) {
             ;
         }
 
@@ -75,8 +75,8 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
     protected void jump(String url, String target) {
         try {
             this.getAppletContext().showDocument(new URL(this.getCodeBase(), url), target == null ? "_self" : target);
-        } catch (Throwable var4) {
-            Ts.alert(var4.getMessage());
+        } catch (Throwable ex) {
+            Ts.alert(ex.getMessage());
         }
 
     }
@@ -89,8 +89,8 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
 
             FontMetrics fontMetrics = g.getFontMetrics();
             g.drawString((String) "Wait for initialization to complete.", 10, fontMetrics.getHeight() + 10);
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -150,15 +150,15 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
                 }
 
                 this.config.loadZip(fileName);
-            } catch (Throwable var9) {
-                var9.printStackTrace();
+            } catch (Throwable ex) {
+                ex.printStackTrace();
             }
 
             try {
                 this.config.load(new String((byte[]) this.config.getRes("param_utf8.txt"), "UTF8"));
                 this.config.remove("param_utf8.txt");
-            } catch (Throwable var8) {
-                Ts.alert(var8.getMessage());
+            } catch (Throwable ex) {
+                Ts.alert(ex.getMessage());
             }
 
             //Res var11 = this.config;
@@ -185,8 +185,8 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
             }
 
             this.res.loadResource(this.config, "res", Locale.getDefault().getLanguage());
-        } catch (Throwable var10) {
-            var10.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
         this.enableEvents(AWTEvent.COMPONENT_EVENT_MASK | AWTEvent.KEY_EVENT_MASK);
@@ -246,8 +246,8 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
                 case 's': // save
                     this.p.rSave();
             }
-        } catch (Throwable var5) {
-            var5.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -277,8 +277,8 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
             } else {
                 this.mi.send(var1);
             }
-        } catch (Throwable var6) {
-            var6.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -300,8 +300,8 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
             if (this.isStart == 0) {
                 Ts.run(this, 'i', 3);
             }
-        } catch (Throwable var2) {
-            var2.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
     }
 

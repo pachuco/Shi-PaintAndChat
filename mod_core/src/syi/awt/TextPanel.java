@@ -135,8 +135,8 @@ public class TextPanel extends Canvas implements ActionListener, ItemListener {
             int var4 = Math.min(Math.max(this.font.getSize() + Integer.parseInt(actCom), 4), 256);
             this.setFont(new Font(this.font.getName(), this.font.getStyle(), var4));
             this.repaint();
-        } catch (Throwable var8) {
-            var8.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -174,8 +174,8 @@ public class TextPanel extends Canvas implements ActionListener, ItemListener {
         try {
             JSController var2 = new JSController(this.applet);
             var2.runScript(var1);
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -330,8 +330,8 @@ public class TextPanel extends Canvas implements ActionListener, ItemListener {
             this.isSScroll = event.getStateChange() == 1;
             this.scrollPos = 0;
             this.paint(this.primary);
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -414,8 +414,8 @@ public class TextPanel extends Canvas implements ActionListener, ItemListener {
                 g.setColor(this.getForeground());
                 g.drawRect(0, 0, var2.width - 1, var2.height - 1);
             }
-        } catch (Throwable var13) {
-            var13.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }

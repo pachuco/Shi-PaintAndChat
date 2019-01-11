@@ -98,8 +98,8 @@ public class PConfig extends ConfigApplet implements ActionListener {
                 this.ivjAdmin_ChatMaster = new Checkbox();
                 this.ivjAdmin_ChatMaster.setName("Admin_ChatMaster");
                 this.ivjAdmin_ChatMaster.setLabel("Admin_ChatMaster");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -112,8 +112,8 @@ public class PConfig extends ConfigApplet implements ActionListener {
                 this.ivjAdmin_Password = new LTextField();
                 this.ivjAdmin_Password.setName("Admin_Password");
                 this.ivjAdmin_Password.setTitle("Admin_Password");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -126,8 +126,8 @@ public class PConfig extends ConfigApplet implements ActionListener {
                 this.ivjApp_Auto_Http = new Checkbox();
                 this.ivjApp_Auto_Http.setName("App_Auto_Http");
                 this.ivjApp_Auto_Http.setLabel("App_Auto_Http");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -140,8 +140,8 @@ public class PConfig extends ConfigApplet implements ActionListener {
                 this.ivjApp_Auto_Lobby = new Checkbox();
                 this.ivjApp_Auto_Lobby.setName("App_Auto_Lobby");
                 this.ivjApp_Auto_Lobby.setLabel("App_Auto_Lobby");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -154,8 +154,8 @@ public class PConfig extends ConfigApplet implements ActionListener {
                 this.ivjApp_Auto_Paintchat = new Checkbox();
                 this.ivjApp_Auto_Paintchat.setName("App_Auto_Paintchat");
                 this.ivjApp_Auto_Paintchat.setLabel("App_Auto_Paintchat");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -168,8 +168,8 @@ public class PConfig extends ConfigApplet implements ActionListener {
                 this.ivjApp_BrowserPath = new LTextField();
                 this.ivjApp_BrowserPath.setName("App_BrowserPath");
                 this.ivjApp_BrowserPath.setTitle("App_BrowserPath");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -182,8 +182,8 @@ public class PConfig extends ConfigApplet implements ActionListener {
                 this.ivjApp_Cgi = new LTextField();
                 this.ivjApp_Cgi.setName("App_Cgi");
                 this.ivjApp_Cgi.setTitle("App_Cgi");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -196,8 +196,8 @@ public class PConfig extends ConfigApplet implements ActionListener {
                 this.ivjApp_Get_Index = new Checkbox();
                 this.ivjApp_Get_Index.setName("App_Get_Index");
                 this.ivjApp_Get_Index.setLabel("App_Get_Index");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -210,8 +210,8 @@ public class PConfig extends ConfigApplet implements ActionListener {
                 this.ivjApp_ShowStartHelp = new Checkbox();
                 this.ivjApp_ShowStartHelp.setName("App_ShowStartHelp");
                 this.ivjApp_ShowStartHelp.setLabel("App_ShowStartHelp");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -229,8 +229,8 @@ public class PConfig extends ConfigApplet implements ActionListener {
                 this.ivjButton1.setName("Button1");
                 this.ivjButton1.setBounds(135, 339, 56, 20);
                 this.ivjButton1.setLabel("Button1");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -243,8 +243,8 @@ public class PConfig extends ConfigApplet implements ActionListener {
                 this.ivjCancel = new LButton();
                 this.ivjCancel.setName("Cancel");
                 this.ivjCancel.setText("Cancel");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -257,8 +257,8 @@ public class PConfig extends ConfigApplet implements ActionListener {
                 this.ivjConnection_GrobalAddress = new Checkbox();
                 this.ivjConnection_GrobalAddress.setName("Connection_GrobalAddress");
                 this.ivjConnection_GrobalAddress.setLabel("Connection_GrobalAddress");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -271,8 +271,8 @@ public class PConfig extends ConfigApplet implements ActionListener {
                 this.ivjOk = new LButton();
                 this.ivjOk.setName("Ok");
                 this.ivjOk.setText("Ok");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -292,8 +292,8 @@ public class PConfig extends ConfigApplet implements ActionListener {
                 this.getPanel1().add((Component) this.getApp_ShowStartHelp(), (Object) this.getApp_ShowStartHelp().getName());
                 this.getPanel1().add((Component) this.getAdmin_ChatMaster(), (Object) this.getAdmin_ChatMaster().getName());
                 this.getPanel1().add((Component) this.getApp_Get_Index(), (Object) this.getApp_Get_Index().getName());
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -305,8 +305,8 @@ public class PConfig extends ConfigApplet implements ActionListener {
 
         try {
             var1 = new GridLayout(0, 2);
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
         return var1;
@@ -321,8 +321,8 @@ public class PConfig extends ConfigApplet implements ActionListener {
                 this.getPanel2().add((Component) this.getAdmin_Password(), (Object) this.getAdmin_Password().getName());
                 this.getPanel2().add((Component) this.getApp_Cgi(), (Object) this.getApp_Cgi().getName());
                 this.getPanel2().add((Component) this.getApp_BrowserPath(), (Object) this.getApp_BrowserPath().getName());
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -334,8 +334,8 @@ public class PConfig extends ConfigApplet implements ActionListener {
 
         try {
             var1 = new GridLayout(0, 1);
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
         return var1;
@@ -349,15 +349,15 @@ public class PConfig extends ConfigApplet implements ActionListener {
                 this.ivjPanel3.setLayout(new FlowLayout());
                 this.getPanel3().add((Component) this.getOk(), (Object) this.getOk().getName());
                 this.getPanel3().add((Component) this.getCancel(), (Object) this.getCancel().getName());
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
         return this.ivjPanel3;
     }
 
-    private void handleException(Throwable var1) {
+    private void handleException(Throwable ex) {
     }
 
     public void init() {
@@ -372,8 +372,8 @@ public class PConfig extends ConfigApplet implements ActionListener {
             this.initConnections();
             Gui.giveDef(this);
             this.initValue();
-        } catch (Throwable var2) {
-            this.handleException(var2);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
@@ -406,8 +406,8 @@ public class PConfig extends ConfigApplet implements ActionListener {
             this.setParameter(this);
             Config var1 = (Config) ((ServerStub) this.getAppletContext()).getHashTable();
             var1.saveConfig((File) null, (String) null);
-        } catch (Throwable var2) {
-            var2.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -426,9 +426,9 @@ public class PConfig extends ConfigApplet implements ActionListener {
                 }
             });
             var1.setVisible(true);
-        } catch (Throwable var5) {
+        } catch (Throwable ex) {
             System.err.println("java.applet.Applet の main() で例外が発生しました");
-            var5.printStackTrace(System.out);
+            ex.printStackTrace(System.out);
         }
 
     }

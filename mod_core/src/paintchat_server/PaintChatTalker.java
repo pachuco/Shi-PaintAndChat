@@ -162,10 +162,10 @@ public abstract class PaintChatTalker implements Runnable {
                     Thread.sleep((long) (var1 < 1000L ? 200 : (var1 < 5000L ? 400 : (var1 < 10000L ? 600 : (var1 < 20000L ? 1200 : 2400)))));
                 }
             }
-        } catch (InterruptedException var8) {
+        } catch (InterruptedException ex) {
             ;
-        } catch (Throwable var9) {
-            var9.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
         this.mStop();

@@ -82,8 +82,8 @@ public class Me extends Dialog implements ActionListener {
         try {
             var2.init(var0, var1);
             var2.setVisible(true);
-        } catch (Throwable var4) {
-            var4.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
         isD = false;
@@ -109,8 +109,8 @@ public class Me extends Dialog implements ActionListener {
             var2.add((Component) var2.tText, (Object) "Center");
             var2.pack();
             var2.setVisible(true);
-        } catch (Throwable var4) {
-            var4.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
         isD = false;

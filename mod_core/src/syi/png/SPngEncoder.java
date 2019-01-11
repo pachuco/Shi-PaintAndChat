@@ -71,8 +71,8 @@ public class SPngEncoder {
             this.mIDAT();
             this.mIEND();
             var1.flush();
-        } catch (Throwable var7) {
-            var7.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }

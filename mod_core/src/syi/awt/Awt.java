@@ -205,8 +205,8 @@ public class Awt {
                     }
                 }
             }
-        } catch (Throwable var4) {
-            var4.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -295,8 +295,8 @@ public class Awt {
             PixelGrabber var1 = new PixelGrabber(var0, 0, 0, var0.getWidth((ImageObserver) null), var0.getHeight((ImageObserver) null), true);
             var1.grabPixels();
             return (int[]) var1.getPixels();
-        } catch (Throwable var2) {
-            var2.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
             return null;
         }
     }

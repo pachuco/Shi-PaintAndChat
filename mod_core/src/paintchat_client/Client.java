@@ -33,8 +33,8 @@ public class Client extends Applet implements WindowListener {
             this.add((Component) this.pl, (Object) "Center");
             this.validate();
             ThreadPool.poolStartThread(this.pl, 'i');
-        } catch (Throwable var2) {
-            var2.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }

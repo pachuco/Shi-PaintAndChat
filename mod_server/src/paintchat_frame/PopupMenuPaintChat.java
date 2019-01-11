@@ -38,8 +38,8 @@ public class PopupMenuPaintChat implements ActionListener {
     public void actionPerformed(ActionEvent event) {
         try {
             this.doAction(event.getActionCommand());
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -87,7 +87,7 @@ public class PopupMenuPaintChat implements ActionListener {
 
             this.textField.setText(var1);
             this.copyURL(var1);
-        } catch (Throwable var2) {
+        } catch (Throwable ex) {
         }
 
     }

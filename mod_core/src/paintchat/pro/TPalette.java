@@ -66,7 +66,7 @@ public class TPalette extends LComponent {
             }
 
             return var2.toString();
-        } catch (Throwable var4) {
+        } catch (Throwable ex) {
             return null;
         }
     }
@@ -117,8 +117,8 @@ public class TPalette extends LComponent {
             var8 = this.pBar(g, var9, 0, var3);
             g.setColor(this.getBackground());
             g.fillRect(var7 + var9, var8, dim.width - var9, dim.height - var8);
-        } catch (Throwable var10) {
-            var10.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -280,8 +280,8 @@ public class TPalette extends LComponent {
             }
 
             this.repaint();
-        } catch (Throwable var4) {
-            var4.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }

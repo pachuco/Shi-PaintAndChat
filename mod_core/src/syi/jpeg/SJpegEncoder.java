@@ -65,8 +65,8 @@ public class SJpegEncoder {
             this.mMCU();
             this.wShort(var7);
             this.OUT.flush();
-        } catch (Throwable var8) {
-            var8.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -238,8 +238,8 @@ public class SJpegEncoder {
                     this.tHuffman(var4, 2);
                 }
             }
-        } catch (Throwable var10) {
-            var10.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -398,8 +398,8 @@ public class SJpegEncoder {
             if (var12 > 0) {
                 this.wBit(var6[var7], var4[var7]);
             }
-        } catch (Throwable var15) {
-            var15.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }

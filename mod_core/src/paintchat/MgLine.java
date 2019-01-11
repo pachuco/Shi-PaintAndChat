@@ -203,9 +203,9 @@ public class MgLine {
                 System.arraycopy(var5, 0, var5, var9, var3);
                 var9 += var3;
             }
-        } catch (Throwable var11) {
-            //throw var11;
-            var11.printStackTrace();
+        } catch (Throwable ex) {
+            //throw ex;
+            ex.printStackTrace();
         }
         // end
 

@@ -114,8 +114,8 @@ public class TBar extends LComponent {
                         Applet var7 = (Applet) this.getParent().getParent();
                         var7.getAppletContext().showDocument(new URL(var7.getCodeBase(), var6), "_blank");
                     }
-                } catch (Throwable var5) {
-                    var5.printStackTrace();
+                } catch (Throwable ex) {
+                    ex.printStackTrace();
                 }
             }
 

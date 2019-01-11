@@ -180,7 +180,7 @@ public class TT extends LComponent implements SW, Runnable {
             }
 
             this.repaint();
-        } catch (Throwable var8) {
+        } catch (Throwable ex) {
             ;
         }
 

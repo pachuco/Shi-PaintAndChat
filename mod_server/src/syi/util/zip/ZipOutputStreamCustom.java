@@ -30,8 +30,8 @@ public class ZipOutputStreamCustom extends ZipOutputStream {
             var2.putZip(new ZipInputStream(new FileInputStream(new File(var1, "PaintBBS.jar"))));
             var2.finish();
             var2.close();
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
         System.exit(0);

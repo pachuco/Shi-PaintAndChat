@@ -178,7 +178,7 @@ public class PaintBBS extends Applet implements Runnable {
             if (var5 != null) {
                 return var5.toLowerCase().startsWith("undef") ? null : var5;
             }
-        } catch (Throwable var9) {
+        } catch (Throwable ex) {
             this.isJs = false;
         }
 
@@ -208,7 +208,7 @@ public class PaintBBS extends Applet implements Runnable {
             this.mI = null;
             this.tools = null;
             this.pP = null;
-        } catch (Throwable var2) {
+        } catch (Throwable ex) {
         }
 
     }
@@ -330,7 +330,7 @@ public class PaintBBS extends Applet implements Runnable {
             } else {
                 return var2;
             }
-        } catch (Throwable var4) {
+        } catch (Throwable ex) {
             return var2;
         }
     }
@@ -339,7 +339,7 @@ public class PaintBBS extends Applet implements Runnable {
         try {
             String var3 = this.getParameter(var1);
             return var3 != null && var3.length() > 0 ? var3 : var2;
-        } catch (Throwable var4) {
+        } catch (Throwable ex) {
             return var2;
         }
     }
@@ -353,7 +353,7 @@ public class PaintBBS extends Applet implements Runnable {
             } else {
                 return var2;
             }
-        } catch (Throwable var5) {
+        } catch (Throwable ex) {
             return var2;
         }
     }
@@ -361,12 +361,12 @@ public class PaintBBS extends Applet implements Runnable {
     public void paint(Graphics var1) {
         try {
             if (this.imAni != null) {
-                var1.drawImage(this.imAni, 0, 0, Color.white, (ImageObserver) null);
+                var1.drawImage(this.imAni, 0, 0, Color.white, null);
             } else {
                 var1.drawString("PaintBBSv2.22_8", 10, var1.getFontMetrics().getHeight() * 2);
             }
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -427,8 +427,8 @@ public class PaintBBS extends Applet implements Runnable {
 
             this.isF = !this.isF;
             this.pP.setVisible(true);
-        } catch (Throwable var9) {
-            var9.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -540,7 +540,7 @@ public class PaintBBS extends Applet implements Runnable {
             if (var12 != null) {
                 var12.close();
             }
-        } catch (Throwable var21) {
+        } catch (Throwable ex) {
         }
 
         if (var10 != '2' && var10 != '3') {
@@ -582,7 +582,7 @@ public class PaintBBS extends Applet implements Runnable {
                     this.v_ani.addElement(var2);
                 }
             }
-        } catch (Throwable var3) {
+        } catch (Throwable ex) {
         }
 
         var2 = new MgLine();
@@ -639,8 +639,8 @@ public class PaintBBS extends Applet implements Runnable {
 
                 Thread.sleep(3000L);
             }
-        } catch (Throwable var9) {
-            var9.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
         this.showStatus("Done.");
@@ -699,8 +699,8 @@ public class PaintBBS extends Applet implements Runnable {
                 this.getAppletContext().showDocument(new URL(this.getCodeBase(), this.sJump != null ? this.sJump : this.p(var1 + "exit", "finish.cgi")), this.p(var1 + "target", "_self"));
                 return;
             }
-        } catch (Throwable var5) {
-            this.tools.message(var5.getMessage() + (this.pP.isJp ? "\n失敗。時間を置いて再度投稿してみて下さい。" : "\nplease push send button again."));
+        } catch (Throwable ex) {
+            this.tools.message(ex.getMessage() + (this.pP.isJp ? "\n失敗。時間を置いて再度投稿してみて下さい。" : "\nplease push send button again."));
         }
 
         this.pP.copy(this.mI.i_offs, this.pP.uimage[0]);
@@ -723,8 +723,8 @@ public class PaintBBS extends Applet implements Runnable {
                 case 's':
                     this.rSave();
             }
-        } catch (Throwable var2) {
-            var2.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -901,12 +901,12 @@ public class PaintBBS extends Applet implements Runnable {
 
             this.tools.message(var45.getMessage());
             return false;
-        } catch (Throwable var46) {
+        } catch (Throwable ex) {
             if (var25 != null) {
                 var25.dispose();
             }
 
-            throw var46;
+            throw ex;
         }
 
         var25.dispose();
@@ -958,7 +958,7 @@ public class PaintBBS extends Applet implements Runnable {
                     this.r(this, 'i', 2);
                 }
             }
-        } catch (Throwable var3) {
+        } catch (Throwable ex) {
         }
 
     }

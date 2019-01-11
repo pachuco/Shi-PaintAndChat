@@ -96,8 +96,8 @@ public class Ao extends ConfigApplet implements ActionListener {
     private void connEtoC1(ActionEvent event) {
         try {
             this.m_destroy();
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
@@ -106,8 +106,8 @@ public class Ao extends ConfigApplet implements ActionListener {
         try {
             this.save();
             this.connEtoC3();
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
@@ -115,8 +115,8 @@ public class Ao extends ConfigApplet implements ActionListener {
     private void connEtoC3() {
         try {
             this.m_destroy();
-        } catch (Throwable var2) {
-            this.handleException(var2);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
@@ -124,8 +124,8 @@ public class Ao extends ConfigApplet implements ActionListener {
     private void connEtoC4() {
         try {
             this.ao2_Start();
-        } catch (Throwable var2) {
-            this.handleException(var2);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
@@ -135,8 +135,8 @@ public class Ao extends ConfigApplet implements ActionListener {
             try {
                 this.ivjadministratorName = new TextField();
                 this.ivjadministratorName.setName("administratorName");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -149,8 +149,8 @@ public class Ao extends ConfigApplet implements ActionListener {
                 this.ivjao_show_html = new Checkbox();
                 this.ivjao_show_html.setName("ao_show_html");
                 this.ivjao_show_html.setLabel("ao_show_html");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -162,8 +162,8 @@ public class Ao extends ConfigApplet implements ActionListener {
 
         try {
             var1 = new GridLayout(0, 1);
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
         return var1;
@@ -175,8 +175,8 @@ public class Ao extends ConfigApplet implements ActionListener {
                 this.ivjApp_Auto_Lobby = new Checkbox();
                 this.ivjApp_Auto_Lobby.setName("App_Auto_Lobby");
                 this.ivjApp_Auto_Lobby.setLabel("App_Auto_Lobby");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -194,8 +194,8 @@ public class Ao extends ConfigApplet implements ActionListener {
                 this.ivjbu_ok.setName("bu_ok");
                 this.ivjbu_ok.setBounds(190, 333, 38, 20);
                 this.ivjbu_ok.setLabel(" OK ");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -209,8 +209,8 @@ public class Ao extends ConfigApplet implements ActionListener {
                 this.ivjButton2.setName("Button2");
                 this.ivjButton2.setBounds(235, 359, 50, 20);
                 this.ivjButton2.setLabel("CANCEL");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -223,8 +223,8 @@ public class Ao extends ConfigApplet implements ActionListener {
                 this.ivjCancel = new LButton();
                 this.ivjCancel.setName("Cancel");
                 this.ivjCancel.setText("Cancel");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -236,8 +236,8 @@ public class Ao extends ConfigApplet implements ActionListener {
             try {
                 this.ivjchatName = new TextField();
                 this.ivjchatName.setName("chatName");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -249,8 +249,8 @@ public class Ao extends ConfigApplet implements ActionListener {
             try {
                 this.ivjchatUrl = new TextField();
                 this.ivjchatUrl.setName("chatUrl");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -262,8 +262,8 @@ public class Ao extends ConfigApplet implements ActionListener {
             try {
                 this.ivjcommentString = new TextField();
                 this.ivjcommentString.setName("commentString");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -275,8 +275,8 @@ public class Ao extends ConfigApplet implements ActionListener {
             try {
                 this.ivjhomepageName = new TextField();
                 this.ivjhomepageName.setName("homepageName");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -288,8 +288,8 @@ public class Ao extends ConfigApplet implements ActionListener {
             try {
                 this.ivjhpUrl = new TextField();
                 this.ivjhpUrl.setName("hpUrl");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -301,8 +301,8 @@ public class Ao extends ConfigApplet implements ActionListener {
             try {
                 this.ivjinformtionServerAddress = new TextField();
                 this.ivjinformtionServerAddress.setName("informtionServerAddress");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -315,8 +315,8 @@ public class Ao extends ConfigApplet implements ActionListener {
                 this.ivjLabel1 = new Label();
                 this.ivjLabel1.setName("Label1");
                 this.ivjLabel1.setText("chatUrl");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -329,8 +329,8 @@ public class Ao extends ConfigApplet implements ActionListener {
                 this.ivjLabel2 = new Label();
                 this.ivjLabel2.setName("Label2");
                 this.ivjLabel2.setText("administratorName");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -343,8 +343,8 @@ public class Ao extends ConfigApplet implements ActionListener {
                 this.ivjLabel3 = new Label();
                 this.ivjLabel3.setName("Label3");
                 this.ivjLabel3.setText("chatName");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -357,8 +357,8 @@ public class Ao extends ConfigApplet implements ActionListener {
                 this.ivjLabel4 = new Label();
                 this.ivjLabel4.setName("Label4");
                 this.ivjLabel4.setText("commentString");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -371,8 +371,8 @@ public class Ao extends ConfigApplet implements ActionListener {
                 this.ivjLabel5 = new Label();
                 this.ivjLabel5.setName("Label5");
                 this.ivjLabel5.setText("hpUrl");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -385,8 +385,8 @@ public class Ao extends ConfigApplet implements ActionListener {
                 this.ivjLabel6 = new Label();
                 this.ivjLabel6.setName("Label6");
                 this.ivjLabel6.setText("homepageName");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -399,8 +399,8 @@ public class Ao extends ConfigApplet implements ActionListener {
                 this.ivjLabel7 = new Label();
                 this.ivjLabel7.setName("Label7");
                 this.ivjLabel7.setText("informtionServerAddress");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -420,8 +420,8 @@ public class Ao extends ConfigApplet implements ActionListener {
                 this.ivjleftPanel.add(this.getLabel5());
                 this.ivjleftPanel.add(this.getLabel6());
                 this.ivjleftPanel.add(this.getLabel7());
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -433,8 +433,8 @@ public class Ao extends ConfigApplet implements ActionListener {
 
         try {
             var1 = new GridLayout(0, 1);
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
         return var1;
@@ -447,8 +447,8 @@ public class Ao extends ConfigApplet implements ActionListener {
                 this.ivjlobby_setup.setName("lobby_setup");
                 this.ivjlobby_setup.setAlignment(1);
                 this.ivjlobby_setup.setText("lobby_setup");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -461,8 +461,8 @@ public class Ao extends ConfigApplet implements ActionListener {
                 this.ivjOk = new LButton();
                 this.ivjOk.setName("Ok");
                 this.ivjOk.setText("   OK   ");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -477,8 +477,8 @@ public class Ao extends ConfigApplet implements ActionListener {
                 this.ivjPanel3.setLayout(new FlowLayout());
                 this.getPanel3().add((Component) this.getOk(), (Object) this.getOk().getName());
                 this.ivjPanel3.add(this.getCancel());
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -493,8 +493,8 @@ public class Ao extends ConfigApplet implements ActionListener {
                 this.ivjpanelBottom.setLayout(this.getpanelBottomFlowLayout());
                 this.getpanelBottom().add((Component) this.getao_show_html(), (Object) this.getao_show_html().getName());
                 this.getpanelBottom().add((Component) this.getApp_Auto_Lobby(), (Object) this.getApp_Auto_Lobby().getName());
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -507,8 +507,8 @@ public class Ao extends ConfigApplet implements ActionListener {
         try {
             var1 = new FlowLayout();
             var1.setAlignment(0);
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
         return var1;
@@ -523,8 +523,8 @@ public class Ao extends ConfigApplet implements ActionListener {
                 this.getPanelConfig().add((Component) this.getPanelContent(), (Object) "Center");
                 this.getPanelConfig().add((Component) this.getPanel3(), (Object) "South");
                 this.getPanelConfig().add((Component) this.getlobby_setup(), (Object) "North");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -540,8 +540,8 @@ public class Ao extends ConfigApplet implements ActionListener {
                 this.getPanelContent().add((Component) this.getleftPanel(), (Object) "West");
                 this.getPanelContent().add((Component) this.getpanelRight(), (Object) "Center");
                 this.getPanelContent().add((Component) this.getpanelBottom(), (Object) "South");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -561,8 +561,8 @@ public class Ao extends ConfigApplet implements ActionListener {
                 this.getpanelRight().add((Component) this.gethpUrl(), (Object) this.gethpUrl().getName());
                 this.getpanelRight().add((Component) this.gethomepageName(), (Object) this.gethomepageName().getName());
                 this.getpanelRight().add((Component) this.getinformtionServerAddress(), (Object) this.getinformtionServerAddress().getName());
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -574,14 +574,14 @@ public class Ao extends ConfigApplet implements ActionListener {
 
         try {
             var1 = new GridLayout(0, 1);
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
         return var1;
     }
 
-    private void handleException(Throwable var1) {
+    private void handleException(Throwable ex) {
     }
 
     public void init() {
@@ -597,8 +597,8 @@ public class Ao extends ConfigApplet implements ActionListener {
             this.load();
             this.initValue();
             ((Dialog) this.getParent()).pack();
-        } catch (Throwable var2) {
-            this.handleException(var2);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
@@ -630,7 +630,7 @@ public class Ao extends ConfigApplet implements ActionListener {
             }
 
             this.getHelp().setIsShow(var2);
-        } catch (Throwable var3) {
+        } catch (Throwable ex) {
         }
 
     }
@@ -647,8 +647,8 @@ public class Ao extends ConfigApplet implements ActionListener {
             this.gethpUrl().setText(var1.getString(this.gethpUrl().getName()));
             this.gethomepageName().setText(var1.getString(this.gethomepageName().getName()));
             this.getinformtionServerAddress().setText(var1.getString(this.getinformtionServerAddress().getName(), "http://www.ax.sakura.ne.jp/~aotama/paintchat/paintchatexcheange.conf"));
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -657,8 +657,8 @@ public class Ao extends ConfigApplet implements ActionListener {
         try {
             this.getHelp().reset();
             ((Window) Awt.getParent(this)).dispose();
-        } catch (Throwable var2) {
-            var2.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -677,9 +677,9 @@ public class Ao extends ConfigApplet implements ActionListener {
                 }
             });
             var1.setVisible(true);
-        } catch (Throwable var5) {
+        } catch (Throwable ex) {
             System.err.println("java.applet.Applet の main() で例外が発生しました");
-            var5.printStackTrace(System.out);
+            ex.printStackTrace(System.out);
         }
 
     }
@@ -707,8 +707,8 @@ public class Ao extends ConfigApplet implements ActionListener {
 
             this.setParameter(this);
             var1.save(new FileOutputStream(var1.getString("File_Config", "cnf/paintchat.cf")), Resource.loadResource("Config"));
-        } catch (Throwable var6) {
-            var6.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }

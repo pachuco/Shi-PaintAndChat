@@ -119,8 +119,8 @@ public class LTextField extends Component {
                 var1.setColor(this.Fr);
                 var1.drawString(this.Text, var3 + this.Gap, this.Gap + var4);
             }
-        } catch (Throwable var6) {
-            var6.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -158,8 +158,8 @@ public class LTextField extends Component {
             }
 
             super.processEvent(awtEvent);
-        } catch (Throwable var7) {
-            var7.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -209,8 +209,8 @@ public class LTextField extends Component {
     public void update(Graphics var1) {
         try {
             this.paint(var1);
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }

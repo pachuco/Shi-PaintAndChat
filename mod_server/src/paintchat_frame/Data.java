@@ -41,8 +41,8 @@ public class Data implements Runnable, ActionListener {
         try {
             Object var2 = event.getSource();
             ThreadPool.poolStartThread(this, (char) (var2 == this.bChat ? 'c' : (var2 == this.bHttp ? 'h' : 'l')));
-        } catch (Throwable var3) {
-            this.debug.log(var3.getMessage());
+        } catch (Throwable ex) {
+            this.debug.log(ex.getMessage());
         }
 
     }
@@ -66,8 +66,8 @@ public class Data implements Runnable, ActionListener {
 
             Process var3 = Runtime.getRuntime().exec(var2.getCanonicalPath() + " 1");
             var3.waitFor();
-        } catch (Throwable var4) {
-            System.out.println("win" + var4);
+        } catch (Throwable ex) {
+            System.out.println("win" + ex);
         }
 
         return true;

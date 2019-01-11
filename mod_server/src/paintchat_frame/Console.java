@@ -37,7 +37,7 @@ public class Console extends TextPanel implements Runnable, DebugListener {
                     }
                 }
             }
-        } catch (Throwable var4) {
+        } catch (Throwable ex) {
         }
 
         this.stop();

@@ -1423,9 +1423,9 @@ public class Mg {
                 default:
                     this.dRetouch((int[]) null);
             }
-        } catch (InterruptedException var2) {
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (InterruptedException ex) {
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
         this.dEnd();
@@ -1698,8 +1698,8 @@ public class Mg {
             } else {
                 this.user.isDirect = false;
             }
-        } catch (Throwable var15) {
-            var15.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -2891,7 +2891,7 @@ public class Mg {
                 this.offset = var14.toByteArray();
                 this.iOffset = this.offset.length;
             }
-        } catch (Throwable var13) {
+        } catch (Throwable ex) {
         }
 
     }

@@ -256,7 +256,7 @@ public abstract class LComponent extends Canvas {
 
                 try {
                     this.paint2(g);
-                } catch (Throwable var9) {
+                } catch (Throwable ex) {
                     ;
                 }
 
@@ -428,7 +428,7 @@ public abstract class LComponent extends Canvas {
             }
 
             super.processEvent(awtEv);
-        } catch (Throwable var19) {
+        } catch (Throwable ex) {
             ;
         }
 

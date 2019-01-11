@@ -119,8 +119,8 @@ public class LineServer {
                 this.addCash(var2, false);
                 break;
             }
-        } catch (Throwable var5) {
-            this.debug.log(var5.getMessage());
+        } catch (Throwable ex) {
+            this.debug.log(ex.getMessage());
         }
 
     }

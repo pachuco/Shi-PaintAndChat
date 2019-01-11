@@ -177,7 +177,7 @@ public class P extends Panel implements IMi {
 
         try {
             var7 = var9.toString().getBytes(this.getCode());
-        } catch (Throwable var10) {
+        } catch (Throwable ex) {
             ;
         }
 
@@ -320,8 +320,8 @@ public class P extends Panel implements IMi {
             String var13 = giveP(loadMode, config.getP("tools", "normal"));
             this.tool = (ToolBox) Class.forName("paintchat." + var13 + ".Tools").newInstance();
             this.tool.init(this, app, config, res, this.mi);
-        } catch (Throwable var24) {
-            var24.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
         this.mi.tBox = this.tool;
@@ -462,7 +462,7 @@ public class P extends Panel implements IMi {
                     }
 
                     return (Cursor) var20.invoke(var9, var8, new Point((int) ((float) var12.width / (float) var6 * (float) var4), (int) ((float) var12.height / (float) var7 * (float) var5)), var1);
-                } catch (Throwable var18) {
+                } catch (Throwable ex) {
                     if (var8 == null) {
                         var8 = this.createImage(new MemoryImageSource(var6, var7, new int[var6 * var7], 0, var6));
                     }
@@ -473,8 +473,8 @@ public class P extends Panel implements IMi {
                     }
                 }
             }
-        } catch (Throwable var19) {
-            var19.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
         return Cursor.getPredefinedCursor(var2);
@@ -497,7 +497,7 @@ public class P extends Panel implements IMi {
             } else {
                 return var2;
             }
-        } catch (Throwable var5) {
+        } catch (Throwable ex) {
             return var2;
         }
     }
@@ -507,7 +507,7 @@ public class P extends Panel implements IMi {
         try {
             String value = this.app.getParameter(parameter);
             return value != null && value.length() > 0 ? value : fallback;
-        } catch (Throwable var4) {
+        } catch (Throwable ex) {
             return fallback;
         }
     }
@@ -522,7 +522,7 @@ public class P extends Panel implements IMi {
             } else {
                 return fallback;
             }
-        } catch (Throwable var5) {
+        } catch (Throwable ex) {
             return fallback;
         }
     }
@@ -535,8 +535,8 @@ public class P extends Panel implements IMi {
 
             this.tool.pack();
             this.mi.resetGraphics();
-        } catch (Throwable var2) {
-            var2.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -635,7 +635,7 @@ public class P extends Panel implements IMi {
                 while ((var6 = var11.readLine()) != null && var6.length() > 0) {
                     ;
                 }
-            } catch (Throwable var20) {
+            } catch (Throwable ex) {
                 ;
             }
         } else {
@@ -670,7 +670,7 @@ public class P extends Panel implements IMi {
                 var23 = var22.toString();
                 var22.setLength(0);
             }
-        } catch (Throwable var19) {
+        } catch (Throwable ex) {
             ;
         }
 
@@ -679,7 +679,7 @@ public class P extends Panel implements IMi {
             if (var10 != null) {
                 var10.close();
             }
-        } catch (Throwable var18) {
+        } catch (Throwable ex) {
             ;
         }
 
@@ -723,7 +723,7 @@ public class P extends Panel implements IMi {
             }
 
             super.processEvent(awtEvent);
-        } catch (Throwable var5) {
+        } catch (Throwable ex) {
             ;
         }
 
@@ -791,7 +791,7 @@ public class P extends Panel implements IMi {
                     }
                 }
             }
-        } catch (Throwable var14) {
+        } catch (Throwable ex) {
             if (var10 != null) {
                 var10.close();
             }
@@ -857,9 +857,9 @@ public class P extends Panel implements IMi {
                     } else {
                         this.app.jump(this.p("security_url"), (String) null);
                     }
-                } catch (Throwable var5) {
-                    var5.printStackTrace();
-                    Ts.alert(var5.getMessage() + '\n' + this.res.res("SendE"));
+                } catch (Throwable ex) {
+                    ex.printStackTrace();
+                    Ts.alert(ex.getMessage() + '\n' + this.res.res("SendE"));
 
                     int var1;
                     for (var1 = 0; var1 < undoMgs.length; ++var1) {
@@ -1069,7 +1069,7 @@ public class P extends Panel implements IMi {
             if (useAdvancedPOST) {
                 try {
                     var3 = this.post(var16, var6, var7, var25, true);
-                } catch (Throwable var30) {
+                } catch (Throwable ex) {
                     useAdvancedPOST = false;
                 }
             }
@@ -1077,9 +1077,9 @@ public class P extends Panel implements IMi {
             if (!useAdvancedPOST) {
                 var3 = this.post(var16, var6, var7, var25, false);
             }
-        } catch (Throwable var31) {
+        } catch (Throwable ex) {
             var12.dispose();
-            throw var31;
+            throw ex;
         }
 
         var12.dispose();
@@ -1202,8 +1202,8 @@ public class P extends Panel implements IMi {
 
                     undoMgs[var6].reset();
                 }
-            } catch (Throwable var13) {
-                var13.printStackTrace();
+            } catch (Throwable ex) {
+                ex.printStackTrace();
             }
 
         }
@@ -1232,7 +1232,7 @@ public class P extends Panel implements IMi {
                 if (var5) {
                     this.wMg(-1);
                 }
-            } catch (Throwable var10) {
+            } catch (Throwable ex) {
                 ;
             }
 
@@ -1315,8 +1315,8 @@ public class P extends Panel implements IMi {
             this.user.wait = 0;
             this.mi.m_paint((Rectangle) null);
             this.tool.up();
-        } catch (Throwable var12) {
-            var12.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }

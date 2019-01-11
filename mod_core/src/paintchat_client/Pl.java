@@ -90,8 +90,8 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
             } else {
                 this.typed();
             }
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -100,7 +100,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
         //TODO: proper exit when d_isDesktop
         try {
             this.applet.getAppletContext().showDocument(new URL(this.applet.getDocumentBase(), this.dd.config.getP("exit", "../index.html")));
-        } catch (Throwable var1) {
+        } catch (Throwable ex) {
             ;
         }
 
@@ -153,8 +153,8 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
 
             this.dd = null;
             this.tool = null;
-        } catch (Throwable var2) {
-            var2.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -213,8 +213,8 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
 
                 this.pack();
             }
-        } catch (Throwable var7) {
-            var7.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -248,7 +248,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
                 var2.drawString((String) "PaintChatClient v3.66", 10, 10 + var5);
                 var2.drawString((String) var3, 10, 10 + var5 * 2);
                 var2.dispose();
-            } catch (Throwable var6) {
+            } catch (Throwable ex) {
                 ;
             }
 
@@ -287,8 +287,8 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
                         this.dSound(0);
                 }
             }
-        } catch (Throwable var4) {
-            var4.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -356,8 +356,8 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
                     return (Cursor) Class.forName("com.ms.awt.CursorX").getConstructors()[0].newInstance(var8, new Integer(var4), new Integer(var5));
                 }
             }
-        } catch (Throwable var19) {
-            var19.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
         return Cursor.getPredefinedCursor(var2);
@@ -523,7 +523,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
                 Awt.clBarT = new Color(var4.getP(var2 + "_bar_text", 0xFFFFFF));
                 Awt.getDef(this);
                 Awt.setPFrame((Frame) Awt.getParent(this));
-            } catch (Throwable var13) {
+            } catch (Throwable ex) {
                 ;
             }
 
@@ -546,8 +546,8 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
             try {
                 this.tool = (ToolBox) Class.forName("paintchat." + var9 + ".Tools").newInstance();
                 this.tool.init(this.miPanel, this.applet, this.dd.config, this.res, this.mi);
-            } catch (Throwable var12) {
-                var12.printStackTrace();
+            } catch (Throwable ex) {
+                ex.printStackTrace();
             }
 
             this.mkTextPanel();
@@ -576,8 +576,8 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
             this.dd.config.put("chat_password", var10.mGetPass());
             this.dd.start();
             this.addInOut(var11, true);
-        } catch (Throwable var14) {
-            var14.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -614,8 +614,8 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
                 case 'p':
                     this.rPack();
             }
-        } catch (Throwable var2) {
-            var2.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -698,8 +698,8 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
                     }
                 }
             }
-        } catch (Throwable var7) {
-            var7.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -730,8 +730,8 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
                 this.tText.addText(msg, true);
                 this.dSound(1);
             }
-        } catch (Throwable var2) {
-            var2.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }

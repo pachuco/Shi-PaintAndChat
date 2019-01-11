@@ -343,7 +343,7 @@ public class TPen extends LComponent implements Runnable {
             }
 
             this.repaint();
-        } catch (Throwable var7) {
+        } catch (Throwable ex) {
             ;
         }
 

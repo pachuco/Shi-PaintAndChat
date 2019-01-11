@@ -85,8 +85,8 @@ public class CustomDeflaterOutputStream {
             CustomDeflaterOutputStream var2 = new CustomDeflaterOutputStream(new FileOutputStream(var1), false);
             var2.write(var0);
             var2.close(var0.getName());
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -98,8 +98,8 @@ public class CustomDeflaterOutputStream {
             compress(var2, var1);
             var2.delete();
             var1.renameTo(var2);
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
         System.exit(0);

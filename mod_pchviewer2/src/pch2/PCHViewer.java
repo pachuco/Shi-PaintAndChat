@@ -46,8 +46,8 @@ public class PCHViewer extends Applet implements Runnable {
     public void clearPCH() {
         try {
             this.getPCH().clearPCH();
-        } catch (Throwable var2) {
-            var2.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -55,8 +55,8 @@ public class PCHViewer extends Applet implements Runnable {
     public void clearPCH(String var1) {
         try {
             this.getPCH(var1).clearPCH();
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -69,8 +69,8 @@ public class PCHViewer extends Applet implements Runnable {
                 this.tLoad.interrupt();
                 this.tLoad = null;
             }
-        } catch (Throwable var2) {
-            var2.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -94,8 +94,8 @@ public class PCHViewer extends Applet implements Runnable {
 
                 this.imIcon = this.createImage(new MemoryImageSource(16, 16, var6, 0, 16));
             }
-        } catch (Throwable var9) {
-            var9.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
         return this.imIcon;
@@ -104,7 +104,7 @@ public class PCHViewer extends Applet implements Runnable {
     public int getLineCount() {
         try {
             return this.getPCH().getLineCount();
-        } catch (Throwable var1) {
+        } catch (Throwable ex) {
             return 0;
         }
     }
@@ -112,7 +112,7 @@ public class PCHViewer extends Applet implements Runnable {
     public int getLineCount(Object var1) {
         try {
             return this.getPCH(var1).getLineCount();
-        } catch (Throwable var2) {
+        } catch (Throwable ex) {
             return 0;
         }
     }
@@ -191,8 +191,8 @@ public class PCHViewer extends Applet implements Runnable {
     public int getSeek() {
         try {
             return this.getPCH().getSeek();
-        } catch (Throwable var2) {
-            var2.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
             return 0;
         }
     }
@@ -200,8 +200,8 @@ public class PCHViewer extends Applet implements Runnable {
     public int getSeek(Object var1) {
         try {
             this.getPCH(var1).getSeek();
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
         return 0;
@@ -239,10 +239,10 @@ public class PCHViewer extends Applet implements Runnable {
                 if (var1 instanceof Frame) {
                     ((Frame) var1).setIconImage(this.getIcon());
                 }
-            } catch (Throwable var2) {
+            } catch (Throwable ex) {
             }
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -280,8 +280,8 @@ public class PCHViewer extends Applet implements Runnable {
             synchronized (this.tLoad) {
                 this.tLoad.notify();
             }
-        } catch (Throwable var6) {
-            var6.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -317,8 +317,8 @@ public class PCHViewer extends Applet implements Runnable {
             if (var3 != null && var3.length() > 0) {
                 return var3;
             }
-        } catch (Throwable var4) {
-            var4.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
         return var2;
@@ -343,8 +343,8 @@ public class PCHViewer extends Applet implements Runnable {
     public synchronized void playPCH() {
         try {
             this.getPCH().playPCH();
-        } catch (Throwable var2) {
-            var2.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -352,8 +352,8 @@ public class PCHViewer extends Applet implements Runnable {
     public synchronized void playPCH(Object var1) {
         try {
             this.getPCH(var1).playPCH();
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -377,8 +377,8 @@ public class PCHViewer extends Applet implements Runnable {
             }
 
             this.table.clear();
-        } catch (Throwable var4) {
-            var4.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -398,8 +398,8 @@ public class PCHViewer extends Applet implements Runnable {
                     this.remove(this.pch);
                 }
             }
-        } catch (Throwable var4) {
-            var4.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -436,9 +436,9 @@ public class PCHViewer extends Applet implements Runnable {
                     this.tLoad.wait();
                 }
             }
-        } catch (InterruptedException var7) {
-        } catch (Throwable var8) {
-            var8.printStackTrace();
+        } catch (InterruptedException ex) {
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -456,8 +456,8 @@ public class PCHViewer extends Applet implements Runnable {
     public void setMark(Object var1, String var2) {
         try {
             this.getPCH(var1).setMark(this.i(var2));
-        } catch (Throwable var4) {
-            var4.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -465,8 +465,8 @@ public class PCHViewer extends Applet implements Runnable {
     public void setMark(String var1) {
         try {
             this.getPCH().setMark(this.i(var1));
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -478,8 +478,8 @@ public class PCHViewer extends Applet implements Runnable {
             PCHCanvas var6 = this.getPCH(var1);
             var6.setSize(var4, var5);
             ((Window) var6.getParent()).pack();
-        } catch (Throwable var7) {
-            var7.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -494,8 +494,8 @@ public class PCHViewer extends Applet implements Runnable {
             int var3 = this.i(var1);
             int var4 = this.i(var2);
             this.getPCH().setSize(var3, var4);
-        } catch (Throwable var5) {
-            var5.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -503,8 +503,8 @@ public class PCHViewer extends Applet implements Runnable {
     public void setSpeed(Object var1, String var2) {
         try {
             this.getPCH(var1).setSpeed(Integer.decode(var2));
-        } catch (Throwable var4) {
-            var4.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -512,8 +512,8 @@ public class PCHViewer extends Applet implements Runnable {
     public void setSpeed(String var1) {
         try {
             this.getPCH().setSpeed(Integer.decode(var1));
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -521,8 +521,8 @@ public class PCHViewer extends Applet implements Runnable {
     public void setVisit(Object var1, String var2, String var3) {
         try {
             this.getPCH(var1).setVisit(this.i(var2), this.i(var3) != 0);
-        } catch (Throwable var5) {
-            var5.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -530,8 +530,8 @@ public class PCHViewer extends Applet implements Runnable {
     public void setVisit(String var1, String var2) {
         try {
             this.getPCH().setVisit(this.i(var1), this.i(var2) != 0);
-        } catch (Throwable var4) {
-            var4.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -555,12 +555,12 @@ public class PCHViewer extends Applet implements Runnable {
                     if (pchFile.length() > 0) {
                         this.loadPCH(this.getCodeBase() + pchFile);
                     }
-                } catch (Throwable var3) {
-                    var3.printStackTrace();
+                } catch (Throwable ex) {
+                    ex.printStackTrace();
                 }
             }
-        } catch (Throwable var5) {
-            var5.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -568,8 +568,8 @@ public class PCHViewer extends Applet implements Runnable {
     public void suspendPCH() {
         try {
             this.getPCH().suspendDraw();
-        } catch (Throwable var2) {
-            var2.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -577,8 +577,8 @@ public class PCHViewer extends Applet implements Runnable {
     public void suspendPCH(Object var1) {
         try {
             this.getPCH(var1).suspendDraw();
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }

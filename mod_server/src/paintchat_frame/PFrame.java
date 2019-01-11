@@ -384,8 +384,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
                 Applet var1 = new Applet();
                 var1.setStub(ServerStub.getDefaultStub(this.getConfig(), this.getResource()));
                 this.ivjConsole.init(var1, 400, this.ivjConsole.getBackground(), this.ivjConsole.getForeground(), (TextField) null);
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -396,8 +396,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
         if (this.ivjData == null) {
             try {
                 this.ivjData = new Data();
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -410,8 +410,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
                 this.ivjHelp = new HelpWindow(this);
                 this.ivjHelp.setName("Help");
                 this.ivjHelp.setBounds(275, 283, 76, 75);
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -424,8 +424,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
                 this.ivjHttp_Button = new LButton();
                 this.ivjHttp_Button.setName("Http_Button");
                 this.ivjHttp_Button.setForeground(new Color(80, 80, 120));
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -438,8 +438,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
                 this.ivjHttp_Port = new LTextField();
                 this.ivjHttp_Port.setName("Http_Port");
                 this.ivjHttp_Port.setText("80");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -453,8 +453,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
                 this.ivjIp.setName("Ip");
                 this.ivjIp.setText("127.0.0.1");
                 this.ivjIp.setEdit(false);
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -467,8 +467,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
                 this.ivjLobby_Button = new LButton();
                 this.ivjLobby_Button.setName("Lobby_Button");
                 this.ivjLobby_Button.setForeground(new Color(80, 80, 120));
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -480,8 +480,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
             try {
                 this.ivjMenu_FilesCopy = new MenuItem();
                 this.ivjMenu_FilesCopy.setLabel("Menu_FilesCopy");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -493,8 +493,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
             try {
                 this.ivjMenu_Help_Update = new MenuItem();
                 this.ivjMenu_Help_Update.setLabel("Menu_Help_Update");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -511,8 +511,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
                 this.ivjMenu1.add(this.getMenuItem1());
                 this.ivjMenu1.add(this.getMenuItem2());
                 this.ivjMenu1.add(this.getMenuItem9());
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -532,8 +532,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
                 this.ivjMenu2.add(this.getMenu_FilesCopy());
                 this.ivjMenu2.add((MenuItem) this.getMenuShowConsole());
                 this.ivjMenu2.add((MenuItem) this.getMenuShowHelp());
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -550,8 +550,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
                 this.ivjMenu3.add(this.getMenu_Help_Update());
                 this.ivjMenu3.add(this.getMenuHelpDocument());
                 this.ivjMenu3.add(this.getMenuItem6());
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -563,8 +563,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
             try {
                 this.ivjMenuHelpDocument = new MenuItem();
                 this.ivjMenuHelpDocument.setLabel("Menu_Help_Document");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -577,8 +577,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
                 this.ivjMenuItem1 = new MenuItem();
                 this.ivjMenuItem1.setActionCommand("Menu.Server.HTTP");
                 this.ivjMenuItem1.setLabel("Menu_Action_HTTP");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -590,8 +590,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
             try {
                 this.ivjMenuItem10 = new MenuItem();
                 this.ivjMenuItem10.setLabel("Menu_Option_Server");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -604,8 +604,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
                 this.ivjMenuItem2 = new MenuItem();
                 this.ivjMenuItem2.setActionCommand("Menu.Server.PaintChat");
                 this.ivjMenuItem2.setLabel("Menu_Action_PaintChat");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -618,8 +618,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
                 this.ivjMenuItem3 = new MenuItem();
                 this.ivjMenuItem3.setActionCommand("Menu.Option.Config");
                 this.ivjMenuItem3.setLabel("Menu_Option_Config");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -632,8 +632,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
                 this.ivjMenuItem4 = new MenuItem();
                 this.ivjMenuItem4.setActionCommand("Menu.Option.Lobby");
                 this.ivjMenuItem4.setLabel("Menu_Option_Lobby");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -645,8 +645,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
             try {
                 this.ivjMenuItem6 = new MenuItem();
                 this.ivjMenuItem6.setLabel("Menu_Help_About");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -658,8 +658,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
             try {
                 this.ivjMenuItem9 = new MenuItem();
                 this.ivjMenuItem9.setLabel("Menu_Action_Client");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -671,8 +671,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
             try {
                 this.ivjMenuShowConsole = new CheckboxMenuItem();
                 this.ivjMenuShowConsole.setLabel("Menu_Option_ShowConsole");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -684,8 +684,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
             try {
                 this.ivjMenuShowHelp = new CheckboxMenuItem();
                 this.ivjMenuShowHelp.setLabel("Menu_Option_ShowHelp");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -698,8 +698,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
                 this.ivjPaintchat_Button = new LButton();
                 this.ivjPaintchat_Button.setName("Paintchat_Button");
                 this.ivjPaintchat_Button.setForeground(new Color(80, 80, 120));
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -712,8 +712,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
                 this.ivjPaintchat_Port = new LTextField();
                 this.ivjPaintchat_Port.setName("Paintchat_Port");
                 this.ivjPaintchat_Port.setText("0");
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -729,8 +729,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
                 this.ivjPanel3.setBackground(new Color(204, 204, 204));
                 this.ivjPanel3.setForeground(new Color(80, 80, 120));
                 this.getPanel3().add((Component) this.getPanelLeft(), (Object) this.getPanelLeft().getName());
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -745,8 +745,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
             var1.setAlignment(1);
             var1.setVgap(5);
             var1.setHgap(5);
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
         return var1;
@@ -766,8 +766,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
                 this.getPanelLeft().add((Component) this.getPaintchat_Button(), (Object) this.getPaintchat_Button().getName());
                 this.getPanelLeft().add((Component) this.getHttp_Button(), (Object) this.getHttp_Button().getName());
                 this.getPanelLeft().add((Component) this.getLobby_Button(), (Object) this.getLobby_Button().getName());
-            } catch (Throwable var2) {
-                this.handleException(var2);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -781,8 +781,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
             var1 = new GridLayout(0, 1);
             var1.setVgap(3);
             var1.setHgap(0);
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
         return var1;
@@ -795,8 +795,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
             var1 = new BorderLayout();
             var1.setVgap(0);
             var1.setHgap(0);
-        } catch (Throwable var3) {
-            this.handleException(var3);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
         return var1;
@@ -816,8 +816,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
                 for (int var3 = 0; var3 < var2; ++var3) {
                     this.setResource(var1.getMenu(var3));
                 }
-            } catch (Throwable var4) {
-                this.handleException(var4);
+            } catch (Throwable ex) {
+                this.handleException(ex);
             }
         }
 
@@ -833,7 +833,7 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
         return this.res;
     }
 
-    private void handleException(Throwable var1) {
+    private void handleException(Throwable ex) {
     }
 
     public void init() {
@@ -879,8 +879,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
             this.setTitle("PaintChat");
             this.add((Component) this.getPanel3(), (Object) "West");
             this.initConnections();
-        } catch (Throwable var2) {
-            this.handleException(var2);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
     }
@@ -905,8 +905,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
         try {
             PFrame var1 = new PFrame();
             var1.init();
-        } catch (Throwable var2) {
-            var2.printStackTrace(System.out);
+        } catch (Throwable ex) {
+            ex.printStackTrace(System.out);
             System.exit(0);
         }
 
@@ -936,7 +936,7 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
 
         try {
             new ConfigDialog("paintchat.config.ConfigServer", "cnf/dialogs.jar", this.config, this.res, "(C)しぃちゃん PaintChatApp v3.66");
-        } catch (Throwable var1) {
+        } catch (Throwable ex) {
         }
 
     }
@@ -944,8 +944,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
     public void menuItem3_ActionPerformed(ActionEvent event) {
         try {
             new ConfigDialog("paintchat.config.PConfig", "cnf/dialogs.jar", this.config, this.res, "(C)しぃちゃん PaintChatApp v3.66");
-        } catch (Throwable var3) {
-            this.debug.log(var3.getMessage());
+        } catch (Throwable ex) {
+            this.debug.log(ex.getMessage());
         }
 
     }
@@ -953,8 +953,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
     public void menuItem4_ActionPerformed() {
         try {
             new ConfigDialog("paintchat.config.Ao", "cnf/dialogs.jar", this.config, this.res, "(C)しぃちゃん PaintChatApp v3.66");
-        } catch (Throwable var2) {
-            this.debug.log(var2.getMessage());
+        } catch (Throwable ex) {
+            this.debug.log(ex.getMessage());
         }
 
     }
@@ -1059,8 +1059,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
             }
 
             this.dispose();
-        } catch (Throwable var2) {
-            var2.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -1116,8 +1116,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
             this.pack();
             Awt.moveCenter(this);
             this.setVisible(true);
-        } catch (Throwable var5) {
-            var5.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -1131,8 +1131,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
                 case 'i':
                     this.rInit();
             }
-        } catch (Throwable var2) {
-            var2.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -1220,8 +1220,8 @@ public class PFrame extends Frame implements ActionListener, ItemListener, Mouse
             AppletWatcher var1 = new AppletWatcher("paintchat_client.Client", "(C)しぃちゃん PaintChatApp v3.66", this.config, this.res, false);
             var1.setIconImage(this.getIconImage());
             var1.show();
-        } catch (Throwable var2) {
-            this.debug.log(var2.getMessage());
+        } catch (Throwable ex) {
+            this.debug.log(ex.getMessage());
         }
 
     }

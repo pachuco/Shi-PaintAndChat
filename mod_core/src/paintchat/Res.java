@@ -105,7 +105,7 @@ public class Res extends Hashtable {
             if (var3 != null && var3.length() > 0) {
                 return parseInt(var3);
             }
-        } catch (Throwable var4) {
+        } catch (Throwable ex) {
             ;
         }
 
@@ -256,7 +256,7 @@ public class Res extends Hashtable {
                 this.loadZip(var2);
                 return;
             }
-        } catch (Throwable var3) {
+        } catch (Throwable ex) {
             ;
         }
 

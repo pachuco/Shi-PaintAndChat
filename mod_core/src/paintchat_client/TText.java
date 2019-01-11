@@ -34,8 +34,8 @@ public class TText extends PaintChatTalker {
             this.write(this.stm);
             this.stm.reset();
             this.flush();
-        } catch (Throwable var2) {
-            var2.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -100,8 +100,8 @@ public class TText extends PaintChatTalker {
             this.write(this.stm);
             this.flush();
             this.mStop();
-        } catch (Throwable var2) {
-            var2.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }

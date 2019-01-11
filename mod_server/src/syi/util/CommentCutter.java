@@ -189,8 +189,8 @@ class CommentCutter {
             File var2 = new File(var3, var4);
             CommentCutter var6 = new CommentCutter(new BufferedReader(new InputStreamReader(new FileInputStream(var1), "JISAutoDetect")), new BufferedWriter(new OutputStreamWriter(new FileOutputStream(var2))));
             var6.cut();
-        } catch (Throwable var7) {
-            var7.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
         System.exit(0);

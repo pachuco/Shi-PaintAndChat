@@ -322,8 +322,8 @@ public class TalkerHttp implements Runnable {
         } catch (EOFException var2) {
         } catch (FileNotFoundException var3) {
             this.sendMessage(3, this.strRequest);
-        } catch (Throwable var4) {
-            this.server.debug.log(var4.getMessage());
+        } catch (Throwable ex) {
+            this.server.debug.log(ex.getMessage());
         }
 
         this.close();
@@ -332,7 +332,7 @@ public class TalkerHttp implements Runnable {
     public void run() {
         try {
             this.rRun();
-        } catch (Throwable var1) {
+        } catch (Throwable ex) {
         }
 
     }

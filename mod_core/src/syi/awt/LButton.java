@@ -125,7 +125,7 @@ public class LButton extends Canvas {
 
             g.setColor(this.getForeground());
             g.drawString(this.Text, (this.size.width - this.textWidth) / 2, fontMetrics.getMaxAscent() + this.Gap + 1);
-        } catch (Throwable var4) {
+        } catch (Throwable ex) {
             ;
         }
 
@@ -164,8 +164,8 @@ public class LButton extends Canvas {
             }
 
             super.processEvent(awtEvent);
-        } catch (Throwable var4) {
-            var4.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }

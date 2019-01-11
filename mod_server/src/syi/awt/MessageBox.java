@@ -69,8 +69,8 @@ public class MessageBox extends Dialog implements ActionListener {
             }
 
             ((Window) var3).dispose();
-        } catch (Throwable var5) {
-            var5.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -153,8 +153,8 @@ public class MessageBox extends Dialog implements ActionListener {
 
             var5.setVisible(true);
             var4 = var5.bool;
-        } catch (Throwable var6) {
-            System.out.println("message" + var6);
+        } catch (Throwable ex) {
+            System.out.println("message" + ex);
         }
 
         return var4;

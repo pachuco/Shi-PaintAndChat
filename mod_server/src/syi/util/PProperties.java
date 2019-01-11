@@ -61,7 +61,7 @@ public class PProperties extends Hashtable {
             if (var3 != null && var3.length() > 0) {
                 return Integer.decode(var3);
             }
-        } catch (Throwable var4) {
+        } catch (Throwable ex) {
         }
 
         return var2;

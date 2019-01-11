@@ -52,8 +52,8 @@ public class Tools implements ToolBox, ActionListener {
                     break;
                 }
             }
-        } catch (Throwable var6) {
-            var6.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -203,8 +203,8 @@ public class Tools implements ToolBox, ActionListener {
 
             var1.add(var6);
             var6.show(var1, var4, var5);
-        } catch (Throwable var11) {
-            var11.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }

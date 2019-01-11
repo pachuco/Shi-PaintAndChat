@@ -61,15 +61,16 @@ public class ServerStub implements AppletContext, AppletStub {
         return null;
     }
 
-    public AudioClip getAudioClip(URL var1) {
+    public AudioClip getAudioClip(URL url) {
+        //could be done better
         try {
-            return new AppletAudioClip(var1);
-        } catch (Throwable var4) {
-            System.out.println((Object) var4);
+            return new AppletAudioClip(url);
+        } catch (Throwable ex1) {
+            System.out.println((Object) ex1);
 
             try {
-                return (AudioClip) var1.getContent();
-            } catch (Exception var3) {
+                return (AudioClip) url.getContent();
+            } catch (Exception ex2) {
                 return null;
             }
         }

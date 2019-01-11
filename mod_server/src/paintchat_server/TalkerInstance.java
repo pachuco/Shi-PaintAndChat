@@ -39,8 +39,8 @@ public class TalkerInstance implements Runnable {
     public void run() {
         try {
             this.switchConnection(this.socket);
-        } catch (Throwable var2) {
-            var2.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
             this.closeSocket();
         }
 
@@ -52,9 +52,9 @@ public class TalkerInstance implements Runnable {
         ThreadPool.poolStartThread(var2, "sock_switch");
     }
 
-    private boolean isKillAddress(Socket var1) {
+    private boolean isKillAddress(Socket socket) {
         try {
-            InetAddress var2 = var1.getInetAddress();
+            InetAddress var2 = socket.getInetAddress();
             Vector2 var3 = this.textServer.vKillIP;
 
             for (int var5 = 0; var5 < var3.size(); ++var5) {
@@ -70,25 +70,25 @@ public class TalkerInstance implements Runnable {
         return false;
     }
 
-    private void switchConnection(Socket var1) throws IOException {
-        ByteInputStream var2 = new ByteInputStream();
-        InputStream var3 = var1.getInputStream();
-        this.In = var3;
-        this.isAscii = Io.r(var3) != 98;
+    private void switchConnection(Socket socket) throws IOException {
+        ByteInputStream byteInStream = new ByteInputStream();
+        InputStream inStream = socket.getInputStream();
+        this.In = inStream;
+        this.isAscii = Io.r(inStream) != 98;
         if (this.isAscii) {
             this.switchAsciiConnection();
         } else {
-            int var4 = Io.readUShort(var3);
+            int var4 = Io.readUShort(inStream);
             if (var4 <= 0) {
                 throw new IOException("protocol unknown");
             } else {
                 byte[] var5 = new byte[var4];
-                Io.rFull(var3, var5, 0, var4);
+                Io.rFull(inStream, var5, 0, var4);
                 Res var6 = new Res();
-                var2.setBuffer(var5, 0, var4);
-                var6.load((InputStream) var2);
+                byteInStream.setBuffer(var5, 0, var4);
+                var6.load((InputStream) byteInStream);
                 if (var6.getBool("local_admin")) {
-                    this.switchLocalAdmin(var1, var6);
+                    this.switchLocalAdmin(socket, var6);
                 } else {
                     Object var7 = null;
                     String var8 = var6.get("protocol", "");
@@ -108,7 +108,7 @@ public class TalkerInstance implements Runnable {
                             var6.put("permission", this.serverStatus.get("Client_Permission"));
                         }
 
-                        ((PaintChatTalker) var7).mStart(this.socket, var3, (OutputStream) null, var6);
+                        ((PaintChatTalker) var7).mStart(this.socket, inStream, (OutputStream) null, var6);
                     }
 
                 }

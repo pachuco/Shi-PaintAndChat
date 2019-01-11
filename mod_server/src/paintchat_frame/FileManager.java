@@ -44,8 +44,8 @@ public class FileManager {
                     Io.copyFile(Io.makeFile(var3, var4 + var1), new File(var6, var1));
                 }
             }
-        } catch (Throwable var8) {
-            var8.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }

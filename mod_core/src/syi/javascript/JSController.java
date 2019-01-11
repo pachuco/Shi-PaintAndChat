@@ -46,7 +46,7 @@ public class JSController {
             }
 
             return this.mCall.invoke(this.oJava, var1, var2).toString();
-        } catch (Throwable var5) {
+        } catch (Throwable ex) {
             throw new IOException("Can't call " + var1);
         }
     }
@@ -219,7 +219,7 @@ public class JSController {
 
         try {
             return var3.indexOf(91) >= 0 ? this.getArray(var1, var2) : this.mGetMember.invoke(var1, var2);
-        } catch (Throwable var4) {
+        } catch (Throwable ex) {
             throw new IOException("can't get " + var2[0]);
         }
     }
@@ -269,7 +269,7 @@ public class JSController {
         try {
             Object var2 = this.mEval.invoke(this.oJava, var1);
             return var2 == null ? "" : var2.toString();
-        } catch (Throwable var3) {
+        } catch (Throwable ex) {
             throw new IOException("ScriptError");
         }
     }
@@ -337,7 +337,7 @@ public class JSController {
                 this.mSetMember.invoke(var4, var5, var2);
             }
 
-        } catch (Throwable var6) {
+        } catch (Throwable ex) {
             throw new IOException("can't set " + var5);
         }
     }
@@ -350,7 +350,7 @@ public class JSController {
             }
 
             this.oJava = this.mGet.invoke((Object) null, this.applet);
-        } catch (Throwable var2) {
+        } catch (Throwable ex) {
             this.oJava = null;
             throw new IOException("No support JavaScript");
         }

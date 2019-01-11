@@ -48,7 +48,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
             this.pP.undo_in(var2);
             this.tF.setVisible(false);
             this.m_paint();
-        } catch (Throwable var3) {
+        } catch (Throwable ex) {
         }
 
     }
@@ -323,10 +323,10 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
 
             do {
                 var14 = Math.min(var14, var11 - var9);
-                var1.drawImage(this.mg_b.makeLPic((int[]) null, this.i_offs, var6, var7, var8, var9, var13, var14), var12, (var9 - var5) * var3, var13 * var3, var14 * var3, Color.white, (ImageObserver) null);
+                var1.drawImage(this.mg_b.makeLPic(null, this.i_offs, var6, var7, var8, var9, var13, var14), var12, (var9 - var5) * var3, var13 * var3, var14 * var3, Color.white, (ImageObserver) null);
             } while ((var9 += var14) < var11);
-        } catch (Throwable var15) {
-            var15.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -603,12 +603,12 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
                     break;
                 case 3:
                     Point var10 = event.getPoint();
-                    this.tools.setLineSize((Point) null, this.tools.lSize - (this.old_po.y - var10.y), event.isShiftDown());
-                    this.tools.m_paint((Graphics) null);
+                    this.tools.setLineSize(null, this.tools.lSize - (this.old_po.y - var10.y), event.isShiftDown());
+                    this.tools.m_paint(null);
                     this.old_po = var10;
             }
-        } catch (Throwable var8) {
-            var8.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -713,7 +713,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
     public void windowClosing(WindowEvent event) {
         try {
             this.pbbs.popup(true);
-        } catch (Throwable var2) {
+        } catch (Throwable ex) {
         }
 
     }

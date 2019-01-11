@@ -56,7 +56,7 @@ public class Data {
                     this.tText.mRStop();
                     this.tText = null;
                 }
-            } catch (Throwable var1) {
+            } catch (Throwable ex) {
                 ;
             }
 
@@ -208,7 +208,7 @@ public class Data {
         try {
             String var3 = this.pl.applet.getParameter(var1);
             return var3 != null && var3.length() > 0 ? var3 : var2;
-        } catch (Throwable var4) {
+        } catch (Throwable ex) {
             return var2;
         }
     }

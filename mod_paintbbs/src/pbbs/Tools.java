@@ -172,13 +172,13 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
                 COLORS = new int[DEFC.length];
                 System.arraycopy(DEFC, 0, COLORS, 0, DEFC.length);
                 this.fit(1.0F, 1.0F, false);
-            } catch (Throwable var9) {
-                var9.printStackTrace();
+            } catch (Throwable ex) {
+                ex.printStackTrace();
             }
 
             this.CASHS = new int[]{0, 1, 255, 60, 0, 0xFFFFFF, 5, 255, 60, 19, 0xFFFFFF, 10, 255, 60, 19};
-        } catch (Throwable var10) {
-            var10.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -187,8 +187,8 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
         try {
             this.isD = event.getActionCommand().equals("  Yes  ") || event.getActionCommand().equals(" OK ");
             ((Dialog) ((Component) event.getSource()).getParent().getParent()).dispose();
-        } catch (Throwable var3) {
-            var3.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -287,7 +287,7 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
             }
 
             return var1.toString();
-        } catch (Throwable var3) {
+        } catch (Throwable ex) {
             return null;
         }
     }
@@ -311,8 +311,8 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
 
             var0.setBackground(var3);
             var0.setForeground(var2);
-        } catch (Throwable var6) {
-            var6.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -566,9 +566,9 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
             var7.append(" Hints=");
             var7.append(this.getMgName(this.lHints));
             this.app.showStatus(var7.toString());
-            this.m_paint((Graphics) null);
-        } catch (Throwable var8) {
-            var8.printStackTrace();
+            this.m_paint(null);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -910,8 +910,8 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
             var5 += this.D_RGB.height + 4;
             ++var4;
             var2[var4].setBounds(0, var5, this.D_TOOL.width, (int) (20.0F * var1));
-        } catch (Throwable var7) {
-            var7.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -956,8 +956,8 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
             getDefC(var4);
             var4.addNotify();
             return var4;
-        } catch (Throwable var10) {
-            var10.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
             return null;
         }
     }
@@ -987,7 +987,7 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
             } else {
                 return var2;
             }
-        } catch (Throwable var5) {
+        } catch (Throwable ex) {
             return var2;
         }
     }
@@ -996,7 +996,7 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
         try {
             String var3 = this.app.getParameter(var1);
             return var3 != null && var3.length() > 0 ? var3 : var2;
-        } catch (Throwable var4) {
+        } catch (Throwable ex) {
             return var2;
         }
     }
@@ -1010,7 +1010,7 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
             } else {
                 return var2;
             }
-        } catch (Throwable var5) {
+        } catch (Throwable ex) {
             return var2;
         }
     }
@@ -1089,9 +1089,9 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
             }
 
             System.arraycopy(DEFC, 0, COLORS, 0, COLORS.length);
-            this.m_paint((Graphics) null);
-        } catch (Throwable var4) {
-            var4.printStackTrace();
+            this.m_paint(null);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -1183,8 +1183,8 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
             COLORS[this.now_color] = var8;
             this.clLine = var8;
             this.clAlpha = Math.max(var9, 1);
-        } catch (Throwable var10) {
-            var10.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }

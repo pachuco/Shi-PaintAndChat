@@ -29,7 +29,7 @@ public class DataBeanInfo extends SimpleBeanInfo {
             }
 
             return null;
-        } catch (Throwable var6) {
+        } catch (Throwable ex) {
             return null;
         }
     }
@@ -40,7 +40,7 @@ public class DataBeanInfo extends SimpleBeanInfo {
         Class var1;
         try {
             var1 = this.getBeanDescriptor().getBeanClass().getSuperclass();
-        } catch (Throwable var5) {
+        } catch (Throwable ex) {
             return null;
         }
 
@@ -98,7 +98,7 @@ public class DataBeanInfo extends SimpleBeanInfo {
             var1 = var10000;
             var1.setDisplayName("paintchat_frame.Data");
             var1.setShortDescription("paintchat_frame.Data");
-        } catch (Throwable var3) {
+        } catch (Throwable ex) {
         }
 
         return var1;
@@ -128,8 +128,8 @@ public class DataBeanInfo extends SimpleBeanInfo {
         try {
             EventSetDescriptor[] var1 = new EventSetDescriptor[0];
             return var1;
-        } catch (Throwable var2) {
-            this.handleException(var2);
+        } catch (Throwable ex) {
+            this.handleException(ex);
             return null;
         }
     }
@@ -151,8 +151,8 @@ public class DataBeanInfo extends SimpleBeanInfo {
         try {
             MethodDescriptor[] var1 = new MethodDescriptor[0];
             return var1;
-        } catch (Throwable var2) {
-            this.handleException(var2);
+        } catch (Throwable ex) {
+            this.handleException(ex);
             return null;
         }
     }
@@ -161,13 +161,13 @@ public class DataBeanInfo extends SimpleBeanInfo {
         try {
             PropertyDescriptor[] var1 = new PropertyDescriptor[]{this.isNativeWindowsPropertyDescriptor()};
             return var1;
-        } catch (Throwable var2) {
-            this.handleException(var2);
+        } catch (Throwable ex) {
+            this.handleException(ex);
             return null;
         }
     }
 
-    private void handleException(Throwable var1) {
+    private void handleException(Throwable ex) {
     }
 
     public PropertyDescriptor isNativeWindowsPropertyDescriptor() {
@@ -181,8 +181,8 @@ public class DataBeanInfo extends SimpleBeanInfo {
                 try {
                     var3 = new Class[0];
                     var2 = getBeanClass().getMethod("getIsNativeWindows", var3);
-                } catch (Throwable var6) {
-                    this.handleException(var6);
+                } catch (Throwable ex) {
+                    this.handleException(ex);
                     var2 = findMethod(getBeanClass(), "getIsNativeWindows", 0);
                 }
 
@@ -192,18 +192,18 @@ public class DataBeanInfo extends SimpleBeanInfo {
                 try {
                     Class[] var4 = new Class[]{Boolean.TYPE};
                     var9 = getBeanClass().getMethod("setIsNativeWindows", var4);
-                } catch (Throwable var5) {
-                    this.handleException(var5);
+                } catch (Throwable ex) {
+                    this.handleException(ex);
                     var9 = findMethod(getBeanClass(), "setIsNativeWindows", 1);
                 }
 
                 var1 = new PropertyDescriptor("isNativeWindows", var2, var9);
-            } catch (Throwable var7) {
-                this.handleException(var7);
+            } catch (Throwable ex) {
+                this.handleException(ex);
                 var1 = new PropertyDescriptor("isNativeWindows", getBeanClass());
             }
-        } catch (Throwable var8) {
-            this.handleException(var8);
+        } catch (Throwable ex) {
+            this.handleException(ex);
         }
 
         return var1;

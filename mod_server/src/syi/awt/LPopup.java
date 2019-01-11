@@ -59,7 +59,7 @@ public class LPopup extends Component {
             var1.drawRect(0, 0, var2.width - 1, var2.height - 1);
             var1.setColor(Color.white);
             var1.fillRect(1, 1, var2.width - 2, var2.height - 2);
-        } catch (Throwable var3) {
+        } catch (Throwable ex) {
         }
 
     }

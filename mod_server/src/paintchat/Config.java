@@ -149,8 +149,8 @@ public class Config extends PProperties {
     public void saveConfig(File var1, String var2) {
         try {
             this.save(new FileOutputStream(var1 == null ? new File(this.getString("File_Config", "./cnf/paintchat.cf")) : var1), Resource.loadResource(var2 != null && var2.length() > 0 ? var2 : "Config"));
-        } catch (Throwable var4) {
-            var4.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }

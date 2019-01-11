@@ -35,8 +35,8 @@ public class Tab extends LComponent {
             this.mEx = var5.getMethod("getPressureExtent", (Class[]) null);
             this.setTitle("tablet");
             var1.add(this, 0);
-        } catch (Throwable var6) {
-            var6.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -108,8 +108,8 @@ public class Tab extends LComponent {
                 g.drawString(this.STR[i] + '.' + (var9 ? "On" : "Off"), sizeBar + 2, y + sizeBar - 2);
                 this.dBar(g, i);
             }
-        } catch (Throwable var10) {
-            var10.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
     }
@@ -160,7 +160,7 @@ public class Tab extends LComponent {
 
                     return true;
                 }
-            } catch (Throwable var1) {
+            } catch (Throwable ex) {
                 ;
             }
 
@@ -175,8 +175,8 @@ public class Tab extends LComponent {
             } else {
                 this.strange = 0;
             }
-        } catch (Throwable var2) {
-            var2.printStackTrace();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
         }
 
         return this.strange;
