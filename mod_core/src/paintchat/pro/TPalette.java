@@ -40,7 +40,7 @@ public class TPalette extends LComponent {
         if (clRGB == null) {
             clRGB = new Color[][]{
                     {Color.magenta, Color.cyan, Color.white, Color.lightGray},
-                    {new Color(0xfa9696), new Color(0x82f238), new Color(0x8080ff), Color.lightGray}
+                    {new Color(0xFA9696), new Color(0x82F238), new Color(0x8080FF), Color.lightGray}
             };
         }
 

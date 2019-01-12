@@ -68,7 +68,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
     private LComponent[] cs; // ui components
     private Window[] ws;
     private static int[] DEFC = new int[]{
-            0x000000, 0xFFFFFF, 0xb47575, 0x888888, 0xfa9696, 0xc096c0, 0xffb6ff, 0x8080ff, 0x25c7c9,0xe7e58d, 0xe7962d, 0x99cb7b, 0xfcece2, 0xf9ddcf};
+            0x000000, 0xFFFFFF, 0xB47575, 0x888888, 0xFA9696, 0xC096C0, 0xFFB6FF, 0x8080FF, 0x25C7C9,0xE7E58D, 0xE7962D, 0x99CB7B, 0xFCECE2, 0xF9DDCF};
     private static int[] COLORS = new int[14];
     private static Color[][] clRGB;
     private static Color[][] clERGB;
@@ -86,7 +86,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
     static {
         // copies default palette DEFC to user palette COLORS
         System.arraycopy(DEFC, 0, COLORS, 0, 14);
-        clRGB = new Color[][]{{Color.magenta, Color.cyan, Color.white, Color.lightGray}, {new Color(0xfa9696), new Color(0x82f238), new Color(0x8080ff), Color.lightGray}};
+        clRGB = new Color[][]{{Color.magenta, Color.cyan, Color.white, Color.lightGray}, {new Color(0xFA9696), new Color(0x82F238), new Color(0x8080FF), Color.lightGray}};
         clERGB = new Color[2][4];
 
         for (int i = 0; i < 2; ++i) {
@@ -259,13 +259,13 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
         System.arraycopy(DEFC, 0, COLORS, 0, 14);
         this.sCMode(false);
         String toolColorPrefix = "tool_color_";
-        this.setBackground(new Color(this.i(toolColorPrefix + "bk", this.i(toolColorPrefix + "back", 0x9999bb))));
-        this.clB = new Color(this.i(toolColorPrefix + "button", 0xffe8dfae));
-        this.clB2 = new Color(this.i(toolColorPrefix + "button" + '2', 0xf8daaa));
+        this.setBackground(new Color(this.i(toolColorPrefix + "bk", this.i(toolColorPrefix + "back", 0x9999BB))));
+        this.clB = new Color(this.i(toolColorPrefix + "button", 0xFFE8DFAE));
+        this.clB2 = new Color(this.i(toolColorPrefix + "button" + '2', 0xF8DAAA));
         this.clFrame = new Color(this.i(toolColorPrefix + "frame", 0x000000));
         this.clText = new Color(this.i(toolColorPrefix + "text", 0x773333));
-        this.clBar = new Color(this.i(toolColorPrefix + "bar", 0xddddff));
-        this.clSel = new Color(this.i(toolColorPrefix + "iconselect", this.i("color_iconselect", 0xee3333)));
+        this.clBar = new Color(this.i(toolColorPrefix + "bar", 0xDDDDFF));
+        this.clSel = new Color(this.i(toolColorPrefix + "iconselect", this.i("color_iconselect", 0xEE3333)));
         this.clBL = new Color(this.i(toolColorPrefix + "button" + "_hl", this.clB.brighter().getRGB()));
         this.clBD = new Color(this.i(toolColorPrefix + "button" + "_dk", this.clB.darker().getRGB()));
         this.isWest = "left".equals(config.getP("tool_align"));
