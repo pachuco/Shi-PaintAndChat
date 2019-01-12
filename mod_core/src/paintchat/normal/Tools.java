@@ -52,7 +52,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
     private int fit_h = -1;
     private int nowButton = -1; // current GUI button index
     private int nowColor = -1; // current palette index
-    private int oldPen;
+    private int oldPen; // previous pen
     Color clFrame;
     Color clB;
     Color clBD;
@@ -61,11 +61,11 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
     Color clBar;
     Color clB2;
     Color clSel;
-    private boolean isWest = false;
+    private boolean isWest = false; // floats the toolbar to the left of the canvas
     private boolean isLarge;
     private boolean isVisible = true;
-    private PopupMenu popup;
-    private LComponent[] cs;
+    private PopupMenu popup; // popup menu, currently only used to change pen mask by right clicking the line size slider
+    private LComponent[] cs; // ui components
     private Window[] ws;
     private static int[] DEFC = new int[]{
             0x000000, 0xFFFFFF, 0xb47575, 0x888888, 0xfa9696, 0xc096c0, 0xffb6ff, 0x8080ff, 0x25c7c9,0xe7e58d, 0xe7962d, 0x99cb7b, 0xfcece2, 0xf9ddcf};
@@ -75,15 +75,16 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
     private final char[][] clV = new char[][]{{'H', 'S', 'B', 'A'}, {'R', 'G', 'B', 'A'}};
     private boolean isRGB = true;
     private float[] fhsb = new float[3];
-    private int iColor;
+    private int iColor; // current color
     protected Image imBack = null;
     private Graphics back;
     protected int W;
     protected int H;
-    protected int IMW;
-    protected int IMH;
+    protected int IMW; // toolbar icons width
+    protected int IMH; // toolbar icons height
 
     static {
+        // copies default palette DEFC to user palette COLORS
         System.arraycopy(DEFC, 0, COLORS, 0, 14);
         clRGB = new Color[][]{{Color.magenta, Color.cyan, Color.white, Color.lightGray}, {new Color(0xfa9696), new Color(0x82f238), new Color(0x8080ff), Color.lightGray}};
         clERGB = new Color[2][4];
@@ -99,7 +100,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
     public Tools() {
         this.setTitle("Toolbar");
         super.isHide = false;
-        super.iGap = 2;
+        super.iGap = 2; // padding between tool list border and content
     }
 
     public void actionPerformed(ActionEvent event) {
@@ -124,62 +125,63 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
         }
     }
 
-    /** Adds a component */
-    public void addC(Object var1) {
-        int var2;
-        if (var1 instanceof LComponent) {
+    /** Adds a component or window to their respective lists */
+    public void addC(Object obj) {
+
+        if (obj instanceof LComponent) {
             if (this.cs == null) {
-                this.cs = new LComponent[]{(LComponent) var1};
+                this.cs = new LComponent[]{(LComponent) obj};
                 return;
             }
 
-            for (var2 = 0; var2 < this.cs.length; ++var2) {
-                if (this.cs[var2] == var1) {
+            for (int i = 0; i < this.cs.length; ++i) {
+                if (this.cs[i] == obj) {
                     return;
                 }
             }
 
-            var2 = this.cs.length;
-            LComponent[] var3 = new LComponent[var2 + 1];
-            System.arraycopy(this.cs, 0, var3, 0, var2);
-            var3[var2] = (LComponent) var1;
-            this.cs = var3;
+            int componentCount = this.cs.length;
+            LComponent[] componentList = new LComponent[componentCount + 1];
+            System.arraycopy(this.cs, 0, componentList, 0, componentCount);
+            componentList[componentCount] = (LComponent) obj;
+            this.cs = componentList;
         } else {
             if (this.ws == null) {
-                this.ws = new Window[]{(Window) var1};
+                this.ws = new Window[]{(Window) obj};
                 return;
             }
 
-            for (var2 = 0; var2 < this.ws.length; ++var2) {
-                if (this.ws[var2] == var1) {
+            for (int i = 0; i < this.ws.length; ++i) {
+                if (this.ws[i] == obj) {
                     return;
                 }
             }
 
-            var2 = this.ws.length;
-            Window[] var4 = new Window[var2 + 1];
-            System.arraycopy(this.cs, 0, var4, 0, var2);
-            var4[var2] = (Window) var1;
-            this.ws = var4;
+            int windowCount = this.ws.length;
+            Window[] windowList = new Window[windowCount + 1];
+            System.arraycopy(this.cs, 0, windowList, 0, windowCount);
+            windowList[windowCount] = (Window) obj;
+            this.ws = windowList;
         }
 
     }
 
+    /** Loads the background images for the tools */
     public Graphics getBack() {
         if (this.imBack == null) {
             synchronized (this) {
                 if (this.imBack == null) {
                     try {
-                        int var2 = 0;
+                        int height = 0;
 
-                        for (int var3 = 0; var3 < this.list.length; ++var3) {
-                            var2 = Math.max(var2, this.list[var3].r.height);
+                        for (int i = 0; i < this.list.length; ++i) {
+                            height = Math.max(height, this.list[i].r.height);
                         }
 
-                        var2 = Math.max(var2, 32) * 2;
-                        this.imBack = this.createImage(this.W + 1, var2 + 1);
+                        height = Math.max(height, 32) * 2;
+                        this.imBack = this.createImage(this.W + 1, height + 1);
                         this.back = this.imBack.getGraphics();
-                    } catch (RuntimeException var4) {
+                    } catch (RuntimeException ex) {
                         this.imBack = null;
                         this.back = null;
                     }
@@ -194,20 +196,21 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
         return this.back;
     }
 
+    /** Returns a list of the current palette colors in hexadecimal format */
     public String getC() {
         try {
-            int[] var1 = COLORS == null ? DEFC : COLORS;
-            StringBuffer var2 = new StringBuffer();
+            int[] colors = COLORS == null ? DEFC : COLORS; // either from custom palette or default colors
+            StringBuffer colorList = new StringBuffer();
 
-            for (int var3 = 0; var3 < var1.length; ++var3) {
-                if (var3 != 0) {
-                    var2.append('\n');
+            for (int i = 0; i < colors.length; ++i) {
+                if (i != 0) {
+                    colorList.append('\n');
                 }
 
-                var2.append("#" + Integer.toHexString(0xFF000000 | var1[var3] & 0xFFFFFF).substring(2).toUpperCase());
+                colorList.append("#" + Integer.toHexString(0xFF000000 | colors[i] & 0xFFFFFF).substring(2).toUpperCase());
             }
 
-            return var2.toString();
+            return colorList.toString();
         } catch (Throwable ex) {
             return null;
         }
@@ -218,8 +221,8 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
     }
 
     public Dimension getCSize() {
-        Dimension var1 = this.parent.getSize();
-        return new Dimension(var1.width - this.getSizeW().width - this.mi.getGapW(), var1.height);
+        Dimension parentSize = this.parent.getSize();
+        return new Dimension(parentSize.width - this.getSizeW().width - this.mi.getGapW(), parentSize.height);
     }
 
     private int getRGB() {
@@ -228,13 +231,13 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
 
 
     //FIXME: Why is this called "i"?
-    private int i(String var1, int var2) {
-        return this.config.getP(var1, var2);
+    private int i(String key, int fallback) {
+        return this.config.getP(key, fallback);
     }
 
     //FIXME: Why is this called "i"?
-    public boolean i(String var1, boolean var2) {
-        return this.config.getP(var1, var2);
+    public boolean i(String key, boolean fallback) {
+        return this.config.getP(key, fallback);
     }
 
     public void init(Container parent, Applet app, Res config, Res res, Mi mi) {
@@ -255,16 +258,16 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
 
         System.arraycopy(DEFC, 0, COLORS, 0, 14);
         this.sCMode(false);
-        String var6 = "tool_color_";
-        this.setBackground(new Color(this.i(var6 + "bk", this.i(var6 + "back", 0x9999bb))));
-        this.clB = new Color(this.i(var6 + "button", 0xffe8dfae));
-        this.clB2 = new Color(this.i(var6 + "button" + '2', 0xf8daaa));
-        this.clFrame = new Color(this.i(var6 + "frame", 0x000000));
-        this.clText = new Color(this.i(var6 + "text", 0x773333));
-        this.clBar = new Color(this.i(var6 + "bar", 0xddddff));
-        this.clSel = new Color(this.i(var6 + "iconselect", this.i("color_iconselect", 0xee3333)));
-        this.clBL = new Color(this.i(var6 + "button" + "_hl", this.clB.brighter().getRGB()));
-        this.clBD = new Color(this.i(var6 + "button" + "_dk", this.clB.darker().getRGB()));
+        String toolColorPrefix = "tool_color_";
+        this.setBackground(new Color(this.i(toolColorPrefix + "bk", this.i(toolColorPrefix + "back", 0x9999bb))));
+        this.clB = new Color(this.i(toolColorPrefix + "button", 0xffe8dfae));
+        this.clB2 = new Color(this.i(toolColorPrefix + "button" + '2', 0xf8daaa));
+        this.clFrame = new Color(this.i(toolColorPrefix + "frame", 0x000000));
+        this.clText = new Color(this.i(toolColorPrefix + "text", 0x773333));
+        this.clBar = new Color(this.i(toolColorPrefix + "bar", 0xddddff));
+        this.clSel = new Color(this.i(toolColorPrefix + "iconselect", this.i("color_iconselect", 0xee3333)));
+        this.clBL = new Color(this.i(toolColorPrefix + "button" + "_hl", this.clB.brighter().getRGB()));
+        this.clBD = new Color(this.i(toolColorPrefix + "button" + "_dk", this.clB.darker().getRGB()));
         this.isWest = "left".equals(config.getP("tool_align"));
         this.isLarge = config.getP("icon_enlarge", true);
         this.is_l = config.getP("tool_layer", true);
@@ -279,20 +282,20 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
         if (this.rects == null) {
             return -1;
         } else {
-            int rectsCount = this.rects.length;
-            int toolsCount = this.list.length;
+            int rectCount = this.rects.length;
+            int toolCount = this.list.length;
 
             int i;
-            for (i = 0; i < toolsCount; ++i) {
+            for (i = 0; i < toolCount; ++i) {
                 if (this.list[i].r.contains(x, y)) {
                     return i;
                 }
             }
 
-            for (i = 0; i < rectsCount; ++i) {
+            for (i = 0; i < rectCount; ++i) {
                 Rectangle rect = this.rects[i];
                 if (rect != null && rect.contains(x, y)) {
-                    return i + toolsCount;
+                    return i + toolCount;
                 }
             }
 
@@ -307,31 +310,31 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
     }
 
     private void makeList() {
-        Image var3 = null;
-        int var4 = 0;
-        int var5 = 0;
+        Image imgIcon = null;
+        int iconWidth = 0;
+        int iconHeight = 0;
 
         try {
-            String var2 = "res/s.gif";
-            Image var6 = this.getToolkit().createImage((byte[]) this.config.getRes(var2));
-            Awt.wait(var6);
-            var3 = var6;
-            this.config.remove(var2);
-            int var7 = this.i("tool_icon_count", 7);
-            this.list = new ToolList[var7];
-            var4 = var6.getWidth((ImageObserver) null) / var7;
-            var5 = this.i("tool_icon_height", var6.getHeight((ImageObserver) null) / 9);
-            this.IMW = var4;
-            this.IMH = var5;
-        } catch (RuntimeException var8) {
+            String filePath = "res/s.gif";
+            Image spritesheet = this.getToolkit().createImage((byte[]) this.config.getRes(filePath));
+            Awt.wait(spritesheet);
+            imgIcon = spritesheet;
+            this.config.remove(filePath);
+            int iconCount = this.i("tool_icon_count", 7);
+            this.list = new ToolList[iconCount];
+            iconWidth = spritesheet.getWidth((ImageObserver) null) / iconCount;
+            iconHeight = this.i("tool_icon_height", spritesheet.getHeight((ImageObserver) null) / 9);
+            this.IMW = iconWidth;
+            this.IMH = iconHeight;
+        } catch (RuntimeException ex) {
             ;
         }
 
-        for (int var9 = 0; var9 < this.list.length; ++var9) {
-            ToolList var1;
-            this.list[var9] = var1 = new ToolList();
-            var1.init(this, this.res, this.config, this.mg, this.list, var9);
-            var1.setImage(var3, var4, var5, var9);
+        for (int i = 0; i < this.list.length; ++i) {
+            ToolList toolList;
+            this.list[i] = toolList = new ToolList();
+            toolList.init(this, this.res, this.config, this.mg, this.list, i);
+            toolList.setImage(imgIcon, iconWidth, iconHeight, i);
         }
 
     }
@@ -407,31 +410,31 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
         this.popup.show(this, x, y);
     }
 
-    public void mPaint(int var1) {
-        Rectangle var2;
-        if (var1 == -1) {
-            var2 = this.rPaint;
-            var2.setSize(this.getSize());
-            var2.setLocation(0, 0);
-        } else if (var1 < this.list.length) {
-            var2 = this.rPaint;
-            var2.setBounds(this.list[var1].r);
+    public void mPaint(int toolID) {
+        Rectangle rect;
+        if (toolID == -1) {
+            rect = this.rPaint;
+            rect.setSize(this.getSize());
+            rect.setLocation(0, 0);
+        } else if (toolID < this.list.length) {
+            rect = this.rPaint;
+            rect.setBounds(this.list[toolID].r);
         } else {
-            var2 = this.rects[var1 - this.list.length];
+            rect = this.rects[toolID - this.list.length];
         }
 
-        this.mPaint(this.primary(), var2);
+        this.mPaint(this.primary(), rect);
     }
 
-    public void mPaint(int var1, int var2, int var3, int var4) {
-        Rectangle var5 = this.rPaint;
-        var5.setBounds(var1, var2, var3, var4);
-        this.mPaint(this.primary(), var5);
+    public void mPaint(int x, int y, int width, int height) {
+        Rectangle rect = this.rPaint;
+        rect.setBounds(x, y, width, height);
+        this.mPaint(this.primary(), rect);
     }
 
     private void mPaint(Graphics g, Rectangle rect) {
         if (this.rects != null && g != null && this.list != null) {
-            Graphics var3 = this.getBack();
+            Graphics background = this.getBack();
             if (rect == null) {
                 rect = g.getClipBounds();
                 if (rect == null || rect.isEmpty()) {
@@ -440,118 +443,123 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
             }
 
             if (!rect.isEmpty()) {
-                int var6 = this.list.length;
-                Dimension var7 = this.getSize();
-                var3.setFont(this.fDef);
+                int toolCount = this.list.length;
+                Dimension size = this.getSize();
+                background.setFont(this.fDef);
 
-                int var4;
-                for (var4 = 0; var4 < var6; ++var4) {
-                    if (this.list[var4].r.intersects(rect)) {
-                        this.list[var4].paint(g, var3);
+                int toolID;
+                for (toolID = 0; toolID < toolCount; ++toolID) {
+                    if (this.list[toolID].r.intersects(rect)) {
+                        this.list[toolID].paint(g, background);
                     }
                 }
 
-                var3.setFont(this.fIg);
-                int var9 = this.isRGB ? 1 : 0;
+                background.setFont(this.fIg);
+                int colorMode = this.isRGB ? 1 : 0;
 
-                for (var4 = 0; var4 < this.rects.length; ++var4) {
-                    Rectangle var8 = this.rects[var4];
-                    int var5 = var4 + var6;
-                    if (var8.intersects(rect)) {
-                        if (var4 < 14) {
-                            Color var10 = new Color(COLORS[var4]);
-                            var3.setColor(var4 == this.nowColor ? var10.darker() : var10.brighter());
-                            var3.drawRect(1, 1, var8.width - 2, var8.height - 2);
-                            var3.setColor(var10);
-                            var3.fillRect(2, 2, var8.width - 3, var8.height - 3);
-                            var3.setColor(this.nowColor == var4 ? this.clSel : this.clFrame);
+                for (toolID = 0; toolID < this.rects.length; ++toolID) {
+                    Rectangle toolRect = this.rects[toolID];
+                    int currentSlider = toolID + toolCount;
+                    if (toolRect.intersects(rect)) {
+                        if (toolID < 14) {
+                            Color color = new Color(COLORS[toolID]);
+                            background.setColor(toolID == this.nowColor ? color.darker() : color.brighter());
+                            background.drawRect(1, 1, toolRect.width - 2, toolRect.height - 2);
+                            background.setColor(color);
+                            background.fillRect(2, 2, toolRect.width - 3, toolRect.height - 3);
+                            background.setColor(this.nowColor == toolID ? this.clSel : this.clFrame);
                         } else {
-                            int var12;
-                            int var13;
-                            int var14;
-                            switch (var4) {
-                                case 18:
-                                    boolean var17 = this.mg.isText();
-                                    Color var11 = new Color(this.getRGB());
-                                    var12 = var17 ? 255 : this.info.getPMMax();
-                                    var13 = var8.width - 10;
-                                    var14 = var8.height - 2;
-                                    var3.setColor(this.clB2);
-                                    var3.fillRect(1, 1, var8.width - 2, var14);
-                                    if (this.mg.iSize >= var12) {
-                                        this.mg.iSize = var12 - 1;
+                            int maxLineSize;
+                            int toolWidth;
+                            int toolHeight;
+                            switch (toolID) {
+                                case 18: // line size
+                                    boolean isTextTool = this.mg.isText();
+                                    Color color = new Color(this.getRGB());
+                                    maxLineSize = isTextTool ? 255 : this.info.getPMMax();
+                                    toolWidth = toolRect.width - 10;
+                                    toolHeight = toolRect.height - 2;
+                                    background.setColor(this.clB2);
+                                    background.fillRect(1, 1, toolRect.width - 2, toolHeight);
+                                    if (this.mg.iSize >= maxLineSize) {
+                                        this.mg.iSize = maxLineSize - 1;
                                     }
 
-                                    var3.setColor(var11);
-                                    var3.fillRect(1, 1, var13, (int) ((float) (this.mg.iSize + 1) / (float) var12 * (float) var14));
+                                    // vertical slider
+                                    background.setColor(color);
+                                    background.fillRect(1, 1, toolWidth, (int) ((float) (this.mg.iSize + 1) / (float) maxLineSize * (float) toolHeight));
                                     if (this.info.getPenMask() == null) {
                                         return;
                                     }
 
-                                    var3.setColor(this.clText);
-                                    var3.drawString((String) String.valueOf(this.mg.iSize), 6, var14 - 1);
-                                    var3.setColor(this.clFrame);
-                                    var3.fillRect(var13, 1, 1, var14);
-                                    var3.fillRect(var13 + 1, var14 / 2, 8, 1);
-                                    var3.setColor(var11);
+                                    // size text
+                                    background.setColor(this.clText);
+                                    background.drawString((String) String.valueOf(this.mg.iSize), 6, toolHeight - 1);
 
-                                    for (int var15 = 3; var15 >= 1; --var15) {
-                                        var3.fillRect(var8.width - 5 - var15, var15 + 2, var15 << 1, 1);
-                                        var3.fillRect(var8.width - 5 - var15, var14 - 2 - var15, var15 << 1, 1);
+                                    // increase/decrease buttons
+                                    background.setColor(this.clFrame);
+                                    background.fillRect(toolWidth, 1, 1, toolHeight);
+                                    background.fillRect(toolWidth + 1, toolHeight / 2, 8, 1); // horizontal divider
+                                    background.setColor(color);
+
+                                    for (int arrowWidth = 3; arrowWidth >= 1; --arrowWidth) {
+                                        background.fillRect(toolRect.width - 5 - arrowWidth, arrowWidth + 2, arrowWidth << 1, 1);
+                                        background.fillRect(toolRect.width - 5 - arrowWidth, toolHeight - 2 - arrowWidth, arrowWidth << 1, 1);
                                     }
 
-                                    var3.fillRect(var8.width - 6, 5, 2, 8);
-                                    var3.fillRect(var8.width - 6, var14 - 11, 2, 8);
+                                    background.fillRect(toolRect.width - 6, 5, 2, 8);
+                                    background.fillRect(toolRect.width - 6, toolHeight - 11, 2, 8);
                                     break;
-                                case 19:
-                                    var3.setColor(this.clBar);
-                                    var3.fillRect(1, 1, var8.width - 1, var8.height - 2);
+                                case 19: // layer
+                                    background.setColor(this.clBar);
+                                    background.fillRect(1, 1, toolRect.width - 1, toolRect.height - 2);
                                     if (this.info.layers != null && this.info.layers.length > this.mg.iLayer) {
-                                        LO var16 = this.info.layers[this.mg.iLayer];
-                                        var3.setColor(this.clText);
-                                        if (var16.name != null) {
-                                            var3.drawString((String) var16.name, 2, var8.height - var3.getFontMetrics().getMaxDescent() - 1);
+                                        LO layer = this.info.layers[this.mg.iLayer];
+                                        background.setColor(this.clText);
+                                        if (layer.name != null) {
+                                            background.drawString((String) layer.name, 2, toolRect.height - background.getFontMetrics().getMaxDescent() - 1);
                                         }
 
-                                        if (var16.iAlpha == 0.0F) {
-                                            var3.setColor(Color.red);
-                                            var3.drawLine(1, 1, var8.width - 3, var8.height - 3);
+                                        if (layer.iAlpha == 0.0F) {
+                                            background.setColor(Color.red);
+                                            background.drawLine(1, 1, toolRect.width - 3, toolRect.height - 3);
                                         }
                                     }
                                     break;
                                 default:
-                                    int var18 = var4 - 14;
-                                    int var19 = var8.height;
-                                    var12 = var4 == 17 ? this.mg.iAlpha : this.iColor >>> (2 - var18) * 8 & 255;
-                                    var13 = (int) ((float) (var7.width - 10 - 2) / 255.0F * (float) var12);
-                                    var3.setColor(this.clB2);
-                                    var3.fillRect(0, 0, 5, var19 - 1);
-                                    var3.fillRect(var8.width - 5, 1, 5, var19 - 1);
-                                    var3.setColor(this.clFrame);
-                                    var3.fillRect(5, 1, 1, var19 - 1);
-                                    var3.fillRect(var8.width - 5 - 1, 1, 1, var19 - 1);
-                                    if (var13 > 0) {
-                                        var3.setColor(clRGB[var9][var18]);
-                                        var3.fillRect(6, 1, var13, var8.height - 2);
+                                    // color sliders
+                                    int channel = toolID - 14;
+                                    int colorSliderHeight = toolRect.height;
+                                    maxLineSize = toolID == 17 ? this.mg.iAlpha : this.iColor >>> (2 - channel) * 8 & 255;
+                                    toolWidth = (int) ((float) (size.width - 10 - 2) / 255.0F * (float) maxLineSize);
+                                    background.setColor(this.clB2);
+                                    background.fillRect(0, 0, 5, colorSliderHeight - 1);
+                                    background.fillRect(toolRect.width - 5, 1, 5, colorSliderHeight - 1);
+                                    background.setColor(this.clFrame);
+                                    background.fillRect(5, 1, 1, colorSliderHeight - 1);
+                                    background.fillRect(toolRect.width - 5 - 1, 1, 1, colorSliderHeight - 1);
+                                    if (toolWidth > 0) {
+                                        background.setColor(clRGB[colorMode][channel]);
+                                        background.fillRect(6, 1, toolWidth, toolRect.height - 2);
                                     }
 
-                                    var14 = var8.width - 10 - var13 - 2;
-                                    if (var14 > 0) {
-                                        var3.setColor(this.clBar);
-                                        var3.fillRect(var13 + 5 + 1, 1, var14, var8.height - 2);
-                                        var3.setColor(clERGB[var9][var18]);
-                                        var3.fillRect(var13 + 5 + 1, 1, 1, var8.height - 2);
+                                    toolHeight = toolRect.width - 10 - toolWidth - 2;
+                                    if (toolHeight > 0) {
+                                        background.setColor(this.clBar);
+                                        background.fillRect(toolWidth + 5 + 1, 1, toolHeight, toolRect.height - 2);
+                                        background.setColor(clERGB[colorMode][channel]);
+                                        background.fillRect(toolWidth + 5 + 1, 1, 1, toolRect.height - 2);
                                     }
 
-                                    var3.setColor(this.clText);
-                                    var3.drawString((String) (String.valueOf(this.clV[var9][var18]) + var12), 8, var8.height - 2);
+                                    background.setColor(this.clText);
+                                    background.drawString((String) (String.valueOf(this.clV[colorMode][channel]) + maxLineSize), 8, toolRect.height - 2);
                             }
 
-                            var3.setColor(this.nowButton == var5 ? this.clSel : this.clFrame);
+                            background.setColor(this.nowButton == currentSlider ? this.clSel : this.clFrame);
                         }
 
-                        var3.drawRect(0, 0, var8.width - 1, var8.height - 1);
-                        g.drawImage(this.imBack, var8.x, var8.y, var8.x + var8.width, var8.y + var8.height, 0, 0, var8.width, var8.height, Color.white, (ImageObserver) null);
+                        background.drawRect(0, 0, toolRect.width - 1, toolRect.height - 1);
+                        g.drawImage(this.imBack, toolRect.x, toolRect.y, toolRect.x + toolRect.width, toolRect.y + toolRect.height, 0, 0, toolRect.width, toolRect.height, Color.white, (ImageObserver) null);
                     }
                 }
 
@@ -579,7 +587,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
 
             } else {
                 id -= this.list.length;
-                Rectangle var7 = this.rects[id];
+                Rectangle toolRect = this.rects[id];
                 if (id - 14 < 0) { // palette buttons
                     if (isModifier) {
                         COLORS[id] = this.mg.iColor; // replaces palette color
@@ -597,7 +605,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
                     id -= 14;
                     int currentLayerIndex;
                     if (id - 4 < 0) {
-                        currentLayerIndex = mouseX <= 5 ? -1 : (mouseX >= var7.width - 5 ? 1 : 0);
+                        currentLayerIndex = mouseX <= 5 ? -1 : (mouseX >= toolRect.width - 5 ? 1 : 0);
                         if (currentLayerIndex != 0) {
                             this.nowButton = -1;
                             if (isModifier) {
@@ -618,8 +626,8 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
                                 this.nowButton = -1;
                                 this.menu(mouseX, mouseY, 2);
                             } else {
-                                if (mouseX >= var7.x + var7.width - 10) {
-                                    this.setLineSize(0, Math.max(this.mg.iSize + ((var7.y + var7.height - mouseY) / 2 >= 10 ? -1 : 1), 0));
+                                if (mouseX >= toolRect.x + toolRect.width - 10) {
+                                    this.setLineSize(0, Math.max(this.mg.iSize + ((toolRect.y + toolRect.height - mouseY) / 2 >= 10 ? -1 : 1), 0));
                                     this.nowButton = -1;
                                 } else {
                                     this.setLineSize(mouseY, -1);
@@ -788,12 +796,12 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
     protected void processEvent(AWTEvent event) {
         switch (event.getID()) {
             case ComponentEvent.COMPONENT_MOVED:
-                int var2 = this.getLocation().x;
-                int var3 = this.getParent().getSize().width / 2 - this.getSize().width / 2;
-                if (var2 < var3 && !this.isWest) {
+                int locationX = this.getLocation().x;
+                int center = this.getParent().getSize().width / 2 - this.getSize().width / 2;
+                if (locationX < center && !this.isWest) {
                     this.isWest = true;
                     this.pack();
-                } else if (var2 >= var3 && this.isWest) {
+                } else if (locationX >= center && this.isWest) {
                     this.isWest = false;
                     this.pack();
                 }
@@ -809,35 +817,37 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
         super.processEvent(event);
     }
 
-    private void sCMode(boolean var1) {
-        this.isRGB = !var1;
+    /** Alternates between RGB and HSB if true */
+    private void sCMode(boolean switchColorMode) {
+        this.isRGB = !switchColorMode;
         this.toColor(this.mg.iColor);
     }
 
-    public void selPix(boolean var1) {
+    /** Switches between tool and eraser without losing the tool settings */
+    public void selPix(boolean selectEraser) {
         if (this.list != null) {
-            int var2 = this.list.length;
-            ToolList var4 = null;
-            ToolList var5 = null;
+            int toolCount = this.list.length;
+            ToolList selected = null;
+            ToolList eraser = null;
 
-            for (int var6 = 0; var6 < var2; ++var6) {
-                ToolList var3 = this.list[var6];
-                if (var3.isEraser) {
-                    var5 = var3;
+            for (int i = 0; i < toolCount; ++i) {
+                ToolList tool = this.list[i];
+                if (tool.isEraser) {
+                    eraser = tool;
                 }
 
-                if (var3.isSelect) {
-                    var4 = var3;
+                if (tool.isSelect) {
+                    selected = tool;
                 }
             }
 
-            if (var1) {
-                if (var4 != var5) {
+            if (selectEraser) {
+                if (selected != eraser) {
                     this.unSelect();
-                    var5.select();
+                    eraser.select();
                     this.mPaint(-1);
                 }
-            } else if (var4 == var5) {
+            } else if (selected == eraser) {
                 this.unSelect();
                 this.list[this.oldPen].select();
                 this.mPaint(-1);
@@ -846,20 +856,21 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
         }
     }
 
-    public void setARGB(int var1) {
-        this.mg.iAlpha = var1 >>> 24;
-        var1 &= 0xFFFFFF;
-        this.mg.iColor = var1;
-        this.toColor(var1);
+    public void setARGB(int argb) {
+        this.mg.iAlpha = argb >>> 24;
+        argb &= 0xFFFFFF;
+        this.mg.iColor = argb;
+        this.toColor(argb);
         this.mPaint(-1);
         this.upCS();
     }
 
-    public void setC(String var1) {
+    /** Overrides default palette from a list of hex colors separated by newlines */
+    public void setC(String colorList) {
         try {
-            BufferedReader var2 = new BufferedReader(new StringReader(var1));
+            BufferedReader in = new BufferedReader(new StringReader(colorList));
 
-            for (int var3 = 0; (var1 = var2.readLine()) != null && var1.length() > 0; DEFC[var3++] = Integer.decode(var1)) {
+            for (int i = 0; (colorList = in.readLine()) != null && colorList.length() > 0; DEFC[i++] = Integer.decode(colorList)) {
                 ;
             }
 
@@ -871,12 +882,13 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
 
     }
 
-    public void setLineSize(int var1) {
-        this.setLineSize(0, Math.max(var1, 0));
+    /** Sets line size according to the maximum allowed by the current pen mask */
+    public void setLineSize(int size) {
+        this.setLineSize(0, Math.max(size, 0));
         this.mPaint(this.list.length + 5);
     }
 
-    /** Sets line size according to the maximum allowed by the current pen mask */
+    /** Sets line size according to the maximum allowed by the current pen mask and mouse position on slider */
     public void setLineSize(int mouseY, int size) {
         int maxSize = this.info.getPMMax();
         Rectangle sliderRect = this.rects[18]; //TODO: magic number
@@ -920,73 +932,79 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
         this.upCS();
     }
 
-    public void setSize(int var1, int var2) {
+    /** Sets size of the toolbar */
+    public void setSize(int width, int height) {
         if (this.applet == null) {
-            super.setSize(var1, var2);
-        } else if (var1 != this.fit_w || var2 != this.fit_h) {
+            super.setSize(width, height);
+        } else if (width != this.fit_w || height != this.fit_h) {
             synchronized (this) {
-                this.fit_w = var1;
-                this.fit_h = var2;
+                this.fit_w = width;
+                this.fit_h = height;
                 if (this.list == null) {
                     this.makeList();
                 }
 
-                int var3;
                 if (this.rects == null) {
                     this.rects = new Rectangle[20];
 
-                    for (var3 = 0; var3 < this.rects.length; ++var3) {
-                        this.rects[var3] = new Rectangle();
+                    for (int i = 0; i < this.rects.length; ++i) {
+                        this.rects[i] = new Rectangle();
                     }
                 }
 
-                Rectangle[] var5 = this.rects;
-                float var6 = (float) var2 / (float) this.H;
-                int var7 = (int) ((float) (this.IMH + 4) * var6);
+                Rectangle[] rects = this.rects;
+                float btnScaling = (float) height / (float) this.H;
+                int toolHeight = (int) ((float) (this.IMH + 4) * btnScaling);
                 if (!this.isLarge) {
-                    var7 = Math.min(this.IMH + 4, var7);
+                    toolHeight = Math.min(this.IMH + 4, toolHeight);
                 }
 
-                int var8 = Math.min((var2 - (var7 + 1) * this.list.length - (int) (16.0F * var6 * 4.0F) - (int) (33.0F * var6) - 3) / 8, (var1 - 1) / 2);
-                this.fIg = new Font("sansserif", 0, (int) ((float) var8 * 0.475F));
-                this.fDef = new Font("sansserif", 0, (int) ((float) var7 * 0.43F));
-                FontMetrics var9 = this.getFontMetrics(this.fDef);
-                int var10 = var7 - var9.getMaxDescent() - 2;
-                boolean var11 = false;
-                int var12 = 0;
+                int paletteHeight = Math.min((height - (toolHeight + 1) * this.list.length - (int) (16.0F * btnScaling * 4.0F) - (int) (33.0F * btnScaling) - 3) / 8, (width - 1) / 2);
+                this.fIg = new Font("sansserif", 0, (int) ((float) paletteHeight * 0.475F));
+                this.fDef = new Font("sansserif", 0, (int) ((float) toolHeight * 0.43F));
+                FontMetrics fontMetrics = this.getFontMetrics(this.fDef);
+                int base = toolHeight - fontMetrics.getMaxDescent() - 2;
+                int offY = 0;
 
-                for (var3 = 0; var3 < this.list.length; ++var3) {
-                    this.list[var3].r.setLocation(0, var12);
-                    this.list[var3].setSize(this.W, var7, var10);
-                    var12 += var7 + 1;
+                // tool buttons
+                for (int i = 0; i < this.list.length; ++i) {
+                    this.list[i].r.setLocation(0, offY);
+                    this.list[i].setSize(this.W, toolHeight, base);
+                    offY += toolHeight + 1;
                 }
 
-                int var15 = (var1 - 1) / 2;
+                int halfWidth = (width - 1) / 2;
 
-                Rectangle var13;
-                for (var3 = 0; var3 < 14; ++var3) {
-                    var13 = var5[var3];
-                    var13.setBounds(var3 % 2 == 1 ? var15 + 1 : 0, var12, var3 % 2 == 1 ? var1 - var15 - 1 : var15, var8);
-                    if (var3 % 2 == 1) {
-                        var12 += var8 + 1;
+                int i;
+                Rectangle btnRect;
+                // palette buttons
+                for (i = 0; i < 14; ++i) {
+                    btnRect = rects[i];
+                    btnRect.setBounds(i % 2 == 1 ? halfWidth + 1 : 0, offY, i % 2 == 1 ? width - halfWidth - 1 : halfWidth, paletteHeight);
+                    if (i % 2 == 1) {
+                        offY += paletteHeight + 1;
                     }
                 }
 
-                for (var15 = (int) (15.0F * var6); var3 < 18; ++var3) {
-                    var13 = var5[var3];
-                    var13.setBounds(0, var12, var1, var15);
-                    var12 += var15 + 1;
+                // color sliders
+                for (halfWidth = (int) (15.0F * btnScaling); i < 18; ++i) {
+                    btnRect = rects[i];
+                    btnRect.setBounds(0, offY, width, halfWidth);
+                    offY += halfWidth + 1;
                 }
 
-                var15 = (int) (32.0F * var6);
-                var13 = var5[var3++];
-                var13.setBounds(0, var12, var1, var15);
-                var12 += var15 + 1;
-                var15 = Math.min(var2 - var12, var8);
-                var13 = var5[var3++];
-                var13.setBounds(0, var2 - var15, var1, var15);
-                int var10000 = var12 + var15 + 1;
-                super.setSize(var1, var2);
+                // line size slider
+                halfWidth = (int) (32.0F * btnScaling);
+                btnRect = rects[i++];
+                btnRect.setBounds(0, offY, width, halfWidth);
+
+                // layer
+                offY += halfWidth + 1;
+                halfWidth = Math.min(height - offY, paletteHeight);
+                btnRect = rects[i++];
+                btnRect.setBounds(0, height - halfWidth, width, halfWidth);
+
+                super.setSize(width, height);
             }
         }
     }

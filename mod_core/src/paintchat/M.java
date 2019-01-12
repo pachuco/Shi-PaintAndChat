@@ -1736,6 +1736,7 @@ public class M {
                 int var22 = (var25 + var3) * var4 + var2;
 
                 for (int var26 = 0; var26 < var23; ++var26) {
+                    //FIXME: var6 can be null the first time if the user uses text before any other tool
                     if (!this.isM(var6[var22])) {
                         var7[var22] = (byte) ((int) ((float) (var28[var21] & 255) * var8));
                     }
