@@ -31,6 +31,7 @@ import paintchat.ToolBox;
 import syi.awt.Awt;
 import syi.awt.LComponent;
 
+/** Layer palette window */
 public class L extends LComponent implements ActionListener, ItemListener {
     private Mi mi;
     private ToolBox tool;
@@ -54,105 +55,106 @@ public class L extends LComponent implements ActionListener, ItemListener {
     private Color cT;
     private String sL;
 
-    public L(Mi var1, ToolBox var2, Res var3, Res var4) {
-        this.tool = var2;
+    public L(Mi mi, ToolBox tool, Res res, Res cnf) {
+        this.tool = tool;
         this.bFont = Awt.getDefFont();
         this.bFont = new Font(this.bFont.getName(), 0, (int) ((float) this.bFont.getSize() * 0.8F));
-        FontMetrics var5 = this.getFontMetrics(this.bFont);
-        this.bH = var5.getHeight() + 6;
-        this.base = this.bH - 2 - var5.getMaxDescent();
-        int var6 = (int) (60.0F * LComponent.Q);
-        String var7 = var3.res("Layer");
-        this.sL = var7;
-        this.strMenu = var3.res("MenuLayer");
-        this.cM = new Color(var4.getP("l_m_color", 0));
-        this.cT = new Color(var4.getP("l_m_color_text", 0xFFFFFF));
-        var5 = this.getFontMetrics(this.bFont);
-        var6 = Math.max(var5.stringWidth(var7 + "00") + 4, var6);
-        var6 = Math.max(var5.stringWidth(this.strMenu) + 4, var6);
-        this.bW = var6;
-        int var10000 = var6 + this.bH + 100;
-        this.mi = var1;
-        this.res = var3;
-        this.setTitle(var7);
+        FontMetrics fontMetrics = this.getFontMetrics(this.bFont);
+        this.bH = fontMetrics.getHeight() + 6;
+        this.base = this.bH - 2 - fontMetrics.getMaxDescent();
+        int maxFontSize = (int) (60.0F * LComponent.Q);
+        String layerName = res.res("Layer");
+        this.sL = layerName;
+        this.strMenu = res.res("MenuLayer");
+        this.cM = new Color(cnf.getP("l_m_color", 0));
+        this.cT = new Color(cnf.getP("l_m_color_text", 0xFFFFFF));
+        fontMetrics = this.getFontMetrics(this.bFont);
+        maxFontSize = Math.max(fontMetrics.stringWidth(layerName + "00") + 4, maxFontSize);
+        maxFontSize = Math.max(fontMetrics.stringWidth(this.strMenu) + 4, maxFontSize);
+        this.bW = maxFontSize;
+        this.mi = mi;
+        this.res = res;
+        this.setTitle(layerName);
         super.isGUI = true;
-        this.m = var1.info.m;
-        Dimension var8 = new Dimension(this.bW, this.bH);
-        this.setDimension(new Dimension(var8), var8, new Dimension());
+        this.m = mi.info.m;
+        Dimension dim = new Dimension(this.bW, this.bH);
+        this.setDimension(new Dimension(dim), dim, new Dimension());
         this.setSize(this.getMaximumSize());
     }
 
     public void actionPerformed(ActionEvent event) {
         try {
-            String var2 = event.getActionCommand();
-            int var3 = this.popup.getItemCount();
+            String actionCommand = event.getActionCommand();
+            int popupItemCount = this.popup.getItemCount();
 
-            int var4;
-            for (var4 = 0; var4 < var3 && !this.popup.getItem(var4).getLabel().equals(var2); ++var4) {
+            int selectedPopupIdx;
+            for (selectedPopupIdx = 0; selectedPopupIdx < popupItemCount && !this.popup.getItem(selectedPopupIdx).getLabel().equals(actionCommand); ++selectedPopupIdx) {
                 ;
             }
 
-            M.Info var5 = this.mi.info;
-            M var6 = this.mg();
-            this.setA(var6);
-            LO[] var7 = var5.layers;
-            int var8 = var5.L;
+            M.Info info = this.mi.info;
+            M mg = this.mg();
+            this.setA(mg);
+            LO[] layers = info.layers;
+            int layerCount = info.L;
             byte[] var9 = new byte[4];
-            boolean var10 = false;
-            boolean var11 = false;
-            int var12 = this.mi.user.wait;
+            boolean wasUpdated = false;
+            boolean wasLayerAdded = false;
+            int userWait = this.mi.user.wait;
             this.mi.user.wait = -2;
+
             if (this.popup.getName().charAt(0) == 'm') {
-                switch (var4) {
-                    case 0:
-                        var6.setRetouch(new int[]{1, var8 + 1}, (byte[]) null, 0, false);
-                        var10 = true;
-                        var11 = true;
+                // clicked a voice from the menu popup
+                switch (selectedPopupIdx) {
+                    case 0: // add new layer
+                        mg.setRetouch(new int[]{1, layerCount + 1}, (byte[]) null, 0, false);
+                        wasUpdated = true;
+                        wasLayerAdded = true;
                         break;
-                    case 1:
-                        if (var5.L > 1 && this.confirm(var7[var6.iLayer].name + this.res.res("DelLayerQ"))) {
-                            var6.iLayerSrc = var6.iLayer;
-                            var6.setRetouch(new int[]{2}, (byte[]) null, 0, false);
-                            var10 = true;
+                    case 1: // delete layer
+                        if (info.L > 1 && this.confirm(layers[mg.iLayer].name + this.res.res("DelLayerQ"))) {
+                            mg.iLayerSrc = mg.iLayer;
+                            mg.setRetouch(new int[]{2}, (byte[]) null, 0, false);
+                            wasUpdated = true;
                             break;
                         }
 
                         return;
-                    case 2:
+                    case 2: // merge visible layers
                         this.dFusion();
                         break;
-                    case 3:
+                    case 3: // open layer property window
                         this.config(this.m.iLayer);
                 }
-            } else if (var4 == 0) {
-                var6.iHint = M.H_L;
-                var6.setRetouch(new int[]{3}, (byte[]) null, 0, false);
-                var10 = true;
+            } else if (selectedPopupIdx == 0) {
+                mg.iHint = M.H_L;
+                mg.setRetouch(new int[]{3}, (byte[]) null, 0, false);
+                wasUpdated = true;
             } else {
-                byte var13 = (byte) var7[var6.iLayerSrc].iCopy;
-                if (var13 == 1) {
+                byte blendMode = (byte) layers[mg.iLayerSrc].iCopy;
+                if (blendMode == 1) {
                     this.dFusion();
                 } else {
-                    var6.iHint = M.H_RECT;
-                    var6.iPen = M.P_FUSION;
-                    var9[0] = var13;
-                    var6.setRetouch(new int[]{0, var5.W << 16 | var5.H}, var9, 4, false);
-                    var10 = true;
+                    mg.iHint = M.H_RECT;
+                    mg.iPen = M.P_FUSION;
+                    var9[0] = blendMode;
+                    mg.setRetouch(new int[]{0, info.W << 16 | info.H}, var9, 4, false);
+                    wasUpdated = true;
                 }
             }
 
-            if (var10) {
-                var6.draw();
-                if (var11) {
-                    var5.layers[var5.L - 1].makeName(this.sL);
+            if (wasUpdated) {
+                mg.draw();
+                if (wasLayerAdded) {
+                    info.layers[info.L - 1].makeName(this.sL);
                 }
 
-                this.mi.send(var6);
+                this.mi.send(mg);
             }
 
-            this.m.iLayerSrc = this.m.iLayer = Math.min(this.m.iLayer, var5.L - 1);
+            this.m.iLayerSrc = this.m.iLayer = Math.min(this.m.iLayer, info.L - 1);
             this.repaint();
-            this.mi.user.wait = var12;
+            this.mi.user.wait = userWait;
             this.mi.repaint();
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -160,70 +162,72 @@ public class L extends LComponent implements ActionListener, ItemListener {
 
     }
 
-    private int b(int var1) {
-        return var1 < this.bH ? 0 : Math.max(this.mi.info.L - (var1 / this.bH - 1), 1);
+    /** Returns the index of the layer under the mouse */
+    private int b(int y) {
+        return y < this.bH ? 0 : Math.max(this.mi.info.L - (y / this.bH - 1), 1);
     }
 
     private void send(int[] var1, byte[] var2) {
-        M var3 = this.mg();
+        M mg = this.mg();
         M.Info info = this.mi.info;
-        this.setA(var3);
-        var3.setRetouch(var1, var2, var2 != null ? var2.length : 0, false);
-        int var4 = this.mi.user.wait;
+        this.setA(mg);
+        mg.setRetouch(var1, var2, var2 != null ? var2.length : 0, false);
+        int userWait = this.mi.user.wait;
 
         try {
-            var3.draw();
+            mg.draw();
             //MAGIC: layer alpha and mix mode are local if layer editing is disabled
-            if (info.isLEdit) this.mi.send(var3);
+            if (info.isLEdit) this.mi.send(mg);
         } catch (Throwable ex) {
             ;
         }
 
         this.repaint();
-        this.mi.user.wait = var4;
+        this.mi.user.wait = userWait;
         this.mi.repaint();
     }
 
+    /** Merge visible layers */
     private void dFusion() {
         if (this.confirm(this.res.res("CombineVQ"))) {
             try {
-                int var1 = this.mi.info.L;
-                LO[] var2 = this.mi.info.layers;
-                int var3 = 0;
+                int layerCount = this.mi.info.L;
+                LO[] layers = this.mi.info.layers;
+                int visibleCount = 0;
 
-                int var4;
-                for (var4 = 0; var4 < var1; ++var4) {
-                    if (var2[var4].iAlpha > 0.0F) {
-                        ++var3;
+
+                for (int i = 0; i < layerCount; ++i) {
+                    if (layers[i].iAlpha > 0.0F) {
+                        ++visibleCount;
                     }
                 }
 
-                if (var3 <= 0) {
-                    return;
+                if (visibleCount <= 0) {
+                    return; // nothing to merge
                 }
 
-                var4 = this.mi.user.wait;
-                M var5 = this.mg();
-                this.setA(var5);
-                byte[] var7 = new byte[var3 * 4 + 2];
-                int var8 = 2;
-                var7[0] = (byte) var3;
+                int userWait = this.mi.user.wait;
+                M mg = this.mg();
+                this.setA(mg);
+                byte[] buffer = new byte[visibleCount * 4 + 2];
+                int offset = 2;
+                buffer[0] = (byte) visibleCount;
 
-                for (int var9 = 0; var9 < var1; ++var9) {
-                    LO var6 = var2[var9];
-                    if (var6.iAlpha > 0.0F) {
-                        var7[var8++] = (byte) var9;
-                        var7[var8++] = (byte) ((int) (var6.iAlpha * 255.0F));
-                        var7[var8++] = (byte) var6.iCopy;
-                        var7[var8++] = 41;
+                for (int i = 0; i < layerCount; ++i) {
+                    LO layer = layers[i];
+                    if (layer.iAlpha > 0.0F) {
+                        buffer[offset++] = (byte) i;
+                        buffer[offset++] = (byte) ((int) (layer.iAlpha * 255.0F));
+                        buffer[offset++] = (byte) layer.iCopy;
+                        buffer[offset++] = 41;
                     }
                 }
 
                 this.mi.user.wait = -2;
-                var5.setRetouch(new int[]{7}, var7, var7.length, false);
-                var5.draw();
-                this.mi.send(var5);
-                this.mi.user.wait = var4;
+                mg.setRetouch(new int[]{7}, buffer, buffer.length, false);
+                mg.draw();
+                this.mi.send(mg);
+                this.mi.user.wait = userWait;
             } catch (Throwable ex) {
                 ex.printStackTrace();
             }
@@ -231,50 +235,66 @@ public class L extends LComponent implements ActionListener, ItemListener {
         }
     }
 
-    private boolean confirm(String var1) {
-        return Me.confirm(var1, true);
+    private boolean confirm(String text) {
+        return Me.confirm(text, true);
     }
 
-    private void dL(Graphics var1, int var2, int var3) {
-        if (this.mi.info.L > var3) {
+    /** Draws layer items */
+    private void dL(Graphics g, int y, int layerIndex) {
+        if (this.mi.info.L > layerIndex) {
             this.getSize();
-            int var4 = this.bW - 1;
-            int var5 = this.bH - 2;
-            Color var6 = this.m.iLayer == var3 ? Awt.cFSel : super.clFrame;
-            LO var7 = this.mi.info.layers[var3];
-            var1.setColor(var6);
-            var1.drawRect(0, var2, var4, var5);
-            var1.setColor(Awt.cFore);
-            var1.setFont(this.bFont);
-            var1.drawString((String) var7.name, 2, var2 + this.base);
-            var1.setColor(var6);
-            var1.drawRect(this.bW, var2, 100, var5);
-            var1.setColor(this.cM);
-            int var8 = (int) (100.0F * var7.iAlpha);
-            var1.fillRect(this.bW + 1, var2 + 1, var8 - 1, var5 - 1);
-            var1.setColor(this.cT);
-            var1.drawString(var8 + "%", this.bW + 3, var2 + this.base);
-            int var9 = this.bW + 100;
-            var1.setColor(var6);
-            var1.drawRect(var9 + 1, var2, var5 - 2, var5);
-            var1.setColor(Awt.cFore);
-            if (var8 == 0) {
-                var1.drawLine(var9 + 2, var2 + 1, var9 + var5 - 2, var2 + var5 - 1);
-                var1.drawLine(1, var2 + 1, var4 - 1, var2 + this.bH - 3);
+            int borderWidth = this.bW - 1;
+            int borderHeight = this.bH - 2;
+            Color borderColor = this.m.iLayer == layerIndex ? Awt.cFSel : super.clFrame;
+            LO layer = this.mi.info.layers[layerIndex];
+
+            // layer name border
+            g.setColor(borderColor);
+            g.drawRect(0, y, borderWidth, borderHeight);
+
+            // layer name
+            g.setColor(Awt.cFore);
+            g.setFont(this.bFont);
+            g.drawString((String) layer.name, 2, y + this.base);
+
+            // slider alpha border
+            g.setColor(borderColor);
+            g.drawRect(this.bW, y, 100, borderHeight);
+
+            // slider alpha rect
+            g.setColor(this.cM);
+            int alpha100 = (int) (100.0F * layer.iAlpha);
+            g.fillRect(this.bW + 1, y + 1, alpha100 - 1, borderHeight - 1);
+
+            // slider alpha percentage
+            g.setColor(this.cT);
+            g.drawString(alpha100 + "%", this.bW + 3, y + this.base);
+
+            // layer show/hide border
+            int sliderX = this.bW + 100;
+            g.setColor(borderColor);
+            g.drawRect(sliderX + 1, y, borderHeight - 2, borderHeight);
+
+            g.setColor(Awt.cFore);
+            if (alpha100 == 0) {
+                // diagonal lines over name a show button
+                g.drawLine(sliderX + 2, y + 1, sliderX + borderHeight - 2, y + borderHeight - 1);
+                g.drawLine(1, y + 1, borderWidth - 1, y + this.bH - 3);
             } else {
-                var1.drawOval(var9 + 2, var2 + 2, var5 - 3, var5 - 3);
+                // circle show/hide button
+                g.drawOval(sliderX + 2, y + 2, borderHeight - 3, borderHeight - 3);
             }
 
         }
     }
 
     public Dimension getMaximumSize() {
-        Dimension var1 = super.getMaximumSize();
+        Dimension size = super.getMaximumSize();
         if (this.mi != null) {
-            var1.setSize(this.bW + 100 + this.bH, this.bH * (this.mi.info.L + 1));
+            size.setSize(this.bW + 100 + this.bH, this.bH * (this.mi.info.L + 1));
         }
 
-        return var1;
+        return size;
     }
 
     public void itemStateChanged(ItemEvent event) {
@@ -297,39 +317,39 @@ public class L extends LComponent implements ActionListener, ItemListener {
 
     public void paint2(Graphics g) {
         try {
-            int var2 = this.mi.info.L;
+            int layerCount = this.mi.info.L;
 
-            for (int var4 = 0; var4 < var2; ++var4) {
-                LO var3 = this.mi.info.layers[var4];
-                if (var3.name == null) {
-                    var3.makeName(this.sL);
+            for (int i = 0; i < layerCount; ++i) {
+                LO layer = this.mi.info.layers[i];
+                if (layer.name == null) {
+                    layer.makeName(this.sL);
                 }
             }
 
-            if (this.layer_size != var2) {
-                this.layer_size = var2;
+            if (this.layer_size != layerCount) {
+                this.layer_size = layerCount;
                 this.setSize(this.getMaximumSize());
                 return;
             }
 
-            Dimension var8 = this.getSize();
-            int var5 = var2 - 1;
-            int var6 = this.bH;
+            Dimension windowSize = this.getSize();
+            int lastIndex = layerCount - 1;
+            int offY = this.bH;
             g.setFont(this.bFont);
             g.setColor(Awt.cBk);
-            g.fillRect(0, 0, var8.width, var8.height);
+            g.fillRect(0, 0, windowSize.width, windowSize.height);
 
-            while (var6 < var8.height) {
-                if (this.isASlide || var5 != this.mouse - 1) {
-                    this.dL(g, var6, var5);
+            while (offY < windowSize.height) {
+                if (this.isASlide || lastIndex != this.mouse - 1) {
+                    this.dL(g, offY, lastIndex);
                 }
 
-                --var5;
-                if (var5 < 0) {
+                --lastIndex;
+                if (lastIndex < 0) {
                     break;
                 }
 
-                var6 += this.bH;
+                offY += this.bH;
             }
 
             if (!this.isASlide && this.mouse > 0) {
@@ -350,41 +370,40 @@ public class L extends LComponent implements ActionListener, ItemListener {
             int mouseY = this.Y = event.getY();
             int mouseX = event.getX();
             M.Info info = this.mi.info;
-            boolean var5 = Awt.isR(event);
-            int var8;
-            int var17;
+            boolean isModifier = Awt.isR(event);
+            int userWait;
             switch (event.getID()) {
                 case MouseEvent.MOUSE_PRESSED:
                     if (this.mouse < 0) {
-                        int var6 = this.b(mouseY);
-                        int var7 = var6 - 1;
-                        if (var7 >= 0) {
+                        int btnIndex = this.b(mouseY);
+                        int layerIndex = btnIndex - 1; // first row is reserved for the menu button, the rest are layers
+                        if (layerIndex >= 0) {
                             if (mouseX > this.bW + 100 + 1) {
-                                var8 = this.mi.user.wait;
+                                userWait = this.mi.user.wait;
                                 this.mi.user.wait = -2;
-                                if (var5) {
-                                    for (var17 = 0; var17 < info.L; ++var17) {
-                                        this.setAlpha(var17, var17 == var7 ? 255 : 0, true);
+                                if (isModifier) {
+                                    for (int i = 0; i < info.L; ++i) {
+                                        this.setAlpha(i, i == layerIndex ? 255 : 0, true);
                                     }
                                 } else {
-                                    this.setAlpha(var7, info.layers[var7].iAlpha == 0.0F ? 255 : 0, true);
+                                    this.setAlpha(layerIndex, info.layers[layerIndex].iAlpha == 0.0F ? 255 : 0, true);
                                 }
 
-                                this.mi.user.wait = var8;
+                                this.mi.user.wait = userWait;
                                 this.mi.repaint();
                                 this.p();
-                            } else if (event.getClickCount() < 2 && !var5) {
+                            } else if (event.getClickCount() < 2 && !isModifier) {
                                 this.isASlide = mouseX >= this.bW;
-                                this.mouse = var6;
-                                this.m.iLayer = this.m.iLayerSrc = var7;
+                                this.mouse = btnIndex;
+                                this.m.iLayer = this.m.iLayerSrc = layerIndex;
                                 this.YOFF = mouseY % this.bH;
                                 if (this.isASlide) {
-                                    this.setAlpha(var7, (int) ((float) (mouseX - this.bW) / 100.0F * 255.0F), false);
+                                    this.setAlpha(layerIndex, (int) ((float) (mouseX - this.bW) / 100.0F * 255.0F), false);
                                 } else {
                                     this.p();
                                 }
                             } else {
-                                this.config(var7);
+                                this.config(layerIndex);
                                 this.mi.repaint();
                             }
                         } else {
@@ -396,17 +415,17 @@ public class L extends LComponent implements ActionListener, ItemListener {
                     }
                     break;
                 case MouseEvent.MOUSE_RELEASED:
-                    if (!var5) {
+                    if (!isModifier) {
                         if (this.isASlide) {
                             this.setAlpha(this.m.iLayer, (int) ((float) (mouseX - this.bW) / 100.0F * 255.0F), true);
                             this.mouse = -1;
                             this.isASlide = false;
                         } else {
-                            var8 = this.mouse - 1;
-                            var17 = this.b(this.Y) - 1;
-                            if (var8 >= 0 && var17 >= 0 && var8 != var17) {
-                                this.m.iLayer = var17;
-                                this.m.iLayerSrc = var8;
+                            userWait = this.mouse - 1;
+                            int layerIndex = this.b(this.Y) - 1;
+                            if (userWait >= 0 && layerIndex >= 0 && userWait != layerIndex) {
+                                this.m.iLayer = layerIndex;
+                                this.m.iLayerSrc = userWait;
                                 this.popup(new String[]{this.res.res("Shift"), this.res.res("Combine")}, mouseX, mouseY, false);
                             }
 
@@ -416,8 +435,8 @@ public class L extends LComponent implements ActionListener, ItemListener {
                     }
                     break;
                 case MouseEvent.MOUSE_MOVED:
-                    var8 = this.b(mouseY) - 1;
-                    if (!this.is_pre || var8 < 0 || mouseX >= this.bW) {
+                    userWait = this.b(mouseY) - 1;
+                    if (!this.is_pre || userWait < 0 || mouseX >= this.bW) {
                         if (this.is_DIm) {
                             this.is_DIm = false;
                             this.repaint();
@@ -430,7 +449,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
                     Dimension var9 = this.getSize();
                     int var10 = this.mi.info.W;
                     int var11 = this.mi.info.H;
-                    int[] var12 = this.mi.info.layers[var8].offset;
+                    int[] var12 = this.mi.info.layers[userWait].offset;
                     Graphics var13 = this.getG();
                     int var14 = Math.min(var9.width - this.bW - 1, var9.height - 1);
                     if (var12 == null) {
@@ -493,20 +512,21 @@ public class L extends LComponent implements ActionListener, ItemListener {
         }
     }
 
-    private void setA(M var1) {
-        var1.iAlpha2 = (int) (this.mi.info.layers[var1.iLayer].iAlpha * 255.0F) << 8 | (int) (this.mi.info.layers[var1.iLayerSrc].iAlpha * 255.0F);
+    private void setA(M mg) {
+        // bit 1-8: layer.alpha - bit 9-16: layerSrc.alpha
+        mg.iAlpha2 = (int) (this.mi.info.layers[mg.iLayer].iAlpha * 255.0F) << 8 | (int) (this.mi.info.layers[mg.iLayerSrc].iAlpha * 255.0F);
     }
 
-    public void setAlpha(int var1, int var2, boolean var3) throws Throwable {
-        var2 = var2 <= 0 ? 0 : (var2 >= 255 ? 255 : var2);
-        if ((float) var2 != this.mi.info.layers[var1].iAlpha) {
-            if (var3) {
-                int var4 = this.m.iLayer;
-                this.m.iLayer = var1;
-                this.send(new int[]{8}, new byte[]{(byte) var2});
-                this.m.iLayer = var4;
+    public void setAlpha(int layerIndex, int alpha, boolean doSend) throws Throwable {
+        alpha = alpha <= 0 ? 0 : (alpha >= 255 ? 255 : alpha);
+        if ((float) alpha != this.mi.info.layers[layerIndex].iAlpha) {
+            if (doSend) {
+                int currentLayerIndex = this.m.iLayer;
+                this.m.iLayer = layerIndex;
+                this.send(new int[]{8}, new byte[]{(byte) alpha});
+                this.m.iLayer = currentLayerIndex;
             } else {
-                this.mi.info.layers[var1].iAlpha = (float) var2 / 255.0F;
+                this.mi.info.layers[layerIndex].iAlpha = (float) alpha / 255.0F;
                 this.mi.repaint();
                 this.repaint();
             }
@@ -514,35 +534,35 @@ public class L extends LComponent implements ActionListener, ItemListener {
         }
     }
 
-    public void config(int var1) {
-        LO var2 = this.mi.info.layers[var1];
-        Choice var3 = new Choice();
-        var3.add(this.res.res("Normal"));
-        var3.add(this.res.res("Multiply"));
-        var3.add(this.res.res("Reverse"));
-        var3.select(var2.iCopy);
-        TextField var4 = new TextField(var2.name);
-        Me var5 = Me.getMe();
-        Panel var6 = new Panel(new GridLayout(0, 1));
-        var6.add(var4);
-        var6.add(var3);
-        var4.addActionListener(var5);
-        var5.add((Component) var6, (Object) "Center");
-        var5.pack();
-        Awt.moveCenter(var5);
-        var5.setVisible(true);
-        if (var5.isOk) {
-            String var7 = var4.getText();
-            if (!var7.equals(var2.name)) {
+    public void config(int layerIndex) {
+        LO layer = this.mi.info.layers[layerIndex];
+        Choice choice = new Choice();
+        choice.add(this.res.res("Normal"));
+        choice.add(this.res.res("Multiply"));
+        choice.add(this.res.res("Reverse"));
+        choice.select(layer.iCopy);
+        TextField textField = new TextField(layer.name);
+        Me me = Me.getMe();
+        Panel panel = new Panel(new GridLayout(0, 1));
+        panel.add(textField);
+        panel.add(choice);
+        textField.addActionListener(me);
+        me.add((Component) panel, (Object) "Center");
+        me.pack();
+        Awt.moveCenter(me);
+        me.setVisible(true);
+        if (me.isOk) {
+            String inputText = textField.getText();
+            if (!inputText.equals(layer.name)) {
                 try {
-                    this.send(new int[]{10}, var7.getBytes("UTF8"));
+                    this.send(new int[]{10}, inputText.getBytes("UTF8"));
                 } catch (Throwable ex) {
                     ;
                 }
             }
 
-            int var8 = var3.getSelectedIndex();
-            if (var2.iCopy != var8) {
+            int var8 = choice.getSelectedIndex();
+            if (layer.iCopy != var8) {
                 this.send(new int[]{9}, new byte[]{(byte) var8});
             }
 

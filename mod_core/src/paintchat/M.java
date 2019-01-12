@@ -1475,7 +1475,6 @@ public class M {
             {
                 pointX = points[0] >> 16;
                 short pointY = (short) points[0];
-                int var21;
                 switch (this.iHint) {
                     case H_BEZI:
                         int var9 = this.user.wait;
@@ -1500,7 +1499,7 @@ public class M {
                     case H_TEXT:
                     case H_VTEXT:
                         String var18 = new String(this.offset, this.iSeek, this.iOffset - this.iSeek, ENCODE);
-                        var21 = var18.indexOf(0);
+                        int var21 = var18.indexOf(0);
                         this.dText(var18.substring(var21 + 1), pointX, pointY);
                         break label99;
                     case H_COPY:
@@ -1509,27 +1508,27 @@ public class M {
                     case H_L:
                 }
 
-                LO var10 = var4[this.iLayer];
+                LO layer = var4[this.iLayer];
                 switch (pointY) {
-                    case 0:
+                    case 0: // swap layers
                         this.info.swapL(this.iLayerSrc, this.iLayer);
                         break;
-                    case 1:
+                    case 1: // set number of layers
                         this.info.setL(points[1]);
                         break;
-                    case 2:
+                    case 2: // delete layer
                         this.info.delL(this.iLayerSrc);
                         break;
-                    case 3:
+                    case 3: //
                         if (this.iLayer > this.iLayerSrc) {
-                            for (var21 = this.iLayerSrc; var21 < this.iLayer; ++var21) {
-                                this.info.swapL(var21, var21 + 1);
+                            for (int i = this.iLayerSrc; i < this.iLayer; ++i) {
+                                this.info.swapL(i, i + 1);
                             }
                         }
 
                         if (this.iLayer < this.iLayerSrc) {
-                            for (var21 = this.iLayerSrc; var21 > this.iLayer; --var21) {
-                                this.info.swapL(var21, var21 - 1);
+                            for (int i = this.iLayerSrc; i > this.iLayer; --i) {
+                                this.info.swapL(i, i - 1);
                             }
                         }
                     case 4:
@@ -1537,7 +1536,7 @@ public class M {
                         break;
                     case 5:
                     case 8:
-                        var10.iAlpha = b255[this.offset[4] & 255];
+                        layer.iAlpha = b255[this.offset[4] & 255];
                         break;
                     case 6:
                         try {
@@ -1573,10 +1572,10 @@ public class M {
                         this.dFusion(var12);
                         break;
                     case 9:
-                        var10.iCopy = this.offset[4];
+                        layer.iCopy = this.offset[4];
                         break;
                     case 10:
-                        var10.name = new String(this.offset, 4, this.iOffset - 4, ENCODE);
+                        layer.name = new String(this.offset, 4, this.iOffset - 4, ENCODE);
                 }
 
                 this.setD(0, 0, var2, var3);
@@ -2908,14 +2907,14 @@ public class M {
     public void setRetouch(int[] var1, byte[] var2, int var3, boolean var4) {
         try {
             int var5 = 4;
-            int var6 = this.info.scale;
-            int var7 = this.info.Q;
-            int var8 = this.info.scaleX;
-            int var9 = this.info.scaleY;
+            int scale = this.info.scale;
+            int quality = this.info.Q;
+            int scaleX = this.info.scaleX;
+            int scaleY = this.info.scaleY;
             this.getPM();
             int var10 = this.user.pW / 2;
             int var11 = this.iHint == H_BEZI ? var10 : 0;
-            int[] var14 = this.user.points;
+            int[] points = this.user.points;
             switch (this.iHint) {
                 case H_BEZI:
                 case H_FILL:
@@ -2949,26 +2948,26 @@ public class M {
                 int var12 = var1[i] >> 16;
                 int var13 = (short) var1[i];
                 if (var4) {
-                    var12 = (var12 / var6 + var8) * var7 - var11;
-                    var13 = (var13 / var6 + var9) * var7 - var11;
+                    var12 = (var12 / scale + scaleX) * quality - var11;
+                    var13 = (var13 / scale + scaleY) * quality - var11;
                 }
 
-                var14[i] = var12 << 16 | var13 & '\uffff';
+                points[i] = var12 << 16 | var13 & '\uffff';
             }
 
-            ByteStream var18 = this.getWork();
+            ByteStream bs = this.getWork();
 
             for (int i = 0; i < var5; ++i) {
-                var18.w((long) var14[i], 4);
+                bs.w((long) points[i], 4);
             }
 
             if (var2 != null && var3 > 0) {
-                var18.write(var2, 0, var3);
+                bs.write(var2, 0, var3);
             }
 
-            this.offset = var18.writeTo(this.offset, 0);
-            this.iOffset = var18.size();
-            var18.reset();
+            this.offset = bs.writeTo(this.offset, 0);
+            this.iOffset = bs.size();
+            bs.reset();
         } catch (Throwable ex) {
             ex.printStackTrace();
         }

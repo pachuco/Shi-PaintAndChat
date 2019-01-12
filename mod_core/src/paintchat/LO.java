@@ -452,6 +452,7 @@ public class LO {
         this.isDraw = layer.isDraw;
     }
 
+    /** Generates an incremental layer name */
     public void makeName(String str) {
         this.name = str + iL++;
     }
