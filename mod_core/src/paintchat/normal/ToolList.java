@@ -23,7 +23,7 @@ public class ToolList {
     boolean isSelect;
     boolean isDrawList;
     boolean isIm;
-    String strField;
+    String strField; // string name of the linked field in M
     private int quality = 1;
     private boolean isDrag = false;
     public int iSelect;
@@ -44,38 +44,44 @@ public class ToolList {
     private int imIndex;
     public Rectangle r = new Rectangle();
 
-    private void dImage(Graphics g, Color var2, int var3, int var4) {
-        int var5 = this.r.height;
-        int var6 = this.r.width;
-        g.setColor(var2);
-        g.fillRect(2, var3 + 2, this.r.width - 4, var5 - 4);
+    /** Draws image g with bgColor background */
+    private void dImage(Graphics g, Color bgColor, int offY, int idx) {
+        int rectHeight = this.r.height;
+        int rectWidth = this.r.width;
+        // background
+        g.setColor(bgColor);
+        g.fillRect(2, offY + 2, this.r.width - 4, rectHeight - 4);
+
+        // the mask button shows a rectangle of the current mask color
         if (this.isMask) {
             g.setColor(new Color(this.info.iColorMask));
-            g.fillRect(var6 - this.imW - 3, var3 + 3, this.imW, (var5 - 4) / 2);
+            g.fillRect(rectWidth - this.imW - 3, offY + 3, this.imW, (rectHeight - 4) / 2);
         }
 
-        if (this.isIm && this.image != null && var4 < this.image.getHeight(null) / this.imH) {
-            int var7 = this.imIndex * this.imW;
-            int var8 = var4 * this.imH;
-            int var9 = this.r.x + 2;
-            int var10 = var3 + 2;
-            g.drawImage(this.image, var9, var10, var9 + var6 - 4, var10 + var5 - 4, var7, var8, var7 + this.imW, var8 + this.imH, var2, (ImageObserver) null);
+        // draw background image if available
+        if (this.isIm && this.image != null && idx < this.image.getHeight(null) / this.imH) {
+            int sx1 = this.imIndex * this.imW;
+            int sy1 = idx * this.imH;
+            int dx1 = this.r.x + 2;
+            int dy1 = offY + 2;
+            g.drawImage(this.image, dx1, dy1, dx1 + rectWidth - 4, dy1 + rectHeight - 4, sx1, sy1, sx1 + this.imW, sy1 + this.imH, bgColor, (ImageObserver) null);
         }
     }
 
-    private void drag(int var1, int var2) {
+    /** On mouse drag event, used for showing the alternate tool lists*/
+    private void drag(int x, int y) {
         if (this.isDrag) {
-            int var3 = this.len();
-            int var4 = this.r.width;
-            int var5 = this.r.height;
-            int var6 = var2 / (var5 - 2) - 1;
+            int listLength = this.len();
+            int width = this.r.width;
+            int height = this.r.height;
+            int listIdx = y / (height - 2) - 1; // index from the drag dropdown
             this.isList = true;
-            int var7 = this.iSelectList;
-            if (var1 >= 0 && var1 < var4 && var6 >= 0 && var6 < var3) {
-                this.iSelectList = var6;
+            int selectedListIdx = this.iSelectList; // index of currently selected item in the list
+            if (x >= 0 && x < width && listIdx >= 0 && listIdx < listLength) {
+                this.iSelectList = listIdx;
             } else {
                 this.iSelectList = -1;
-                var6 = -1;
+                listIdx = -1;
             }
 
             if (this.isList && !this.isDrawList) {
@@ -83,16 +89,16 @@ public class ToolList {
                 this.repaint();
             }
 
-            if (var7 != var6 && this.isList) {
-                Graphics var8 = this.tools.primary();
-                if (var7 >= 0) {
-                    var8.setColor(this.tools.clFrame);
-                    var8.drawRect(this.r.x + 1, this.r.y + (var5 - 3) * (var7 + 1) + 2, var4 - 3, var5 - 3);
+            if (selectedListIdx != listIdx && this.isList) {
+                Graphics g = this.tools.primary();
+                if (selectedListIdx >= 0) {
+                    g.setColor(this.tools.clFrame);
+                    g.drawRect(this.r.x + 1, this.r.y + (height - 3) * (selectedListIdx + 1) + 2, width - 3, height - 3);
                 }
 
-                if (var6 >= 0) {
-                    var8.setColor(this.tools.clSel);
-                    var8.drawRect(this.r.x + 1, this.r.y + (var5 - 3) * (var6 + 1) + 2, var4 - 3, var5 - 3);
+                if (listIdx >= 0) {
+                    g.setColor(this.tools.clSel);
+                    g.drawRect(this.r.x + 1, this.r.y + (height - 3) * (listIdx + 1) + 2, width - 3, height - 3);
                 }
 
             }
@@ -108,58 +114,59 @@ public class ToolList {
         }
     }
 
-    public void init(Tools var1, Res var2, Res var3, M var4, ToolList[] var5, int var6) {
+    public void init(Tools tools, Res res, Res cnf, M mg, ToolList[] toolList, int toolID) {
         try {
-            this.tools = var1;
-            this.res = var2;
-            this.cnf = var3;
-            this.lists = var5;
-            this.info = var4;
-            String var7 = "t0" + var6 + "_";
-            this.isDirect = var3.getP(var7 + "direct", false);
-            this.isClass = var3.getP(var7 + "class", false);
-            this.isEraser = var3.getP(var7 + "iseraser", false);
-            this.isIm = var3.getP(var7 + "image", true);
-            this.strField = var3.getP(var7 + "field", (String) null);
+            this.tools = tools;
+            this.res = res;
+            this.cnf = cnf;
+            this.lists = toolList;
+            this.info = mg;
+            // loads up tools configuration from parameters (param_utf8.txt)
+            String toolIdPrefix = "t0" + toolID + "_";
+            this.isDirect = cnf.getP(toolIdPrefix + "direct", false);
+            this.isClass = cnf.getP(toolIdPrefix + "class", false);
+            this.isEraser = cnf.getP(toolIdPrefix + "iseraser", false);
+            this.isIm = cnf.getP(toolIdPrefix + "image", true);
+            this.strField = cnf.getP(toolIdPrefix + "field", (String) null);
             this.isField = this.strField != null;
             if (this.isField && this.strField.equals("iMask")) {
                 this.isMask = true;
             }
 
-            var7 = "t0" + var6;
+            toolIdPrefix = "t0" + toolID;
 
-            int var9;
-            for (var9 = 0; var3.getP(var7 + var9) != null; ++var9) {
+            int paramCount;
+            for (paramCount = 0; cnf.getP(toolIdPrefix + paramCount) != null; ++paramCount) {
                 ;
             }
 
-            this.strings = new String[var9];
+            this.strings = new String[paramCount];
 
-            for (int var10 = 0; var10 < var9; ++var10) {
-                String var8 = var7 + var10;
+            for (int i = 0; i < paramCount; ++i) {
+                String key = toolIdPrefix + i;
                 if (this.isField) {
                     if (this.items == null) {
-                        this.items = new int[var9];
+                        this.items = new int[paramCount];
                     }
 
-                    this.items[var10] = var3.getP(var8, 0);
+                    this.items[i] = cnf.getP(key, 0);
                 } else if (this.isClass) {
                     if (this.strs == null) {
-                        this.strs = new String[var9];
+                        this.strs = new String[paramCount];
                     }
 
-                    this.strs[var10] = var3.getP(var8);
+                    this.strs[i] = cnf.getP(key);
                 } else {
                     if (this.mgs == null) {
-                        this.mgs = new M[var9];
+                        this.mgs = new M[paramCount];
                     }
 
-                    (this.mgs[var10] = new M()).set(var3.getP(var8));
+                    (this.mgs[i] = new M()).set(cnf.getP(key));
                 }
 
-                this.strings[var10] = var2.res(var8);
-                var3.remove(var8);
-                var2.remove(var8);
+                this.strings[i] = res.res(key);
+                cnf.remove(key);
+                res.remove(key);
             }
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -167,92 +174,96 @@ public class ToolList {
 
     }
 
+    /** Returns how many sub-tools are linked */
     private int len() {
         return this.mgs == null ? (this.items == null ? (this.strs == null ? 0 : this.strs.length) : this.items.length) : this.mgs.length;
     }
 
-    public void paint(Graphics var1, Graphics var2) {
+    public void paint(Graphics g, Graphics background) {
         try {
-            if (var1 == null || var2 == null) {
+            if (g == null || background == null) {
                 return;
             }
 
-            int var4 = this.r.width;
-            int var5 = this.r.height;
-            int var6 = this.r.x;
-            int var7 = this.r.y;
-            int var8 = this.len();
-            int var9 = var5 - 2;
-            int var10;
+            int width = this.r.width;
+            int height = this.r.height;
+            int rectX = this.r.x;
+            int rectY = this.r.y;
+            int itemCount = this.len();
+            int drawHeight = height - 2;
+            int offY;
             if (this.isList) {
-                var10 = var7 + var5 - 2;
-                Color var11 = this.isDirect ? this.tools.clB2 : this.tools.clB;
+                offY = rectY + height - 2;
+                Color bgColor = this.isDirect ? this.tools.clB2 : this.tools.clB;
 
-                int var12;
-                for (var12 = 0; var12 < var8; ++var12) {
-                    this.dImage(var1, var11, var10, var12);
-                    var1.setColor(this.tools.clText);
-                    if (var12 < this.strings.length) {
-                        var1.drawString(this.strings[var12], var6 + 4, var10 + this.base);
+                int idx;
+                for (idx = 0; idx < itemCount; ++idx) {
+                    this.dImage(g, bgColor, offY, idx);
+                    g.setColor(this.tools.clText);
+                    if (idx < this.strings.length) {
+                        g.drawString(this.strings[idx], rectX + 4, offY + this.base);
                     }
 
-                    var10 += var9 - 1;
+                    offY += drawHeight - 1;
                 }
 
-                var10 = var7 + var9;
-                var1.setColor(this.tools.clFrame);
-                var1.drawRect(var6, var10, var4 - 1, (var9 - 1) * var8 + 2);
+                offY = rectY + drawHeight;
+                g.setColor(this.tools.clFrame);
+                g.drawRect(rectX, offY, width - 1, (drawHeight - 1) * itemCount + 2);
 
-                for (var12 = 0; var12 < var8; ++var12) {
-                    var1.drawRect(var6 + 1, var10 + 1, var4 - 3, var5 - 3);
-                    var10 += var9 - 1;
+                for (idx = 0; idx < itemCount; ++idx) {
+                    g.drawRect(rectX + 1, offY + 1, width - 3, height - 3);
+                    offY += drawHeight - 1;
                 }
             }
 
-            int var3 = this.getValue();
+            int currentTool = this.getValue();
             if (this.isField) {
-                var10 = this.items.length;
+                int toolCount = this.items.length;
 
-                for (int var14 = 0; var14 < var10; ++var14) {
-                    if (this.items[var14] == var3) {
-                        var3 = var14;
+                for (int i = 0; i < toolCount; ++i) {
+                    if (this.items[i] == currentTool) {
+                        currentTool = i;
                         break;
                     }
                 }
             }
 
-            this.dImage(var2, this.isDirect ? this.tools.clB2 : this.tools.clB, 0, var3);
-            var2.setColor(this.tools.clFrame);
-            var2.drawRect(0, 0, var4 - 1, var5 - 1);
+            this.dImage(background, this.isDirect ? this.tools.clB2 : this.tools.clB, 0, currentTool);
+            background.setColor(this.tools.clFrame);
+            background.drawRect(0, 0, width - 1, height - 1);
             if (this.isSelect) {
-                var2.setColor(this.tools.clSel);
-                var2.drawRect(1, 1, var4 - 3, var5 - 3);
+                // draw active border
+                background.setColor(this.tools.clSel);
+                background.drawRect(1, 1, width - 3, height - 3);
             } else {
-                var2.setColor(this.tools.clBL);
-                var2.fillRect(1, 1, var4 - 2, 1);
-                var2.fillRect(1, 1, 1, var5 - 2);
-                var2.setColor(this.tools.clBD);
-                var2.fillRect(var4 - 2, 2, 1, var5 - 4);
-                var2.fillRect(2, var5 - 2, var4 - 3, 1);
+                // normal border
+                background.setColor(this.tools.clBL);
+                background.fillRect(1, 1, width - 2, 1);
+                background.fillRect(1, 1, 1, height - 2);
+                background.setColor(this.tools.clBD);
+                background.fillRect(width - 2, 2, 1, height - 4);
+                background.fillRect(2, height - 2, width - 3, 1);
             }
 
-            if (var3 >= 0 && var3 < this.strings.length) {
-                var2.setColor(this.tools.clText);
-                var2.drawString((String) this.strings[var3], 3, this.base);
+            if (currentTool >= 0 && currentTool < this.strings.length) {
+                background.setColor(this.tools.clText);
+                background.drawString((String) this.strings[currentTool], 3, this.base);
             }
 
-            var1.drawImage(this.tools.imBack, this.r.x, this.r.y, this.r.x + var4, this.r.y + var5, 0, 0, var4, var5, this.tools.clB, (ImageObserver) null);
+            g.drawImage(this.tools.imBack, this.r.x, this.r.y, this.r.x + width, this.r.y + height, 0, 0, width, height, this.tools.clB, (ImageObserver) null);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
 
     }
 
+    /** Mouse action event */
     public void pMouse(MouseEvent event) {
         int mouseX = event.getX();
         int mouseY = event.getY();
-        int var4 = mouseX - this.r.x;
-        int var5 = mouseY - this.r.y;
+        int x = mouseX - this.r.x; // relative mouse position to element
+        int y = mouseY - this.r.y;
         switch (event.getID()) {
             case MouseEvent.MOUSE_PRESSED:
                 if (this.r.contains(mouseX, mouseY)) {
@@ -260,18 +271,19 @@ public class ToolList {
                 }
                 break;
             case MouseEvent.MOUSE_RELEASED:
-                this.release(var4, var5, this.r.contains(mouseX, mouseY));
+                this.release(x, y, this.r.contains(mouseX, mouseY));
             case MouseEvent.MOUSE_MOVED:
             case MouseEvent.MOUSE_ENTERED:
             case MouseEvent.MOUSE_EXITED:
             default:
                 break;
             case MouseEvent.MOUSE_DRAGGED:
-                this.drag(var4, var5);
+                this.drag(x, y);
         }
 
     }
 
+    /** On mouse pressed */
     private void press() {
         if (!this.isDrag) {
             this.isDrag = true;
@@ -285,25 +297,26 @@ public class ToolList {
         }
     }
 
-    private void release(int var1, int var2, boolean var3) {
+    /** On mouse released */
+    private void release(int x, int y, boolean isInBound) {
         if (this.isDrag) {
-            int var4 = this.r.height;
-            int var5 = this.r.width;
-            int var6 = var2 / (var4 - 2) - 1;
-            boolean var7 = this.isDrawList;
-            boolean var8 = false;
+            int rectHeight = this.r.height;
+            int rectWidth = this.r.width;
+            int listIdx = y / (rectHeight - 2) - 1; // index from the drag dropdown
+            boolean isDrawList = this.isDrawList;
+            boolean doSelectPrimary = false;
             this.isDrag = false;
             this.isList = false;
-            if (var6 < 0 || var6 >= this.len() || var1 < 0 || var1 >= var5) {
-                var6 = -1;
+            if (listIdx < 0 || listIdx >= this.len() || x < 0 || x >= rectWidth) {
+                listIdx = -1;
             }
 
-            if (var6 == -1) {
-                if (var3) {
+            if (listIdx == -1) {
+                if (isInBound) {
                     if (this.isSelect) {
-                        int var9 = this.len();
+                        int listLength = this.len();
                         this.unSelect();
-                        if (++this.iSelect >= var9) {
+                        if (++this.iSelect >= listLength) {
                             this.iSelect = 0;
                         }
 
@@ -312,26 +325,26 @@ public class ToolList {
                         this.select();
                     }
 
-                    var8 = true;
+                    doSelectPrimary = true;
                 }
             } else {
                 if (this.isSelect) {
                     this.unSelect();
                 }
 
-                this.iSelect = var6;
+                this.iSelect = listIdx;
                 this.select();
             }
 
             this.iSelectList = -1;
             this.isDrawList = false;
-            if (var7) {
-                Graphics var10 = this.tools.primary();
-                var10.setColor(this.tools.getBackground());
-                var10.fillRect(this.r.x - 1, this.r.y - 1, var5 + 2, (var4 - 2) * (this.len() + 1) + 2);
+            if (isDrawList) {
+                Graphics g = this.tools.primary();
+                g.setColor(this.tools.getBackground());
+                g.fillRect(this.r.x - 1, this.r.y - 1, rectWidth + 2, (rectHeight - 2) * (this.len() + 1) + 2);
             }
 
-            if (var8 || var7) {
+            if (doSelectPrimary || isDrawList) {
                 this.tools.mPaint(-1);
             }
 
@@ -342,6 +355,7 @@ public class ToolList {
         this.paint(this.tools.primary(), this.tools.getBack());
     }
 
+    /** Applies tool selection */
     public void select() {
         try {
             if (this.isField) {
@@ -359,22 +373,22 @@ public class ToolList {
                 this.tools.unSelect();
             }
 
-            int var1 = this.info.iColor;
-            int var2 = this.info.iMask;
-            int var3 = this.info.iColorMask;
-            int var4 = this.info.iLayer;
-            int var5 = this.info.iLayerSrc;
-            int var6 = this.info.iTT;
-            int var7 = this.info.iSA;
-            int var8 = this.info.iSS;
+            int color = this.info.iColor;
+            int mask = this.info.iMask;
+            int colorMask = this.info.iColorMask;
+            int layer = this.info.iLayer;
+            int layerSrc = this.info.iLayerSrc;
+            int texture = this.info.iTT;
+            int sa = this.info.iSA;
+            int ss = this.info.iSS;
             this.info.set(this.mgs[this.iSelect]);
-            this.info.iColor = var1;
-            this.info.iMask = var2;
-            this.info.iColorMask = var3;
-            this.info.iLayer = var4;
-            this.info.iLayerSrc = var5;
-            this.info.iTT = var6;
-            if (var7 != this.info.iSA || var8 != this.info.iSS) {
+            this.info.iColor = color;
+            this.info.iMask = mask;
+            this.info.iColorMask = colorMask;
+            this.info.iLayer = layer;
+            this.info.iLayerSrc = layerSrc;
+            this.info.iTT = texture;
+            if (sa != this.info.iSA || ss != this.info.iSS) {
                 this.tools.mi.up();
             }
 
@@ -389,18 +403,20 @@ public class ToolList {
 
     }
 
-    public void setImage(Image var1, int var2, int var3, int var4) {
-        this.image = var1;
-        this.imW = var2;
-        this.imH = var3;
-        this.imIndex = var4;
+    public void setImage(Image img, int width, int height, int idx) {
+        this.image = img;
+        this.imW = width;
+        this.imH = height;
+        this.imIndex = idx;
     }
 
-    public void setSize(int var1, int var2, int var3) {
-        this.r.setSize(var1, var2);
-        this.base = var3;
+    /** Set size of the tool button */
+    public void setSize(int width, int height, int base) {
+        this.r.setSize(width, height);
+        this.base = base;
     }
 
+    /** Deselect the current tool */
     public void unSelect() {
         if (this.isSelect && !this.isDirect) {
             this.mgs[this.iSelect].set(this.info);
