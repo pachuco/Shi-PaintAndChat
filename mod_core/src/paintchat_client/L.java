@@ -104,7 +104,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
             this.mi.user.wait = -2;
 
             if (this.popup.getName().charAt(0) == 'm') {
-                // clicked a voice from the menu popup
+                // clicked an item from the popup menu
                 switch (selectedPopupIdx) {
                     case 0: // add new layer
                         mg.setRetouch(new int[]{1, layerCount + 1}, (byte[]) null, 0, false);
@@ -116,10 +116,8 @@ public class L extends LComponent implements ActionListener, ItemListener {
                             mg.iLayerSrc = mg.iLayer;
                             mg.setRetouch(new int[]{2}, (byte[]) null, 0, false);
                             wasUpdated = true;
-                            break;
                         }
-
-                        return;
+                        break;
                     case 2: // merge visible layers
                         this.dFusion();
                         break;
@@ -127,10 +125,12 @@ public class L extends LComponent implements ActionListener, ItemListener {
                         this.config(this.m.iLayer);
                 }
             } else if (selectedPopupIdx == 0) {
+                // shift layers
                 mg.iHint = M.H_L;
                 mg.setRetouch(new int[]{3}, (byte[]) null, 0, false);
                 wasUpdated = true;
             } else {
+                // combine with layer
                 byte blendMode = (byte) layers[mg.iLayerSrc].iCopy;
                 if (blendMode == 1) {
                     this.dFusion();
