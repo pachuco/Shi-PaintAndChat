@@ -95,14 +95,14 @@ public abstract class LComponent extends Canvas {
     }
 
     public Graphics getG() {
-        Graphics var1 = this.getGraphics();
-        if (var1 == null) {
+        Graphics g = this.getGraphics();
+        if (g == null) {
             return null;
         } else {
-            var1.translate(this.getGapX(), this.getGapY());
+            g.translate(this.getGapX(), this.getGapY());
             Dimension var2 = this.getSize();
-            var1.clipRect(0, 0, var2.width, var2.height);
-            return var1;
+            g.clipRect(0, 0, var2.width, var2.height);
+            return g;
         }
     }
 

@@ -76,26 +76,26 @@ public class Mi extends LComponent implements ActionListener {
 
     }
 
-    public void addText(String var1) {
+    public void addText(String text) {
         try {
             if (!this.mgInfo.isText()) {
                 return;
             }
 
             this.setM();
-            byte[] var2 = ('\u0000' + var1).getBytes("UTF8");
-            this.m.setRetouch(this.ps, var2, var2.length, true);
+            byte[] bytes = ('\u0000' + text).getBytes("UTF8");
+            this.m.setRetouch(this.ps, bytes, bytes.length, true);
             this.m.draw();
             this.send(this.m);
-        } catch (Exception var3) {
+        } catch (Exception ex) {
             ;
         }
 
     }
 
-    public boolean alert(String var1, boolean var2) {
+    public boolean alert(String text, boolean canCancel) {
         try {
-            return Me.confirm(var1, var2);
+            return Me.confirm(text, canCancel);
         } catch (Throwable ex) {
             ex.printStackTrace();
             return true;

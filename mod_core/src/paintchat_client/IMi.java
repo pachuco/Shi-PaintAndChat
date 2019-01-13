@@ -7,11 +7,11 @@ public interface IMi {
 
     void scroll(boolean var1, int var2, int var3);
 
-    void send(M var1);
+    void send(M mg);
 
-    void setARGB(int var1);
+    void setARGB(int argb);
 
-    void setLineSize(int var1);
+    void setLineSize(int size);
 
-    void undo(boolean var1);
+    void undo(boolean isUndo);
 }

@@ -1458,7 +1458,7 @@ public class M {
         try {
             this.getPM();
             this.user.setup(this);
-            int var1 = this.user.pW / 2;
+
             int var2 = this.info.W;
             int var3 = this.info.H;
             LO[] layers = this.info.layers;
@@ -1467,8 +1467,8 @@ public class M {
             int var6 = this.isText() ? 1 : 4;
 
             int pointX;
-            for (pointX = 0; pointX < var6 && this.iSeek < this.iOffset; ++pointX) {
-                points[pointX] = (this.r2() & 0xFFFF) << 16 | this.r2() & '\uffff';
+            for (int i = 0; i < var6 && this.iSeek < this.iOffset; ++i) {
+                points[i] = (this.r2() & 0xFFFF) << 16 | this.r2() & '\uffff';
             }
 
             label99:
@@ -1477,11 +1477,12 @@ public class M {
                 short pointY = (short) points[0];
                 switch (this.iHint) {
                     case H_BEZI:
-                        int var9 = this.user.wait;
+                        int halfBrushSize = this.user.pW / 2;
+                        int waitWas = this.user.wait;
                         this.user.wait = -2;
-                        this.dStart(pointX + var1, pointY + var1, 0, false, false);
+                        this.dStart(pointX + halfBrushSize, pointY + halfBrushSize, 0, false, false);
                         this.dBz(points);
-                        this.user.wait = var9;
+                        this.user.wait = waitWas;
                         break label99;
                     case H_RECT:
                     case H_FRECT:
@@ -1555,11 +1556,11 @@ public class M {
                                 Awt.wait(img);
                                 int imgWidth = img.getWidth((ImageObserver) null);
                                 int imgHeight = img.getHeight((ImageObserver) null);
-                                int[] srgb = Awt.getPix(img);
+                                int[] argb = Awt.getPix(img);
                                 img.flush();
                                 img = null; // probably for the garbage collector
                                 if (imgWidth > 0 && imgHeight > 0) {
-                                    layers[this.iLayer].toCopy(imgWidth, imgHeight, srgb, pointX, pointY);
+                                    layers[this.iLayer].toCopy(imgWidth, imgHeight, argb, pointX, pointY);
                                 }
                             }
                         } catch (Throwable ex) {
@@ -2905,7 +2906,7 @@ public class M {
         return this.set(bs.getBuffer(), 0);
     }
 
-    public void setRetouch(int[] points, byte[] buffer, int length, boolean isDrawing) {
+    public void setRetouch(int[] points, byte[] bytes, int length, boolean isDrawing) {
         try {
             int pointCount = 4;
             int scale = this.info.scale;
@@ -2914,8 +2915,8 @@ public class M {
             int scaleY = this.info.scaleY;
             this.getPM();
             // calculations for bezier curves
-            int halfSqrtSize = this.user.pW / 2; // half square root of the pen size
-            int bezierOffset = this.iHint == H_BEZI ? halfSqrtSize : 0;
+            int halfBrushSize = this.user.pW / 2;
+            int bezierOffset = this.iHint == H_BEZI ? halfBrushSize : 0;
 
             int[] userPoints = this.user.points;
             switch (this.iHint) {
@@ -2965,8 +2966,8 @@ public class M {
                 bs.w((long) userPoints[i], 4);
             }
 
-            if (buffer != null && length > 0) {
-                bs.write(buffer, 0, length);
+            if (bytes != null && length > 0) {
+                bs.write(bytes, 0, length);
             }
 
             this.offset = bs.writeTo(this.offset, 0);
