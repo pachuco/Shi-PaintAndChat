@@ -477,7 +477,7 @@ public class Mi extends LComponent implements ActionListener {
             this.user.isPre = true;
             this.m.setRetouch(this.ps, (byte[]) null, 0, true);
             this.m.draw();
-            this.user.addRect((int) (var2 >>> 48), (int) (var2 >>> 32) & '\uffff', (int) (var2 >>> 16) & '\uffff', (int) (var2 & 65535L));
+            this.user.addRect((int) (var2 >>> 48), (int) (var2 >>> 32) & 0xFFFF, (int) (var2 >>> 16) & 0xFFFF, (int) (var2 & 0xFFFF));
             this.m.dBuffer();
             this.user.isPre = false;
         }
@@ -814,7 +814,7 @@ public class Mi extends LComponent implements ActionListener {
     }
 
     private final void p(int var1, int var2, int var3) {
-        this.ps[var1] = var2 << 16 | var3 & '\uffff';
+        this.ps[var1] = var2 << 16 | var3 & 0xFFFF;
     }
 
     public void paint2(Graphics var1) {
@@ -1319,8 +1319,8 @@ public class Mi extends LComponent implements ActionListener {
         int var8 = Math.max(Math.min(var3, var5), 0);
         int var9 = Math.min(Math.max(var3, var5), this.info.imH * this.info.scale);
         if (var7 - var6 >= this.info.scale && var9 - var8 >= this.info.scale) {
-            this.user.points[0] = var6 << 16 | var8 & '\uffff';
-            this.user.points[1] = var7 << 16 | var9 & '\uffff';
+            this.user.points[0] = var6 << 16 | var8 & 0xFFFF;
+            this.user.points[1] = var7 << 16 | var9 & 0xFFFF;
             return true;
         } else {
             return false;

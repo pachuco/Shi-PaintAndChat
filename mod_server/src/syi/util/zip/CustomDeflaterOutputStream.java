@@ -120,7 +120,7 @@ public class CustomDeflaterOutputStream {
                 }
 
                 if (this.work.size() > 0) {
-                    Io.wShort(this.stm, this.work.size() & '\uffff');
+                    Io.wShort(this.stm, this.work.size() & 0xFFFF);
                     this.work.writeTo(this.stm);
                 }
             }
@@ -164,7 +164,7 @@ public class CustomDeflaterOutputStream {
                 }
 
                 if (this.work.size() > 0) {
-                    Io.wShort(var1, this.work.size() & '\uffff');
+                    Io.wShort(var1, this.work.size() & 0xFFFF);
                     this.work.writeTo(var1);
                 }
             }

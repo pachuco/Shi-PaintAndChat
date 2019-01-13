@@ -290,11 +290,12 @@ public class Awt {
         }
     }
 
-    public static int[] getPix(Image var0) {
+    /** Returns the srgb data of an Image as an int[] */
+    public static int[] getPix(Image img) {
         try {
-            PixelGrabber var1 = new PixelGrabber(var0, 0, 0, var0.getWidth((ImageObserver) null), var0.getHeight((ImageObserver) null), true);
-            var1.grabPixels();
-            return (int[]) var1.getPixels();
+            PixelGrabber grabber = new PixelGrabber(img, 0, 0, img.getWidth((ImageObserver) null), img.getHeight((ImageObserver) null), true);
+            grabber.grabPixels();
+            return (int[]) grabber.getPixels();
         } catch (Throwable ex) {
             ex.printStackTrace();
             return null;

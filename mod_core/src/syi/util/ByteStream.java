@@ -13,34 +13,36 @@ public class ByteStream extends OutputStream {
         this(512);
     }
 
-    public ByteStream(byte[] var1) {
+    public ByteStream(byte[] buffer) {
         this.last = 0;
-        this.buffer = var1;
+        this.buffer = buffer;
     }
 
-    public ByteStream(int var1) {
+    public ByteStream(int bufferSize) {
         this.last = 0;
-        this.buffer = new byte[var1 <= 0 ? 512 : var1];
+        this.buffer = new byte[bufferSize <= 0 ? 512 : bufferSize];
     }
 
-    public final void addSize(int var1) {
-        int var2 = this.last + var1;
-        if (this.buffer.length < var2) {
-            byte[] var3 = new byte[Math.max((int) ((float) this.buffer.length * 1.5F), var2) + 1];
-            System.arraycopy(this.buffer, 0, var3, 0, this.buffer.length);
-            this.buffer = var3;
+    /** Increases the buffer size */
+    public final void addSize(int size) {
+        int newLength = this.last + size;
+        if (this.buffer.length < newLength) {
+            byte[] dest = new byte[Math.max((int) ((float) this.buffer.length * 1.5F), newLength) + 1];
+            System.arraycopy(this.buffer, 0, dest, 0, this.buffer.length);
+            this.buffer = dest;
         }
 
     }
 
+    /** Trims down the buffer up to this.last */
     public void gc() {
         if (this.buffer.length != this.last) {
-            byte[] var1 = new byte[this.last];
+            byte[] dest = new byte[this.last];
             if (this.last != 0) {
-                System.arraycopy(this.buffer, 0, var1, 0, this.last);
+                System.arraycopy(this.buffer, 0, dest, 0, this.last);
             }
 
-            this.buffer = var1;
+            this.buffer = dest;
         }
     }
 
@@ -48,25 +50,25 @@ public class ByteStream extends OutputStream {
         return this.buffer;
     }
 
-    public final void insert(int var1, int var2) {
-        this.buffer[var1] = (byte) var2;
+    public final void insert(int pos, int val) {
+        this.buffer[pos] = (byte) val;
     }
 
     public void reset() {
         this.last = 0;
     }
 
-    public void reset(int var1) {
-        int var2 = this.last;
+    public void reset(int pos) {
+        int last = this.last;
         this.reset();
-        if (var1 < var2) {
-            this.write(this.buffer, var1, var2 - var1);
+        if (pos < last) {
+            this.write(this.buffer, pos, last - pos);
         }
 
     }
 
-    public void seek(int var1) {
-        this.last = var1;
+    public void seek(int pos) {
+        this.last = pos;
     }
 
     public final int size() {
@@ -74,97 +76,98 @@ public class ByteStream extends OutputStream {
     }
 
     public byte[] toByteArray() {
-        byte[] var1 = new byte[this.last];
+        byte[] dest = new byte[this.last];
         if (this.last > 0) {
-            System.arraycopy(this.buffer, 0, var1, 0, this.last);
+            System.arraycopy(this.buffer, 0, dest, 0, this.last);
         }
 
-        return var1;
+        return dest;
     }
 
-    public final void w(long var1, int var3) throws IOException {
-        for (int var4 = var3 - 1; var4 >= 0; --var4) {
-            this.write((int) (var1 >>> (var4 << 3)) & 255);
+    /** Writes the byteNum byte of val */
+    public final void w(long val, int byteNum) throws IOException {
+        for (int bitShift = byteNum - 1; bitShift >= 0; --bitShift) {
+            this.write((int) (val >>> (bitShift << 3)) & 255);
         }
-
     }
 
-    public final void w2(int var1) throws IOException {
-        this.write(var1 >>> 8 & 255);
-        this.write(var1 & 255);
+    /** Writes two bytes as separate integers from the input value (higher byte first) */
+    public final void w2(int twoBytes) throws IOException {
+        this.write(twoBytes >>> 8 & 255);
+        this.write(twoBytes & 255);
     }
 
-    public final void write(byte[] var1) {
-        this.write(var1, 0, var1.length);
+    public final void write(byte[] src) {
+        this.write(src, 0, src.length);
     }
 
-    public final void write(byte[] var1, int var2, int var3) {
-        this.addSize(var3);
-        System.arraycopy(var1, var2, this.buffer, this.last, var3);
-        this.last += var3;
+    public final void write(byte[] src, int srcPos, int length) {
+        this.addSize(length);
+        System.arraycopy(src, srcPos, this.buffer, this.last, length);
+        this.last += length;
     }
 
-    public final void write(int var1) throws IOException {
+    public final void write(int val) throws IOException {
         this.addSize(1);
-        this.buffer[this.last++] = (byte) var1;
+        this.buffer[this.last++] = (byte) val;
     }
 
-    public void write(InputStream var1) throws IOException {
+    public void write(InputStream in) throws IOException {
         this.addSize(128);
 
-        int var2;
+        int i;
         try {
-            while ((var2 = var1.read(this.buffer, this.last, this.buffer.length - this.last)) != -1) {
-                this.last += var2;
+            while ((i = in.read(this.buffer, this.last, this.buffer.length - this.last)) != -1) {
+                this.last += i;
                 if (this.last >= this.buffer.length) {
                     this.addSize(256);
                 }
             }
-        } catch (IOException var3) {
+        } catch (IOException ex) {
             ;
         }
 
     }
 
-    public void write(InputStream var1, int var2) throws IOException {
-        if (var2 != 0) {
-            this.addSize(var2);
-            int var4 = 0;
+    public void write(InputStream in, int length) throws IOException {
+        if (length != 0) {
+            this.addSize(length);
+            int offset = 0;
 
-            int var3;
-            while ((var3 = var1.read(this.buffer, this.last, var2 - var4)) != -1) {
-                this.last += var3;
-                var4 += var3;
-                if (var4 >= var2) {
+            int i;
+            while ((i = in.read(this.buffer, this.last, length - offset)) != -1) {
+                this.last += i;
+                offset += i;
+                if (offset >= length) {
                     break;
                 }
             }
 
-            if (var4 < var2) {
+            if (offset < length) {
                 throw new EOFException();
             }
         }
     }
 
-    public byte[] writeTo(byte[] var1, int var2) {
-        int var3 = var2 + this.last;
-        if (var1 == null) {
-            var1 = new byte[var3];
+    public byte[] writeTo(byte[] dest, int offset) {
+        int length = offset + this.last;
+        if (dest == null) {
+            dest = new byte[length];
         }
 
-        if (var1.length < var3) {
-            byte[] var4 = new byte[var3];
-            System.arraycopy(var1, 0, var4, 0, var1.length);
-            var1 = var4;
+        if (dest.length < length) {
+            byte[] tmp = new byte[length];
+            System.arraycopy(dest, 0, tmp, 0, dest.length);
+            dest = tmp;
         }
 
-        System.arraycopy(this.buffer, 0, var1, var2, this.last);
-        return var1;
+        System.arraycopy(this.buffer, 0, dest, offset, this.last);
+        return dest;
     }
 
-    public void writeTo(OutputStream var1) throws IOException {
+    public void writeTo(OutputStream out) throws IOException {
         if (this.last != 0) {
-            var1.write(this.buffer, 0, this.last);
+            out.write(this.buffer, 0, this.last);
         }
     }
 }
