@@ -100,7 +100,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
             byte[] var9 = new byte[4];
             boolean wasUpdated = false;
             boolean wasLayerAdded = false;
-            int userWait = this.mi.user.wait;
+            int waitWas = this.mi.user.wait;
             this.mi.user.wait = -2;
 
             if (this.popup.getName().charAt(0) == 'm') {
@@ -154,7 +154,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
 
             this.m.iLayerSrc = this.m.iLayer = Math.min(this.m.iLayer, info.L - 1);
             this.repaint();
-            this.mi.user.wait = userWait;
+            this.mi.user.wait = waitWas;
             this.mi.repaint();
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -172,7 +172,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
         M.Info info = this.mi.info;
         this.setA(mg);
         mg.setRetouch(var1, var2, var2 != null ? var2.length : 0, false);
-        int userWait = this.mi.user.wait;
+        int waitWas = this.mi.user.wait;
 
         try {
             mg.draw();
@@ -183,7 +183,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
         }
 
         this.repaint();
-        this.mi.user.wait = userWait;
+        this.mi.user.wait = waitWas;
         this.mi.repaint();
     }
 
@@ -206,7 +206,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
                     return; // nothing to merge
                 }
 
-                int userWait = this.mi.user.wait;
+                int waitWas = this.mi.user.wait;
                 M mg = this.mg();
                 this.setA(mg);
                 byte[] buffer = new byte[visibleCount * 4 + 2];
@@ -227,7 +227,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
                 mg.setRetouch(new int[]{7}, buffer, buffer.length, false);
                 mg.draw();
                 this.mi.send(mg);
-                this.mi.user.wait = userWait;
+                this.mi.user.wait = waitWas;
             } catch (Throwable ex) {
                 ex.printStackTrace();
             }
@@ -371,7 +371,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
             int mouseX = event.getX();
             M.Info info = this.mi.info;
             boolean isModifier = Awt.isR(event);
-            int userWait;
+            int waitWas;
             switch (event.getID()) {
                 case MouseEvent.MOUSE_PRESSED:
                     if (this.mouse < 0) {
@@ -379,7 +379,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
                         int layerIndex = btnIndex - 1; // first row is reserved for the menu button, the rest are layers
                         if (layerIndex >= 0) {
                             if (mouseX > this.bW + 100 + 1) {
-                                userWait = this.mi.user.wait;
+                                waitWas = this.mi.user.wait;
                                 this.mi.user.wait = -2;
                                 if (isModifier) {
                                     for (int i = 0; i < info.L; ++i) {
@@ -389,7 +389,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
                                     this.setAlpha(layerIndex, info.layers[layerIndex].iAlpha == 0.0F ? 255 : 0, true);
                                 }
 
-                                this.mi.user.wait = userWait;
+                                this.mi.user.wait = waitWas;
                                 this.mi.repaint();
                                 this.p();
                             } else if (event.getClickCount() < 2 && !isModifier) {
@@ -421,11 +421,11 @@ public class L extends LComponent implements ActionListener, ItemListener {
                             this.mouse = -1;
                             this.isASlide = false;
                         } else {
-                            userWait = this.mouse - 1;
+                            waitWas = this.mouse - 1;
                             int layerIndex = this.b(this.Y) - 1;
-                            if (userWait >= 0 && layerIndex >= 0 && userWait != layerIndex) {
+                            if (waitWas >= 0 && layerIndex >= 0 && waitWas != layerIndex) {
                                 this.m.iLayer = layerIndex;
-                                this.m.iLayerSrc = userWait;
+                                this.m.iLayerSrc = waitWas;
                                 this.popup(new String[]{this.res.res("Shift"), this.res.res("Combine")}, mouseX, mouseY, false);
                             }
 
@@ -435,8 +435,8 @@ public class L extends LComponent implements ActionListener, ItemListener {
                     }
                     break;
                 case MouseEvent.MOUSE_MOVED:
-                    userWait = this.b(mouseY) - 1;
-                    if (!this.is_pre || userWait < 0 || mouseX >= this.bW) {
+                    waitWas = this.b(mouseY) - 1;
+                    if (!this.is_pre || waitWas < 0 || mouseX >= this.bW) {
                         if (this.is_DIm) {
                             this.is_DIm = false;
                             this.repaint();
@@ -449,7 +449,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
                     Dimension var9 = this.getSize();
                     int var10 = this.mi.info.W;
                     int var11 = this.mi.info.H;
-                    int[] var12 = this.mi.info.layers[userWait].offset;
+                    int[] var12 = this.mi.info.layers[waitWas].offset;
                     Graphics var13 = this.getG();
                     int var14 = Math.min(var9.width - this.bW - 1, var9.height - 1);
                     if (var12 == null) {

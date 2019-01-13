@@ -1362,7 +1362,7 @@ public class MgLine {
                 --var17;
                 int var8 = var6[var17];
                 var4 = var8 >>> 16;
-                var5 = var8 & '\uffff';
+                var5 = var8 & 0xFFFF;
                 var10 = var2 * var5;
                 boolean var12 = false;
                 boolean var13 = false;
@@ -1379,7 +1379,7 @@ public class MgLine {
                             for (var11 = var2 * (var5 - 1); var9 < var2 - 1 && var1[var11 + var9 + 1] == var14; ++var9) {
                             }
 
-                            var6[var17++] = var9 << 16 | var5 - 1 & '\uffff';
+                            var6[var17++] = var9 << 16 | var5 - 1 & 0xFFFF;
                         }
                     } else {
                         var12 = false;
@@ -1393,7 +1393,7 @@ public class MgLine {
                             for (var11 = var2 * (var5 + 1); var9 < var2 - 1 && var1[var11 + var9 + 1] == var14; ++var9) {
                             }
 
-                            var6[var17++] = var9 << 16 | var5 + 1 & '\uffff';
+                            var6[var17++] = var9 << 16 | var5 + 1 & 0xFFFF;
                         }
                     } else {
                         var13 = false;

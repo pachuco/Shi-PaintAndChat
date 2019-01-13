@@ -124,8 +124,8 @@ public class M {
 
     private static final int DEF_COUNT = -8;
     private static final String ENCODE = "UTF8";
-    private static float[] b255 = new float[256];
-    static float[] b255d = new float[256];
+    private static float[] b255 = new float[256]; // byte to float alpha LUT
+    static float[] b255d = new float[256]; // inverse byte to float alpha LUT
     private static ColorModel color_model = null;
     private static final M mgDef = new M();
 
@@ -137,9 +137,9 @@ public class M {
         this.user = user;
     }
 
-    private final void copy(int[][] var1, int[][] var2) {
-        for (int var3 = 0; var3 < var2.length; ++var3) {
-            System.arraycopy(var1[var3], 0, var2[var3], 0, var2[var3].length);
+    private final void copy(int[][] src, int[][] dest) {
+        for (int offset = 0; offset < dest.length; ++offset) {
+            System.arraycopy(src[offset], 0, dest[offset], 0, dest[offset].length);
         }
 
                                         
@@ -494,7 +494,7 @@ public class M {
                 --var16;
                 int var9 = var7[var16];
                 var1 = var9 >>> 16;
-                var2 = var9 & '\uffff';
+                var2 = var9 & 0xFFFF;
                 int var10 = var3 * var2;
                 boolean var11 = false;
                 boolean var12 = false;
@@ -1461,14 +1461,14 @@ public class M {
             int var1 = this.user.pW / 2;
             int var2 = this.info.W;
             int var3 = this.info.H;
-            LO[] var4 = this.info.layers;
+            LO[] layers = this.info.layers;
             this.setD(0, 0, 0, 0);
-            int[] points = this.user.points; // coordinates of two short x,y for each int
+            int[] points = this.user.points; // coordinates of two short x,y for each int -OR- a set of parameters
             int var6 = this.isText() ? 1 : 4;
 
             int pointX;
             for (pointX = 0; pointX < var6 && this.iSeek < this.iOffset; ++pointX) {
-                points[pointX] = (this.r2() & '\uffff') << 16 | this.r2() & '\uffff';
+                points[pointX] = (this.r2() & 0xFFFF) << 16 | this.r2() & '\uffff';
             }
 
             label99:
@@ -1508,8 +1508,8 @@ public class M {
                     case H_L:
                 }
 
-                LO layer = var4[this.iLayer];
-                switch (pointY) {
+                LO layer = layers[this.iLayer];
+                switch (pointY) { // here pointY is a command
                     case 0: // swap layers
                         this.info.swapL(this.iLayerSrc, this.iLayer);
                         break;
@@ -1519,13 +1519,14 @@ public class M {
                     case 2: // delete layer
                         this.info.delL(this.iLayerSrc);
                         break;
-                    case 3: //
+                    case 3: // shift layers
+                        //if the layer being dragged is above the destination, shift up the in-between
                         if (this.iLayer > this.iLayerSrc) {
                             for (int i = this.iLayerSrc; i < this.iLayer; ++i) {
                                 this.info.swapL(i, i + 1);
                             }
                         }
-
+                        // if I'm trying to move it above, shift down the in-between
                         if (this.iLayer < this.iLayerSrc) {
                             for (int i = this.iLayerSrc; i > this.iLayer; --i) {
                                 this.info.swapL(i, i - 1);
@@ -1535,46 +1536,46 @@ public class M {
                     default:
                         break;
                     case 5:
-                    case 8:
+                    case 8: // change layer alpha
                         layer.iAlpha = b255[this.offset[4] & 255];
                         break;
                     case 6:
                         try {
-                            Toolkit var20 = this.info.component.getToolkit();
+                            Toolkit toolkit = this.info.component.getToolkit();
                             pointX = points[1] >> 16;
                             pointY = (short) points[1];
-                            Image var19;
+                            Image img;
                             if ((points[2] & 255) == 1) {
-                                var19 = var20.createImage(this.offset, this.iSeek, this.iOffset - this.iSeek);
+                                img = toolkit.createImage(this.offset, this.iSeek, this.iOffset - this.iSeek);
                             } else {
-                                var19 = var20.createImage((byte[]) this.info.cnf.getRes(new String(this.offset, this.iSeek, this.iOffset - this.iSeek, ENCODE)));
+                                img = toolkit.createImage((byte[]) this.info.cnf.getRes(new String(this.offset, this.iSeek, this.iOffset - this.iSeek, ENCODE)));
                             }
 
-                            if (var19 != null) {
-                                Awt.wait(var19);
-                                int var13 = var19.getWidth((ImageObserver) null);
-                                int var14 = var19.getHeight((ImageObserver) null);
-                                int[] var15 = Awt.getPix(var19);
-                                var19.flush();
-                                var19 = null;
-                                if (var13 > 0 && var14 > 0) {
-                                    var4[this.iLayer].toCopy(var13, var14, var15, pointX, pointY);
+                            if (img != null) {
+                                Awt.wait(img);
+                                int imgWidth = img.getWidth((ImageObserver) null);
+                                int imgHeight = img.getHeight((ImageObserver) null);
+                                int[] srgb = Awt.getPix(img);
+                                img.flush();
+                                img = null; // probably for the garbage collector
+                                if (imgWidth > 0 && imgHeight > 0) {
+                                    layers[this.iLayer].toCopy(imgWidth, imgHeight, srgb, pointX, pointY);
                                 }
                             }
                         } catch (Throwable ex) {
                             ex.printStackTrace();
                         }
                         break;
-                    case 7:
-                        byte var11 = this.offset[4];
-                        byte[] var12 = new byte[var11 * 4];
-                        System.arraycopy(this.offset, 6, var12, 0, var11 * 4);
-                        this.dFusion(var12);
+                    case 7: // merge visible layers
+                        byte width = this.offset[4];
+                        byte[] dest = new byte[width * 4];
+                        System.arraycopy(this.offset, 6, dest, 0, width * 4);
+                        this.dFusion(dest);
                         break;
-                    case 9:
+                    case 9: // set blending mode
                         layer.iCopy = this.offset[4];
                         break;
-                    case 10:
+                    case 10: // set layer name
                         layer.name = new String(this.offset, 4, this.iOffset - 4, ENCODE);
                 }
 
@@ -1905,7 +1906,7 @@ public class M {
         flagGroup |= this.iSOB << 6; // F1S
         int flags = flagGroup << 16;
         if (mg == null) {
-            return flags | '\uffff';
+            return flags | 0xFFFF;
         } else {
             // F2 flags
             flagGroup = 0;
@@ -2904,22 +2905,24 @@ public class M {
         return this.set(bs.getBuffer(), 0);
     }
 
-    public void setRetouch(int[] var1, byte[] var2, int var3, boolean var4) {
+    public void setRetouch(int[] points, byte[] buffer, int length, boolean isDrawing) {
         try {
-            int var5 = 4;
+            int pointCount = 4;
             int scale = this.info.scale;
             int quality = this.info.Q;
             int scaleX = this.info.scaleX;
             int scaleY = this.info.scaleY;
             this.getPM();
-            int var10 = this.user.pW / 2;
-            int var11 = this.iHint == H_BEZI ? var10 : 0;
-            int[] points = this.user.points;
+            // calculations for bezier curves
+            int halfSqrtSize = this.user.pW / 2; // half square root of the pen size
+            int bezierOffset = this.iHint == H_BEZI ? halfSqrtSize : 0;
+
+            int[] userPoints = this.user.points;
             switch (this.iHint) {
                 case H_BEZI:
                 case H_FILL:
                 case H_L:
-                    break;
+                    break; // 4 points
                 case H_RECT:
                 case H_FRECT:
                 case H_OVAL:
@@ -2927,42 +2930,43 @@ public class M {
                 case H_SP:
                 case H_UNKNOWN13:
                 default:
-                    var5 = 2;
+                    pointCount = 2; // area:(x,y)(x2,y2)
                     break;
                 case H_TEXT:
                 case H_VTEXT:
-                    var5 = 1;
+                    pointCount = 1; // position:(x,y)
                     break;
                 case H_COPY:
-                    var5 = 3;
+                    pointCount = 3; // source:(x,y)(x2,y2) destination:(x3,y3)
                     break;
                 case H_CLEAR:
-                    var5 = 0;
+                    pointCount = 0;
             }
 
-            if (var1 != null) {
-                var5 = Math.min(var5, var1.length);
+            if (points != null) {
+                pointCount = Math.min(pointCount, points.length);
             }
 
-            for (int i = 0; i < var5; ++i) {
-                int var12 = var1[i] >> 16;
-                int var13 = (short) var1[i];
-                if (var4) {
-                    var12 = (var12 / scale + scaleX) * quality - var11;
-                    var13 = (var13 / scale + scaleY) * quality - var11;
+            for (int i = 0; i < pointCount; ++i) {
+                int posX = points[i] >> 16;
+                int posY = (short) points[i];
+                if (isDrawing) {
+                    // adjust with scaling, quality and... the bezier thing?
+                    posX = (posX / scale + scaleX) * quality - bezierOffset;
+                    posY = (posY / scale + scaleY) * quality - bezierOffset;
                 }
 
-                points[i] = var12 << 16 | var13 & '\uffff';
+                userPoints[i] = posX << 16 | posY & 0xFFFF;
             }
 
             ByteStream bs = this.getWork();
 
-            for (int i = 0; i < var5; ++i) {
-                bs.w((long) points[i], 4);
+            for (int i = 0; i < pointCount; ++i) {
+                bs.w((long) userPoints[i], 4);
             }
 
-            if (var2 != null && var3 > 0) {
-                bs.write(var2, 0, var3);
+            if (buffer != null && length > 0) {
+                bs.write(buffer, 0, length);
             }
 
             this.offset = bs.writeTo(this.offset, 0);

@@ -521,7 +521,7 @@ public class Mg {
                 --var16;
                 int var9 = var7[var16];
                 var1 = var9 >>> 16;
-                var2 = var9 & '\uffff';
+                var2 = var9 & 0xFFFF;
                 int var10 = var3 * var2;
                 boolean var11 = false;
                 boolean var12 = false;
@@ -1591,7 +1591,7 @@ public class Mg {
                         short var10 = (short) var1[var14];
                         var9 = (var9 / var7 + var11) * var8 - var13;
                         var18 = (var10 / var7 + var12) * var8 - var13;
-                        var6[var14] = var9 << 16 | var18 & '\uffff';
+                        var6[var14] = var9 << 16 | var18 & 0xFFFF;
                     }
                 } else {
                     System.arraycopy(var1, 0, var6, 0, var1.length);
@@ -1600,7 +1600,7 @@ public class Mg {
                 var7 = 0;
 
                 while (this.iSeek < this.iOffset) {
-                    var6[var7++] = (this.r2() & '\uffff') << 16 | this.r2() & '\uffff';
+                    var6[var7++] = (this.r2() & 0xFFFF) << 16 | this.r2() & '\uffff';
                     if (this.iHint == 8) {
                         break;
                     }
@@ -2000,7 +2000,7 @@ public class Mg {
         var3 |= this.iSOB << 6;
         int var2 = var3 << 16;
         if (var1 == null) {
-            return var2 | '\uffff';
+            return var2 | 0xFFFF;
         } else {
             var3 = 0;
             if (this.iHint != var1.iHint) {
