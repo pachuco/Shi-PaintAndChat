@@ -666,15 +666,15 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
 
     }
 
-    public void send(M var1) {
-        this.dd.send(var1);
+    public void send(M mg) {
+        this.dd.send(mg);
     }
 
-    public void setARGB(int var1) {
-        var1 &= 0xFFFFFF;
-        this.tool.selPix(this.mi.info.m.iLayer != 0 && var1 == 0xFFFFFF);
+    public void setARGB(int argb) {
+        argb &= 0xFFFFFF;
+        this.tool.selPix(this.mi.info.m.iLayer != 0 && argb == 0xFFFFFF);
         if (this.mi.info.m.iPen != M.P_WHITE && this.mi.info.m.iPen != M.P_SWHITE) {
-            this.tool.setARGB(this.mi.info.m.iAlpha << 24 | var1);
+            this.tool.setARGB(this.mi.info.m.iAlpha << 24 | argb);
         }
 
     }
@@ -704,8 +704,8 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
 
     }
 
-    public void setLineSize(int var1) {
-        this.tool.setLineSize(var1);
+    public void setLineSize(int size) {
+        this.tool.setLineSize(size);
     }
 
     private void typed() {
@@ -746,7 +746,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
         return ret;
     }
 
-    public void undo(boolean var1) {
+    public void undo(boolean isUndo) {
     }
 
     public void update(Graphics var1) {

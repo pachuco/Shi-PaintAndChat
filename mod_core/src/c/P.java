@@ -1209,10 +1209,10 @@ public class P extends Panel implements IMi {
         }
     }
 
-    public void setARGB(int var1) {
-        this.tool.selPix(var1 == 0xFFFFFF);
+    public void setARGB(int argb) {
+        this.tool.selPix(argb == 0xFFFFFF);
         if (this.mi.info.m.iPen != M.P_WHITE && this.mi.info.m.iPen != M.P_SWHITE) {
-            this.tool.setARGB(var1);
+            this.tool.setARGB(argb);
         }
 
     }
@@ -1268,12 +1268,12 @@ public class P extends Panel implements IMi {
         this.tool.setLineSize(size);
     }
 
-    public void undo(boolean var1) {
+    public void undo(boolean isUndo) {
         try {
             int var2 = this.mi.info.L;
             int var3 = lastI;
             LO[] var4 = this.mi.info.layers;
-            if (var1) {
+            if (isUndo) {
                 if (nowI <= 0) {
                     return;
                 }

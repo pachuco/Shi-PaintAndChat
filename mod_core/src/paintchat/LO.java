@@ -172,20 +172,21 @@ public class LO {
         }
     }
 
-    public void dAdd(int[] var1, int x1, int y1, int x2, int y2, int[] var6) {
+    /** Adds two layers together */
+    public void dAdd(int[] layerOffset, int x1, int y1, int x2, int y2, int[] buffer) {
         if (this.offset != null) {
-            float[] var14 = M.getb255();
+            float[] floatAlpha = M.getb255();
             int[] var16 = this.offset;
-            int var17 = this.W;
-            int var18 = var17;
+            int canvasWidth = this.W;
+            int var18 = canvasWidth;
             x1 = Math.max(x1, 0);
             y1 = Math.max(y1, 0);
             x2 = Math.min(this.W, x2);
             y2 = Math.min(this.H, y2);
-            int var19 = x2 - x1;
-            int var20 = y2 - y1;
-            int var21 = y1 * var17 + x1;
-            int var22 = y1 * var17 + x1;
+            int diffX = x2 - x1;
+            int diffY = y2 - y1;
+            int var21 = y1 * canvasWidth + x1;
+            int var22 = y1 * canvasWidth + x1;
             int var23 = 0;
             int var9;
             int var10;
@@ -197,15 +198,15 @@ public class LO {
             int var25;
             int var26;
             switch (this.iCopy) {
-                case 1:
-                    for (int i = 0; i < var20; ++i) {
-                        for (int j = 0; j < var19; ++j) {
+                case M.M_M:
+                    for (int i = 0; i < diffY; ++i) {
+                        for (int j = 0; j < diffX; ++j) {
                             var9 = var16[var22 + j];
-                            var10 = var1[var21 + j];
+                            var10 = layerOffset[var21 + j];
                             var11 = var9 >>> 24;
                             var12 = var10 >>> 24;
-                            var13 = var11 + (int) ((float) var12 * var14[0xFF - var11]);
-                            int var27 = var6[var23 + j] & 0xFFFFFF;
+                            var13 = var11 + (int) ((float) var12 * floatAlpha[0xFF - var11]);
+                            int var27 = buffer[var23 + j] & 0xFFFFFF;
                             var24 = var10 >>> 16 & 0xFF;
                             var25 = var10 >>> 8 & 0xFF;
                             var26 = var10 & 0xFF;
@@ -215,65 +216,65 @@ public class LO {
                             var26 += (int) ((float) ((var27 & 0xFF) - var26) * var15);
                             var10 = var24 << 16 | var25 << 8 | var26;
                             if (var12 <= 0) {
-                                var1[var21 + j] = var9;
+                                layerOffset[var21 + j] = var9;
                             } else {
-                                var15 = var14[var11] + var14[0xFF - var11] * var14[0xFF - var12];
-                                var1[var21 + j] = var13 << 24 | (var10 >>> 16 & 0xFF) - (int) (var14[var10 >>> 16 & 0xFF] * (float) (var9 >>> 16 & 0xFF ^ 0xFF) * var15) << 16 | (var10 >>> 8 & 0xFF) - (int) (var14[var10 >>> 8 & 0xFF] * (float) (var9 >>> 8 & 0xFF ^ 0xFF) * var15) << 8 | (var10 & 0xFF) - (int) (var14[var10 & 0xFF] * (float) (var9 & 0xFF ^ 0xFF) * var15);
+                                var15 = floatAlpha[var11] + floatAlpha[0xFF - var11] * floatAlpha[0xFF - var12];
+                                layerOffset[var21 + j] = var13 << 24 | (var10 >>> 16 & 0xFF) - (int) (floatAlpha[var10 >>> 16 & 0xFF] * (float) (var9 >>> 16 & 0xFF ^ 0xFF) * var15) << 16 | (var10 >>> 8 & 0xFF) - (int) (floatAlpha[var10 >>> 8 & 0xFF] * (float) (var9 >>> 8 & 0xFF ^ 0xFF) * var15) << 8 | (var10 & 0xFF) - (int) (floatAlpha[var10 & 0xFF] * (float) (var9 & 0xFF ^ 0xFF) * var15);
                             }
                         }
 
                         var21 += var18;
-                        var22 += var17;
+                        var22 += canvasWidth;
                         var23 += var18;
                     }
 
                     return;
-                case 2:
-                    for (int i = 0; i < var20; ++i) {
-                        for (int j = 0; j < var19; ++j) {
+                case M.M_R:
+                    for (int i = 0; i < diffY; ++i) {
+                        for (int j = 0; j < diffX; ++j) {
                             var9 = var16[var22 + j];
-                            var10 = var1[var21 + j];
+                            var10 = layerOffset[var21 + j];
                             var11 = var9 >>> 24;
-                            var12 = (int) ((float) (var10 >>> 24) * var14[0xFF - var11]);
+                            var12 = (int) ((float) (var10 >>> 24) * floatAlpha[0xFF - var11]);
                             var13 = var11 + var12;
                             var9 ^= 0xFFFFFF;
                             if (var13 == 0) {
-                                var1[var21 + j] = 0xFFFFFF;
+                                layerOffset[var21 + j] = 0xFFFFFF;
                             } else {
                                 var15 = (float) var11 / (float) var13;
                                 var24 = var10 >>> 16 & 0xFF;
                                 var25 = var10 >>> 8 & 0xFF;
                                 var26 = var10 & 0xFF;
-                                var1[var21 + j] = var15 == 1.0F ? var9 : var13 << 24 | var24 + (int) ((float) ((var9 >>> 16 & 0xFF) - var24) * var15) << 16 | var25 + (int) ((float) ((var9 >>> 8 & 0xFF) - var25) * var15) << 8 | var26 + (int) ((float) ((var9 & 0xFF) - var26) * var15);
+                                layerOffset[var21 + j] = var15 == 1.0F ? var9 : var13 << 24 | var24 + (int) ((float) ((var9 >>> 16 & 0xFF) - var24) * var15) << 16 | var25 + (int) ((float) ((var9 >>> 8 & 0xFF) - var25) * var15) << 8 | var26 + (int) ((float) ((var9 & 0xFF) - var26) * var15);
                             }
                         }
 
                         var21 += var18;
-                        var22 += var17;
+                        var22 += canvasWidth;
                     }
 
                     return;
-                default:
-                    for (int i = 0; i < var20; ++i) {
-                        for (int j = 0; j < var19; ++j) {
+                default: // M_N
+                    for (int i = 0; i < diffY; ++i) {
+                        for (int j = 0; j < diffX; ++j) {
                             var9 = var16[var22 + j];
-                            var10 = var1[var21 + j];
+                            var10 = layerOffset[var21 + j];
                             var11 = var9 >>> 24;
-                            var12 = (int) ((float) (var10 >>> 24) * var14[0xFF - var11]);
+                            var12 = (int) ((float) (var10 >>> 24) * floatAlpha[0xFF - var11]);
                             var13 = var11 + var12;
                             if (var13 == 0) {
-                                var1[var21 + j] = 0xFFFFFF;
+                                layerOffset[var21 + j] = 0xFFFFFF;
                             } else {
                                 var15 = (float) var11 / (float) var13;
                                 var24 = var10 >>> 16 & 0xFF;
                                 var25 = var10 >>> 8 & 0xFF;
                                 var26 = var10 & 0xFF;
-                                var1[var21 + j] = var15 == 1.0F ? var9 : var13 << 24 | var24 + (int) ((float) ((var9 >>> 16 & 0xFF) - var24) * var15) << 16 | var25 + (int) ((float) ((var9 >>> 8 & 0xFF) - var25) * var15) << 8 | var26 + (int) ((float) ((var9 & 0xFF) - var26) * var15);
+                                layerOffset[var21 + j] = var15 == 1.0F ? var9 : var13 << 24 | var24 + (int) ((float) ((var9 >>> 16 & 0xFF) - var24) * var15) << 16 | var25 + (int) ((float) ((var9 >>> 8 & 0xFF) - var25) * var15) << 8 | var26 + (int) ((float) ((var9 & 0xFF) - var26) * var15);
                             }
                         }
 
                         var21 += var18;
-                        var22 += var17;
+                        var22 += canvasWidth;
                     }
 
             }
@@ -284,15 +285,16 @@ public class LO {
         this.normalize(alpha, 0, 0, this.W, this.H);
     }
 
+    /** Normalizes opacity to alpha */
     public void normalize(float alpha, int x1, int y1, int x2, int y2) {
         if (this.offset != null) {
             for (int i = x2 - x1; y1 < y2; ++y1) {
-                int var9 = y1 * this.W + x1;
+                int offset = y1 * this.W + x1;
 
                 for (int j = 0; j < i; ++j) {
-                    int var7 = this.offset[var9];
-                    this.offset[var9] = (int) ((float) (var7 >>> 24) * alpha) << 24 | var7 & 0xFFFFFF;
-                    ++var9;
+                    int color = this.offset[offset];
+                    this.offset[offset] = (int) ((float) (color >>> 24) * alpha) << 24 | color & 0xFFFFFF;
+                    ++offset;
                 }
             }
 

@@ -38,9 +38,9 @@ public class L extends LComponent implements ActionListener, ItemListener {
     private Res res;
     private M m;
     private int B = -1;
-    private Font bFont;
-    private int bH;
-    private int bW;
+    private Font bFont; // button font
+    private int bH; // button height
+    private int bW; // button width
     private int base;
     private int layer_size = -1;
     private int mouse = -1;
@@ -49,7 +49,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
     private int YOFF;
     private PopupMenu popup = null;
     private String strMenu;
-    private boolean is_pre = true;
+    private boolean is_pre = true; // show layer preview images
     private boolean is_DIm = false;
     private Color cM;
     private Color cT;
@@ -97,7 +97,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
             this.setA(mg);
             LO[] layers = info.layers;
             int layerCount = info.L;
-            byte[] var9 = new byte[4];
+            byte[] buffer = new byte[4]; // used to store arguments for setRetouch
             boolean wasUpdated = false;
             boolean wasLayerAdded = false;
             int waitWas = this.mi.user.wait;
@@ -137,8 +137,8 @@ public class L extends LComponent implements ActionListener, ItemListener {
                 } else {
                     mg.iHint = M.H_RECT;
                     mg.iPen = M.P_FUSION;
-                    var9[0] = blendMode;
-                    mg.setRetouch(new int[]{0, info.W << 16 | info.H}, var9, 4, false);
+                    buffer[0] = blendMode;
+                    mg.setRetouch(new int[]{0, info.W << 16 | info.H}, buffer, 4, false);
                     wasUpdated = true;
                 }
             }
@@ -167,11 +167,11 @@ public class L extends LComponent implements ActionListener, ItemListener {
         return y < this.bH ? 0 : Math.max(this.mi.info.L - (y / this.bH - 1), 1);
     }
 
-    private void send(int[] var1, byte[] var2) {
+    private void send(int[] points, byte[] bytes) {
         M mg = this.mg();
         M.Info info = this.mi.info;
         this.setA(mg);
-        mg.setRetouch(var1, var2, var2 != null ? var2.length : 0, false);
+        mg.setRetouch(points, bytes, bytes != null ? bytes.length : 0, false);
         int waitWas = this.mi.user.wait;
 
         try {
@@ -302,12 +302,12 @@ public class L extends LComponent implements ActionListener, ItemListener {
     }
 
     private M mg() {
-        M var1 = new M(this.mi.info, this.mi.user);
-        var1.iAlpha = 255;
-        var1.iHint = M.H_L;
-        var1.iLayer = this.m.iLayer;
-        var1.iLayerSrc = this.m.iLayerSrc;
-        return var1;
+        M mg = new M(this.mi.info, this.mi.user);
+        mg.iAlpha = 255;
+        mg.iHint = M.H_L;
+        mg.iLayer = this.m.iLayer;
+        mg.iLayerSrc = this.m.iLayerSrc;
+        return mg;
     }
 
     private void p() {
@@ -435,8 +435,9 @@ public class L extends LComponent implements ActionListener, ItemListener {
                     }
                     break;
                 case MouseEvent.MOUSE_MOVED:
-                    waitWas = this.b(mouseY) - 1;
-                    if (!this.is_pre || waitWas < 0 || mouseX >= this.bW) {
+                    // handles showing the preview images on mouse over, if enabled
+                    int hoverLayerIndex = this.b(mouseY) - 1; // -1 because of the menu popup button
+                    if (!this.is_pre || hoverLayerIndex < 0 || mouseX >= this.bW) {
                         if (this.is_DIm) {
                             this.is_DIm = false;
                             this.repaint();
@@ -446,24 +447,27 @@ public class L extends LComponent implements ActionListener, ItemListener {
                     }
 
                     this.is_DIm = true;
-                    Dimension var9 = this.getSize();
-                    int var10 = this.mi.info.W;
-                    int var11 = this.mi.info.H;
-                    int[] var12 = this.mi.info.layers[waitWas].offset;
-                    Graphics var13 = this.getG();
-                    int var14 = Math.min(var9.width - this.bW - 1, var9.height - 1);
-                    if (var12 == null) {
-                        var13.setColor(Color.white);
-                        var13.fillRect(this.bW + 1, 1, var14 - 1, var14 - 1);
+                    Dimension windowSize = this.getSize();
+                    int layerWidth = this.mi.info.W;
+                    int layerHeight = this.mi.info.H;
+                    int[] layerImage = this.mi.info.layers[hoverLayerIndex].offset;
+                    Graphics g = this.getG();
+                    //FIXME: layer previews should maintain aspect ratio
+                    int side = Math.min(windowSize.width - this.bW - 1, windowSize.height - 1);
+                    if (layerImage == null) {
+                        g.setColor(Color.white);
+                        g.fillRect(this.bW + 1, 1, side - 1, side - 1);
                     } else {
-                        Image var15 = this.getToolkit().createImage((ImageProducer) (new MemoryImageSource(var10, var11, new DirectColorModel(24, 16711680, 65280, 255), var12, 0, var10)));
-                        var13.drawImage(var15, this.bW + 1, 1, var14 - 1, var14 - 1, (ImageObserver) null);
-                        var15.flush();
+                        Image img = this.getToolkit().createImage((ImageProducer) (new MemoryImageSource(layerWidth, layerHeight, new DirectColorModel(24, 0xFF0000, 0x00FF00, 0x0000FF), layerImage, 0, layerWidth)));
+                        g.drawImage(img, this.bW + 1, 1, side - 1, side - 1, (ImageObserver) null);
+                        img.flush();
                     }
 
-                    var13.setColor(Color.black);
-                    var13.drawRect(this.bW, 0, var14, var14);
-                    var13.dispose();
+                    // preview border
+                    g.setColor(Color.black);
+                    g.drawRect(this.bW, 0, side, side);
+
+                    g.dispose();
                 case MouseEvent.MOUSE_ENTERED:
                 case MouseEvent.MOUSE_EXITED:
                 default:
@@ -484,7 +488,8 @@ public class L extends LComponent implements ActionListener, ItemListener {
 
     }
 
-    private void popup(String[] var1, int var2, int var3, boolean var4) {
+    /** Opens the layers menu, or the layer drag&drop action menu */
+    private void popup(String[] options, int mouseX, int mouseY, boolean isMenuPopup) {
         if (this.mi.info.isLEdit) {
             if (this.popup == null) {
                 this.popup = new PopupMenu();
@@ -494,21 +499,21 @@ public class L extends LComponent implements ActionListener, ItemListener {
                 this.popup.removeAll();
             }
 
-            for (int var5 = 0; var5 < var1.length; ++var5) {
-                this.popup.add(this.res.res(var1[var5]));
+            for (int i = 0; i < options.length; ++i) {
+                this.popup.add(this.res.res(options[i]));
             }
 
-            if (var4) {
+            if (isMenuPopup) {
                 this.popup.addSeparator();
-                CheckboxMenuItem var6 = new CheckboxMenuItem(this.res.res("IsPreview"), this.is_pre);
-                var6.addItemListener(this);
-                this.popup.add((MenuItem) var6);
+                CheckboxMenuItem itemPreview = new CheckboxMenuItem(this.res.res("IsPreview"), this.is_pre);
+                itemPreview.addItemListener(this);
+                this.popup.add((MenuItem) itemPreview);
                 this.popup.setName("m");
             } else {
                 this.popup.setName("l");
             }
 
-            this.popup.show(this, var2, var3);
+            this.popup.show(this, mouseX, mouseY);
         }
     }
 
@@ -561,9 +566,9 @@ public class L extends LComponent implements ActionListener, ItemListener {
                 }
             }
 
-            int var8 = choice.getSelectedIndex();
-            if (layer.iCopy != var8) {
-                this.send(new int[]{9}, new byte[]{(byte) var8});
+            int blendMode = choice.getSelectedIndex();
+            if (layer.iCopy != blendMode) {
+                this.send(new int[]{9}, new byte[]{(byte) blendMode});
             }
 
             this.repaint();
