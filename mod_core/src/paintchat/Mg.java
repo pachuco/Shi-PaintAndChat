@@ -21,6 +21,8 @@ import java.lang.reflect.Field;
 import syi.awt.Awt;
 import syi.util.ByteStream;
 
+import static syi.C.EngineMg.*;
+
 // Currently only used by PCHViewer when loading the older PCH format, similar to M
 public class Mg {
     private Mg.Info info;
@@ -50,77 +52,6 @@ public class Mg {
     private int iSeek;
     private int iOffset;
     private byte[] offset;
-    // iHint
-    public static final int H_FLINE = 0;
-    public static final int H_LINE = 1;
-    public static final int H_BEZI = 2;
-    public static final int H_RECT = 3;
-    public static final int H_FRECT = 4;
-    public static final int H_OVAL = 5;
-    public static final int H_FOVAL = 6;
-    public static final int H_FILL = 7;
-    public static final int H_TEXT = 8;
-    public static final int H_COPY = 9;
-    public static final int H_CLEAR = 10;
-    public static final int H_SP = 11;
-    public static final int H_L = 14;
-    // iPen
-    public static final int P_SOLID = 0;
-    public static final int P_PEN = 1;
-    public static final int P_SUISAI = 2;
-    public static final int P_SUISAI2 = 3;
-    public static final int P_WHITE = 4;
-    public static final int P_SWHITE = 5;
-    public static final int P_LIGHT = 6;
-    public static final int P_DARK = 7;
-    public static final int P_BOKASHI = 8;
-    public static final int P_MOSAIC = 9;
-    public static final int P_FILL = 10;
-    public static final int P_LPEN = 11;
-    public static final int P_UNKNOWN12 = 12;
-    public static final int P_UNKNOWN13 = 13;
-    public static final int P_NULL = 14;
-    public static final int P_UNKNOWN15 = 15;
-    public static final int P_UNKNOWN16 = 16;
-    public static final int P_LR = 17;
-    public static final int P_UD = 18;
-    public static final int P_R = 19;
-    public static final int P_FUSION = 20;
-    // iPenM
-    public static final int PM_PEN = 0;
-    public static final int PM_SUISAI = 1; // Suisai means watercolor
-    public static final int PM_MANY = 2;
-    // iMask
-    public static final int M_N = 0; // Normal
-    public static final int M_M = 1; // Multiply
-    public static final int M_R = 2; // Invert
-    public static final int M_ADD = 3; // Additive
-    public static final int M_SUB = 4; // Subtract
-    // Flags group 1 (iSOB)
-    public static final int F1_ALL_LAYERS = 1;
-    private static final int F1_AFIX = 2;
-    private static final int F1O = 4;
-    private static final int F1C = 8;
-    private static final int F1A = 16;
-    private static final int F1S = 32;
-    // Flags group 2
-    private static final int F2H = 1;
-    private static final int F2PM = 2;
-    private static final int F2M = 4;
-    private static final int F2P = 8;
-    private static final int F2T = 16;
-    private static final int F2L = 32;
-    private static final int F2LS = 64;
-    // Flags group 3
-    private static final int F3A = 1;
-    private static final int F3C = 2;
-    private static final int F3CM = 4;
-    private static final int F3S = 8;
-    private static final int F3E = 16;
-    private static final int F3SA = 32;
-    private static final int F3SS = 64;
-    private static final int DEF_COUNT = -8;
-    private static final String ENCODE = "UTF8";
     private static float[] b255 = new float[256];
     private static float[] b255d = new float[256];
     private static ColorModel color_model = null;
