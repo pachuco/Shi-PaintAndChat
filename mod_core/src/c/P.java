@@ -37,6 +37,8 @@ import syi.jpeg.SJpegEncoder;
 import syi.png.SPngEncoder;
 import syi.util.ByteStream;
 
+import static syi.C.ShiPainter.*;
+
 public class P extends Panel implements IMi {
     private ShiPainter app;
     private Res res;
@@ -317,7 +319,7 @@ public class P extends Panel implements IMi {
         this.mi.init(app, config, imW, imH, qual, layNum, curArr);
 
         try {
-            String var13 = giveP(loadMode, config.getP("tools", "normal"));
+            String var13 = giveP(loadMode, config.getP("tools", GUI_NORMAL));
             this.tool = (ToolBox) Class.forName("paintchat." + var13 + ".Tools").newInstance();
             this.tool.init(this, app, config, res, this.mi);
         } catch (Throwable ex) {

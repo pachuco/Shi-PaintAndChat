@@ -40,6 +40,8 @@ import syi.awt.LComponent;
 import syi.awt.TextPanel;
 import syi.util.ThreadPool;
 
+import static syi.C.ShiPainter.*;
+
 public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListener {
     private static final String STR_VERSION = "PaintChatClient v3.66";
     private static final String STR_INFO = "PaintChat";
@@ -541,7 +543,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
             this.mi.init(this.applet, this.dd.config, this.dd.imW, this.dd.imH, var6, var5, var16);
             this.miPanel.add(this.mi);
             this.iPG(true);
-            String var9 = var4.getP("tools", "normal");
+            String var9 = var4.getP("tools", GUI_NORMAL);
 
             try {
                 this.tool = (ToolBox) Class.forName("paintchat." + var9 + ".Tools").newInstance();

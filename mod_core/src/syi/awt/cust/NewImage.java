@@ -1,10 +1,11 @@
 package syi.awt.cust;
 
-import paintchat.Res;
-import syi.awt.*;
-
 import java.awt.*;
 import java.awt.event.*;
+
+import syi.awt.*;
+
+import static syi.C.ShiPainter.*;
 
 public class NewImage extends Dialog implements WindowListener, ActionListener {
     private final static String hnd_cancel = "hnd_cancel";
@@ -37,17 +38,14 @@ public class NewImage extends Dialog implements WindowListener, ActionListener {
         }
     };
 
+    private static int GAP = 5;
+    private static int PAD = 30;
 
-    CheckboxGroup group;
-    Checkbox radNormal;
-    Checkbox radPro;
-    Button okBut;
-    Button canBut;
-    Label wLabel;
-    Label hLabel;
-    TextField wField;
-    TextField hField;
-
+    private CheckboxGroup group;
+    private Checkbox radNormal;
+    private Checkbox radPro;
+    private TextField fieldW;
+    private TextField fieldH;
     private Dimension dim;
     private String mode;
 
@@ -56,104 +54,105 @@ public class NewImage extends Dialog implements WindowListener, ActionListener {
         super(owner, "New image");
         if(m == null) m = "";
 
-        setLayout(null);
+        Container conAll;
+        Container conSize, conMode, conButt;
+        Container conW, conH;
+        Button buttOk, buttCan;
+        Label labW, labH;
+
+        setLayout(new FlowLayout(FlowLayout.CENTER, PAD, PAD));
         setBackground(Awt.cBk);
         setFont(Awt.getDefFont());
 
-        //TODO: rewrite this crap to not use absolute positions
-        wLabel = new Label();
-        wLabel.setLocation(14, 35);
-        wLabel.setSize(45, 25);
-        wLabel.setText("Width" + ":");
-        add(wLabel);
+        conAll = new Container();
+        conAll.setLayout(new GridLayout(3, 1, 0, GAP));
 
-        hLabel = new Label();
-        hLabel.setLocation(146, 35);
-        hLabel.setSize(45, 25);
-        hLabel.setText("Height" + ":");
-        add(hLabel);
+        //Size fields
+        conSize = new Container();
+        conSize.setLayout(new GridLayout(1,2, GAP, 0));
 
-        wField = new TextField();
-        wField.setLocation(63, 35);
-        wField.setSize(60, 25);
-        wField.setBackground(new Color(-1));
-        wField.setText(String.valueOf(dim.width));
-        wField.setColumns(10);
-        wField.addKeyListener(kaFld);
-        wField.addKeyListener(kaAny);
-        add(wField);
+        conW = new Container();
+        conW.setLayout(new FlowLayout(FlowLayout.CENTER));
+        labW = new Label("Width:");
+        fieldW = new TextField();
+        fieldW.setColumns(5);
+        fieldW.addKeyListener(kaFld);
+        fieldW.addKeyListener(kaAny);
+        fieldW.setText(String.valueOf(dim.width));
+        conW.add(labW);
+        conW.add(fieldW);
+        conH = new Container();
+        conH.setLayout(new FlowLayout(FlowLayout.CENTER));
+        labH = new Label("Height:");
+        fieldH = new TextField();
+        fieldH.setColumns(5);
+        fieldH.addKeyListener(kaFld);
+        fieldH.addKeyListener(kaAny);
+        fieldH.setText(String.valueOf(dim.height));
+        conH.add(labH);
+        conH.add(fieldH);
 
-        hField = new TextField();
-        hField.setLocation(195, 35);
-        hField.setSize(54, 25);
-        hField.setBackground(new Color(-1));
-        hField.setText(String.valueOf(dim.height));
-        hField.setColumns(10);
-        hField.addKeyListener(kaFld);
-        hField.addKeyListener(kaAny);
-        add(hField);
+        conSize.add(conW);
+        conSize.add(conH);
 
+        //Mode radio buttons
+        conMode = new Container();
+        conMode.setLayout(new GridLayout(1,2, GAP, 0));
         group = new CheckboxGroup();
 
         radNormal = new Checkbox();
-        radNormal.setLocation(20, 70);
-        radNormal.setSize(120, 30);
         radNormal.setLabel("Normal mode");
-        radNormal.setState(m.equals("normal"));
+        radNormal.setState(m.equals(GUI_NORMAL));
         radNormal.addKeyListener(kaAny);
         radNormal.setCheckboxGroup(group);
-        add(radNormal);
-
-
         radPro = new Checkbox();
-        radPro.setLocation(150, 70);
-        radPro.setSize(120, 30);
         radPro.setLabel("Pro mode");
-        radPro.setState(m.equals("pro"));
+        radPro.setState(m.equals(GUI_PRO));
         radPro.addKeyListener(kaAny);
         radPro.setCheckboxGroup(group);
-        add(radPro);
 
+        conMode.add(radNormal);
+        conMode.add(radPro);
 
-        okBut = new Button();
-        okBut.setLocation(67, 100);
-        okBut.setSize(70, 28);
-        okBut.setLabel("Ok");
-        okBut.addKeyListener(kaAny);
-        add(okBut);
+        //Confirmation buttons
+        conButt = new Container();
+        conButt.setLayout(new GridLayout(1,2, GAP, 0));
 
-        canBut = new Button();
-        canBut.setLocation(150, 100);
-        canBut.setSize(70, 28);
-        canBut.setLabel("Cancel");
-        canBut.addKeyListener(kaAny);
-        add(canBut);
+        buttOk = new Button();
+        buttOk.setLabel("Ok");
+        buttOk.setActionCommand(hnd_ok);
+        buttOk.addActionListener(this);
+        buttCan = new Button();
+        buttCan.setLabel("Cancel");
+        buttCan.setActionCommand(hnd_cancel);
+        buttCan.addActionListener(this);
 
-        setSize(280, 160);
-        Awt.moveCenter(this);
+        conButt.add(buttOk);
+        conButt.add(buttCan);
+
+        conAll.add(conSize);
+        conAll.add(conMode);
+        conAll.add(conButt);
+        add(conAll);
+
         setModalityType(ModalityType.APPLICATION_MODAL);
         setResizable(false);
-
-
-        okBut.setActionCommand(hnd_ok);
-        okBut.addActionListener(this);
-        canBut.setActionCommand(hnd_cancel);
-        canBut.addActionListener(this);
         addWindowListener(this);
-
+        pack();
+        Awt.moveCenter(this);
         setVisible(true);
     }
 
     public void submit() {
-        if (wField.getText().equals("") || hField.getText().equals("")) return;
+        if (fieldW.getText().equals("") || fieldH.getText().equals("")) return;
 
-        int w = Integer.parseInt(wField.getText());
-        int h = Integer.parseInt(hField.getText());
+        int w = Integer.parseInt(fieldW.getText());
+        int h = Integer.parseInt(fieldH.getText());
         dim = new Dimension(w, h);
 
         Checkbox c = group.getSelectedCheckbox();
-        if (c == radNormal) mode = "normal";
-        if (c == radPro) mode = "pro";
+        if (c == radNormal) mode = GUI_NORMAL;
+        if (c == radPro)    mode = GUI_PRO;
 
         dispose();
     }

@@ -17,6 +17,8 @@ import syi.awt.*;
 import syi.awt.cust.*;
 import syi.util.ByteStream;
 
+import static syi.C.ShiPainter.*;
+
 
 public class ShiPainter extends Applet implements Runnable, ActionListener, WindowListener {
     public int isStart = 0;
@@ -212,7 +214,7 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
         }
 
         if(d_isDesktop()) {
-            if (lastMode == null) lastMode = config.getP("tools", "normal");
+            if (lastMode == null) lastMode = config.getP("tools", GUI_NORMAL);
             frame.setMenuBar(mbar);
             frame.setBackground(Awt.cC);
             frame.setForeground(Awt.cFore);
