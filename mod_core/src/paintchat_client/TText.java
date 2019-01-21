@@ -3,6 +3,7 @@ package paintchat_client;
 import java.io.IOException;
 import java.io.InputStream;
 
+import config.*;
 import paintchat.MgText;
 import paintchat.Res;
 import paintchat_server.PaintChatTalker;
@@ -52,7 +53,7 @@ public class TText extends PaintChatTalker {
             switch (this.mg.head) {
                 case 0:
                     this.pl.addText(this.mg.bName != null ? this.mg.getUserName() : (String) this.names.get(var4), var5, true);
-                    this.pl.dSound(1);
+                    pl.dSound(ResShiClient.snd_talk);
                     break;
                 case 1:
                     this.names.put(var4, var5);
@@ -67,7 +68,7 @@ public class TText extends PaintChatTalker {
                     break;
                 default:
                     this.pl.addText((String) null, var5, true);
-                    this.pl.dSound(1);
+                    pl.dSound(ResShiClient.snd_talk);
             }
         }
 

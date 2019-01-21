@@ -1,8 +1,9 @@
 package paintchat_client;
 
+import com.sun.media.sound.*;
+import config.*;
 import jaba.applet.Applet;
 
-import java.applet.AudioClip;
 import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -27,7 +28,6 @@ import java.awt.image.ImageObserver;
 import java.awt.image.IndexColorModel;
 import java.awt.image.MemoryImageSource;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import paintchat.M;
@@ -67,8 +67,8 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
     private int iCenter = 80;
     private int iCenterOld = -1;
     private Color clInfo;
-    private AudioClip[] sounds = null;
     private int iPG = 10;
+    private boolean canPlaySound;
 
     public Pl(Applet var1) {
         super((LayoutManager) null);
@@ -112,11 +112,11 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
         if (var2) {
             this.tList.addText(var1);
             var1 = var1 + this.res.res("entered");
-            this.dSound(2);
+            dSound(ResShiClient.snd_join);
         } else {
             this.tList.remove(var1);
             var1 = var1 + this.res.res("leaved");
-            this.dSound(3);
+            dSound(ResShiClient.snd_leave);
         }
 
         this.addTextInfo(var1, false);
@@ -161,17 +161,8 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
 
     }
 
-    protected void dSound(int var1) {
-        try {
-            if (this.sounds == null || this.sounds[var1] == null) {
-                return;
-            }
-
-            this.sounds[var1].play();
-        } catch (RuntimeException var2) {
-            this.sounds = null;
-        }
-
+    protected void dSound(JavaSoundAudioClip snd) {
+        if (canPlaySound && snd!=null) snd.play();
     }
 
     private void f(final Component var1, boolean var2) {
@@ -286,7 +277,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
                         this.f(this, false);
                         break;
                     default:
-                        this.dSound(0);
+                        dSound(ResShiClient.snd_type);
                 }
             }
         } catch (Throwable ex) {
@@ -363,31 +354,6 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
         }
 
         return Cursor.getPredefinedCursor(var2);
-    }
-
-    private void loadSound() {
-        if (this.sounds != null) {
-            this.sounds = null;
-        } else {
-            this.sounds = new AudioClip[4];
-            String[] var1 = new String[]{"tp.au", "talk.au", "in.au", "out.au"};
-
-            for (int i = 0; i < 4; ++i) {
-                String var2 = this.dd.config.res(var1[i]);
-                if (var2 != null && var2.length() > 0 && var2.charAt(0) != '_') {
-                    URL url = getClass().getResource("/snd/" + var1[i]);
-                    AudioClip snd = this.applet.getAudioClip(url);
-                    if (snd == null) {
-                        try {
-                            snd = this.applet.getAudioClip(new URL(this.applet.getCodeBase(), var2));
-                        } catch (MalformedURLException ex) {
-                            snd = null;
-                        }
-                    }
-                    sounds[i] = snd;
-                }
-            }
-        }
     }
 
     private synchronized void mkTextPanel() {
@@ -561,9 +527,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
             this.tField.requestFocus();
             this.iPG(true);
             this.pack();
-            if (this.dd.config.getP("Client_Sound", false)) {
-                this.loadSound();
-            }
+            canPlaySound = this.dd.config.getP("Client_Sound", false);
 
             //TODO: alternate path when desktop
             DCF var10 = new DCF(this.res);
@@ -730,7 +694,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
                 this.dd.send(this.mgText);
                 msg = formatIrcLine(this.dd.strName, msg);
                 this.tText.addText(msg, true);
-                this.dSound(1);
+                dSound(ResShiClient.snd_talk);
             }
         } catch (Throwable ex) {
             ex.printStackTrace();
