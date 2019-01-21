@@ -50,6 +50,20 @@ public class Rez {
         }
     }
 
+    public static void iniValidateKeys(HashMap<String, String> master, HashMap<String, String> slave) {
+        HashSet<String> diffMaster = new HashSet<String>(master.keySet());
+        HashSet<String> diffSlave  = new HashSet<String>(slave.keySet());
+        diffMaster.removeAll(slave.keySet());
+        diffSlave.removeAll(master.keySet());
+
+        if (!diffMaster.isEmpty() || !diffSlave.isEmpty()) {
+            String keysMaster = "["+textSet2String(diffMaster, ", ")+"]";
+            String keysSlave  = "["+textSet2String(diffSlave, ", ")+"]";
+            throw new RuntimeException(String.format("Missing keys: %s. Surplus keys: %s", keysMaster, keysSlave));
+        }
+
+    }
+
     public static HashMap<String,String> iniRead(URL url, String section) {
         try {
             return iniRead(url.openStream(), section);
@@ -96,6 +110,10 @@ public class Rez {
         return str;
     }
 
+    public static String textSet2String(HashSet<String> set, String separator) {
+        return String.join(separator, set.toArray(new String[set.size()]));
+    }
+
     public static JavaSoundAudioClip audioLoad(File file) {
         try {
             return new JavaSoundAudioClip(new FileInputStream(file));
@@ -120,11 +138,11 @@ public class Rez {
         }
     }
 
-    public static URL ioGetClasspathResource(String relPath) {
+    public static URL IOGetClasspathResource(String relPath) {
         return Rez.class.getResource(relPath);
     }
 
-    public static File ioGetAppfolderResource(String relPath) {
+    public static File IOGetAppfolderResource(String relPath) {
         String base = "";
 
         String protocol = Rez.class.getResource("").getProtocol();
