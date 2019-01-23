@@ -1,11 +1,14 @@
 package config;
 
 import com.sun.media.sound.*;
-import java.net.*;
-import java.util.*;
 
-public final class ResShiClient extends Rez{
-    public static HashMap<String, String>
+import java.io.*;
+
+import static config.IniMap.*;
+import static config.Rez.*;
+
+public final class ResShiClient{
+    public static IniMap
             lang;
     public static JavaSoundAudioClip
             snd_join,
@@ -16,24 +19,41 @@ public final class ResShiClient extends Rez{
     public ResShiClient() {
         String PATH_LANG = "/res/lang/shiclient_%s.ini";
         String PATH_SND  = "/res/snd/%s.au";
-        HashMap<String,String> mapMaster, mapSlave;
-        URL url;
+        String SYSLANG   = System.getProperty("user.language");
 
-        mapMaster = iniRead(IOGetClasspathResource(String.format(PATH_LANG, "en")), null);
-        //url = IOGetClasspathResource(String.format(PATH_LANG, "zh"));
-        url = IOGetClasspathResource(String.format(PATH_LANG, langGet()));
-        if (url==null) {
+        File fMaster = IOGetClasspathRes(String.format(PATH_LANG, "en"));
+        File fSlave  = IOGetClasspathRes(String.format(PATH_LANG, SYSLANG));
+
+        IniMap mapMaster = iniRead(fMaster, null, ACC_RO&ERR_WARN);
+        if (fSlave==null) {
             lang = mapMaster;
         } else {
-            mapSlave = iniRead(url, null);
-            iniValidateKeys(mapMaster, mapSlave);
+            IniMap mapSlave = iniRead(fSlave, null, ACC_RO&ERR_WARN);
+            mapSlave.validateKeysAgainst(mapMaster);
             lang = mapSlave;
         }
-        lang = url!=null ? iniRead(url, null) : mapMaster;
 
-        snd_join = audioLoad(IOGetClasspathResource(String.format(PATH_SND, "in")));
-        snd_leave = audioLoad(IOGetClasspathResource(String.format(PATH_SND, "out")));
-        snd_talk = audioLoad(IOGetClasspathResource(String.format(PATH_SND, "talk")));
+        snd_join = audioLoad(IOGetClasspathRes(String.format(PATH_SND, "in")));
+        snd_leave = audioLoad(IOGetClasspathRes(String.format(PATH_SND, "out")));
+        snd_talk = audioLoad(IOGetClasspathRes(String.format(PATH_SND, "talk")));
         snd_type = null;
+        //testValidateAllLanguages();
+    }
+
+    private void testValidateAllLanguages() {
+        File fRoot = IOGetClasspathRes("/res/lang/");
+        File fMaster = new File(fRoot, "shiclient_en.ini");
+        IniMap iniMaster = iniRead(fMaster, null, ACC_RO&ERR_WARN);
+
+        for (File f : fRoot.listFiles()) {
+            if (f == null) continue;
+            if (f.equals(fMaster)) continue;
+            if (!f.getName().startsWith("shiclient_")) continue;
+            IniMap im = iniRead(f, null, ACC_RO&ERR_WARN);
+            System.err.println("Checking: "+f.getName());
+            if (im.validateKeysAgainst(iniMaster)) {
+                System.err.println("ok!");
+            }
+        }
     }
 }

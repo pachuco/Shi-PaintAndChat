@@ -1,5 +1,7 @@
 package jaba.applet;
 
+import config.*;
+
 import java.applet.AppletContext;
 import java.applet.AudioClip;
 import java.awt.*;
@@ -15,9 +17,12 @@ import java.util.Locale;
 import java.util.NoSuchElementException;
 import javax.imageio.ImageIO;
 
+import static config.Rez.*;
+import static config.IniMap.*;
+
 public class Applet extends java.applet.Applet implements WindowListener {
     private Applet ctx;
-    private IniFile inifile = null;
+    private IniMap inifile = null;
     private Frame frame;
 
     private static String iniPath;
@@ -28,13 +33,10 @@ public class Applet extends java.applet.Applet implements WindowListener {
 
     public Applet() {
         ctx = this;
-        inifile = new IniFile();
         if (isDesktop) {
-            try {
-                inifile.openIni(openResFile(iniPath));
-            } catch (Exception ex) {
-                System.out.println("Cannot load applet ini!");
-                System.out.println(ex.getMessage());
+            inifile = iniRead(IOGetAppfolderRes(iniPath), iniSection, ACC_RW&ERR_NONE);
+            if (inifile==null) {
+                System.err.println("Cannot load applet ini!");
             }
             frame = new Frame();
             frame.add(this);
@@ -42,33 +44,6 @@ public class Applet extends java.applet.Applet implements WindowListener {
             frame.setSize(800, 600);
             frame.setVisible(true);
         }
-    }
-
-    private static String getAppPath() {
-        String path = "";
-        File fr;
-
-        if (applicationPath == null) {
-            String protocol = Applet.class.getResource("").getProtocol();
-            if(protocol.equals("jar")){
-                path = Applet.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-            } else if(protocol.equals("file")) {
-                path = System.getProperty("user.dir");
-            }
-
-            fr = new File(path);
-            if (fr.isDirectory()) {
-                applicationPath = fr.getPath();
-            } else {
-                applicationPath = fr.getParent();
-            }
-        }
-        return applicationPath;
-    }
-
-    private static File openResFile(String filePath) {
-        String appPath = getAppPath();
-        return new File(appPath, filePath);
     }
 
     public boolean d_isDesktop() {
@@ -88,9 +63,8 @@ public class Applet extends java.applet.Applet implements WindowListener {
     @Override
     public String getParameter(String name) {
         if (!isDesktop) return super.getParameter(name);
-        if (!inifile.isIniLoaded()) return null;
 
-        return inifile.getParameter(iniSection, name);
+        return inifile.get(name);
     }
 
     @Override
@@ -127,8 +101,8 @@ public class Applet extends java.applet.Applet implements WindowListener {
         if (!isDesktop) return super.getCodeBase();
 
         try {
-            return new URL("file:/"+ getAppPath() + "/");
-        } catch (MalformedURLException ex) {
+            return IOGetAppfolderRes("").toURI().toURL();
+        } catch (MalformedURLException e) {
             return null;
         }
     }
@@ -268,21 +242,10 @@ public class Applet extends java.applet.Applet implements WindowListener {
     }
 
     //for overriding
-    @Override
-    public void init() {
-    }
-
-    @Override
-    public void start() {
-    }
-
-    @Override
-    public void stop() {
-    }
-
-    @Override
-    public void destroy() {
-    }
+    @Override public void init() { }
+    @Override public void start() { }
+    @Override public void stop() { }
+    @Override public void destroy() { }
 
     private void exit() {
         frame.dispose();

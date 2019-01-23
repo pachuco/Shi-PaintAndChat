@@ -28,7 +28,7 @@ public class Res extends Hashtable {
     private static final String EMPTY = "";
 
     public Res() {
-        this((Applet) null, (Object) null, (ByteStream) null);
+        this(null, null, null);
     }
 
     public Res(Applet applet, Object resBase, ByteStream work) {
@@ -38,7 +38,7 @@ public class Res extends Hashtable {
     }
 
     public final String get(String var1) {
-        return this.get(var1, "");
+        return this.get(var1, EMPTY);
     }
 
     public final String get(String var1, String var2) {
@@ -214,7 +214,7 @@ public class Res extends Hashtable {
     }
 
     public void loadResource(Res res, String defBase, String lng) {
-        String fName = defBase + (lng != null && lng.length() != 0 ? '_' + lng : "") + ".txt";
+        String fName = defBase + (lng != null && lng.length() != 0 ? '_' + lng : EMPTY) + ".txt";
 
         for (int i = 0; i < 2; ++i) {
             try {
