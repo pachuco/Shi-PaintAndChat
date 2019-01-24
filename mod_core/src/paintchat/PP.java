@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import syi.awt.Awt;
 import syi.awt.LComponent;
 
+/** Favorite tools palette */
 public class PP extends LComponent implements SW {
     private ToolBox tools;
     private int Len;
