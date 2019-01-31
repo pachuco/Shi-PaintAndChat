@@ -46,7 +46,7 @@ public class M {
     public boolean isCount = true;
     public boolean isAnti;
     public boolean isAllL;
-    public byte[] strHint;
+    public byte[] strHint; // fontname-[BOLD|ITALIC]-
     private int iSeek;
     private int iOffset;
     private byte[] offset;
@@ -478,69 +478,69 @@ public class M {
     }
 
     /** This is the fill used by the bucket tool */
-    private void dFill(int var1, int var2) {
-        int var3 = this.info.W;
-        int var4 = this.info.H;
-        byte var5 = (byte) this.iAlpha;
+    private void dFill(int x, int y) {
+        int width = this.info.W;
+        int height = this.info.H;
+        byte alpha = (byte) this.iAlpha;
         byte[] var6 = this.info.iMOffs;
 
         try {
             int[] var7 = this.user.buffer;
             byte var8 = 0;
-            if (var1 < 0 || var1 >= var3 || var2 < 0 || var2 >= var4) {
+            if (x < 0 || x >= width || y < 0 || y >= height) {
                 return;
             }
 
-            int var13 = this.pix(var1, var2);
-            int var14 = this.iAlpha << 24 | this.iColor;
-            if (var13 == var14) {
+            int pixel = this.pix(x, y);
+            int color = this.iAlpha << 24 | this.iColor;
+            if (pixel == color) {
                 return;
             }
 
             int var16 = var8 + 1;
-            var7[var8] = this.s(var13, var1, var2) << 16 | var2;
+            var7[var8] = this.s(pixel, x, y) << 16 | y;
 
             while (var16 > 0) {
                 --var16;
                 int var9 = var7[var16];
-                var1 = var9 >>> 16;
-                var2 = var9 & 0xFFFF;
-                int var10 = var3 * var2;
+                x = var9 >>> 16;
+                y = var9 & 0xFFFF;
+                int var10 = width * y;
                 boolean var11 = false;
                 boolean var12 = false;
 
                 while (true) {
-                    var6[var10 + var1] = var5;
-                    if (var2 > 0 && this.pix(var1, var2 - 1) == var13 && var6[var10 - var3 + var1] == 0) {
+                    var6[var10 + x] = alpha;
+                    if (y > 0 && this.pix(x, y - 1) == pixel && var6[var10 - width + x] == 0) {
                         if (!var11) {
                             var11 = true;
-                            var7[var16++] = this.s(var13, var1, var2 - 1) << 16 | var2 - 1;
+                            var7[var16++] = this.s(pixel, x, y - 1) << 16 | y - 1;
                         }
                     } else {
                         var11 = false;
                     }
 
-                    if (var2 < var4 - 1 && this.pix(var1, var2 + 1) == var13 && var6[var10 + var3 + var1] == 0) {
+                    if (y < height - 1 && this.pix(x, y + 1) == pixel && var6[var10 + width + x] == 0) {
                         if (!var12) {
                             var12 = true;
-                            var7[var16++] = this.s(var13, var1, var2 + 1) << 16 | var2 + 1;
+                            var7[var16++] = this.s(pixel, x, y + 1) << 16 | y + 1;
                         }
                     } else {
                         var12 = false;
                     }
 
-                    if (var1 <= 0 || this.pix(var1 - 1, var2) != var13 || var6[var10 + var1 - 1] != 0) {
+                    if (x <= 0 || this.pix(x - 1, y) != pixel || var6[var10 + x - 1] != 0) {
                         break;
                     }
 
-                    --var1;
+                    --x;
                 }
             }
         } catch (RuntimeException var15) {
             System.out.println((Object) var15);
         }
 
-        this.setD(0, 0, var3, var4);
+        this.setD(0, 0, width, height);
         this.t();
     }
 
@@ -1063,33 +1063,35 @@ public class M {
 
     }
 
+    /** Draws next step of a stroke from buffer */
     private final boolean dNext() throws InterruptedException {
         if (this.iSeek >= this.iOffset) {
             return false;
         } else {
-            int var1 = this.user.pX[3] + this.rPo();
-            int var2 = this.user.pY[3] + this.rPo();
-            int var3 = this.iSOB != 0 ? this.ru() : 0;
-            this.shift(var1, var2);
+            int pointX = this.user.pX[3] + this.rPo();
+            int pointY = this.user.pY[3] + this.rPo();
+            int pressure = this.iSOB != 0 ? this.ru() : 0;
+            this.shift(pointX, pointY);
             this.user.iDCount = this.user.iDCount + 1;
             if (this.iHint != H_SP) {
                 if (this.isAnti) {
-                    this.dFLine((float) var1, (float) var2, var3);
+                    this.dFLine((float) pointX, (float) pointY, pressure);
                 } else {
-                    this.dFLine(var1, var2, var3);
+                    this.dFLine(pointX, pointY, pressure);
                 }
             } else if (this.user.iDCount >= 2) {
-                this.dFLine2(var3);
+                this.dFLine2(pressure);
             }
 
             return true;
         }
     }
 
+    /** Draws next step of a stroke */
     public final void dNext(int x, int y, int pressure, int step) throws InterruptedException, IOException {
-        int var5 = this.info.scale;
-        x = (x / var5 + this.info.scaleX) * this.info.Q;
-        y = (y / var5 + this.info.scaleY) * this.info.Q;
+        int scale = this.info.scale;
+        x = (x / scale + this.info.scaleX) * this.info.Q;
+        y = (y / scale + this.info.scaleY) * this.info.Q;
         if (Math.abs(x - this.user.pX[3]) + Math.abs(y - this.user.pY[3]) >= step) {
             this.wPo(x - this.user.pX[3]);
             this.wPo(y - this.user.pY[3]);
@@ -2796,14 +2798,14 @@ public class M {
                 }
 
                 if (this.isText()) {
-                    int var10 = this.r(buffer, offset, 2);
+                    int strLength = this.r(buffer, offset, 2);
                     offset += 2;
-                    if (var10 == 0) {
+                    if (strLength == 0) {
                         this.strHint = null;
                     } else {
-                        this.strHint = new byte[var10];
-                        System.arraycopy(buffer, offset, this.strHint, 0, var10);
-                        offset += var10;
+                        this.strHint = new byte[strLength];
+                        System.arraycopy(buffer, offset, this.strHint, 0, strLength);
+                        offset += strLength;
                     }
                 }
 
@@ -2818,8 +2820,8 @@ public class M {
                 } else {
                     this.iOffset = 0;
                 }
-            } catch (RuntimeException var11) {
-                var11.printStackTrace();
+            } catch (RuntimeException ex) {
+                ex.printStackTrace();
                 this.iOffset = 0;
             }
 
@@ -3077,10 +3079,10 @@ public class M {
         return this.iHint == H_TEXT || this.iHint == H_VTEXT;
     }
 
-    public Font getFont(int var1) {
+    public Font getFont(int size) {
         try {
             if (this.strHint != null) {
-                return Font.decode(new String(this.strHint, ENCODE) + var1);
+                return Font.decode(new String(this.strHint, ENCODE) + size);
             }
         } catch (IOException ex) {
             ;
