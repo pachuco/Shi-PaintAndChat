@@ -38,11 +38,11 @@ public class TPen extends LComponent implements Runnable {
     private ColorModel cmDef;
     private int sizeTT = 0;
 
-    public TPen(Tools var1, M.Info var2, Res var3, TPen var4, LComponent[] var5) {
+    public TPen(Tools var1, M.Info var2, Res config, TPen var4, LComponent[] var5) {
         this.tools = var1;
         this.info = var2;
         this.mg = this.info.m;
-        this.config = var3;
+        this.config = config;
         this.tPen = var4;
         this.cs = var5;
         super.isBar = true;

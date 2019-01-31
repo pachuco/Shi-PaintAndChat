@@ -70,47 +70,47 @@ public class Tools implements ToolBox, ActionListener {
         return null;
     }
 
-    public void init(Container var1, Applet var2, Res var3, Res var4, Mi var5) {
+    public void init(Container var1, Applet var2, Res config, Res res, Mi var5) {
         this.applet = var2;
         this.info = var5.info;
         this.mg = this.info.m;
-        this.res = var4;
+        this.res = res;
         this.iBuffer = var5.user.getBuffer();
         this.mi = var5;
         this.parent = var1;
         Dimension var6 = var1.getSize();
         LComponent[] var7 = new LComponent[10];
-        TPen var8 = new TPen(this, this.info, var3, (TPen) null, var7);
+        TPen var8 = new TPen(this, this.info, config, null, var7);
         var8.init(0);
         var7[0] = var8;
-        TPen var9 = new TPen(this, this.info, var3, var8, var7);
+        TPen var9 = new TPen(this, this.info, config, var8, var7);
         var9.init(1);
         var7[1] = var9;
         TPalette var10 = new TPalette();
         var10.setLocation((int) ((float) var8.getSizeW().width * Awt.q()) + 10, 0);
-        var10.init(this, this.info, var3, var4);
+        var10.init(this, this.info, config, this.res);
         var7[2] = var10;
         this.tPalette = var10;
-        TPen var11 = new TPen(this, this.info, var3, (TPen) null, var7);
+        TPen var11 = new TPen(this, this.info, config, null, var7);
         var11.initTT();
         var7[3] = var11;
         TPic var12 = new TPic(this);
         var7[4] = var12;
         this.tPic = var12;
-        TPen var13 = new TPen(this, this.info, var3, (TPen) null, var7);
+        TPen var13 = new TPen(this, this.info, config, null, var7);
         var13.setLocation(var10.getLocation().x + var10.getSizeW().width, 0);
         var13.initHint();
         var7[5] = var13;
-        L var14 = new L(var5, this, var4, var3);
+        L var14 = new L(var5, this, this.res, config);
         var7[6] = var14;
-        TBar var15 = new TBar(this, var3, var4, var7);
+        TBar var15 = new TBar(this, config, this.res, var7);
         this.tOption = var15;
         var7[7] = var15;
         PP var16 = new PP();
         this.tP = var16;
-        var16.mSetup(this, this.info, var5.user, this.mg, var4, var3);
+        var16.mSetup(this, this.info, var5.user, this.mg, this.res, config);
         var7[8] = var16;
-        TBar var17 = new TBar(this, var3, var4, var7);
+        TBar var17 = new TBar(this, config, this.res, var7);
         var7[9] = var17;
         var15.initOption(var2.getCodeBase(), var5);
         var17.init();
