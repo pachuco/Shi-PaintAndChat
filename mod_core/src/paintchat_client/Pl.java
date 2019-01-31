@@ -1,7 +1,6 @@
 package paintchat_client;
 
 import com.sun.media.sound.*;
-import config.*;
 import jaba.applet.Applet;
 
 import java.awt.AWTEvent;
@@ -34,6 +33,7 @@ import paintchat.M;
 import paintchat.MgText;
 import paintchat.Res;
 import paintchat.ToolBox;
+import res.*;
 import syi.awt.Awt;
 import syi.awt.LButton;
 import syi.awt.LComponent;

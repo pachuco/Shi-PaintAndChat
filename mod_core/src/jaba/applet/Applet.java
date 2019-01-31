@@ -1,6 +1,7 @@
 package jaba.applet;
 
-import config.*;
+import com.sun.media.sound.*;
+import syi.util.cust.*;
 
 import java.applet.AppletContext;
 import java.applet.AudioClip;
@@ -17,8 +18,7 @@ import java.util.Locale;
 import java.util.NoSuchElementException;
 import javax.imageio.ImageIO;
 
-import static config.Rez.*;
-import static config.IniMap.*;
+import static syi.util.cust.IniMap.*;
 
 public class Applet extends java.applet.Applet implements WindowListener {
     private Applet ctx;
@@ -29,14 +29,15 @@ public class Applet extends java.applet.Applet implements WindowListener {
     private static String iniSection;
     public static boolean isDesktop = false;
 
-    private static String applicationPath;
-
     public Applet() {
         ctx = this;
         if (isDesktop) {
-            inifile = iniRead(IOGetAppfolderRes(iniPath), iniSection, ACC_RW&ERR_NONE);
-            if (inifile==null) {
+            try {
+                inifile = new IniMap(new RFile(RFile.F_FS, iniPath).getInputStream(), iniSection, ACC_RW & ERR_NONE);
+            } catch (IOException e) {
                 System.err.println("Cannot load applet ini!");
+                System.err.println(iniPath);
+                e.printStackTrace();
             }
             frame = new Frame();
             frame.add(this);
@@ -64,7 +65,7 @@ public class Applet extends java.applet.Applet implements WindowListener {
     public String getParameter(String name) {
         if (!isDesktop) return super.getParameter(name);
 
-        return inifile.get(name);
+        return inifile==null ? null : inifile.get(name);
     }
 
     @Override
@@ -100,8 +101,15 @@ public class Applet extends java.applet.Applet implements WindowListener {
     public URL getCodeBase() {
         if (!isDesktop) return super.getCodeBase();
 
+        String base = "";
         try {
-            return IOGetAppfolderRes("").toURI().toURL();
+            String protocol = Applet.class.getResource("").getProtocol();
+            if(protocol.equals("jar")){
+                base = new File(Applet.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParent();
+            } else if(protocol.equals("file")) {
+                base = System.getProperty("user.dir");
+            }
+            return new File(base).toURI().toURL();
         } catch (MalformedURLException e) {
             return null;
         }
@@ -118,7 +126,11 @@ public class Applet extends java.applet.Applet implements WindowListener {
     public AudioClip getAudioClip(URL url) {
         if (!isDesktop) return super.getAudioClip(url);
 
-        return new AppletAudioClip(url);
+        try {
+            return new JavaSoundAudioClip(url.openStream());
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     @Override
@@ -126,11 +138,10 @@ public class Applet extends java.applet.Applet implements WindowListener {
         if (!isDesktop) return super.getAudioClip(url, name);
 
         try {
-            return new AppletAudioClip(new URL(url, name));
-        } catch (MalformedURLException ex) {
-            ex.printStackTrace();
+            return new JavaSoundAudioClip(new URL(url, name).openStream());
+        } catch (IOException ex) {
+            return null;
         }
-        return null;
     }
 
     //@Override
@@ -203,9 +214,9 @@ public class Applet extends java.applet.Applet implements WindowListener {
                 try {
                     Desktop.getDesktop().browse(url.toURI());
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+                    System.err.println("Cannot showDocument(): " + url.toString());
                 } catch (URISyntaxException ex) {
-                    ex.printStackTrace();
+                    System.err.println("Bad URI in showDocument(): " + url.toString());
                 }
             }
 

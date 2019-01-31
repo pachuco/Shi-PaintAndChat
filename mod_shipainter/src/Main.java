@@ -1,7 +1,5 @@
-import config.*;
 import jaba.applet.Applet;
-
-import java.awt.*;
+import res.*;
 
 public class Main {
     public static void main(String[] args) {

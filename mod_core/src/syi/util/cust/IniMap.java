@@ -1,78 +1,71 @@
-package config;
+package syi.util.cust;
 
 import java.io.*;
 import java.lang.reflect.*;
-import java.net.*;
 import java.util.*;
+
+
+/** Class for reading INI sections from files.
+ *  Writing #NOTRIM in the first line prevents
+ *   default trimming of lines, making this
+ *   suitable for language files.
+ */
 
 public class IniMap implements Map<String,String> {
     public static int
-        ACC_RW = 0,
-        ACC_RO = 1,
+        ACC_RW = 0,     //keys can be read and written
+        ACC_RO = 1,     //keys can be read only
 
-        ERR_NONE = 0,
-        ERR_WARN = 2;
+        ERR_NONE = 0,   //no messages on faulty access
+        ERR_WARN = 2;   //print to std.err on faulty access
+        //ERR_CRIT
 
     private HashMap<String, String> hashmap;
     private int flags;
 
-    private IniMap(HashMap<String, String> map, int flags) {
-        hashmap = map;
+    public IniMap(HashMap<String, String> map, int flags) {
+        hashmap = new HashMap<String, String>(map);
         this.flags = flags;
     }
 
-    public static IniMap iniRead(File file, String section, int flags) {
-        try {
-            return iniRead(new FileInputStream(file), section, flags);
-        } catch (FileNotFoundException e) {
-            error(flags, "IniMap: Cannot read ini from File", false);
-            return null;
-        }
-    }
-
-    public static IniMap iniRead(URL url, String section, int flags) {
-        try {
-            return iniRead(url.openStream(), section, flags);
-        } catch (IOException e) {
-            error(flags, "IniMap: Cannot read ini from URL", false);
-            return null;
-        }
-    }
-
-    public static IniMap iniRead(InputStream in, String section, int flags) {
+    public IniMap(InputStream in, String section, int flags) {
         BufferedReader bIn = new BufferedReader(new InputStreamReader(in), 512);
         HashMap<String, String> hmRet = new HashMap<String, String>();
+        this.flags = flags;
 
         try {
             boolean isSkip = section!=null;
             boolean isTrim = true;
             String line;
 
-            for (int i=1; (line = bIn.readLine()) != null; i++) {
-                line = line.trim();
-                if (i==1 && (line.startsWith("#") || line.startsWith(";"))) {
-                    if (line.substring(1).startsWith("NOTRIM")) isTrim = false;
-                }
-                if (isSkip) {
-                    if (line.startsWith("[") && line.equals("["+section+"]")) isSkip = false;
-                } else {
-                    if (line.startsWith("[") && line.endsWith("]")) {
-                        break;
-                    } else if (line.contains("=")) {
-                        //split by first occurrence
-                        String[] split = line.split("=", 2);
-                        if (isTrim) {
-                            split[0] = split[0].trim();
-                            split[1] = split[1].trim();
+            try {
+                for (int i = 1; (line = bIn.readLine()) != null; i++) {
+                    line = line.trim();
+                    if (i == 1 && (line.startsWith("#") || line.startsWith(";"))) {
+                        if (line.substring(1).startsWith("NOTRIM")) isTrim = false;
+                    }
+                    if (isSkip) {
+                        if (line.startsWith("[") && line.equals("[" + section + "]")) isSkip = false;
+                    } else {
+                        if (line.startsWith("[") && line.endsWith("]")) {
+                            break;
+                        } else if (line.contains("=")) {
+                            //split by first occurrence
+                            String[] split = line.split("=", 2);
+                            if (isTrim) {
+                                split[0] = split[0].trim();
+                                split[1] = split[1].trim();
+                            }
+                            hmRet.put(split[0], Text.unescape(split[1]));
                         }
-                        hmRet.put(split[0], Rez.textUnescape(split[1]));
                     }
                 }
+                hashmap = hmRet;
+            } finally {
+                bIn.close();
             }
-            return hmRet.isEmpty() ? null : new IniMap(hmRet, flags);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -89,9 +82,9 @@ public class IniMap implements Map<String,String> {
             try {
                 Field fld = cls.getDeclaredField(prefix+key);
                 fld.set(_this, hashmap.get(key));
-            } catch (NoSuchFieldException e) {
+            } catch (NoSuchFieldException ex) {
                 error(String.format("IniMap: Missing field: %s", prefix+key), false);
-            } catch (IllegalAccessException e) {
+            } catch (IllegalAccessException ex) {
                 error(String.format("IniMap: Cannot set field: %s", prefix + key), false);
             }
         }
@@ -104,8 +97,8 @@ public class IniMap implements Map<String,String> {
         diffSlave.removeAll(hashmap.keySet());
 
         if (!diffMaster.isEmpty() || !diffSlave.isEmpty()) {
-            String keysMaster = "["+Rez.textSet2String(diffMaster, ", ")+"]";
-            String keysSlave  = "["+Rez.textSet2String(diffSlave, ", ")+"]";
+            String keysMaster = "["+ Text.set2String(diffMaster, ", ")+"]";
+            String keysSlave  = "["+ Text.set2String(diffSlave, ", ")+"]";
             error(String.format("IniMap: Missing keys: %s. Surplus keys: %s", keysMaster, keysSlave), true);
             return false;
         }

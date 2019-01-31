@@ -149,8 +149,8 @@ public class Data {
 
             try {
                 this.config.load(Awt.openStream(new URL(var3, this.config.getP("File_PaintChat_Infomation", this.config.getP("server", ".paintchat")))));
-            } catch (IOException var7) {
-                System.out.println((Object) var7);
+            } catch (IOException ex) {
+                System.err.println(ex);
             }
 
             this.pl.iPG(true);

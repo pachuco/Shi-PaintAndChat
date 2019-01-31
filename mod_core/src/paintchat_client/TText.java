@@ -3,10 +3,10 @@ package paintchat_client;
 import java.io.IOException;
 import java.io.InputStream;
 
-import config.*;
 import paintchat.MgText;
 import paintchat.Res;
 import paintchat_server.PaintChatTalker;
+import res.*;
 import syi.util.ByteInputStream;
 import syi.util.ByteStream;
 
