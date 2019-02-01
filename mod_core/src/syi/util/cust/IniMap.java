@@ -98,7 +98,7 @@ public class IniMap implements Map<String,String> {
         if (!diffMaster.isEmpty() || !diffSlave.isEmpty()) {
             String keysMaster = "["+ Text.set2String(diffMaster, ", ")+"]";
             String keysSlave  = "["+ Text.set2String(diffSlave, ", ")+"]";
-            error(String.format("Missing keys: %s. Surplus keys: %s", keysMaster, keysSlave), true);
+            error(String.format("Missing keys: %s. Surplus keys: %s", keysSlave, keysMaster), true);
             return false;
         }
         return true;
