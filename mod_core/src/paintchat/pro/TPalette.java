@@ -19,7 +19,6 @@ public class TPalette extends LComponent {
     private M.Info info;
     private M mg;
     private Tools tools;
-    private Res res;
     private Res config;
     private int sizePalette = 20;
     private int selPalette = 0;
@@ -75,11 +74,10 @@ public class TPalette extends LComponent {
         return this.isRGB == 1 ? this.iColor : Color.HSBtoRGB((float) (this.iColor >>> 16 & 0xFF) / 255.0F, (float) (this.iColor >>> 8 & 0xFF) / 255.0F, (float) (this.iColor & 0xFF) / 255.0F) & 0xFFFFFF;
     }
 
-    public void init(Tools var1, M.Info var2, Res var3, Res var4) {
+    public void init(Tools var1, M.Info var2, Res config) {
         this.info = var2;
         this.mg = var2.m;
-        this.res = var4;
-        this.config = var3;
+        this.config = config;
         this.tools = var1;
         this.setDimension(new Dimension((int) (42.0F * LComponent.Q), (int) (42.0F * LComponent.Q)), new Dimension((int) (112.0F * LComponent.Q), (int) (202.0F * LComponent.Q)), new Dimension((int) (300.0F * LComponent.Q), (int) (300.0F * LComponent.Q)));
     }

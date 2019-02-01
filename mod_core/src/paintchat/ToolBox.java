@@ -15,7 +15,7 @@ public interface ToolBox {
 
     Dimension getCSize();
 
-    void init(Container var1, Applet var2, Res config, Res res, Mi var5);
+    void init(Container var1, Applet var2, Res config, Mi var5);
 
     void lift();
 

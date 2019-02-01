@@ -40,6 +40,7 @@ import syi.awt.LComponent;
 import syi.awt.TextPanel;
 import syi.util.ThreadPool;
 
+import static res.ResShiClient.*;
 import static syi.C.ShiPainter.*;
 
 public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListener {
@@ -49,7 +50,6 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
     private boolean isStart = false;
     private int iScrollType = 0;
     private Data dd;
-    public Res res;
     public Mi mi;
     private ToolBox tool = null;
     private Panel tPanel;
@@ -111,11 +111,11 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
     protected void addInOut(String var1, boolean var2) {
         if (var2) {
             this.tList.addText(var1);
-            var1 = var1 + this.res.res("entered");
+            var1 = var1 + lang.get("entered");
             dSound(ResShiClient.snd_join);
         } else {
             this.tList.remove(var1);
-            var1 = var1 + this.res.res("leaved");
+            var1 = var1 + lang.get("leaved");
             dSound(ResShiClient.snd_leave);
         }
 
@@ -365,14 +365,14 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
             this.tField = new TextField();
             this.tField.addActionListener(this);
             var4.add((Component) this.tField, (Object) var1);
-            this.tLabel = new Label(this.dd.res.res("input"));
+            this.tLabel = new Label(lang.get("input"));
             var4.add((Component) this.tLabel, (Object) var3);
             String[] var5 = new String[]{"F", "FAll", "leave"};
             Panel var6 = new Panel(new FlowLayout(0, 2, 1));
             this.tPanelB = var6;
 
             for (int i = 0; i < var5.length; ++i) {
-                LButton var7 = new LButton(this.res.res(var5[i]));
+                LButton var7 = new LButton(lang.get(var5[i]));
                 var7.addActionListener(this);
                 var7.setName(String.valueOf(i));
                 var6.add(var7);
@@ -464,11 +464,10 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
             this.getSize();
             this.dd = new Data(this);
             this.mgText = new MgText();
-            this.mi = new Mi(this, this.res);
+            this.mi = new Mi(this);
             this.iPG(true);
             this.dd.mi = this.mi;
             this.dd.init();
-            this.res = this.dd.res;
             Res var4 = this.dd.config;
             int var5 = var4.getP("layer_count", 2);
             int var6 = var4.getP("quality", 1);
@@ -513,7 +512,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
 
             try {
                 this.tool = (ToolBox) Class.forName("paintchat." + var9 + ".Tools").newInstance();
-                this.tool.init(this.miPanel, this.applet, this.dd.config, this.res, this.mi);
+                this.tool.init(this.miPanel, this.applet, this.dd.config, this.mi);
             } catch (Throwable ex) {
                 ex.printStackTrace();
             }
@@ -530,7 +529,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
             canPlaySound = this.dd.config.getP("Client_Sound", false);
 
             //TODO: alternate path when desktop
-            DCF var10 = new DCF(this.res);
+            DCF var10 = new DCF();
             var10.mShow();
             String var11 = var10.mGetHandle();
             if (var11.length() <= 0) {

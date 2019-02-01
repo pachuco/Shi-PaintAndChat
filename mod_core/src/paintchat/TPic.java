@@ -127,7 +127,7 @@ public class TPic extends LComponent implements SW {
         g.setClip(0, 0, var2.width, var2.height);
     }
 
-    public void mSetup(ToolBox var1, M.Info var2, M.User var3, M var4, Res var5, Res var6) {
+    public void mSetup(ToolBox var1, M.Info var2, M.User var3, M var4, Res var6) {
         this.ts = var1;
         this.info = var2;
         this.user = var3;

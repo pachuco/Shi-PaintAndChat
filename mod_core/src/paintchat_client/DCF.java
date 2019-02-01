@@ -18,8 +18,9 @@ import java.awt.event.WindowEvent;
 import paintchat.Res;
 import syi.awt.Awt;
 
+import static res.ResShiClient.*;
+
 public class DCF extends Dialog implements ItemListener, ActionListener {
-    private Res res;
     private Checkbox cbAdmin = new Checkbox();
     private TextField tPas = new TextField(10);
     private Label lPas = new Label();
@@ -29,10 +30,9 @@ public class DCF extends Dialog implements ItemListener, ActionListener {
     private String strPas = "";
     boolean isAdmin;
 
-    public DCF(Res var1) {
-        super(Awt.getPFrame(), var1.res("handle"), true);
+    public DCF() {
+        super(Awt.getPFrame(), lang.get("handle"), true);
         this.setLayout(new BorderLayout());
-        this.res = var1;
     }
 
     public void itemStateChanged(ItemEvent event) {
@@ -62,17 +62,17 @@ public class DCF extends Dialog implements ItemListener, ActionListener {
         this.tName.addActionListener(this);
         this.tPas.addActionListener(this);
         Panel var1 = new Panel();
-        Button var2 = new Button(this.res.res("enter"));
+        Button var2 = new Button(lang.get("enter"));
         var2.addActionListener(this);
         var1.add(var2);
         this.add((String) "South", (Component) var1);
         this.pText.add(new Label(this.getTitle()));
         this.pText.add(this.tName);
-        this.cbAdmin.setLabel(this.res.res("admin"));
+        this.cbAdmin.setLabel(lang.get("admin"));
         this.cbAdmin.addItemListener(this);
         this.pText.add(this.cbAdmin);
         this.add((String) "Center", (Component) this.pText);
-        this.lPas.setText(this.res.res("password"));
+        this.lPas.setText(lang.get("password"));
         this.enableEvents(WindowEvent.WINDOW_EVENT_MASK);
         Awt.getDef(this);
         Awt.setDef(this, false);

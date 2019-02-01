@@ -25,7 +25,6 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
     private P p;
     private MBar mbar;
     private Ts ts;
-    private Res res;
     private Res config;
     public String str_header = null;
     private Mi mi;
@@ -139,7 +138,6 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
             }
 
             this.config = new Res(this, resPath, (ByteStream) null);
-            this.res = new Res(this, resPath, (ByteStream) null);
 
             try {
                 String fileName = this.p.p("res.zip", "res/res.zip");
@@ -186,7 +184,6 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
                 ;
             }
 
-            this.res.loadResource(this.config, "res", Locale.getDefault().getLanguage());
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -198,8 +195,8 @@ public class ShiPainter extends Applet implements Runnable, ActionListener, Wind
         p.loadImH = height;
         p.loadPath = imgPath;
         p.loadMode = mode;
-        this.p.init(this.config, this.res, this.ts);
-        this.ts.init(this, this.p, this.res, this.config);
+        this.p.init(this.config, this.ts);
+        this.ts.init(this, this.p, this.config);
         this.mi = this.p.mi;
         this.ts.layout(this.config.getP("bar_layout", 2));
         this.isStart = 2;

@@ -8,10 +8,11 @@ import java.awt.event.WindowEvent;
 import paintchat.Res;
 import syi.awt.Awt;
 
+import static res.ResShiClient.*;
+
 /** Dialog for prompts, modals, alerts */
 public class Me extends Dialog implements ActionListener {
     private static boolean isD = false;
-    public static Res res;
     public static Res conf;
     private Button bOk;
     private Button bNo;
@@ -25,13 +26,11 @@ public class Me extends Dialog implements ActionListener {
         this.enableEvents(AWTEvent.WINDOW_EVENT_MASK);
         this.setModal(true);
         this.setLayout(new BorderLayout(5, 5));
-        String var1 = "yes";
-        String var2 = "no";
         this.pText = new Panel(new GridLayout(0, 1));
         this.add((Component) this.pText, (Object) "North");
-        this.bOk = new Button(p(var1));
+        this.bOk = new Button(lang.get("yes"));
         this.bOk.addActionListener(this);
-        this.bNo = new Button(p(var2));
+        this.bNo = new Button(lang.get("no"));
         this.bNo.addActionListener(this);
         this.pBotton = new Panel(new FlowLayout(1, 10, 4));
         this.pBotton.add(this.bOk);
@@ -47,6 +46,7 @@ public class Me extends Dialog implements ActionListener {
         var1 = p(var1);
         this.setConfirm(var2);
         int var3 = 0;
+
 
         while (var3 < var1.length()) {
             String var4 = r(var1, var3);
@@ -145,8 +145,10 @@ public class Me extends Dialog implements ActionListener {
         return var1 == var3 ? null : var0.substring(var1, var3);
     }
 
-    private static String p(String var0) {
-        return res == null ? var0 : res.res(var0);
+    private static String p(String key) {
+        //bleh
+        String ret = lang.get(key);
+        return ret == null ? key : ret;
     }
 
     private void setConfirm(boolean canCancel) {

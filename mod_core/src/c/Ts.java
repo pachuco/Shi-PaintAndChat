@@ -23,10 +23,11 @@ import paintchat_client.Me;
 import syi.awt.Awt;
 import syi.awt.LComponent;
 
+import static res.ResShiClient.*;
+
 
 class Ts extends LComponent {
     private static String SV = "1.114";
-    public Res res;
     public Res cnf;
     private String[] strs = null;
     private int H;
@@ -97,7 +98,7 @@ class Ts extends LComponent {
     /** Sets the pos bit in V (something to do with buttons) */
     public void setV(int pos, boolean value) { this.V = this.V ^ (1 << pos) | (value ? 1 : 0) << pos; }
 
-    public void init(ShiPainter app, P panel, Res res, Res conf) {
+    public void init(ShiPainter app, P panel, Res conf) {
         this.parent = this.app = app;
         this.p = panel;
         this.cnf = conf;
@@ -107,8 +108,6 @@ class Ts extends LComponent {
             this.setVisible(false);
         }
 
-        Me.res = res;
-        this.res = res;
         Me.conf = conf;
         super.isGUI = false;
         super.isHide = false;
@@ -147,7 +146,7 @@ class Ts extends LComponent {
             strBarColorOff = strBarColor + "on";
         }
 
-        strBarColor = res.getP("app_name", (String) null);
+        strBarColor = lang.get("app_name");
         if (strBarColor == null) {
             strBarColor = "(C)" + (Locale.getDefault().getLanguage().equals("ja") ? "しぃちゃん v" + SV + " しぃペインター" : "Shi-chan v" + SV + " Shi-Painter");
         }
@@ -155,7 +154,7 @@ class Ts extends LComponent {
         this.strs = new String[]{"sUpload", "sF", "sRedo", "sUndo", "sFill", strBarColor};
 
         for (i = 0; i < 5; ++i) {
-            this.strs[i] = res.res(this.strs[i]);
+            this.strs[i] = lang.get(this.strs[i]);
         }
 
         if (strBarColor.length() == 1 && strBarColor.charAt(0) == '_') {

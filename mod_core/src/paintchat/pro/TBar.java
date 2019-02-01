@@ -16,10 +16,11 @@ import paintchat_client.Mi;
 import syi.awt.Awt;
 import syi.awt.LComponent;
 
+import static res.ResShiClient.*;
+
 public class TBar extends LComponent {
     private boolean isOption;
     private Tools tools;
-    private Res res;
     private Res config;
     private LComponent[] cs;
     private String[] strs;
@@ -33,9 +34,8 @@ public class TBar extends LComponent {
     private Color[][] cls = new Color[2][3];
     private Color clT;
 
-    public TBar(Tools var1, Res var2, Res var3, LComponent[] var4) {
-        this.res = var3;
-        this.config = var2;
+    public TBar(Tools var1, Res config, LComponent[] var4) {
+        this.config = config;
         this.cs = var4;
         this.tools = var1;
         this.H = (int) (19.0F * LComponent.Q);
@@ -62,7 +62,7 @@ public class TBar extends LComponent {
         this.strs = new String[var4];
 
         for (int var6 = 0; var6 < var4; ++var6) {
-            String var2 = this.res.res("window_" + var6);
+            String var2 = lang.get("window_" + var6);
             var5 = Math.max(var3.stringWidth(var2) + var2.length(), var5);
             this.strs[var6] = var2;
             this.cs[var6].setTitle(var2);
@@ -83,7 +83,7 @@ public class TBar extends LComponent {
         byte var3 = 2;
         this.strs = new String[var3];
         this.flags = new boolean[var3];
-        this.strAuthor = this.res.res("option_author");
+        this.strAuthor = lang.get("option_author");
         this.s();
         this.setDimension((Dimension) null, new Dimension(10, 10), (Dimension) null);
     }
@@ -168,7 +168,7 @@ public class TBar extends LComponent {
                 int var5 = 0;
 
                 for (int i = 0; i < var4; ++i) {
-                    String var2 = this.res.res("option_" + i);
+                    String var2 = lang.get("option_" + i);
                     var5 = Math.max(var3.stringWidth(var2 + " OFF") + var2.length() + 3, var5);
                     this.strs[i] = var2;
                 }

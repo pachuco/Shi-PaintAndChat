@@ -32,6 +32,8 @@ import paintchat_client.Mi;
 import syi.awt.Awt;
 import syi.awt.LComponent;
 
+import static res.ResShiClient.*;
+
 public class Tools extends LComponent implements ToolBox, ActionListener {
     Applet applet;
     Container parent;
@@ -40,7 +42,6 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
     private boolean is_l;
     M.Info info;
     M mg;
-    Res res;
     Res config;
     private Graphics primary = null;
     private Font fDef;
@@ -240,10 +241,9 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
         return this.config.getP(key, fallback);
     }
 
-    public void init(Container parent, Applet app, Res config, Res res, Mi mi) {
+    public void init(Container parent, Applet app, Res config, Mi mi) {
         this.applet = app;
         this.parent = parent;
-        this.res = res;
         this.config = config;
         this.info = mi.info;
         this.mi = mi;
@@ -333,7 +333,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
         for (int i = 0; i < this.list.length; ++i) {
             ToolList toolList;
             this.list[i] = toolList = new ToolList();
-            toolList.init(this, this.res, this.config, this.mg, this.list, i);
+            toolList.init(this, this.config, this.mg, this.list, i);
             toolList.setImage(imgIcon, iconWidth, iconHeight, i);
         }
 
@@ -382,7 +382,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
                         break label60;
                     }
 
-                    menuItem = this.res.res("t042" + i);
+                    menuItem = lang.get("t042" + i);
                     if (this.mg.iTT - 12 == i) {
                         this.popup.add((MenuItem) (new CheckboxMenuItem(menuItem, true)));
                     } else {
@@ -393,7 +393,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
                 }
             case 2: // Pen Masks
                 for (i = 0; i < 4; ++i) {
-                    menuItem = (String) this.res.get("penm_" + i);
+                    menuItem = (String) lang.get("penm_" + i);
                     if (menuItem == null) {
                         break;
                     }
@@ -645,7 +645,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
                                     this.mi.repaint();
                                 } else { // open layers window or cycle between layers if already open
                                     if (this.L == null) {
-                                        this.L = new L(this.mi, this, this.res, this.config);
+                                        this.L = new L(this.mi, this, this.config);
                                         this.addC(this.L);
                                     }
 
@@ -1045,12 +1045,12 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
                 SW window = (SW) Class.forName(className).newInstance();
                 if (window instanceof Window) {
                     this.addC(window);
-                    window.mSetup(this, this.info, this.mi.user, this.mg, this.res, this.config);
+                    window.mSetup(this, this.info, this.mi.user, this.mg, this.config);
                 } else {
                     LComponent component = (LComponent) window;
                     this.addC(component);
                     component.setVisible(false);
-                    window.mSetup(this, this.info, this.mi.user, this.mg, this.res, this.config);
+                    window.mSetup(this, this.info, this.mi.user, this.mg, this.config);
                     this.parent.add(component, 0);
                     component.setLocation(0, maxY);
                     component.inParent();

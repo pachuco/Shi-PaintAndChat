@@ -5,7 +5,7 @@ public interface SW {
 
     void mPack();
 
-    void mSetup(ToolBox toolBox, M.Info info, M.User user, M mg, Res res, Res config);
+    void mSetup(ToolBox toolBox, M.Info info, M.User user, M mg, Res config);
 
     void up();
 }

@@ -17,9 +17,10 @@ import syi.awt.Awt;
 import syi.awt.TextPanel;
 import syi.util.ByteStream;
 
+import static res.ResShiClient.lang;
+
 public class Data {
     public Pl pl;
-    public Res res;
     public Res config;
     public M.Info info;
     private boolean isDestroy = false;
@@ -131,7 +132,6 @@ public class Data {
             }
 
             URL var5 = new URL(var3, var4);
-            this.res = new Res(var2, var5, var1);
             this.config = new Res(var2, var5, var1);
             this.config.loadZip(this.p("res.zip", "res.zip"));
 
@@ -143,7 +143,6 @@ public class Data {
                 var8.printStackTrace();
             }
 
-            Me.res = this.res;
             Me.conf = this.config;
             this.pl.iPG(true);
 
@@ -154,7 +153,6 @@ public class Data {
             }
 
             this.pl.iPG(true);
-            this.res.loadResource(this.config, "res", Locale.getDefault().getLanguage());
             this.pl.iPG(true);
             this.MAX_KAIWA_BORDER = this.config.getP("Cash_Text_Max", 120);
             this.imW = this.config.getP("Client_Image_Width", this.config.getP("image_width", 1200));
@@ -214,7 +212,7 @@ public class Data {
     }
 
     public void addTextComp() {
-        this.pl.addTextInfo(this.res.get("log_complete"), true);
+        this.pl.addTextInfo(lang.get("log_complete"), true);
         this.mPermission(this.tLine.getStatus().get("permission"));
     }
 

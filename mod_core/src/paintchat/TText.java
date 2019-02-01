@@ -17,6 +17,8 @@ import java.awt.event.WindowEvent;
 
 import syi.awt.Awt;
 
+import static res.ResShiClient.*;
+
 /** Font options window */
 public class TText extends Dialog implements SW, ActionListener, ItemListener {
     ToolBox ts;
@@ -53,10 +55,10 @@ public class TText extends Dialog implements SW, ActionListener, ItemListener {
     public void mPack() {
     }
 
-    public void mSetup(ToolBox var1, M.Info var2, M.User var3, M var4, Res var5, Res var6) {
+    public void mSetup(ToolBox var1, M.Info var2, M.User var3, M var4, Res var6) {
         this.ts = var1;
         this.mg = var4;
-        this.setTitle(var5.res("Font"));
+        this.setTitle(lang.get("Font"));
         String[] var7 = (String[]) null;
 
         try {
@@ -81,22 +83,22 @@ public class TText extends Dialog implements SW, ActionListener, ItemListener {
         TextField var10 = new TextField("20");
         this.cSize = var10;
         this.cSpace = new TextField("-5");
-        this.add(new Label(var5.res("Font"), var16));
+        this.add(new Label(lang.get("Font"), var16));
         this.add(var14);
-        this.add(new Label(var5.res("Size"), var16));
+        this.add(new Label(lang.get("Size"), var16));
         this.add(var10);
-        this.add(new Label(var5.res("WSpace"), var16));
+        this.add(new Label(lang.get("WSpace"), var16));
         this.add(this.cSpace);
         Panel var11 = new Panel();
-        var11.add(this.cBL = new Checkbox(var5.res("Bold")));
-        var11.add(this.cIT = new Checkbox(var5.res("Italic")));
+        var11.add(this.cBL = new Checkbox(lang.get("Bold")));
+        var11.add(this.cIT = new Checkbox(lang.get("Italic")));
         this.add(var11);
         var11 = new Panel();
-        var11.add(this.cV = new Checkbox(var5.res("VText")));
+        var11.add(this.cV = new Checkbox(lang.get("VText")));
         var11.add(this.cFill = new TextField("1"));
         this.add(var11);
         var11 = new Panel();
-        Button var12 = new Button(var5.res("Apply"));
+        Button var12 = new Button(lang.get("Apply"));
         var12.addActionListener(this);
         var11.add(var12);
         this.add((Component) var11, (Object) "Center");

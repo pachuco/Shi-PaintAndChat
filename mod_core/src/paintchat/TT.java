@@ -52,7 +52,7 @@ public class TT extends LComponent implements SW, Runnable {
         var2.height = var1.getSize().height - this.getGapH();
     }
 
-    public void mSetup(ToolBox var1, M.Info var2, M.User var3, M var4, Res var5, Res var6) {
+    public void mSetup(ToolBox var1, M.Info var2, M.User var3, M var4, Res var6) {
         this.ts = var1;
         this.info = var2;
         this.user = var3;

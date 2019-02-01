@@ -28,14 +28,16 @@ import paintchat.LO;
 import paintchat.M;
 import paintchat.Res;
 import paintchat.ToolBox;
+import res.*;
 import syi.awt.Awt;
 import syi.awt.LComponent;
+
+import static res.ResShiClient.*;
 
 /** Layer palette window */
 public class L extends LComponent implements ActionListener, ItemListener {
     private Mi mi;
     private ToolBox tool;
-    private Res res;
     private M m;
     private int B = -1;
     private Font bFont; // button font
@@ -55,7 +57,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
     private Color cT;
     private String sL;
 
-    public L(Mi mi, ToolBox tool, Res res, Res cnf) {
+    public L(Mi mi, ToolBox tool, Res cnf) {
         this.tool = tool;
         this.bFont = Awt.getDefFont();
         this.bFont = new Font(this.bFont.getName(), 0, (int) ((float) this.bFont.getSize() * 0.8F));
@@ -63,9 +65,9 @@ public class L extends LComponent implements ActionListener, ItemListener {
         this.bH = fontMetrics.getHeight() + 6;
         this.base = this.bH - 2 - fontMetrics.getMaxDescent();
         int maxFontSize = (int) (60.0F * LComponent.Q);
-        String layerName = res.res("Layer");
+        String layerName = lang.get("Layer");
         this.sL = layerName;
-        this.strMenu = res.res("MenuLayer");
+        this.strMenu = lang.get("MenuLayer");
         this.cM = new Color(cnf.getP("l_m_color", 0));
         this.cT = new Color(cnf.getP("l_m_color_text", 0xFFFFFF));
         fontMetrics = this.getFontMetrics(this.bFont);
@@ -73,7 +75,6 @@ public class L extends LComponent implements ActionListener, ItemListener {
         maxFontSize = Math.max(fontMetrics.stringWidth(this.strMenu) + 4, maxFontSize);
         this.bW = maxFontSize;
         this.mi = mi;
-        this.res = res;
         this.setTitle(layerName);
         super.isGUI = true;
         this.m = mi.info.m;
@@ -112,7 +113,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
                         wasLayerAdded = true;
                         break;
                     case 1: // delete layer
-                        if (info.L > 1 && this.confirm(layers[mg.iLayer].name + this.res.res("DelLayerQ"))) {
+                        if (info.L > 1 && this.confirm(layers[mg.iLayer].name + lang.get("DelLayerQ"))) {
                             mg.iLayerSrc = mg.iLayer;
                             mg.setRetouch(new int[]{2}, (byte[]) null, 0, false);
                             wasUpdated = true;
@@ -189,7 +190,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
 
     /** Merge visible layers */
     private void dFusion() {
-        if (this.confirm(this.res.res("CombineVQ"))) {
+        if (this.confirm(lang.get("CombineVQ"))) {
             try {
                 int layerCount = this.mi.info.L;
                 LO[] layers = this.mi.info.layers;
@@ -426,7 +427,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
                             if (waitWas >= 0 && layerIndex >= 0 && waitWas != layerIndex) {
                                 this.m.iLayer = layerIndex;
                                 this.m.iLayerSrc = waitWas;
-                                this.popup(new String[]{this.res.res("Shift"), this.res.res("Combine")}, mouseX, mouseY, false);
+                                this.popup(new String[]{lang.get("Shift"), lang.get("Combine")}, mouseX, mouseY, false);
                             }
 
                             this.mouse = -1;
@@ -500,12 +501,12 @@ public class L extends LComponent implements ActionListener, ItemListener {
             }
 
             for (int i = 0; i < options.length; ++i) {
-                this.popup.add(this.res.res(options[i]));
+                this.popup.add(lang.get(options[i]));
             }
 
             if (isMenuPopup) {
                 this.popup.addSeparator();
-                CheckboxMenuItem itemPreview = new CheckboxMenuItem(this.res.res("IsPreview"), this.is_pre);
+                CheckboxMenuItem itemPreview = new CheckboxMenuItem(lang.get("IsPreview"), this.is_pre);
                 itemPreview.addItemListener(this);
                 this.popup.add((MenuItem) itemPreview);
                 this.popup.setName("m");
@@ -542,9 +543,9 @@ public class L extends LComponent implements ActionListener, ItemListener {
     public void config(int layerIndex) {
         LO layer = this.mi.info.layers[layerIndex];
         Choice choice = new Choice();
-        choice.add(this.res.res("Normal"));
-        choice.add(this.res.res("Multiply"));
-        choice.add(this.res.res("Reverse"));
+        choice.add(lang.get("Normal"));
+        choice.add(lang.get("Multiply"));
+        choice.add(lang.get("Reverse"));
         choice.select(layer.iCopy);
         TextField textField = new TextField(layer.name);
         Me me = Me.getMe();

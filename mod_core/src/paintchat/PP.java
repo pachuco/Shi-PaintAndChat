@@ -97,7 +97,7 @@ public class PP extends LComponent implements SW {
         this.inParent();
     }
 
-    public void mSetup(ToolBox tools, M.Info info, M.User user, M mg, Res res, Res config) {
+    public void mSetup(ToolBox tools, M.Info info, M.User user, M mg, Res config) {
         this.tools = tools;
         this.info = info;
         this.iW = config.getP("tp_width", 18);

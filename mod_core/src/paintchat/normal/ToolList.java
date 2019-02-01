@@ -11,9 +11,10 @@ import java.awt.image.ImageObserver;
 import paintchat.M;
 import paintchat.Res;
 
+import static res.ResShiClient.*;
+
 public class ToolList {
     private Tools tools;
-    private Res res;
     private Res cnf;
     boolean isField;
     boolean isClass;
@@ -114,10 +115,9 @@ public class ToolList {
         }
     }
 
-    public void init(Tools tools, Res res, Res cnf, M mg, ToolList[] toolList, int toolID) {
+    public void init(Tools tools, Res cnf, M mg, ToolList[] toolList, int toolID) {
         try {
             this.tools = tools;
-            this.res = res;
             this.cnf = cnf;
             this.lists = toolList;
             this.info = mg;
@@ -164,9 +164,9 @@ public class ToolList {
                     (this.mgs[i] = new M()).set(cnf.getP(key));
                 }
 
-                this.strings[i] = res.res(key);
+                this.strings[i] = lang.get(key);
                 cnf.remove(key);
-                res.remove(key);
+                lang.remove(key);
             }
         } catch (Throwable ex) {
             ex.printStackTrace();

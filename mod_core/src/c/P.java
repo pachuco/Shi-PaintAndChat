@@ -37,11 +37,11 @@ import syi.jpeg.SJpegEncoder;
 import syi.png.SPngEncoder;
 import syi.util.ByteStream;
 
+import static res.ResShiClient.*;
 import static syi.C.ShiPainter.*;
 
 public class P extends Panel implements IMi {
     private ShiPainter app;
-    private Res res;
     private Res config;
     protected ByteStream work = new ByteStream();
     protected Mi mi;
@@ -294,10 +294,9 @@ public class P extends Panel implements IMi {
         return s1;
     }
 
-    public void init(Res config, Res res, Ts var3) throws Throwable {
+    public void init(Res config, Ts var3) throws Throwable {
         this.enableEvents(AWTEvent.COMPONENT_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
         this.config = config;
-        this.res = res;
         String cursorParamPrefix = "cursor_";
         ShiPainter app = this.app;
         this.ts = var3;
@@ -315,13 +314,13 @@ public class P extends Panel implements IMi {
             curArr[i] = this.loadCursor(app.getParameter(cursorParamPrefix + (i + 1)), defaultCursors[i]);
         }
 
-        this.mi = new Mi(this, res);
+        this.mi = new Mi(this);
         this.mi.init(app, config, imW, imH, qual, layNum, curArr);
 
         try {
             String var13 = giveP(loadMode, config.getP("tools", GUI_NORMAL));
             this.tool = (ToolBox) Class.forName("paintchat." + var13 + ".Tools").newInstance();
-            this.tool.init(this, app, config, res, this.mi);
+            this.tool.init(this, app, config, this.mi);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -641,7 +640,7 @@ public class P extends Panel implements IMi {
                 ;
             }
         } else {
-            var4.setText(this.res.res("SendJava"));
+            var4.setText(lang.get("SendJava"));
             URLConnection var21 = var1.openConnection();
             var21.setDoOutput(true);
             var21.setDoInput(true);
@@ -861,7 +860,7 @@ public class P extends Panel implements IMi {
                     }
                 } catch (Throwable ex) {
                     ex.printStackTrace();
-                    Ts.alert(ex.getMessage() + '\n' + this.res.res("SendE"));
+                    Ts.alert(ex.getMessage() + '\n' + lang.get("SendE"));
 
                     int var1;
                     for (var1 = 0; var1 < undoMgs.length; ++var1) {
@@ -982,8 +981,8 @@ public class P extends Panel implements IMi {
             int var24 = Math.min(this.p("thumbnail_height", var15), var15);
             var10.setInterlace(this.p("image_interlace", false));
             var12.setModal(false);
-            var12.ad(this.res.res("Send0"));
-            Label var25 = var12.ad(this.res.res("Send1"));
+            var12.ad(lang.get("Send0"));
+            Label var25 = var12.ad(lang.get("Send1"));
             var12.pack();
             Awt.moveCenter(var12);
             var12.setVisible(true);
@@ -1000,7 +999,7 @@ public class P extends Panel implements IMi {
             if (var32 == 0 || var22 > 0 && var32 >= var22 * 1024) {
                 var6.reset();
                 if (isJpeg) {
-                    var25.setText(this.res.res("EncJpeg"));
+                    var25.setText(lang.get("EncJpeg"));
                     var11 = true;
                     var9.encode(var6, var26, var14, var15, var20);
                     if (var22 > 1 && var6.size() >= (int) ((double) var22 * 1.5D) * 1024) {
@@ -1008,7 +1007,7 @@ public class P extends Panel implements IMi {
                         var9.encode(var6, var26, var14, var15, (int) ((double) var20 * 1.5D));
                     }
                 } else {
-                    var25.setText(this.res.res("CompPNG"));
+                    var25.setText(lang.get("CompPNG"));
                     var10.fencode(var6, this.getThumbnail(var26, var14, var15, true, var20 / 4), var14, var15);
                 }
 
@@ -1409,7 +1408,7 @@ public class P extends Panel implements IMi {
 
     private void setLName() {
         LO[] layers = this.mi.info.layers;
-        String name = this.res.res("Layer");
+        String name = lang.get("Layer");
 
         for (int i = 0; i < this.mi.info.L; ++i) {
             if (layers[i].name == null) {

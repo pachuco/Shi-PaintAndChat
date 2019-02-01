@@ -56,14 +56,13 @@ public class Mi extends LComponent implements ActionListener {
     private Color[] cls;
     private Color cPre;
 
-    public Mi(IMi var1, Res var2) throws Exception {
+    public Mi(IMi var1) throws Exception {
         this.cPre = Color.black;
         this.imi = var1;
         super.isRepaint = false;
         super.isHide = false;
         super.isGUI = false;
         super.iGap = 2;
-        Me.res = var2;
     }
 
     public void actionPerformed(ActionEvent event) {
@@ -738,20 +737,20 @@ public class Mi extends LComponent implements ActionListener {
         return var1 >= 0 && var2 >= 0 && var1 < var3.width && var2 < var3.height;
     }
 
-    public void init(Applet app, Res res, int var3, int var4, int var5, int var6, Cursor[] cursors) throws IOException {
+    public void init(Applet app, Res config, int var3, int var4, int var5, int var6, Cursor[] cursors) throws IOException {
         String var8 = "color_";
         this.cursors = cursors;
         this.cls = new Color[6];
-        this.cls[0] = new Color(res.getP(var8 + "frame", 0x505078));
-        this.cls[1] = new Color(res.getP(var8 + "icon", 0xCCCCFF));
-        this.cls[2] = new Color(res.getP(var8 + "bar_hl", 0xFFFFFF));
-        this.cls[3] = new Color(res.getP(var8 + "bar", 0x6F6FAE));
-        this.cls[4] = new Color(res.getP(var8 + "bar_hl", 0xEEEEFF));
-        this.cls[5] = new Color(res.getP(var8 + "bar_shadow", 0xAAAAAA));
+        this.cls[0] = new Color(config.getP(var8 + "frame", 0x505078));
+        this.cls[1] = new Color(config.getP(var8 + "icon", 0xCCCCFF));
+        this.cls[2] = new Color(config.getP(var8 + "bar_hl", 0xFFFFFF));
+        this.cls[3] = new Color(config.getP(var8 + "bar", 0x6F6FAE));
+        this.cls[4] = new Color(config.getP(var8 + "bar_hl", 0xEEEEFF));
+        this.cls[5] = new Color(config.getP(var8 + "bar_shadow", 0xAAAAAA));
         this.setBackground(Color.white);
         this.m = new M();
         this.user = this.m.newUser(this);
-        M.Info info = this.m.newInfo(app, this, res);
+        M.Info info = this.m.newInfo(app, this, config);
         info.setSize(var3, var4, var5);
         info.setL(var6);
         this.info = info;
