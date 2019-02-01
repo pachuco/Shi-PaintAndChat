@@ -21,7 +21,7 @@ public final class ResShiClient{
         RFile langFile = new RFile(RFile.F_CP, String.format(PATH_LANG, SYSLANG));
 
         try {
-            lang = new IniMap(langFile.getInputStream(), null, IniMap.ACC_RO, "langFile");
+            lang = new IniMap(langFile.getInputStream(), null, IniMap.ACC_RO, "lang_"+SYSLANG);
         } catch (IOException ex) {
             throw new RuntimeException("Cannot load langfile: " + langFile.getPath());
         }

@@ -6,6 +6,7 @@ import java.awt.event.*;
 import syi.awt.*;
 
 import static syi.C.ShiPainter.*;
+import static res.ResShiClient.*;
 
 public class NewImage extends Dialog implements WindowListener, ActionListener {
     private final static String hnd_cancel = "hnd_cancel";
@@ -51,7 +52,7 @@ public class NewImage extends Dialog implements WindowListener, ActionListener {
 
 
     public NewImage(Frame owner, Dimension dim, String m) {
-        super(owner, "New image");
+        super(owner, lang.get("newTitle"));
         if(m == null) m = "";
 
         Container conAll;
@@ -73,7 +74,7 @@ public class NewImage extends Dialog implements WindowListener, ActionListener {
 
         conW = new Container();
         conW.setLayout(new FlowLayout(FlowLayout.CENTER));
-        labW = new Label("Width:");
+        labW = new Label(lang.get("newWidth"));
         fieldW = new TextField();
         fieldW.setColumns(5);
         fieldW.addKeyListener(kaFld);
@@ -83,7 +84,7 @@ public class NewImage extends Dialog implements WindowListener, ActionListener {
         conW.add(fieldW);
         conH = new Container();
         conH.setLayout(new FlowLayout(FlowLayout.CENTER));
-        labH = new Label("Height:");
+        labH = new Label(lang.get("newHeight"));
         fieldH = new TextField();
         fieldH.setColumns(5);
         fieldH.addKeyListener(kaFld);
@@ -101,12 +102,12 @@ public class NewImage extends Dialog implements WindowListener, ActionListener {
         group = new CheckboxGroup();
 
         radNormal = new Checkbox();
-        radNormal.setLabel("Normal mode");
+        radNormal.setLabel(lang.get("newModeNormal"));
         radNormal.setState(m.equals(GUI_NORMAL));
         radNormal.addKeyListener(kaAny);
         radNormal.setCheckboxGroup(group);
         radPro = new Checkbox();
-        radPro.setLabel("Pro mode");
+        radPro.setLabel(lang.get("newModePro"));
         radPro.setState(m.equals(GUI_PRO));
         radPro.addKeyListener(kaAny);
         radPro.setCheckboxGroup(group);
@@ -119,11 +120,11 @@ public class NewImage extends Dialog implements WindowListener, ActionListener {
         conButt.setLayout(new GridLayout(1,2, GAP, 0));
 
         buttOk = new Button();
-        buttOk.setLabel("Ok");
+        buttOk.setLabel(lang.get("ok"));
         buttOk.setActionCommand(hnd_ok);
         buttOk.addActionListener(this);
         buttCan = new Button();
-        buttCan.setLabel("Cancel");
+        buttCan.setLabel(lang.get("cancel"));
         buttCan.setActionCommand(hnd_cancel);
         buttCan.addActionListener(this);
 

@@ -1,7 +1,9 @@
 package syi.awt.cust;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+
+import static res.ResShiClient.*;
 
 public class MBar extends MenuBar {
     public static final String hNew        = "hNew";
@@ -26,18 +28,18 @@ public class MBar extends MenuBar {
     }
 
     public MBar(ActionListener al) {
-        mFile = new Menu("File");
-        mPrefs = new Menu("Options");
-        mPrefsSaveAs = new Menu("Save as...");
+        mFile = new Menu(lang.get("menuFile"));
+        mPrefs = new Menu(lang.get("menuOptions"));
+        mPrefsSaveAs = new Menu(lang.get("menuSaveAs"));
 
-        miNew = prepMi(al, hNew, "New image");
-        miOpen = prepMi(al, hOpen, "Open file");
-        miSave = prepMi(al, hSave, "Save");
-        miSaveAsJPG = prepMi(al, hSvAsJPG, "JPEG");
-        miSaveAsPNG = prepMi(al, hSvAsPNG, "PNG");
-        miSaveAsAni = prepMi(al, hSvAsAni, "Animation");
-        miExit = prepMi(al, hExit, "Exit");
-        miToggleScr = prepMi(al, hToggleScr, "Toggle fullscreen");
+        miNew = prepMi(al, hNew, lang.get("menuNewImage"));
+        miOpen = prepMi(al, hOpen, lang.get("menuOpenFile"));
+        miSave = prepMi(al, hSave, lang.get("menuSave"));
+        miSaveAsJPG = prepMi(al, hSvAsJPG, lang.get("menuAsJpeg"));
+        miSaveAsPNG = prepMi(al, hSvAsPNG, lang.get("menuAsPng"));
+        miSaveAsAni = prepMi(al, hSvAsAni, lang.get("menuAsAnim"));
+        miExit = prepMi(al, hExit, lang.get("menuExit"));
+        miToggleScr = prepMi(al, hToggleScr, lang.get("menuFullscr"));
 
 
         add(mFile);
