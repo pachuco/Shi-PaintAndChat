@@ -136,7 +136,7 @@ public class IniMap implements Map<String,String> {
 
     @Override
     public String put(String k, String v) {
-        if (0!=(flags&ACC_RW)) {
+        if (0!=(flags & ACC_RW)) {
             return hashmap!=null ? hashmap.put(k, v) : null;
         } else {
             error(String.format("IniMap: attempted RO putting %s : %s", k, v), false);
@@ -146,7 +146,7 @@ public class IniMap implements Map<String,String> {
 
     @Override
     public String remove(Object o) {
-        if (0!=(flags&ACC_RW)) {
+        if (0!=(flags & ACC_RW)) {
             return hashmap!=null ? hashmap.remove(o) : null;
         } else {
             error(String.format("IniMap: attempted RO removing object: %s", o), false);
@@ -156,7 +156,7 @@ public class IniMap implements Map<String,String> {
 
     @Override
     public void putAll(Map<? extends String, ? extends String> map) {
-        if (0!=(flags&ACC_RW)) {
+        if (0!=(flags & ACC_RW)) {
             if (hashmap!=null) hashmap.putAll(map);
         } else {
             error("IniMap: attempted RO putAll!", false);
@@ -165,7 +165,7 @@ public class IniMap implements Map<String,String> {
 
     @Override
     public void clear() {
-        if (0!=(flags&ACC_RW)) {
+        if (0!=(flags & ACC_RW)) {
             if (hashmap!=null) hashmap.clear();
         } else {
             error("IniMap: attempted RO clearing!", false);
@@ -188,10 +188,6 @@ public class IniMap implements Map<String,String> {
     }
 
     private void error(String str, boolean isForced) {
-        error(flags, str, isForced);
-    }
-
-    private static void error(int flags, String str, boolean isForced) {
         if (isForced || 0!=(flags & ERR_WARN)) {
             System.err.println(str);
         }
