@@ -18,8 +18,6 @@ import java.util.Locale;
 import java.util.NoSuchElementException;
 import javax.imageio.ImageIO;
 
-import static syi.util.cust.IniMap.*;
-
 public class Applet extends java.applet.Applet implements WindowListener {
     private Applet ctx;
     private IniMap inifile = null;
@@ -33,7 +31,7 @@ public class Applet extends java.applet.Applet implements WindowListener {
         ctx = this;
         if (isDesktop) {
             try {
-                inifile = new IniMap(new RFile(RFile.F_FS, iniPath).getInputStream(), iniSection, ACC_RW & ERR_NONE);
+                inifile = new IniMap(new RFile(RFile.F_FS, iniPath).getInputStream(), iniSection, IniMap.ACC_RW);
             } catch (IOException e) {
                 System.err.println("Cannot load applet ini!");
                 System.err.println(iniPath);

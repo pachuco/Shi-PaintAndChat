@@ -21,7 +21,7 @@ public final class ResShiClient{
         RFile langFile = new RFile(RFile.F_CP, String.format(PATH_LANG, SYSLANG));
 
         try {
-            lang = new IniMap(langFile.getInputStream(), null, IniMap.ACC_RO | IniMap.ERR_WARN);
+            lang = new IniMap(langFile.getInputStream(), null, IniMap.ACC_RO, "langFile");
         } catch (IOException ex) {
             throw new RuntimeException("Cannot load langfile: " + langFile.getPath());
         }
@@ -38,7 +38,7 @@ public final class ResShiClient{
         RFile fMaster = new RFile(fRoot, "shiclient_en.ini");
         IniMap iniMaster = null;
         try {
-            iniMaster = new IniMap(fMaster.getInputStream(), null, IniMap.ACC_RO | IniMap.ERR_WARN);
+            iniMaster = new IniMap(fMaster.getInputStream(), null, IniMap.ACC_RO);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -46,7 +46,7 @@ public final class ResShiClient{
             if (f.equals(fMaster)) continue;
             if (!f.getName().startsWith("shiclient_")) continue;
             try {
-                IniMap im = new IniMap(f.getInputStream(), null, IniMap.ACC_RO & IniMap.ERR_WARN);
+                IniMap im = new IniMap(f.getInputStream(), null, IniMap.ACC_RO);
                 System.err.println("Checking: "+f.getName());
                 if (im.validateKeysAgainst(iniMaster)) {
                     System.err.println("ok!");

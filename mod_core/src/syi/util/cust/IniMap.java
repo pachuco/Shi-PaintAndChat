@@ -9,23 +9,22 @@ import java.util.*;
  *  Writing #NOTRIM in the first line prevents
  *   default trimming of lines, making this
  *   suitable for language files.
+ *  Initiating IniMap with a debugIdentifier
+ *   enables error messages.
  */
 
 public class IniMap implements Map<String,String> {
     public static int
         ACC_RW = 0,     //keys can be read and written
-        ACC_RO = 1,     //keys can be read only
-
-        ERR_NONE = 0,   //no messages on faulty access
-        ERR_WARN = 2;   //print to std.err on faulty access
-        //ERR_CRIT
+        ACC_RO = 1;     //keys can be read only
 
     private HashMap<String, String> hashmap;
     private int flags;
+    private String debugIdentifier;
 
-    public IniMap(HashMap<String, String> map, int flags) {
-        hashmap = new HashMap<String, String>(map);
-        this.flags = flags;
+    public IniMap(InputStream in, String section, int flags, String debugIdentifier) {
+        this(in, section, flags);
+        this.debugIdentifier = debugIdentifier;
     }
 
     public IniMap(InputStream in, String section, int flags) {
@@ -75,7 +74,7 @@ public class IniMap implements Map<String,String> {
 
         for (Field fld : fields) {
             if (!set.contains(fld.getName().substring(prefix.length()))) {
-                error(String.format("IniMap: Missing key: %s", fld.getName()), false);
+                error(String.format("Missing key: %s", fld.getName()), false);
             }
         }
         for (String key : set) {
@@ -83,9 +82,9 @@ public class IniMap implements Map<String,String> {
                 Field fld = cls.getDeclaredField(prefix+key);
                 fld.set(_this, hashmap.get(key));
             } catch (NoSuchFieldException ex) {
-                error(String.format("IniMap: Missing field: %s", prefix+key), false);
+                error(String.format("Missing field: %s", prefix+key), false);
             } catch (IllegalAccessException ex) {
-                error(String.format("IniMap: Cannot set field: %s", prefix + key), false);
+                error(String.format("Cannot set field: %s", prefix + key), false);
             }
         }
     }
@@ -99,7 +98,7 @@ public class IniMap implements Map<String,String> {
         if (!diffMaster.isEmpty() || !diffSlave.isEmpty()) {
             String keysMaster = "["+ Text.set2String(diffMaster, ", ")+"]";
             String keysSlave  = "["+ Text.set2String(diffSlave, ", ")+"]";
-            error(String.format("IniMap: Missing keys: %s. Surplus keys: %s", keysMaster, keysSlave), true);
+            error(String.format("Missing keys: %s. Surplus keys: %s", keysMaster, keysSlave), true);
             return false;
         }
         return true;
@@ -129,7 +128,7 @@ public class IniMap implements Map<String,String> {
     public String get(Object o) {
         String ret = hashmap!=null ? hashmap.get(o) : null;
         if (ret == null) {
-            error(String.format("IniMap: attempted reading inexistent key: %s", o), false);
+            error(String.format("Attempted reading of inexistent key: %s", o), false);
         }
         return ret;
     }
@@ -139,7 +138,7 @@ public class IniMap implements Map<String,String> {
         if (0!=(flags & ACC_RW)) {
             return hashmap!=null ? hashmap.put(k, v) : null;
         } else {
-            error(String.format("IniMap: attempted RO putting %s : %s", k, v), false);
+            error(String.format("Attempted RO putting key and value %s : %s", k, v), false);
             return null;
         }
     }
@@ -149,7 +148,7 @@ public class IniMap implements Map<String,String> {
         if (0!=(flags & ACC_RW)) {
             return hashmap!=null ? hashmap.remove(o) : null;
         } else {
-            error(String.format("IniMap: attempted RO removing object: %s", o), false);
+            error(String.format("Attempted RO removal of key: %s", o), false);
             return null;
         }
     }
@@ -159,7 +158,7 @@ public class IniMap implements Map<String,String> {
         if (0!=(flags & ACC_RW)) {
             if (hashmap!=null) hashmap.putAll(map);
         } else {
-            error("IniMap: attempted RO putAll!", false);
+            error("Attempted RO putAll!", false);
         }
     }
 
@@ -168,7 +167,7 @@ public class IniMap implements Map<String,String> {
         if (0!=(flags & ACC_RW)) {
             if (hashmap!=null) hashmap.clear();
         } else {
-            error("IniMap: attempted RO clearing!", false);
+            error("Attempted RO clearing!", false);
         }
     }
 
@@ -188,7 +187,8 @@ public class IniMap implements Map<String,String> {
     }
 
     private void error(String str, boolean isForced) {
-        if (isForced || 0!=(flags & ERR_WARN)) {
+        if (debugIdentifier!=null) System.err.print("IniMap " + debugIdentifier + ": ");
+        if (isForced || debugIdentifier!=null) {
             System.err.println(str);
         }
     }
