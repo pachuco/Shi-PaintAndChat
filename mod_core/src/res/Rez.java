@@ -6,7 +6,7 @@ import syi.util.cust.*;
 import java.io.*;
 
 public class Rez {
-    public static void testValidateAllLanguages(String root, String prefix, String master) {
+    public static void testAllLanguages(String root, String prefix, String master) {
         RFile fRoot = new RFile(RFile.F_CP, root);
         RFile fMaster = new RFile(fRoot, master);
         IniMap iniMaster = null;
@@ -31,11 +31,30 @@ public class Rez {
         }
     }
 
-    public static JavaSoundAudioClip loadAudio(RFile file) {
+    public static IniMap loadLangFile(int flags, String formattedPath, String overrideLang) {
+        IniMap ret;
+        String lang = overrideLang!=null ? overrideLang : System.getProperty("user.language");
+        RFile langMain = new RFile(flags, String.format(formattedPath, lang));
+        RFile langBack = new RFile(flags, String.format(formattedPath, "en"));
+        try {
+            ret = new IniMap(langMain.getInputStream(), null, IniMap.ACC_RO, "lang_"+lang);
+        } catch (IOException ex) {
+            System.err.println("Cannot load main langfile: " + langMain.getPath());
+            try {
+                ret = new IniMap(langBack.getInputStream(), null, IniMap.ACC_RO, "lang_en");
+            } catch (IOException ex2) {
+                throw new RuntimeException("Cannot load backup langfile: " + langBack.getPath());
+            }
+        }
+        return ret;
+    }
+
+    public static JavaSoundAudioClip loadAudio(int flags, String relPath) {
+        RFile file = new RFile(flags, relPath);
         try {
             return new JavaSoundAudioClip(file.getInputStream());
         } catch (IOException ex) {
-            System.err.println("audioLoad: " + file.getPath());
+            System.err.println("Cannot load audio: " + file.getPath());
             return null;
         }
     }
