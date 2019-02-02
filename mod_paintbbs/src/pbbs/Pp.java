@@ -14,13 +14,14 @@ import java.util.Vector;
 import paintchat.MgLine;
 import syi.util.ByteStream;
 
+import static res.ResPaintBBS.*;
+
 public class Pp extends Panel {
     private PaintBBS pbbs;
     private Mi mI;
     protected Tools tools;
     public static final String STR_VER = "PaintBBSv2.22_8";
     private static final boolean bLicense = false;
-    boolean isJp;
     private Dimension dPack = new Dimension();
     public boolean isPack = true;
     public static int count_click;
@@ -79,10 +80,6 @@ public class Pp extends Panel {
     public static final String C_CANVAS = "canvas";
     public static final String C_UNDO = "undo";
     public static final String C_UNDOIN = "undo_in_mg";
-
-    public Pp(boolean var1) {
-        this.isJp = var1;
-    }
 
     final void copy(int[][] var1, int[][] var2) {
         for (int var3 = 0; var3 < var1.length; ++var3) {
@@ -413,7 +410,7 @@ public class Pp extends Panel {
     }
 
     public void init(PaintBBS var1, Tools var2, Mi var3, Vector var4) {
-        this.setLayout((LayoutManager) null);
+        this.setLayout(null);
         this.pbbs = var1;
         this.tools = var2;
         this.mI = var3;
@@ -431,11 +428,14 @@ public class Pp extends Panel {
         String var16 = "_shadow";
         String var17 = "thumbnail_type";
         String var18 = null;
-        if (this.isJp) {
-            this.str_tools = new String[]{"やり直し", "元に戻す", "塗り潰し", "窓", "投稿", "(C)しぃちゃん "+STR_VER, "+", "-"};
-        } else {
-            this.str_tools = new String[]{"Redo", "Undo", "Fill", "Float", "Send", "(C)shi-chan "+STR_VER, "+", "-"};
+
+        str_tools = new String[8];
+        for (int i=0; i<6; i++) {
+            str_tools[i] = langPBBS.get(String.format("b%02d", i));
         }
+        str_tools[5] += STR_VER;
+        str_tools[6] = "+";
+        str_tools[7] = "-";
 
         this.cl_app_fore = new Color(var1.p(var9 + var10, 6710937));
         this.cl_app_back = new Color(var1.p(var9 + var6, 13421823));
@@ -488,7 +488,7 @@ public class Pp extends Panel {
         this.addNotify();
         this.mI.init(this.pbbs, this, this.tools);
         boolean var37 = false;
-        if (PaintBBS.c_ioff != null && (var37 = this.tools.messageEx(this.isJp ? "以前の編集データを復元しますか？" : "Would you like to restore the temporary applet image?\\nIf you accidentally left the page, this will restore your image."))) {
+        if (PaintBBS.c_ioff != null && (var37 = this.tools.messageEx(langPBBS.get("restore")))) {
             int[][] var21 = PaintBBS.c_ioff;
             this.copy(var21, this.mI.i_offs);
             this.b_ani = PaintBBS.c_ani;
@@ -783,7 +783,7 @@ public class Pp extends Panel {
                                     break label93;
                                 case 5: // open website
                                     String var9 = "http://shichan.jp/";
-                                    if (this.tools.messageEx(var9 + (this.isJp ? "\nしぃちゃんのホームページを表示しますか？" : "Visit external site?"))) {
+                                    if (this.tools.messageEx(var9 + (langPBBS.get("visitSite")))) {
                                         this.pbbs.getAppletContext().showDocument(new URL(var9), "_blank");
                                     }
                                     break label93;

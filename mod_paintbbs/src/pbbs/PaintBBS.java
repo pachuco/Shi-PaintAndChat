@@ -1,40 +1,19 @@
 package pbbs;
 
-import jaba.applet.Applet;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dialog;
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Label;
-import java.awt.Window;
-import java.awt.image.ImageObserver;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Method;
-import java.net.Socket;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-import java.util.Locale;
-import java.util.Vector;
-import java.util.zip.CRC32;
-import java.util.zip.Deflater;
-import java.util.zip.GZIPInputStream;
+import java.awt.*;
+import java.io.*;
+import java.lang.reflect.*;
+import java.net.*;
+import java.util.*;
+import java.util.zip.*;
 
-import paintchat.MgLine;
-import syi.jpeg.SJpegEncoder;
-import syi.png.SPngEncoder;
-import syi.util.ByteStream;
+import jaba.applet.*;
+import paintchat.*;
+import syi.jpeg.*;
+import syi.png.*;
+import syi.util.*;
+
+import static res.ResPaintBBS.*;
 
 public class PaintBBS extends Applet implements Runnable {
     private Mi mI;
@@ -363,7 +342,7 @@ public class PaintBBS extends Applet implements Runnable {
             if (this.imAni != null) {
                 var1.drawImage(this.imAni, 0, 0, Color.white, null);
             } else {
-                var1.drawString("PaintBBSv2.22_8", 10, var1.getFontMetrics().getHeight() * 2);
+                var1.drawString(Pp.STR_VER, 10, var1.getFontMetrics().getHeight() * 2);
             }
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -377,17 +356,16 @@ public class PaintBBS extends Applet implements Runnable {
 
     public synchronized void popup(boolean var1) {
         try {
-            boolean var2 = this.pP.isJp;
             Frame var3 = null;
             if (this.isW && this.isF) {
-                if (this.tools.messageEx(var2 ? "お絵かきを中断しますか" : "Do you close window?")) {
+                if (this.tools.messageEx(langPBBS.get("closeWindow"))) {
                     this.fwindow.dispose();
                 }
 
                 return;
             }
 
-            if (var1 && !this.tools.messageEx(var2 ? (!this.isF ? "ウインドウビュー？" : "ページビュー？") : (!this.isF ? "Window view?" : "Page view?"))) {
+            if (var1 && !this.tools.messageEx(this.isF ? langPBBS.get("toPage") : langPBBS.get("toFloat"))) {
                 return;
             }
 
@@ -395,7 +373,7 @@ public class PaintBBS extends Applet implements Runnable {
             if (!this.isF) {
                 String var5 = "popup_parent";
                 var3 = this.tools.getPFrame();
-                var4 = this.getParameter(var5) != null ? this.p(var5, false) : this.tools.messageEx(var2 ? "親窓表示？" : "Is parent window view?");
+                var4 = this.getParameter(var5) != null ? this.p(var5, false) : this.tools.messageEx(langPBBS.get("isParentWind"));
             }
 
             Container var10 = this.pP.getParent();
@@ -411,7 +389,7 @@ public class PaintBBS extends Applet implements Runnable {
             this.pP.isPack = true;
             String var7 = "Center";
             if (!this.isF) {
-                Object var8 = var4 ? new Frame("PaintBBSv2.22_8") : new Dialog(var3, "PaintBBSv2.22_8", false);
+                Object var8 = var4 ? new Frame(Pp.STR_VER) : new Dialog(var3, Pp.STR_VER, false);
                 ((Container) var8).setLayout(new BorderLayout());
                 ((Component) var8).setLocation(0, 0);
                 ((Component) var8).setSize(this.getToolkit().getScreenSize());
@@ -501,7 +479,7 @@ public class PaintBBS extends Applet implements Runnable {
             } catch (EOFException var23) {
             }
         } else {
-            var4.setText(this.pP.isJp ? "JavaのURLで送信中" : "JavaAPI Wait...");
+            var4.setText(langPBBS.get("apiWait"));
             URLConnection var24 = var1.openConnection();
             var24.setDoOutput(true);
             var24.setDoInput(true);
@@ -657,10 +635,9 @@ public class PaintBBS extends Applet implements Runnable {
     private void rInit() {
         this.setLayout(new BorderLayout());
         String var1 = "ja";
-        boolean var2 = this.p(var1, Locale.getDefault().getLanguage().equalsIgnoreCase(var1));
-        this.pP = new Pp(var2);
+        this.pP = new Pp();
         this.mI = new Mi();
-        this.tools = new Tools(this, this.mI, "PaintBBSv2.22_8", 0xFFFFFF, var2, false);
+        this.tools = new Tools(this, this.mI, Pp.STR_VER, 0xFFFFFF, false);
         this.pP.setVisible(false);
         this.add(this.pP, "Center");
         this.pP.setLocation(0, 0);
@@ -690,7 +667,7 @@ public class PaintBBS extends Applet implements Runnable {
             }
 
             var3 = null;
-            if ((var2 || this.tools.messageEx(this.pP.isJp ? "画像を投稿しますか？\n投稿に成功後、編集を終了します。" : "Is the picture contributed?\nif contribution completed,you jump to the comment page.")) && this.saveImage()) {
+            if ((var2 || this.tools.messageEx(langPBBS.get("isDrawDone"))) && this.saveImage()) {
                 c_ioff = null;
                 c_ani = null;
                 Pp.count_click = 0;
@@ -700,7 +677,7 @@ public class PaintBBS extends Applet implements Runnable {
                 return;
             }
         } catch (Throwable ex) {
-            this.tools.message(ex.getMessage() + (this.pP.isJp ? "\n失敗。時間を置いて再度投稿してみて下さい。" : "\nplease push send button again."));
+            this.tools.message(ex.getMessage() + langPBBS.get("doRetry"));
         }
 
         this.pP.copy(this.mI.i_offs, this.pP.uimage[0]);
@@ -794,8 +771,8 @@ public class PaintBBS extends Applet implements Runnable {
                 var26 = var38;
             }
 
-            var25 = this.tools.message(this.pP.isJp ? "進行状況" : "Advance situation", "PaintBBSv2.22_8", 0);
-            Label var47 = new Label(this.pP.isJp ? "        PNGデータ仮作成中        " : "  PNG Temporary encoding  ", 1);
+            var25 = this.tools.message(langPBBS.get("progress"), Pp.STR_VER, 0);
+            Label var47 = new Label(langPBBS.get("pngEncode"), 1);
             var25.add(var47, "South");
             var25.pack();
             Tools.moveC(var25);

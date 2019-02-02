@@ -44,7 +44,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
             MgLine var2 = new MgLine();
             var2.create(2, this.tools.lMaskHints, Tools.getDefFont(this.tools.lSize - 5).getSize(), this.tools.clLine, this.tools.clMask, this.tools.clAlpha, this.tools.lLayer);
             var2.setData(this.pP.moveScale(this.old_po), event.getActionCommand());
-            var2.draw(this, (Graphics) null, (Graphics) null, this.i_offs, this.pP.image_x, this.pP.image_y, this.pP.scale_x, this.pP.scale_y, this.pP.scale, 255, 255, -2);
+            var2.draw(this, null, null, this.i_offs, this.pP.image_x, this.pP.image_y, this.pP.scale_x, this.pP.scale_y, this.pP.scale, 255, 255, -2);
             this.pP.undo_in(var2);
             this.tF.setVisible(false);
             this.m_paint();
@@ -107,7 +107,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
         do {
             var2 = this.mg_b.setData(new short[]{(short) var2.x, (short) var2.y, (short) var1.x, (short) var1.y}, 0);
             this.addP(var2);
-            this.mg_b.draw(this, this.primary(), (Graphics) null, this.i_offs, this.pP.image_x, this.pP.image_y, this.pP.scale_x, this.pP.scale_y, this.pP.scale, this.tools.visit0, this.tools.visit1, -1);
+            this.mg_b.draw(this, this.primary(), null, this.i_offs, this.pP.image_x, this.pP.image_y, this.pP.scale_x, this.pP.scale_y, this.pP.scale, this.tools.visit0, this.tools.visit1, -1);
         } while (!var1.equals(var2));
 
     }
@@ -137,7 +137,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
                     if (this.draw_flag == 2) {
                         this.draw_flag = 0;
                         var6.setData(new Rectangle(this.rect_re), this.pP.moveScale(new Point(this.old_po2)), this.slayer, this.tools.lLayer);
-                        var6.draw(this, var2, (Graphics) null, this.i_offs, var7, var8, var9, var10, var11, var3, var4, 0);
+                        var6.draw(this, var2, null, this.i_offs, var7, var8, var9, var10, var11, var3, var4, 0);
                         this.pP.undo_in(var6);
                         return;
                     }
@@ -159,7 +159,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
                     this.draw_flag = 0;
                     this.t_getRectT(this.old_po, mousePos);
                     var6.setData(var6.line(this.pP.moveScale(this.old_po), this.pP.moveScale(mousePos)), 0);
-                    var6.draw(this, var2, (Graphics) null, this.i_offs, var7, var8, var9, var10, var11, var3, var4, -1);
+                    var6.draw(this, var2, null, this.i_offs, var7, var8, var9, var10, var11, var3, var4, -1);
                     break;
                 case 62:
                     switch (this.draw_flag) {
@@ -174,7 +174,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
                         case 3:
                             this.draw_flag = 0;
                             var6.setData(var6.bezier(new Point[]{this.pP.moveScale(this.rect_re.getLocation()), this.pP.moveScale(this.old_po3), this.pP.moveScale(mousePos), this.pP.moveScale(new Point(this.rect_re.width, this.rect_re.height))}), 0);
-                            var6.draw(this, var2, (Graphics) null, this.i_offs, var7, var8, var9, var10, var11, var3, var4, -2);
+                            var6.draw(this, var2, null, this.i_offs, var7, var8, var9, var10, var11, var3, var4, -2);
                             this.m_paint();
                             this.rect_re = null;
                             this.old_po3 = null;
@@ -191,7 +191,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
                     }
 
                     var6.setData(this.rect_re);
-                    var6.draw(this, var2, (Graphics) null, this.i_offs, var7, var8, var9, var10, var11, var3, var4, 0);
+                    var6.draw(this, var2, null, this.i_offs, var7, var8, var9, var10, var11, var3, var4, 0);
                     this.rect_re = null;
             }
 
@@ -237,7 +237,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
         }
 
         if (var14) {
-            this.tools.m_paint((Graphics) null);
+            this.tools.m_paint(null);
         }
 
     }
@@ -269,7 +269,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
     }
 
     public void m_paint() {
-        this.m_paint((Graphics) null, (Rectangle) null);
+        this.m_paint(null, null);
     }
 
     public void m_paint(Graphics var1, Rectangle var2) {
@@ -466,7 +466,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
     }
 
     public void paint(Graphics g) {
-        this.m_paint(g, (Rectangle) null);
+        this.m_paint(g, null);
     }
 
     private Graphics primary() {
@@ -522,7 +522,7 @@ public class Mi extends Canvas implements WindowListener, ActionListener {
                                 MgLine var7 = new MgLine();
                                 var7.create(this.tools.lMode, this.tools.lMaskHints, this.tools.lSize, this.tools.clLine, this.tools.clMask, this.tools.clAlpha, this.tools.lLayer);
                                 var7.setData(new Rectangle(var13));
-                                var7.draw(this, this.primary(), (Graphics) null, this.i_offs, this.pP.image_x, this.pP.image_y, this.pP.scale_x, this.pP.scale_y, this.pP.scale, this.tools.visit0, this.tools.visit1, -1);
+                                var7.draw(this, this.primary(), null, this.i_offs, this.pP.image_x, this.pP.image_y, this.pP.scale_x, this.pP.scale_y, this.pP.scale, this.tools.visit0, this.tools.visit1, -1);
                                 this.pP.undo_in(var7);
                                 return;
                             case 2:

@@ -39,10 +39,10 @@ public class IniMap implements Map<String,String> {
 
             try {
                 for (int i = 1; (line = bIn.readLine()) != null; i++) {
-                    line = line.trim();
                     if (i == 1 && (line.startsWith("#") || line.startsWith(";"))) {
                         if (line.substring(1).startsWith("NOTRIM")) isTrim = false;
                     }
+                    if (isTrim) line = line.trim();
                     if (isSkip) {
                         if (line.startsWith("[") && line.equals("[" + section + "]")) isSkip = false;
                     } else {

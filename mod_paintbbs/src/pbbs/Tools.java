@@ -33,6 +33,8 @@ import java.io.StringReader;
 
 import paintchat.MgLine;
 
+import static res.ResPaintBBS.*;
+
 // moved from package paintchat_client because it didn't look like it belonged
 public class Tools extends Canvas implements WindowListener, ActionListener {
     private Applet app;
@@ -52,7 +54,6 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
     public int visit0 = 255;
     public int visit1 = 255;
     public boolean is_start = false;
-    private boolean isJp = false;
     private boolean is_advance;
     private boolean is_alpha;
     private boolean is_right;
@@ -97,12 +98,11 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
     private String STR_VERSION = "";
     public Dimension D_TOOL;
 
-    public Tools(Applet var1, Component var2, String var3, int var4, boolean var5, boolean var6) {
+    public Tools(Applet var1, Component var2, String var3, int var4, boolean var6) {
         this.enableEvents(AWTEvent.KEY_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
         this.setBackground(var1.getBackground());
         this.app = var1;
         this.mi = var2;
-        this.isJp = var5;
         this.is_right = var6;
         this.STR_VERSION = var3;
 
@@ -326,127 +326,8 @@ public class Tools extends Canvas implements WindowListener, ActionListener {
     }
 
     private final String getMgName(int var1) {
-        if (this.isJp) {
-            switch (var1) {
-                case 0:
-                    return "鉛筆";
-                case 1:
-                    return "水彩";
-                case 2:
-                    return "ﾃｷｽﾄ";
-                case 7:
-                    return "トーン";
-                case 8:
-                    return "ぼかし";
-                case 9:
-                    return "覆い焼き";
-                case 10:
-                    return "焼き込み";
-                case 19:
-                    return "消しペン";
-                case 20:
-                    return "四角";
-                case 21:
-                    return "線四角";
-                case 22:
-                    return "楕円";
-                case 23:
-                    return "線楕円";
-                case 39:
-                    return "消し四角";
-                case 40:
-                    return "コピー";
-                case 41:
-                    return "角取り";
-                case 42:
-                    return "左右反転";
-                case 43:
-                    return "上下反転";
-                case 44:
-                    return "傾け";
-                case 45:
-                    return "ﾚｲﾔ結合";
-                case 60:
-                    return "手書き";
-                case 61:
-                    return "直線";
-                case 62:
-                    return "BZ曲線";
-                case 100:
-                    return "全消し";
-                case 110:
-                    return "通常";
-                case 111:
-                    return "マスク";
-                case 112:
-                    return "逆ﾏｽｸ";
-                case 113:
-                    return "加算";
-                case 114:
-                    return "逆加算";
-            }
-        } else {
-            switch (var1) {
-                case 0:
-                    return "Solid";
-                case 1:
-                    return "WaterC";
-                case 2:
-                    return "Text";
-                case 7:
-                    return "Halftone";
-                case 8:
-                    return "Blur";
-                case 9:
-                    return "Light";
-                case 10:
-                    return "Dark";
-                case 19:
-                    return "White";
-                case 20:
-                    return "Rect";
-                case 21:
-                    return "LineRect";
-                case 22:
-                    return "Oval";
-                case 23:
-                    return "LineOval";
-                case 39:
-                    return "WhiteRect";
-                case 40:
-                    return "Copy";
-                case 41:
-                    return "Antialias";
-                case 42:
-                    return "flipHorizontally";
-                case 43:
-                    return "flipVertically";
-                case 44:
-                    return "rotate";
-                case 45:
-                    return "layerUnify";
-                case 60:
-                    return "Freehand";
-                case 61:
-                    return "Line";
-                case 62:
-                    return "Bezier";
-                case 100:
-                    return "Clear";
-                case 110:
-                    return "Normal";
-                case 111:
-                    return "Mask";
-                case 112:
-                    return "ReMask";
-                case 113:
-                    return "And";
-                case 114:
-                    return "Divide";
-            }
-        }
-
-        return "";
+        String ret = langPBBS.get(String.format("t%03d", var1));
+        return ret!=null ? ret : "";
     }
 
     public Frame getPFrame() {
