@@ -164,9 +164,9 @@ public class ToolList {
                     (this.mgs[i] = new M()).set(cnf.getP(key));
                 }
 
-                this.strings[i] = lang.get(key);
+                this.strings[i] = langSP.get(key);
                 cnf.remove(key);
-                lang.remove(key);
+                langSP.remove(key);
             }
         } catch (Throwable ex) {
             ex.printStackTrace();

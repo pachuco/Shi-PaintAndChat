@@ -146,7 +146,7 @@ class Ts extends LComponent {
             strBarColorOff = strBarColor + "on";
         }
 
-        strBarColor = lang.get("app_name");
+        strBarColor = langSP.get("app_name");
         if (strBarColor == null) {
             strBarColor = "(C)" + (Locale.getDefault().getLanguage().equals("ja") ? "しぃちゃん v" + SV + " しぃペインター" : "Shi-chan v" + SV + " Shi-Painter");
         }
@@ -154,7 +154,7 @@ class Ts extends LComponent {
         this.strs = new String[]{"sUpload", "sF", "sRedo", "sUndo", "sFill", strBarColor};
 
         for (i = 0; i < 5; ++i) {
-            this.strs[i] = lang.get(this.strs[i]);
+            this.strs[i] = langSP.get(this.strs[i]);
         }
 
         if (strBarColor.length() == 1 && strBarColor.charAt(0) == '_') {

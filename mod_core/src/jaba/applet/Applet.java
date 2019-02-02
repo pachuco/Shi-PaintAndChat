@@ -32,10 +32,9 @@ public class Applet extends java.applet.Applet implements WindowListener {
         if (isDesktop) {
             try {
                 inifile = new IniMap(new RFile(RFile.F_FS, iniPath).getInputStream(), iniSection, IniMap.ACC_RW);
-            } catch (IOException e) {
+            } catch (IOException ex) {
                 System.err.println("Cannot load applet ini!");
                 System.err.println(iniPath);
-                e.printStackTrace();
             }
             frame = new Frame();
             frame.add(this);

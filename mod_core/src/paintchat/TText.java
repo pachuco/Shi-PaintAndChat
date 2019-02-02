@@ -58,7 +58,7 @@ public class TText extends Dialog implements SW, ActionListener, ItemListener {
     public void mSetup(ToolBox var1, M.Info var2, M.User var3, M var4, Res var6) {
         this.ts = var1;
         this.mg = var4;
-        this.setTitle(lang.get("Font"));
+        this.setTitle(langSP.get("Font"));
         String[] var7 = (String[]) null;
 
         try {
@@ -83,22 +83,22 @@ public class TText extends Dialog implements SW, ActionListener, ItemListener {
         TextField var10 = new TextField("20");
         this.cSize = var10;
         this.cSpace = new TextField("-5");
-        this.add(new Label(lang.get("Font"), var16));
+        this.add(new Label(langSP.get("Font"), var16));
         this.add(var14);
-        this.add(new Label(lang.get("Size"), var16));
+        this.add(new Label(langSP.get("Size"), var16));
         this.add(var10);
-        this.add(new Label(lang.get("WSpace"), var16));
+        this.add(new Label(langSP.get("WSpace"), var16));
         this.add(this.cSpace);
         Panel var11 = new Panel();
-        var11.add(this.cBL = new Checkbox(lang.get("Bold")));
-        var11.add(this.cIT = new Checkbox(lang.get("Italic")));
+        var11.add(this.cBL = new Checkbox(langSP.get("Bold")));
+        var11.add(this.cIT = new Checkbox(langSP.get("Italic")));
         this.add(var11);
         var11 = new Panel();
-        var11.add(this.cV = new Checkbox(lang.get("VText")));
+        var11.add(this.cV = new Checkbox(langSP.get("VText")));
         var11.add(this.cFill = new TextField("1"));
         this.add(var11);
         var11 = new Panel();
-        Button var12 = new Button(lang.get("Apply"));
+        Button var12 = new Button(langSP.get("Apply"));
         var12.addActionListener(this);
         var11.add(var12);
         this.add((Component) var11, (Object) "Center");

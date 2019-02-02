@@ -28,7 +28,6 @@ import paintchat.LO;
 import paintchat.M;
 import paintchat.Res;
 import paintchat.ToolBox;
-import res.*;
 import syi.awt.Awt;
 import syi.awt.LComponent;
 
@@ -65,9 +64,9 @@ public class L extends LComponent implements ActionListener, ItemListener {
         this.bH = fontMetrics.getHeight() + 6;
         this.base = this.bH - 2 - fontMetrics.getMaxDescent();
         int maxFontSize = (int) (60.0F * LComponent.Q);
-        String layerName = lang.get("Layer");
+        String layerName = langSP.get("Layer");
         this.sL = layerName;
-        this.strMenu = lang.get("MenuLayer");
+        this.strMenu = langSP.get("MenuLayer");
         this.cM = new Color(cnf.getP("l_m_color", 0));
         this.cT = new Color(cnf.getP("l_m_color_text", 0xFFFFFF));
         fontMetrics = this.getFontMetrics(this.bFont);
@@ -113,7 +112,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
                         wasLayerAdded = true;
                         break;
                     case 1: // delete layer
-                        if (info.L > 1 && this.confirm(layers[mg.iLayer].name + lang.get("DelLayerQ"))) {
+                        if (info.L > 1 && this.confirm(layers[mg.iLayer].name + langSP.get("DelLayerQ"))) {
                             mg.iLayerSrc = mg.iLayer;
                             mg.setRetouch(new int[]{2}, (byte[]) null, 0, false);
                             wasUpdated = true;
@@ -190,7 +189,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
 
     /** Merge visible layers */
     private void dFusion() {
-        if (this.confirm(lang.get("CombineVQ"))) {
+        if (this.confirm(langSP.get("CombineVQ"))) {
             try {
                 int layerCount = this.mi.info.L;
                 LO[] layers = this.mi.info.layers;
@@ -427,7 +426,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
                             if (waitWas >= 0 && layerIndex >= 0 && waitWas != layerIndex) {
                                 this.m.iLayer = layerIndex;
                                 this.m.iLayerSrc = waitWas;
-                                this.popup(new String[]{lang.get("Shift"), lang.get("Combine")}, mouseX, mouseY, false);
+                                this.popup(new String[]{langSP.get("Shift"), langSP.get("Combine")}, mouseX, mouseY, false);
                             }
 
                             this.mouse = -1;
@@ -501,12 +500,12 @@ public class L extends LComponent implements ActionListener, ItemListener {
             }
 
             for (int i = 0; i < options.length; ++i) {
-                this.popup.add(lang.get(options[i]));
+                this.popup.add(langSP.get(options[i]));
             }
 
             if (isMenuPopup) {
                 this.popup.addSeparator();
-                CheckboxMenuItem itemPreview = new CheckboxMenuItem(lang.get("IsPreview"), this.is_pre);
+                CheckboxMenuItem itemPreview = new CheckboxMenuItem(langSP.get("IsPreview"), this.is_pre);
                 itemPreview.addItemListener(this);
                 this.popup.add((MenuItem) itemPreview);
                 this.popup.setName("m");
@@ -543,9 +542,9 @@ public class L extends LComponent implements ActionListener, ItemListener {
     public void config(int layerIndex) {
         LO layer = this.mi.info.layers[layerIndex];
         Choice choice = new Choice();
-        choice.add(lang.get("Normal"));
-        choice.add(lang.get("Multiply"));
-        choice.add(lang.get("Reverse"));
+        choice.add(langSP.get("Normal"));
+        choice.add(langSP.get("Multiply"));
+        choice.add(langSP.get("Reverse"));
         choice.select(layer.iCopy);
         TextField textField = new TextField(layer.name);
         Me me = Me.getMe();

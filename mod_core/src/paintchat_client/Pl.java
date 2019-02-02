@@ -111,11 +111,11 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
     protected void addInOut(String var1, boolean var2) {
         if (var2) {
             this.tList.addText(var1);
-            var1 = var1 + lang.get("entered");
+            var1 = var1 + langSP.get("entered");
             dSound(ResShiClient.snd_join);
         } else {
             this.tList.remove(var1);
-            var1 = var1 + lang.get("leaved");
+            var1 = var1 + langSP.get("leaved");
             dSound(ResShiClient.snd_leave);
         }
 
@@ -365,14 +365,14 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
             this.tField = new TextField();
             this.tField.addActionListener(this);
             var4.add((Component) this.tField, (Object) var1);
-            this.tLabel = new Label(lang.get("input"));
+            this.tLabel = new Label(langSP.get("input"));
             var4.add((Component) this.tLabel, (Object) var3);
             String[] var5 = new String[]{"F", "FAll", "leave"};
             Panel var6 = new Panel(new FlowLayout(0, 2, 1));
             this.tPanelB = var6;
 
             for (int i = 0; i < var5.length; ++i) {
-                LButton var7 = new LButton(lang.get(var5[i]));
+                LButton var7 = new LButton(langSP.get(var5[i]));
                 var7.addActionListener(this);
                 var7.setName(String.valueOf(i));
                 var6.add(var7);

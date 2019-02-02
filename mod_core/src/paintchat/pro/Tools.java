@@ -191,7 +191,7 @@ public class Tools implements ToolBox, ActionListener {
             int var8 = M.class.getField(var2).getInt(this.mg);
 
             for (int var9 = 0; var9 < 16; ++var9) {
-                Object var7 = lang.get((Object)(var3 + var9));
+                Object var7 = langSP.get((Object)(var3 + var9));
                 if (var7 != null) {
                     if (var8 == var9) {
                         var6.add((MenuItem) (new CheckboxMenuItem(var7.toString(), true)));

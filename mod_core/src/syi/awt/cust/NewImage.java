@@ -52,7 +52,7 @@ public class NewImage extends Dialog implements WindowListener, ActionListener {
 
 
     public NewImage(Frame owner, Dimension dim, String m) {
-        super(owner, lang.get("newTitle"));
+        super(owner, langSP.get("newTitle"));
         if(m == null) m = "";
 
         Container conAll;
@@ -74,7 +74,7 @@ public class NewImage extends Dialog implements WindowListener, ActionListener {
 
         conW = new Container();
         conW.setLayout(new FlowLayout(FlowLayout.CENTER));
-        labW = new Label(lang.get("newWidth"));
+        labW = new Label(langSP.get("newWidth"));
         fieldW = new TextField();
         fieldW.setColumns(5);
         fieldW.addKeyListener(kaFld);
@@ -84,7 +84,7 @@ public class NewImage extends Dialog implements WindowListener, ActionListener {
         conW.add(fieldW);
         conH = new Container();
         conH.setLayout(new FlowLayout(FlowLayout.CENTER));
-        labH = new Label(lang.get("newHeight"));
+        labH = new Label(langSP.get("newHeight"));
         fieldH = new TextField();
         fieldH.setColumns(5);
         fieldH.addKeyListener(kaFld);
@@ -102,12 +102,12 @@ public class NewImage extends Dialog implements WindowListener, ActionListener {
         group = new CheckboxGroup();
 
         radNormal = new Checkbox();
-        radNormal.setLabel(lang.get("newModeNormal"));
+        radNormal.setLabel(langSP.get("newModeNormal"));
         radNormal.setState(m.equals(GUI_NORMAL));
         radNormal.addKeyListener(kaAny);
         radNormal.setCheckboxGroup(group);
         radPro = new Checkbox();
-        radPro.setLabel(lang.get("newModePro"));
+        radPro.setLabel(langSP.get("newModePro"));
         radPro.setState(m.equals(GUI_PRO));
         radPro.addKeyListener(kaAny);
         radPro.setCheckboxGroup(group);
@@ -120,11 +120,11 @@ public class NewImage extends Dialog implements WindowListener, ActionListener {
         conButt.setLayout(new GridLayout(1,2, GAP, 0));
 
         buttOk = new Button();
-        buttOk.setLabel(lang.get("ok"));
+        buttOk.setLabel(langSP.get("ok"));
         buttOk.setActionCommand(hnd_ok);
         buttOk.addActionListener(this);
         buttCan = new Button();
-        buttCan.setLabel(lang.get("cancel"));
+        buttCan.setLabel(langSP.get("cancel"));
         buttCan.setActionCommand(hnd_cancel);
         buttCan.addActionListener(this);
 

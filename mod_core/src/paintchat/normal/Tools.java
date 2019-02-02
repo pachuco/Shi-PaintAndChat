@@ -382,7 +382,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
                         break label60;
                     }
 
-                    menuItem = lang.get("t042" + i);
+                    menuItem = langSP.get("t042" + i);
                     if (this.mg.iTT - 12 == i) {
                         this.popup.add((MenuItem) (new CheckboxMenuItem(menuItem, true)));
                     } else {
@@ -393,7 +393,7 @@ public class Tools extends LComponent implements ToolBox, ActionListener {
                 }
             case 2: // Pen Masks
                 for (i = 0; i < 4; ++i) {
-                    menuItem = (String) lang.get("penm_" + i);
+                    menuItem = (String) langSP.get("penm_" + i);
                     if (menuItem == null) {
                         break;
                     }

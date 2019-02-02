@@ -8,7 +8,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
-import java.awt.image.ImageObserver;
 import java.net.URL;
 
 import paintchat.Res;
@@ -62,7 +61,7 @@ public class TBar extends LComponent {
         this.strs = new String[var4];
 
         for (int var6 = 0; var6 < var4; ++var6) {
-            String var2 = lang.get("window_" + var6);
+            String var2 = langSP.get("window_" + var6);
             var5 = Math.max(var3.stringWidth(var2) + var2.length(), var5);
             this.strs[var6] = var2;
             this.cs[var6].setTitle(var2);
@@ -83,7 +82,7 @@ public class TBar extends LComponent {
         byte var3 = 2;
         this.strs = new String[var3];
         this.flags = new boolean[var3];
-        this.strAuthor = lang.get("option_author");
+        this.strAuthor = langSP.get("option_author");
         this.s();
         this.setDimension((Dimension) null, new Dimension(10, 10), (Dimension) null);
     }
@@ -168,7 +167,7 @@ public class TBar extends LComponent {
                 int var5 = 0;
 
                 for (int i = 0; i < var4; ++i) {
-                    String var2 = lang.get("option_" + i);
+                    String var2 = langSP.get("option_" + i);
                     var5 = Math.max(var3.stringWidth(var2 + " OFF") + var2.length() + 3, var5);
                     this.strs[i] = var2;
                 }

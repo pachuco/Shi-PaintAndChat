@@ -8,7 +8,6 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.util.Locale;
 
 import paintchat.M;
 import paintchat.MgText;
@@ -17,7 +16,7 @@ import syi.awt.Awt;
 import syi.awt.TextPanel;
 import syi.util.ByteStream;
 
-import static res.ResShiClient.lang;
+import static res.ResShiClient.langSP;
 
 public class Data {
     public Pl pl;
@@ -212,7 +211,7 @@ public class Data {
     }
 
     public void addTextComp() {
-        this.pl.addTextInfo(lang.get("log_complete"), true);
+        this.pl.addTextInfo(langSP.get("log_complete"), true);
         this.mPermission(this.tLine.getStatus().get("permission"));
     }
 

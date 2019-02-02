@@ -28,9 +28,9 @@ public class Me extends Dialog implements ActionListener {
         this.setLayout(new BorderLayout(5, 5));
         this.pText = new Panel(new GridLayout(0, 1));
         this.add((Component) this.pText, (Object) "North");
-        this.bOk = new Button(lang.get("yes"));
+        this.bOk = new Button(langSP.get("yes"));
         this.bOk.addActionListener(this);
-        this.bNo = new Button(lang.get("no"));
+        this.bNo = new Button(langSP.get("no"));
         this.bNo.addActionListener(this);
         this.pBotton = new Panel(new FlowLayout(1, 10, 4));
         this.pBotton.add(this.bOk);
@@ -147,7 +147,7 @@ public class Me extends Dialog implements ActionListener {
 
     private static String p(String key) {
         //bleh
-        String ret = lang.get(key);
+        String ret = langSP.get(key);
         return ret == null ? key : ret;
     }
 

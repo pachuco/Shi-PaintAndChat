@@ -640,7 +640,7 @@ public class P extends Panel implements IMi {
                 ;
             }
         } else {
-            var4.setText(lang.get("SendJava"));
+            var4.setText(langSP.get("SendJava"));
             URLConnection var21 = var1.openConnection();
             var21.setDoOutput(true);
             var21.setDoInput(true);
@@ -860,7 +860,7 @@ public class P extends Panel implements IMi {
                     }
                 } catch (Throwable ex) {
                     ex.printStackTrace();
-                    Ts.alert(ex.getMessage() + '\n' + lang.get("SendE"));
+                    Ts.alert(ex.getMessage() + '\n' + langSP.get("SendE"));
 
                     int var1;
                     for (var1 = 0; var1 < undoMgs.length; ++var1) {
@@ -981,8 +981,8 @@ public class P extends Panel implements IMi {
             int var24 = Math.min(this.p("thumbnail_height", var15), var15);
             var10.setInterlace(this.p("image_interlace", false));
             var12.setModal(false);
-            var12.ad(lang.get("Send0"));
-            Label var25 = var12.ad(lang.get("Send1"));
+            var12.ad(langSP.get("Send0"));
+            Label var25 = var12.ad(langSP.get("Send1"));
             var12.pack();
             Awt.moveCenter(var12);
             var12.setVisible(true);
@@ -999,7 +999,7 @@ public class P extends Panel implements IMi {
             if (var32 == 0 || var22 > 0 && var32 >= var22 * 1024) {
                 var6.reset();
                 if (isJpeg) {
-                    var25.setText(lang.get("EncJpeg"));
+                    var25.setText(langSP.get("EncJpeg"));
                     var11 = true;
                     var9.encode(var6, var26, var14, var15, var20);
                     if (var22 > 1 && var6.size() >= (int) ((double) var22 * 1.5D) * 1024) {
@@ -1007,7 +1007,7 @@ public class P extends Panel implements IMi {
                         var9.encode(var6, var26, var14, var15, (int) ((double) var20 * 1.5D));
                     }
                 } else {
-                    var25.setText(lang.get("CompPNG"));
+                    var25.setText(langSP.get("CompPNG"));
                     var10.fencode(var6, this.getThumbnail(var26, var14, var15, true, var20 / 4), var14, var15);
                 }
 
@@ -1408,7 +1408,7 @@ public class P extends Panel implements IMi {
 
     private void setLName() {
         LO[] layers = this.mi.info.layers;
-        String name = lang.get("Layer");
+        String name = langSP.get("Layer");
 
         for (int i = 0; i < this.mi.info.L; ++i) {
             if (layers[i].name == null) {

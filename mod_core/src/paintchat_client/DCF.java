@@ -15,7 +15,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 
-import paintchat.Res;
 import syi.awt.Awt;
 
 import static res.ResShiClient.*;
@@ -31,7 +30,7 @@ public class DCF extends Dialog implements ItemListener, ActionListener {
     boolean isAdmin;
 
     public DCF() {
-        super(Awt.getPFrame(), lang.get("handle"), true);
+        super(Awt.getPFrame(), langSP.get("handle"), true);
         this.setLayout(new BorderLayout());
     }
 
@@ -62,17 +61,17 @@ public class DCF extends Dialog implements ItemListener, ActionListener {
         this.tName.addActionListener(this);
         this.tPas.addActionListener(this);
         Panel var1 = new Panel();
-        Button var2 = new Button(lang.get("enter"));
+        Button var2 = new Button(langSP.get("enter"));
         var2.addActionListener(this);
         var1.add(var2);
         this.add((String) "South", (Component) var1);
         this.pText.add(new Label(this.getTitle()));
         this.pText.add(this.tName);
-        this.cbAdmin.setLabel(lang.get("admin"));
+        this.cbAdmin.setLabel(langSP.get("admin"));
         this.cbAdmin.addItemListener(this);
         this.pText.add(this.cbAdmin);
         this.add((String) "Center", (Component) this.pText);
-        this.lPas.setText(lang.get("password"));
+        this.lPas.setText(langSP.get("password"));
         this.enableEvents(WindowEvent.WINDOW_EVENT_MASK);
         Awt.getDef(this);
         Awt.setDef(this, false);

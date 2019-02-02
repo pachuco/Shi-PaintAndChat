@@ -28,18 +28,18 @@ public class MBar extends MenuBar {
     }
 
     public MBar(ActionListener al) {
-        mFile = new Menu(lang.get("menuFile"));
-        mPrefs = new Menu(lang.get("menuOptions"));
-        mPrefsSaveAs = new Menu(lang.get("menuSaveAs"));
+        mFile = new Menu(langSP.get("menuFile"));
+        mPrefs = new Menu(langSP.get("menuOptions"));
+        mPrefsSaveAs = new Menu(langSP.get("menuSaveAs"));
 
-        miNew = prepMi(al, hNew, lang.get("menuNewImage"));
-        miOpen = prepMi(al, hOpen, lang.get("menuOpenFile"));
-        miSave = prepMi(al, hSave, lang.get("menuSave"));
-        miSaveAsJPG = prepMi(al, hSvAsJPG, lang.get("menuAsJpeg"));
-        miSaveAsPNG = prepMi(al, hSvAsPNG, lang.get("menuAsPng"));
-        miSaveAsAni = prepMi(al, hSvAsAni, lang.get("menuAsAnim"));
-        miExit = prepMi(al, hExit, lang.get("menuExit"));
-        miToggleScr = prepMi(al, hToggleScr, lang.get("menuFullscr"));
+        miNew = prepMi(al, hNew, langSP.get("menuNewImage"));
+        miOpen = prepMi(al, hOpen, langSP.get("menuOpenFile"));
+        miSave = prepMi(al, hSave, langSP.get("menuSave"));
+        miSaveAsJPG = prepMi(al, hSvAsJPG, langSP.get("menuAsJpeg"));
+        miSaveAsPNG = prepMi(al, hSvAsPNG, langSP.get("menuAsPng"));
+        miSaveAsAni = prepMi(al, hSvAsAni, langSP.get("menuAsAnim"));
+        miExit = prepMi(al, hExit, langSP.get("menuExit"));
+        miToggleScr = prepMi(al, hToggleScr, langSP.get("menuFullscr"));
 
 
         add(mFile);

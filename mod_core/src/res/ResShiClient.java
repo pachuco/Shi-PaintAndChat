@@ -7,7 +7,7 @@ import syi.util.cust.*;
 
 public final class ResShiClient{
     public static IniMap
-            lang;
+            langSP;
     public static JavaSoundAudioClip
             snd_join,
             snd_leave,
@@ -21,40 +21,15 @@ public final class ResShiClient{
         RFile langFile = new RFile(RFile.F_CP, String.format(PATH_LANG, SYSLANG));
 
         try {
-            lang = new IniMap(langFile.getInputStream(), null, IniMap.ACC_RO, "lang_"+SYSLANG);
+            langSP = new IniMap(langFile.getInputStream(), null, IniMap.ACC_RO, "lang_"+SYSLANG);
         } catch (IOException ex) {
             throw new RuntimeException("Cannot load langfile: " + langFile.getPath());
         }
 
-        snd_join = Audio.load(new RFile(RFile.F_CP, String.format(PATH_SND, "in")));
-        snd_leave = Audio.load(new RFile(RFile.F_CP, String.format(PATH_SND, "out")));
-        snd_talk = Audio.load(new RFile(RFile.F_CP, String.format(PATH_SND, "talk")));
+        snd_join = Rez.loadAudio(new RFile(RFile.F_CP, String.format(PATH_SND, "in")));
+        snd_leave = Rez.loadAudio(new RFile(RFile.F_CP, String.format(PATH_SND, "out")));
+        snd_talk = Rez.loadAudio(new RFile(RFile.F_CP, String.format(PATH_SND, "talk")));
         snd_type = null;
-        if (!RFile.isEnvironmentJar()) testValidateAllLanguages();
-    }
-
-    private void testValidateAllLanguages() {
-        RFile fRoot = new RFile(RFile.F_CP, "/res/lang/");
-        RFile fMaster = new RFile(fRoot, "shiclient_en.ini");
-        IniMap iniMaster = null;
-        try {
-            iniMaster = new IniMap(fMaster.getInputStream(), null, IniMap.ACC_RO);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        for (RFile f : fRoot.listFiles()) {
-            if (f.equals(fMaster)) continue;
-            if (!f.getName().startsWith("shiclient_")) continue;
-            try {
-                IniMap im = new IniMap(f.getInputStream(), null, IniMap.ACC_RO);
-                System.err.println("Checking: "+f.getName());
-                if (im.validateKeysAgainst(iniMaster)) {
-                    System.err.println("ok!");
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                System.err.println("oops!");
-            }
-        }
+        if (!RFile.isEnvironmentJar()) Rez.testValidateAllLanguages("/res/lang/", "shiclient_", "shiclient_en.ini");
     }
 }
