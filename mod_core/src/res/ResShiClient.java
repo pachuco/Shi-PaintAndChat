@@ -14,7 +14,7 @@ public final class ResShiClient{
             snd_type;
 
     public ResShiClient() {
-        String PATH_SND  = "/res/snd/%s.au";
+        String PATH_SND  = "/res/snd/%s";
 
         langSP = Rez.loadLangFile(RFile.F_CP, "/res/lang/shiclient_%s.ini", null);
 
