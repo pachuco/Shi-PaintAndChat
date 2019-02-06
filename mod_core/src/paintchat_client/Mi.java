@@ -737,7 +737,7 @@ public class Mi extends LComponent implements ActionListener {
         return var1 >= 0 && var2 >= 0 && var1 < var3.width && var2 < var3.height;
     }
 
-    public void init(Applet app, Res config, int var3, int var4, int var5, int var6, Cursor[] cursors) throws IOException {
+    public void init(Applet app, Res config, int width, int height, int quality, int layerCount, Cursor[] cursors) throws IOException {
         String var8 = "color_";
         this.cursors = cursors;
         this.cls = new Color[6];
@@ -751,8 +751,8 @@ public class Mi extends LComponent implements ActionListener {
         this.m = new M();
         this.user = this.m.newUser(this);
         M.Info info = this.m.newInfo(app, this, config);
-        info.setSize(var3, var4, var5);
-        info.setL(var6);
+        info.setSize(width, height, quality);
+        info.setL(layerCount);
         this.info = info;
         this.mgInfo = info.m;
 
