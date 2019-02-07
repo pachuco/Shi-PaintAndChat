@@ -41,6 +41,7 @@ import syi.awt.TextPanel;
 import syi.util.ThreadPool;
 
 import static res.ResShiClient.*;
+import static syi.C.EngineM.*;
 import static syi.C.ShiPainter.*;
 
 public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListener {
@@ -638,7 +639,7 @@ public class Pl extends Panel implements Runnable, ActionListener, IMi, KeyListe
     public void setARGB(int argb) {
         argb &= 0xFFFFFF;
         this.tool.selPix(this.mi.info.m.iLayer != 0 && argb == 0xFFFFFF);
-        if (this.mi.info.m.iPen != M.P_WHITE && this.mi.info.m.iPen != M.P_SWHITE) {
+        if (this.mi.info.m.iPen != P_WHITE && this.mi.info.m.iPen != P_SWHITE) {
             this.tool.setARGB(this.mi.info.m.iAlpha << 24 | argb);
         }
 

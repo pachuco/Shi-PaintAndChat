@@ -38,6 +38,7 @@ import syi.png.SPngEncoder;
 import syi.util.ByteStream;
 
 import static res.ResShiClient.*;
+import static syi.C.EngineM.*;
 import static syi.C.ShiPainter.*;
 
 public class P extends Panel implements IMi {
@@ -1154,7 +1155,7 @@ public class P extends Panel implements IMi {
         }
 
         mg.get(var8, this.work, (M) null);
-        if (mg.iHint != M.H_L || !this.setL(this.mi.info.imW, this.mi.info.imH, var5)) {
+        if (mg.iHint != H_L || !this.setL(this.mi.info.imW, this.mi.info.imH, var5)) {
             try {
                 ++nowI;
                 lastI = nowI;
@@ -1212,7 +1213,7 @@ public class P extends Panel implements IMi {
 
     public void setARGB(int argb) {
         this.tool.selPix(argb == 0xFFFFFF);
-        if (this.mi.info.m.iPen != M.P_WHITE && this.mi.info.m.iPen != M.P_SWHITE) {
+        if (this.mi.info.m.iPen != P_WHITE && this.mi.info.m.iPen != P_SWHITE) {
             this.tool.setARGB(argb);
         }
 

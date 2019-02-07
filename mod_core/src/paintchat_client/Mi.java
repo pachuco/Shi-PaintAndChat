@@ -22,6 +22,8 @@ import paintchat.ToolBox;
 import syi.awt.Awt;
 import syi.awt.LComponent;
 
+import static syi.C.EngineM.*;
+
 public class Mi extends LComponent implements ActionListener {
     private LComponent tab;
     private Method mGet;
@@ -299,7 +301,7 @@ public class Mi extends LComponent implements ActionListener {
 
     private void dEnd(boolean var1) throws InterruptedException {
         M mg = this.m;
-        if (mg.iHint != M.H_CLEAR && mg.iPen == M.P_FUSION && mg.iHint != M.H_L) {
+        if (mg.iHint != H_CLEAR && mg.iPen == P_FUSION && mg.iHint != H_L) {
             int waitWas = this.user.wait;
             this.user.wait = -2;
             if (var1) {
@@ -353,7 +355,7 @@ public class Mi extends LComponent implements ActionListener {
                     break;
                 case MouseEvent.MOUSE_RELEASED:
                     if (this.psCount >= 0) {
-                        if (this.m.iHint == M.H_SP) {
+                        if (this.m.iHint == H_SP) {
                             this.m.dNext(x, y, this.getS(), 0);
                         }
 
@@ -444,7 +446,7 @@ public class Mi extends LComponent implements ActionListener {
                     Color var8 = this.cPre;
                     var8 = (var8.getRGB() & 0xFFFFFF) != this.mgInfo.iColor >>> 1 ? new Color(this.mgInfo.iColor >>> 1) : var8;
                     this.cPre = var8;
-                    var7.setColor(this.mgInfo.iPen != M.P_WHITE && this.mgInfo.iPen != M.P_SWHITE ? (var8.getRGB() == 0xFFFFFF ? Color.red : var8) : Color.cyan);
+                    var7.setColor(this.mgInfo.iPen != P_WHITE && this.mgInfo.iPen != P_SWHITE ? (var8.getRGB() == 0xFFFFFF ? Color.red : var8) : Color.cyan);
                     if (var5 <= this.info.scale * 2) {
                         if (var3) {
                             var7.fillRect(this.oldX - var6, this.oldY - var6, var5, var5);
@@ -633,7 +635,7 @@ public class Mi extends LComponent implements ActionListener {
                             this.ps[0] = var4[0];
                             this.ps[1] = var4[1];
                             this.m.setRetouch(this.ps, (byte[]) null, 0, true);
-                            if (this.m.iPen != M.P_FUSION) {
+                            if (this.m.iPen != P_FUSION) {
                                 this.m.draw();
                             }
 
@@ -737,7 +739,7 @@ public class Mi extends LComponent implements ActionListener {
         return var1 >= 0 && var2 >= 0 && var1 < var3.width && var2 < var3.height;
     }
 
-    public void init(Applet app, Res config, int var3, int var4, int var5, int var6, Cursor[] cursors) throws IOException {
+    public void init(Applet app, Res config, int width, int height, int quality, int layerCount, Cursor[] cursors) throws IOException {
         String var8 = "color_";
         this.cursors = cursors;
         this.cls = new Color[6];
@@ -751,8 +753,8 @@ public class Mi extends LComponent implements ActionListener {
         this.m = new M();
         this.user = this.m.newUser(this);
         M.Info info = this.m.newInfo(app, this, config);
-        info.setSize(var3, var4, var5);
-        info.setL(var6);
+        info.setSize(width, height, quality);
+        info.setL(layerCount);
         this.info = info;
         this.mgInfo = info.m;
 
@@ -939,24 +941,24 @@ public class Mi extends LComponent implements ActionListener {
 
             if (this.isEnable && ((long) (this.mgInfo.iLayer + 1) & this.info.permission) != 0L && !isMRight && (this.mgInfo.iHint == 10 || this.info.layers[this.mgInfo.iLayer].iAlpha > 0.0F)) {
                 switch (this.mgInfo.iHint) {
-                    case M.H_FLINE:
-                    case M.H_SP:
+                    case H_FLINE:
+                    case H_SP:
                         this.dFLine(id, sX, sY);
                         break;
-                    case M.H_LINE:
+                    case H_LINE:
                         this.dLine(id, sX, sY);
                         break;
-                    case M.H_BEZI:
+                    case H_BEZI:
                         this.dBz(id, sX, sY);
                         break;
-                    case M.H_RECT:
-                    case M.H_FRECT:
-                    case M.H_OVAL:
-                    case M.H_FOVAL:
+                    case H_RECT:
+                    case H_FRECT:
+                    case H_OVAL:
+                    case H_FOVAL:
                     default:
                         this.dRect(id, sX, sY);
                         break;
-                    case M.H_FILL:
+                    case H_FILL:
                         if (isMPress && this.info.isFill) {
                             this.m.set(this.info.m);
                             this.p(0, sX, sY);
@@ -967,14 +969,14 @@ public class Mi extends LComponent implements ActionListener {
                             this.send();
                         }
                         break;
-                    case M.H_TEXT:
-                    case M.H_VTEXT:
+                    case H_TEXT:
+                    case H_VTEXT:
                         this.dText(id, sX, sY);
                         break;
-                    case M.H_COPY:
+                    case H_COPY:
                         this.dCopy(id, sX, sY);
                         break;
-                    case M.H_CLEAR:
+                    case H_CLEAR:
                         if (this.info.isClean && isMPress) {
                             this.dClear();
                         }
@@ -1092,8 +1094,8 @@ public class Mi extends LComponent implements ActionListener {
         if (this.psCount >= 0) {
             this.psCount = -1;
             switch (this.mgInfo.iHint) {
-                case M.H_FLINE:
-                case M.H_SP:
+                case H_FLINE:
+                case H_SP:
                     this.m.reset(true);
                     break;
                 default:
@@ -1283,7 +1285,7 @@ public class Mi extends LComponent implements ActionListener {
 
     private final void setM() {
         this.m.set(this.mgInfo);
-        if (this.m.iPen == M.P_FUSION) {
+        if (this.m.iPen == P_FUSION) {
             this.m.iLayerSrc = this.m.iLayer;
         }
 

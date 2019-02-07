@@ -24,6 +24,7 @@ import syi.awt.Awt;
 import syi.awt.LComponent;
 
 import static res.ResShiClient.*;
+import static syi.C.EngineM.*;
 
 
 class Ts extends LComponent {
@@ -287,8 +288,8 @@ class Ts extends LComponent {
                                 this.p.tool.up();
                                 this.p.tool.lift();
                                 M mg = this.p.mi.info.m;
-                                mg.iHint = M.H_FILL;
-                                mg.iPen = M.P_FILL;
+                                mg.iHint = H_FILL;
+                                mg.iPen = P_FILL;
                                 break;
                             case 6: // Credits
                                 if (this.is_vv) {

@@ -32,6 +32,7 @@ import syi.awt.Awt;
 import syi.awt.LComponent;
 
 import static res.ResShiClient.*;
+import static syi.C.EngineM.*;
 
 /** Layer palette window */
 public class L extends LComponent implements ActionListener, ItemListener {
@@ -126,7 +127,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
                 }
             } else if (selectedPopupIdx == 0) {
                 // shift layers
-                mg.iHint = M.H_L;
+                mg.iHint = H_L;
                 mg.setRetouch(new int[]{3}, (byte[]) null, 0, false);
                 wasUpdated = true;
             } else {
@@ -135,8 +136,8 @@ public class L extends LComponent implements ActionListener, ItemListener {
                 if (blendMode == 1) {
                     this.dFusion();
                 } else {
-                    mg.iHint = M.H_RECT;
-                    mg.iPen = M.P_FUSION;
+                    mg.iHint = H_RECT;
+                    mg.iPen = P_FUSION;
                     buffer[0] = blendMode;
                     mg.setRetouch(new int[]{0, info.W << 16 | info.H}, buffer, 4, false);
                     wasUpdated = true;
@@ -304,7 +305,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
     private M mg() {
         M mg = new M(this.mi.info, this.mi.user);
         mg.iAlpha = 255;
-        mg.iHint = M.H_L;
+        mg.iHint = H_L;
         mg.iLayer = this.m.iLayer;
         mg.iLayerSrc = this.m.iLayerSrc;
         return mg;

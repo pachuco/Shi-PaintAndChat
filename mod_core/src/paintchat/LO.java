@@ -1,5 +1,7 @@
 package paintchat;
 
+import static syi.C.EngineM.*;
+
 public class LO {
     public int W;
     public int H;
@@ -24,7 +26,7 @@ public class LO {
         this.offX = 0;
         this.offY = 0;
         this.offset = null;
-        this.iCopy = M.M_N;
+        this.iCopy = M_N;
         this.iAlpha = 1.0F;
         this.isDraw = false;
         this.W = w;
@@ -81,7 +83,7 @@ public class LO {
             int g;
             int b;
             switch (this.iCopy) {
-                case M.M_M: // Multiply
+                case M_M: // Multiply
                     for (int i = 0; i < height; ++i) {
                         for (int j = 0; j < width; ++j) {
                             var9 = this.offset[var18 + j];
@@ -102,7 +104,7 @@ public class LO {
                     }
 
                     return;
-                case M.M_R: // Invert
+                case M_R: // Invert
                     for (int i = 0; i < height; ++i) {
                         for (int j = 0; j < width; ++j) {
                             var9 = this.offset[var18 + j] ^ 0xFFFFFF;
@@ -198,7 +200,7 @@ public class LO {
             int var25;
             int var26;
             switch (this.iCopy) {
-                case M.M_M:
+                case M_M:
                     for (int i = 0; i < diffY; ++i) {
                         for (int j = 0; j < diffX; ++j) {
                             var9 = var16[var22 + j];
@@ -229,7 +231,7 @@ public class LO {
                     }
 
                     return;
-                case M.M_R:
+                case M_R:
                     for (int i = 0; i < diffY; ++i) {
                         for (int j = 0; j < diffX; ++j) {
                             var9 = var16[var22 + j];
