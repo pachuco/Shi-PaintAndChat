@@ -8,6 +8,8 @@ import java.lang.reflect.Method;
 
 import paintchat.M;
 
+import static syi.C.EngineM.*;
+
 public class Tab extends LComponent {
     private M mg;
     private int iDrag = -1;
@@ -73,7 +75,7 @@ public class Tab extends LComponent {
         int var2 = this.iDrag;
         if (var2 > 0 && var2 != 3) {
             boolean var3 = var2 >= 3;
-            if ((this.iSOB & M.F1_ALL_LAYERS << (!var3 ? 0 : 1)) != 0) {
+            if ((this.iSOB & F1_ALL_LAYERS << (!var3 ? 0 : 1)) != 0) {
                 var1 = (int) (255.0F / (float) this.getSize().width * (float) var1);
                 var1 = var1 <= 0 ? 0 : (var1 >= 255 ? 255 : var1);
                 int var4;
@@ -124,7 +126,7 @@ public class Tab extends LComponent {
                     int var5 = this.at(mouseY);
                     this.iDrag = var5;
                     if ((var5 == 0 || var5 == 3) && mouseX <= sizeBar) {
-                        this.iSOB = (byte) (this.iSOB ^ M.F1_ALL_LAYERS << (var5 == 0 ? 0 : 1));
+                        this.iSOB = (byte) (this.iSOB ^ F1_ALL_LAYERS << (var5 == 0 ? 0 : 1));
                         this.repaint();
                     } else {
                         this.drag(mouseX);
