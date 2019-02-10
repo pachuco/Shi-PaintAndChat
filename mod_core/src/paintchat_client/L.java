@@ -427,7 +427,7 @@ public class L extends LComponent implements ActionListener, ItemListener {
                             if (waitWas >= 0 && layerIndex >= 0 && waitWas != layerIndex) {
                                 this.m.iLayer = layerIndex;
                                 this.m.iLayerSrc = waitWas;
-                                this.popup(new String[]{langSP.get("Shift"), langSP.get("Combine")}, mouseX, mouseY, false);
+                                this.popup(new String[]{"Shift", "Combine"}, mouseX, mouseY, false);
                             }
 
                             this.mouse = -1;
