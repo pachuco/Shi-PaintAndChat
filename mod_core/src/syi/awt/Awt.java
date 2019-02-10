@@ -290,7 +290,7 @@ public class Awt {
         }
     }
 
-    /** Returns the srgb data of an Image as an int[] */
+    /** Returns the argb data of an Image as an int[] */
     public static int[] getPix(Image img) {
         try {
             PixelGrabber grabber = new PixelGrabber(img, 0, 0, img.getWidth((ImageObserver) null), img.getHeight((ImageObserver) null), true);

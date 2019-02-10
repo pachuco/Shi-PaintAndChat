@@ -2022,33 +2022,35 @@ public class M {
         return this.offset;
     }
 
+    /** Returns the current brush mask and refreshes it if changed */
     private final int[] getPM() {
         if (!this.isText() && (this.iHint < H_RECT || this.iHint > H_FOVAL)) {
-            int[] var1 = this.user.p;
+            int[] brush = this.user.p;
             if (this.user.pM != this.iPenM || this.user.pA != this.iAlpha || this.user.pS != this.iSize) {
-                int[][] var2 = this.info.bPen[this.iPenM];
-                int[] var3 = var2[this.iSize];
-                int var4 = var3.length;
-                if (var1 == null || var1.length < var4) {
-                    var1 = new int[var4];
+                // update cached brush
+                int[][] brushMasks = this.info.bPen[this.iPenM];
+                int[] brushMask = brushMasks[this.iSize];
+                int brushLength = brushMask.length;
+                if (brush == null || brush.length < brushLength) {
+                    brush = new int[brushLength];
                 }
 
-                float var5 = b255[this.iAlpha];
+                float fAlpha = b255[this.iAlpha];
 
-                for (int var6 = 0; var6 < var4; ++var6) {
-                    var1[var6] = (int) ((float) var3[var6] * var5);
+                for (int i = 0; i < brushLength; ++i) {
+                    brush[i] = (int) ((float) brushMask[i] * fAlpha);
                 }
 
-                this.user.pW = (int) Math.sqrt((double) var4);
+                this.user.pW = (int) Math.sqrt((double) brushLength);
                 this.user.pM = this.iPenM;
                 this.user.pA = this.iAlpha;
                 this.user.pS = this.iSize;
-                this.user.p = var1;
-                this.user.countMax = this.iCount >= 0 ? this.iCount : (int) ((float) this.user.pW / (float) Math.sqrt((double) var2[var2.length - 1].length) * (float) (-this.iCount));
+                this.user.p = brush;
+                this.user.countMax = this.iCount >= 0 ? this.iCount : (int) ((float) this.user.pW / (float) Math.sqrt((double) brushMasks[brushMasks.length - 1].length) * (float) (-this.iCount));
                 this.user.count = Math.min(this.user.countMax, this.user.count);
             }
 
-            return var1;
+            return brush;
         } else {
             return null;
         }
@@ -2138,29 +2140,28 @@ public class M {
         return false;
     }
 
-    private int[] loadIm(Object var1, boolean var2) {
+    private int[] loadIm(Object obj, boolean doInvert) {
         try {
-            Component var3 = this.info.component;
-            Image var4 = var3.getToolkit().createImage((byte[]) this.info.cnf.getRes(var1));
-            this.info.cnf.remove(var1);
-            Awt.wait(var4);
-            int[] var5 = Awt.getPix(var4);
-            int var6 = var5.length;
-            var4.flush();
-            var4 = null;
-            int var7;
-            if (var2) {
-                for (var7 = 0; var7 < var6; ++var7) {
-                    var5[var7] = var5[var7] & 255 ^ 255;
+            Component cmp = this.info.component;
+            Image img = cmp.getToolkit().createImage((byte[]) this.info.cnf.getRes(obj));
+            this.info.cnf.remove(obj);
+            Awt.wait(img);
+            int[] imgData = Awt.getPix(img);
+            int imgLength = imgData.length;
+            img.flush();
+            img = null;
+            if (doInvert) {
+                for (int i = 0; i < imgLength; ++i) {
+                    imgData[i] = imgData[i] & 255 ^ 255;
                 }
             } else {
-                for (var7 = 0; var7 < var6; ++var7) {
-                    var5[var7] &= 255;
+                for (int i = 0; i < imgLength; ++i) {
+                    imgData[i] &= 255;
                 }
             }
 
-            return var5;
-        } catch (RuntimeException var8) {
+            return imgData;
+        } catch (RuntimeException ex) {
             return null;
         }
     }
@@ -2175,37 +2176,37 @@ public class M {
         this.dBuffer(false, x1, y1, x1 + x2, y1 + y2);
     }
 
-    public final void memset(float[] var1, float var2) {
-        int var3 = var1.length >>> 1;
+    public final void memset(float[] dst, float val) {
+        int length = dst.length >>> 1;
 
-        for (int var4 = 0; var4 < var3; ++var4) {
-            var1[var4] = var2;
+        for (int i = 0; i < length; ++i) {
+            dst[i] = val;
         }
 
-        System.arraycopy(var1, 0, var1, var3 - 1, var3);
-        var1[var3 + var3 - 1] = var2;
+        System.arraycopy(dst, 0, dst, length - 1, length);
+        dst[length + length - 1] = val;
     }
 
-    public final void memset(int[] var1, int var2) {
-        int var3 = var1.length >>> 1;
+    public final void memset(int[] dst, int val) {
+        int length = dst.length >>> 1;
 
-        for (int var4 = 0; var4 < var3; ++var4) {
-            var1[var4] = var2;
+        for (int i = 0; i < length; ++i) {
+            dst[i] = val;
         }
 
-        System.arraycopy(var1, 0, var1, var3 - 1, var3);
-        var1[var3 + var3 - 1] = var2;
+        System.arraycopy(dst, 0, dst, length - 1, length);
+        dst[length + length - 1] = val;
     }
 
-    public final void memset(byte[] var1, byte var2) {
-        int var3 = var1.length >>> 1;
+    public final void memset(byte[] dst, byte val) {
+        int length = dst.length >>> 1;
 
-        for (int var4 = 0; var4 < var3; ++var4) {
-            var1[var4] = var2;
+        for (int i = 0; i < length; ++i) {
+            dst[i] = val;
         }
 
-        System.arraycopy(var1, 0, var1, var3 - 1, var3);
-        var1[var3 + var3 - 1] = var2;
+        System.arraycopy(dst, 0, dst, length - 1, length);
+        dst[length + length - 1] = val;
     }
 
     public final Image mkLPic(int[] picture, int x, int y, int width, int height, int quality) {
@@ -3278,30 +3279,31 @@ public class M {
             this.layers[layer1].swap(this.layers[layer2]);
         }
 
-        public boolean addScale(int var1, boolean var2) {
-            if (var2) {
-                if (var1 <= 0) {
+        /** Increases/decreases the canvas scale by an amount or overrides it */
+        public boolean addScale(int zoom, boolean override) {
+            if (override) {
+                if (zoom <= 0) {
                     this.scale = 1;
-                    this.setQuality(1 - var1);
+                    this.setQuality(1 - zoom);
                 } else {
                     this.setQuality(1);
-                    this.scale = var1;
+                    this.scale = zoom;
                 }
 
                 return true;
             } else {
-                int var3 = this.scale + var1;
-                if (var3 > 32) {
+                int newScale = this.scale + zoom;
+                if (newScale > 32) {
                     return false;
                 } else {
-                    if (var3 <= 0) {
+                    if (newScale <= 0) {
                         this.scale = 1;
-                        this.setQuality(this.Q + 1 - var3);
+                        this.setQuality(this.Q + 1 - newScale);
                     } else if (this.Q >= 2) {
                         this.setQuality(this.Q - 1);
                     } else {
                         this.setQuality(1);
-                        this.scale = var3;
+                        this.scale = newScale;
                     }
 
                     return true;

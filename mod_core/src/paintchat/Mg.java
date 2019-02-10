@@ -87,7 +87,7 @@ public class Mg {
     }
 
     public final void dBuffer() {
-        this.dBuffer(!this.user.isDirect, this.user.dX, this.user.dY, this.user.dW, this.user.dH);
+        this.dBuffer(!this.user.isDirect, this.user.X, this.user.Y, this.user.X2, this.user.Y2);
     }
 
     private final void dBuffer(boolean isDirect, int x1, int y1, int x2, int y2) {
@@ -203,10 +203,10 @@ public class Mg {
                 }
             }
 
-            this.user.dX = this.user.dX - 1;
-            this.user.dY = this.user.dY - 1;
-            this.user.dW = this.user.dW + 2;
-            this.user.dH = this.user.dH + 2;
+            this.user.X = this.user.X - 1;
+            this.user.Y = this.user.Y - 1;
+            this.user.X2 = this.user.X2 + 2;
+            this.user.Y2 = this.user.Y2 + 2;
         } catch (RuntimeException ex) {
             ex.printStackTrace();
         }
@@ -838,10 +838,10 @@ public class Mg {
     private final void dFlush() {
         int width = this.info.W;
         int height = this.info.H;
-        int x = this.user.dX <= 0 ? 0 : this.user.dX;
-        int y = this.user.dY <= 0 ? 0 : this.user.dY;
-        int x2 = this.user.dW >= width ? width : this.user.dW;
-        int y2 = this.user.dH >= height ? height : this.user.dH;
+        int x = this.user.X <= 0 ? 0 : this.user.X;
+        int y = this.user.Y <= 0 ? 0 : this.user.Y;
+        int x2 = this.user.X2 >= width ? width : this.user.X2;
+        int y2 = this.user.Y2 >= height ? height : this.user.Y2;
         byte[] var9 = this.info.iMOffs;
         int[] var10 = this.info.iOffs[this.iLayer];
         int var1;
@@ -2102,35 +2102,36 @@ public class Mg {
         return this.offset;
     }
 
+    /** Returns the brush mask and refreshes it if changed */
     private final int[] getPM() {
         if (this.iHint == H_TEXT) {
             return null;
         } else {
-            int[] var1 = this.user.p;
+            int[] brush = this.user.p;
             if (this.user.pM != this.iPenM || this.user.pA != this.iAlpha || this.user.pS != this.iSize) {
-                int[][] var2 = this.info.bPen[this.iPenM];
-                int[] var3 = var2[this.iSize];
-                int var4 = var3.length;
-                if (var1 == null || var1.length < var4) {
-                    var1 = new int[var4];
+                int[][] brushMasks = this.info.bPen[this.iPenM];
+                int[] brushMask = brushMasks[this.iSize];
+                int brushLength = brushMask.length;
+                if (brush == null || brush.length < brushLength) {
+                    brush = new int[brushLength];
                 }
 
-                float var5 = b255[this.iAlpha];
+                float fAlpha = b255[this.iAlpha];
 
-                for (int var6 = 0; var6 < var4; ++var6) {
-                    var1[var6] = (int) ((float) var3[var6] * var5);
+                for (int i = 0; i < brushLength; ++i) {
+                    brush[i] = (int) ((float) brushMask[i] * fAlpha);
                 }
 
-                this.user.pW = (int) Math.sqrt((double) var4);
+                this.user.pW = (int) Math.sqrt((double) brushLength);
                 this.user.pM = this.iPenM;
                 this.user.pA = this.iAlpha;
                 this.user.pS = this.iSize;
-                this.user.p = var1;
-                this.user.countMax = this.iCount >= 0 ? this.iCount : (int) ((float) this.user.pW / (float) Math.sqrt((double) var2[var2.length - 1].length) * (float) (-this.iCount));
+                this.user.p = brush;
+                this.user.countMax = this.iCount >= 0 ? this.iCount : (int) ((float) this.user.pW / (float) Math.sqrt((double) brushMasks[brushMasks.length - 1].length) * (float) (-this.iCount));
                 this.user.count = Math.min(this.user.countMax, this.user.count);
             }
 
-            return var1;
+            return brush;
         }
     }
 
@@ -2217,32 +2218,31 @@ public class Mg {
         return false;
     }
 
-    private int[] loadIm(Object var1, boolean var2) {
+    private int[] loadIm(Object obj, boolean doInvert) {
         try {
-            Component var3 = this.info.component;
-            Image var4 = var3.getToolkit().createImage((byte[]) this.info.cnf.getRes(var1));
-            this.info.cnf.remove(var1);
-            Awt.wait(var4);
-            PixelGrabber var5 = new PixelGrabber(var4, 0, 0, var4.getWidth((ImageObserver) null), var4.getHeight((ImageObserver) null), true);
-            var5.grabPixels();
-            int[] var6 = (int[]) var5.getPixels();
-            int var7 = var6.length;
-            var4.flush();
-            var4 = null;
-            int var8;
-            if (var2) {
-                for (var8 = 0; var8 < var7; ++var8) {
-                    var6[var8] = var6[var8] & 255 ^ 255;
+            Component cmp = this.info.component;
+            Image img = cmp.getToolkit().createImage((byte[]) this.info.cnf.getRes(obj));
+            this.info.cnf.remove(obj);
+            Awt.wait(img);
+            PixelGrabber pg = new PixelGrabber(img, 0, 0, img.getWidth((ImageObserver) null), img.getHeight((ImageObserver) null), true);
+            pg.grabPixels();
+            int[] imgData = (int[]) pg.getPixels();
+            int imgLength = imgData.length;
+            img.flush();
+            img = null;
+            if (doInvert) {
+                for (int i = 0; i < imgLength; ++i) {
+                    imgData[i] = imgData[i] & 255 ^ 255;
                 }
             } else {
-                for (var8 = 0; var8 < var7; ++var8) {
-                    var6[var8] &= 255;
+                for (int i = 0; i < imgLength; ++i) {
+                    imgData[i] &= 255;
                 }
             }
 
-            return var6;
-        } catch (RuntimeException var9) {
-        } catch (InterruptedException var10) {
+            return imgData;
+        } catch (RuntimeException ex) {
+        } catch (InterruptedException ex) {
         }
 
         return null;
@@ -2258,20 +2258,20 @@ public class Mg {
         this.dBuffer(false, x1, y1, x1 + x2, y1 + y2);
     }
 
-    public final void memset(float[] var1, float var2) {
-        int var3 = var1.length;
+    public final void memset(float[] dst, float val) {
+        int length = dst.length;
 
-        for (int var4 = 0; var4 < var3; ++var4) {
-            var1[var4] = var2;
+        for (int i = 0; i < length; ++i) {
+            dst[i] = val;
         }
 
     }
 
-    public final void memset(int[] var1, int var2) {
-        int var3 = var1.length;
+    public final void memset(int[] dst, int val) {
+        int length = dst.length;
 
-        for (int var4 = 0; var4 < var3; ++var4) {
-            var1[var4] = var2;
+        for (int i = 0; i < length; ++i) {
+            dst[i] = val;
         }
 
     }
@@ -2586,10 +2586,10 @@ public class Mg {
     public void reset() {
         byte[] var3 = this.info.iMOffs;
         int width = this.info.W;
-        int x1 = Math.max(this.user.dX, 0);
-        int y1 = Math.max(this.user.dY, 0);
-        int x2 = Math.min(this.user.dW, width);
-        int y2 = Math.min(this.user.dH, this.info.H);
+        int x1 = Math.max(this.user.X, 0);
+        int y1 = Math.max(this.user.Y, 0);
+        int x2 = Math.min(this.user.X2, width);
+        int y2 = Math.min(this.user.Y2, this.info.H);
 
         for (int i = y1; i < y2; ++i) {
             int offset = x1 + i * width;
@@ -2861,14 +2861,14 @@ public class Mg {
     }
 
     private final void addD(int x, int y, int x2, int y2) {
-        this.setD(Math.min(x, this.user.dX), Math.min(y, this.user.dY), Math.max(x2, this.user.dW), Math.max(y2, this.user.dH));
+        this.setD(Math.min(x, this.user.X), Math.min(y, this.user.Y), Math.max(x2, this.user.X2), Math.max(y2, this.user.Y2));
     }
 
     private final void setD(int x, int y, int x2, int y2) {
-        this.user.dX = x;
-        this.user.dY = y;
-        this.user.dW = x2;
-        this.user.dH = y2;
+        this.user.X = x;
+        this.user.Y = y;
+        this.user.X2 = x2;
+        this.user.Y2 = y2;
     }
 
     public void setInfo(Mg.Info info) {
@@ -2902,10 +2902,10 @@ public class Mg {
         if (this.iTT != 0) {
             byte[] mOffs = this.info.iMOffs;
             int width = this.info.W;
-            int x = this.user.dX;
-            int y = this.user.dY;
-            int x2 = this.user.dW;
-            int y2 = this.user.dH;
+            int x = this.user.X;
+            int y = this.user.Y;
+            int x2 = this.user.X2;
+            int y2 = this.user.Y2;
 
             for (int j = y; j < y2; ++j) {
                 int offset = width * j + x;
@@ -2955,10 +2955,10 @@ public class Mg {
         private float fX;
         private float fY;
         private int iDCount;
-        private int dX;
-        private int dY;
-        private int dW;
-        private int dH;
+        private int X;
+        private int Y;
+        private int X2;
+        private int Y2;
         private int count = 0;
         private int countMax;
 
@@ -3017,7 +3017,7 @@ public class Mg {
         }
 
         public long getRect() {
-            return (long) this.dX << 48 | (long) this.dY << 32 | (long) (this.dW << 16) | (long) this.dH;
+            return (long) this.X << 48 | (long) this.Y << 32 | (long) (this.X2 << 16) | (long) this.Y2;
         }
 
         public Image mkImage(int var1, int var2) {
@@ -3134,30 +3134,31 @@ public class Mg {
             }
         }
 
-        public boolean addScale(int var1, boolean var2) {
-            if (var2) {
-                if (var1 <= 0) {
+        /** Increases/decreases the canvas scale by an amount or overrides it */
+        public boolean addScale(int zoom, boolean override) {
+            if (override) {
+                if (zoom <= 0) {
                     this.scale = 1;
-                    this.setQuality(1 - var1);
+                    this.setQuality(1 - zoom);
                 } else {
                     this.setQuality(1);
-                    this.scale = var1;
+                    this.scale = zoom;
                 }
 
                 return true;
             } else {
-                int var3 = this.scale + var1;
-                if (var3 > 32) {
+                int newScale = this.scale + zoom;
+                if (newScale > 32) {
                     return false;
                 } else {
-                    if (var3 <= 0) {
+                    if (newScale <= 0) {
                         this.scale = 1;
-                        this.setQuality(this.Q + 1 - var3);
+                        this.setQuality(this.Q + 1 - newScale);
                     } else if (this.Q >= 2) {
                         this.setQuality(this.Q - 1);
                     } else {
                         this.setQuality(1);
-                        this.scale = var3;
+                        this.scale = newScale;
                     }
 
                     return true;
@@ -3191,7 +3192,7 @@ public class Mg {
         }
 
         public int getPMMax() {
-            return this.m.iHint == 8 ? 255 : this.bPen[this.m.iPenM].length;
+            return this.m.iHint == H_TEXT ? 255 : this.bPen[this.m.iPenM].length;
         }
 
         public int[][] getOffset() {
