@@ -87,7 +87,7 @@ public class Mg {
     }
 
     public final void dBuffer() {
-        this.dBuffer(!this.user.isDirect, this.user.dX, this.user.dY, this.user.dW, this.user.dH);
+        this.dBuffer(!this.user.isDirect, this.user.X, this.user.Y, this.user.X2, this.user.Y2);
     }
 
     private final void dBuffer(boolean isDirect, int x1, int y1, int x2, int y2) {
@@ -203,10 +203,10 @@ public class Mg {
                 }
             }
 
-            this.user.dX = this.user.dX - 1;
-            this.user.dY = this.user.dY - 1;
-            this.user.dW = this.user.dW + 2;
-            this.user.dH = this.user.dH + 2;
+            this.user.X = this.user.X - 1;
+            this.user.Y = this.user.Y - 1;
+            this.user.X2 = this.user.X2 + 2;
+            this.user.Y2 = this.user.Y2 + 2;
         } catch (RuntimeException ex) {
             ex.printStackTrace();
         }
@@ -341,32 +341,32 @@ public class Mg {
     }
 
     /** This is the fill used when drawing filled ovals */
-    private void dFill(byte[] var1, int var2, int var3, int var4, int var5) {
+    private void dFill(byte[] var1, int x1, int y1, int x2, int y2) {
         byte alpha = (byte) this.iAlpha;
         int width = this.info.W;
 
         try {
-            for (int i = var4 - var2; var3 < var5; ++var3) {
-                int var8 = var3 * width + var2;
+            for (int i = x2 - x1; y1 < y2; ++y1) {
+                int offset = y1 * width + x1;
 
                 int var11;
-                for (var11 = 0; var11 < i && var1[var8] != alpha; ++var11) {
-                    ++var8;
+                for (var11 = 0; var11 < i && var1[offset] != alpha; ++var11) {
+                    ++offset;
                 }
 
-                while (var11 < i && var1[var8] == alpha) {
-                    ++var8;
+                while (var11 < i && var1[offset] == alpha) {
+                    ++offset;
                     ++var11;
                 }
 
-                int var9 = var8;
+                int var9 = offset;
                 if (var11 < i) {
-                    while (var11 < i && var1[var8] != alpha) {
-                        ++var8;
+                    while (var11 < i && var1[offset] != alpha) {
+                        ++offset;
                         ++var11;
                     }
 
-                    int var10 = var8;
+                    int var10 = offset;
                     if (var11 < i) {
                         while (var9 < var10) {
                             var1[var9] = alpha;
@@ -382,32 +382,32 @@ public class Mg {
     }
 
     /** This is the fill called by newInfo() */
-    private void dFill(int[] var1, int var2, int var3, int var4, int var5) {
+    private void dFill(int[] var1, int x1, int y1, int x2, int y2) {
         int alpha = this.iAlpha;
         int width = this.info.W;
 
         try {
-            for (int var11 = var4 - var2; var3 < var5; ++var3) {
-                int var8 = var3 * width + var2;
+            for (int var11 = x2 - x1; y1 < y2; ++y1) {
+                int offset = y1 * width + x1;
 
                 int var12;
-                for (var12 = var8 + var11; var8 < var12 && var1[var8] != alpha; ++var8) {
+                for (var12 = offset + var11; offset < var12 && var1[offset] != alpha; ++offset) {
                 }
 
-                if (var8 < var12 - 1) {
-                    ++var8;
+                if (offset < var12 - 1) {
+                    ++offset;
 
-                    while (var8 < var12 && var1[var8] == alpha) {
-                        ++var8;
+                    while (offset < var12 && var1[offset] == alpha) {
+                        ++offset;
                     }
 
-                    if (var8 < var12 - 1) {
+                    if (offset < var12 - 1) {
                         int var9;
-                        for (var9 = var8++; var8 < var12 && var1[var8] != alpha; ++var8) {
+                        for (var9 = offset++; offset < var12 && var1[offset] != alpha; ++offset) {
                         }
 
-                        if (var8 < var12) {
-                            for (int var10 = var8; var9 < var10; ++var9) {
+                        if (offset < var12) {
+                            for (int var10 = offset; var9 < var10; ++var9) {
                                 var1[var9] = alpha;
                             }
                         }
@@ -487,62 +487,61 @@ public class Mg {
     }
 
     /** Draws a freehand line with antialiasing */
-    private final void dFLine(float var1, float var2, int var3) throws InterruptedException {
-        int var4 = this.user.wait;
-        float var5 = this.user.fX;
-        float var6 = this.user.fY;
-        float var7 = var1 - var5;
-        float var8 = var2 - var6;
-        float var9 = Math.max(Math.abs(var7), Math.abs(var8));
-        int var12 = (int) var5;
-        int var13 = (int) var6;
-        int var14 = this.user.oX;
-        int var15 = this.user.oY;
-        float var16 = 0.25F;
+    private final void dFLine(float x, float y, int pressure) throws InterruptedException {
+        int waitWas = this.user.wait;
+        float fX = this.user.fX;
+        float fY = this.user.fY;
+        float diffX = x - fX;
+        float diffY = y - fY;
+        float diffMax = Math.max(Math.abs(diffX), Math.abs(diffY));
+        int intFX = (int) fX;
+        int intFY = (int) fY;
+        int newOX = this.user.oX;
+        int newOY = this.user.oY;
+        float step = 0.25F;
         if (!this.isCount) {
             this.user.count = 0;
         }
 
-        int var19 = this.ss(var3);
-        int var20 = this.sa(var3);
-        int var21 = Math.max(var19, this.iSize);
-        float var22 = (float) this.iSize;
-        float var23 = (float) this.iAlpha;
-        float var24 = var9 == 0.0F ? 0.0F : ((float) var19 - var22) / var9;
+        int size = this.ss(pressure);
+        int alpha = this.sa(pressure);
+        int maxSize = Math.max(size, this.iSize);
+        float fSize = (float) this.iSize;
+        float fAlpha255 = (float) this.iAlpha;
+        float var24 = diffMax == 0.0F ? 0.0F : ((float) size - fSize) / diffMax;
         var24 = var24 >= 1.0F ? 1.0F : (var24 <= -1.0F ? -1.0F : var24);
-        float var25 = var9 == 0.0F ? 0.0F : ((float) var20 - var23) / var9;
+        float var25 = diffMax == 0.0F ? 0.0F : ((float) alpha - fAlpha255) / diffMax;
         var25 = var25 >= 1.0F ? 1.0F : (var25 <= -1.0F ? -1.0F : var25);
-        float var26 = var7 == 0.0F ? 0.0F : var7 / var9;
-        float var27 = var8 == 0.0F ? 0.0F : var8 / var9;
-        float var28 = var5;
-        float var29 = var6;
-        if (var9 <= 0.0F) {
-            ++var9;
+        float var26 = diffX == 0.0F ? 0.0F : diffX / diffMax;
+        float var27 = diffY == 0.0F ? 0.0F : diffY / diffMax;
+        float newFX = fX;
+        float newFY = fY;
+        if (diffMax <= 0.0F) {
+            ++diffMax;
         }
 
-        var26 *= var16;
-        var27 *= var16;
-        var24 *= var16;
-        var25 *= var16;
-        int var30 = (int) (var9 / var16);
+        var26 *= step;
+        var27 *= step;
+        var24 *= step;
+        var25 *= step;
+        int var30 = (int) (diffMax / step);
 
-        int var31;
-        for (var31 = 0; var31 < var30; ++var31) {
-            if (var14 != var12 || var15 != var13) {
+        for (int i = 0; i < var30; ++i) {
+            if (newOX != intFX || newOY != intFY) {
                 this.user.count = this.user.count - 1;
-                var14 = var12;
-                var15 = var13;
+                newOX = intFX;
+                newOY = intFY;
             }
 
             if (this.user.count <= 0) {
                 this.user.count = this.user.countMax;
-                this.iSize = (int) var22;
-                this.iAlpha = (int) var23;
+                this.iSize = (int) fSize;
+                this.iAlpha = (int) fAlpha255;
                 this.getPM();
-                int var17 = var12 - (this.user.pW >>> 1);
-                int var18 = var13 - (this.user.pW >>> 1);
-                float var10 = var28 - (float) ((int) var28);
-                float var11 = var29 - (float) ((int) var29);
+                int var17 = intFX - (this.user.pW >>> 1);
+                int var18 = intFY - (this.user.pW >>> 1);
+                float var10 = newFX - (float) ((int) newFX);
+                float var11 = newFY - (float) ((int) newFY);
                 if (var10 < 0.0F) {
                     --var17;
                     var10 = 1.0F - var10;
@@ -569,88 +568,87 @@ public class Mg {
                     this.dPen(var17 + 1, var18 + 1, var10 * var11);
                 }
 
-                if (var4 > 0) {
+                if (waitWas > 0) {
                     this.dBuffer(!this.user.isDirect, var17, var18, var17 + this.user.pW, var18 + this.user.pW);
-                    if (var4 > 1) {
+                    if (waitWas > 1) {
                         Thread.currentThread();
-                        Thread.sleep((long) var4);
+                        Thread.sleep((long) waitWas);
                     }
                 }
             }
 
-            var12 = (int) (var28 += var26);
-            var13 = (int) (var29 += var27);
-            var22 += var24;
-            var23 += var25;
+            intFX = (int) (newFX += var26);
+            intFY = (int) (newFY += var27);
+            fSize += var24;
+            fAlpha255 += var25;
         }
 
-        this.user.fX = var28;
-        this.user.fY = var29;
-        this.user.oX = var14;
-        this.user.oY = var15;
-        var31 = (int) Math.sqrt((double) this.info.bPen[this.iPenM][var21].length) / 2;
-        int var32 = (int) Math.min(var5, var1) - var31;
-        int var33 = (int) Math.min(var6, var2) - var31;
-        int var34 = (int) Math.max(var5, var1) + var31 + this.info.Q + 1;
-        int var35 = (int) Math.max(var6, var2) + var31 + this.info.Q + 1;
-        if (var4 == 0) {
-            this.dBuffer(!this.user.isDirect, var32, var33, var34, var35);
+        this.user.fX = newFX;
+        this.user.fY = newFY;
+        this.user.oX = newOX;
+        this.user.oY = newOY;
+        int brushRadius = (int) Math.sqrt((double) this.info.bPen[this.iPenM][maxSize].length) / 2;
+        int x1 = (int) Math.min(fX, x) - brushRadius;
+        int y1 = (int) Math.min(fY, y) - brushRadius;
+        int x2 = (int) Math.max(fX, x) + brushRadius + this.info.Q + 1;
+        int y2 = (int) Math.max(fY, y) + brushRadius + this.info.Q + 1;
+        if (waitWas == 0) {
+            this.dBuffer(!this.user.isDirect, x1, y1, x2, y2);
         }
 
-        this.addD(var32, var33, var34, var35);
+        this.addD(x1, y1, x2, y2);
     }
 
-    private final void dFLine(int var1, int var2, int var3) throws InterruptedException {
-        int var4 = this.user.wait;
-        int var5 = (int) this.user.fX;
-        int var6 = (int) this.user.fY;
-        int var7 = var1 - var5;
-        int var8 = var2 - var6;
-        int var9 = Math.max(Math.abs(var7), Math.abs(var8));
-        int var10 = var5;
-        int var11 = var6;
-        int var12 = this.user.oX;
-        int var13 = this.user.oY;
+    private final void dFLine(int x, int y, int pressure) throws InterruptedException {
+        int waitWas = this.user.wait;
+        int intFX = (int) this.user.fX;
+        int intFY = (int) this.user.fY;
+        int diffX = x - intFX;
+        int diffY = y - intFY;
+        int diffMax = Math.max(Math.abs(diffX), Math.abs(diffY));
+        int var10 = intFX;
+        int var11 = intFY;
+        int oX = this.user.oX;
+        int oY = this.user.oY;
         if (!this.isCount) {
             this.user.count = 0;
         }
 
-        int var16 = this.ss(var3);
-        int var17 = this.sa(var3);
-        int var18 = Math.max(var16, this.iSize);
-        float var19 = (float) this.iSize;
-        float var20 = (float) this.iAlpha;
-        float var21 = var9 == 0 ? 0.0F : ((float) var16 - var19) / (float) var9;
+        int size = this.ss(pressure);
+        int alpha = this.sa(pressure);
+        int maxSize = Math.max(size, this.iSize);
+        float fSize = (float) this.iSize;
+        float fAlpha255 = (float) this.iAlpha;
+        float var21 = diffMax == 0 ? 0.0F : ((float) size - fSize) / (float) diffMax;
         var21 = var21 >= 1.0F ? 1.0F : (var21 <= -1.0F ? -1.0F : var21);
-        float var22 = var9 == 0 ? 0.0F : ((float) var17 - var20) / (float) var9;
+        float var22 = diffMax == 0 ? 0.0F : ((float) alpha - fAlpha255) / (float) diffMax;
         var22 = var22 >= 1.0F ? 1.0F : (var22 <= -1.0F ? -1.0F : var22);
-        float var23 = var7 == 0 ? 0.0F : (float) var7 / (float) var9;
-        float var24 = var8 == 0 ? 0.0F : (float) var8 / (float) var9;
-        float var25 = (float) var5;
-        float var26 = (float) var6;
-        if (var9 <= 0) {
-            ++var9;
+        float var23 = diffX == 0 ? 0.0F : (float) diffX / (float) diffMax;
+        float var24 = diffY == 0 ? 0.0F : (float) diffY / (float) diffMax;
+        float var25 = (float) intFX;
+        float var26 = (float) intFY;
+        if (diffMax <= 0) {
+            ++diffMax;
         }
 
-        int var27;
-        for (var27 = 0; var27 < var9; ++var27) {
-            if (var12 != var10 || var13 != var11) {
+        for (int i = 0; i < diffMax; ++i) {
+            if (oX != var10 || oY != var11) {
                 this.user.count = this.user.count - 1;
-                var12 = var10;
-                var13 = var11;
+                oX = var10;
+                oY = var11;
                 if (this.user.count <= 0) {
                     this.user.count = this.user.countMax;
-                    this.iSize = (int) var19;
-                    this.iAlpha = (int) var20;
+                    this.iSize = (int) fSize;
+                    this.iAlpha = (int) fAlpha255;
                     this.getPM();
                     int var14 = var10 - (this.user.pW >>> 1);
                     int var15 = var11 - (this.user.pW >>> 1);
                     this.dPen(var14, var15, 1.0F);
-                    if (var4 > 0) {
+                    if (waitWas > 0) {
                         this.dBuffer(!this.user.isDirect, var14, var15, var14 + this.user.pW, var15 + this.user.pW);
-                        if (var4 > 1) {
+                        if (waitWas > 1) {
                             Thread.currentThread();
-                            Thread.sleep((long) var4);
+                            Thread.sleep((long) waitWas);
                         }
                     }
                 }
@@ -658,24 +656,24 @@ public class Mg {
 
             var10 = (int) (var25 += var23);
             var11 = (int) (var26 += var24);
-            var19 += var21;
-            var20 += var22;
+            fSize += var21;
+            fAlpha255 += var22;
         }
 
         this.user.fX = var25;
         this.user.fY = var26;
-        this.user.oX = var12;
-        this.user.oY = var13;
-        var27 = (int) Math.sqrt((double) this.info.bPen[this.iPenM][var18].length) / 2;
-        int var28 = Math.min(var5, var10) - var27;
-        int var29 = Math.min(var6, var11) - var27;
-        int var30 = Math.max(var5, var10) + var27 + this.info.Q;
-        int var31 = Math.max(var6, var11) + var27 + this.info.Q;
-        if (var4 == 0) {
-            this.dBuffer(!this.user.isDirect, var28, var29, var30, var31);
+        this.user.oX = oX;
+        this.user.oY = oY;
+        int brushRadius = (int) Math.sqrt((double) this.info.bPen[this.iPenM][maxSize].length) / 2;
+        int x1 = Math.min(intFX, var10) - brushRadius;
+        int y1 = Math.min(intFY, var11) - brushRadius;
+        int x2 = Math.max(intFX, var10) + brushRadius + this.info.Q;
+        int y2 = Math.max(intFY, var11) + brushRadius + this.info.Q;
+        if (waitWas == 0) {
+            this.dBuffer(!this.user.isDirect, x1, y1, x2, y2);
         }
 
-        this.addD(var28, var29, var30, var31);
+        this.addD(x1, y1, x2, y2);
     }
 
     /** Draws a smoothed line by interpolating the last 4 positions */
@@ -840,10 +838,10 @@ public class Mg {
     private final void dFlush() {
         int width = this.info.W;
         int height = this.info.H;
-        int x = this.user.dX <= 0 ? 0 : this.user.dX;
-        int y = this.user.dY <= 0 ? 0 : this.user.dY;
-        int x2 = this.user.dW >= width ? width : this.user.dW;
-        int y2 = this.user.dH >= height ? height : this.user.dH;
+        int x = this.user.X <= 0 ? 0 : this.user.X;
+        int y = this.user.Y <= 0 ? 0 : this.user.Y;
+        int x2 = this.user.X2 >= width ? width : this.user.X2;
+        int y2 = this.user.Y2 >= height ? height : this.user.Y2;
         byte[] var9 = this.info.iMOffs;
         int[] var10 = this.info.iOffs[this.iLayer];
         int var1;
@@ -1108,11 +1106,11 @@ public class Mg {
         }
     }
 
-    private final void dPen(int var1, int var2, float var3) {
+    private final void dPen(int x, int y, float var3) {
         if (this.iPen == P_SUISAI2) {
-            this.dPY(var1, var2);
+            this.dPY(x, y);
         } else {
-            this.dPenM(var1, var2, var3);
+            this.dPenM(x, y, var3);
             if (this.isOver) {
                 this.dFlush();
             }
@@ -1120,26 +1118,26 @@ public class Mg {
         }
     }
 
-    private final void dPenM(int var1, int var2, float var3) {
+    private final void dPenM(int x, int y, float var3) {
         boolean var7 = false;
         int[] var10 = this.getPM();
-        int var11 = this.info.W;
-        int var12 = this.user.pW;
-        int var13 = var12 * Math.max(-var2, 0) + Math.max(-var1, 0);
-        int var14 = Math.min(var1 + var12, var11);
-        int var15 = Math.min(var2 + var12, this.info.H);
+        int width = this.info.W;
+        int penWidth = this.user.pW;
+        int var13 = penWidth * Math.max(-y, 0) + Math.max(-x, 0);
+        int var14 = Math.min(x + penWidth, width);
+        int var15 = Math.min(y + penWidth, this.info.H);
         if (var14 > 0 && var15 > 0) {
-            var1 = var1 <= 0 ? 0 : var1;
-            var2 = var2 <= 0 ? 0 : var2;
+            x = x <= 0 ? 0 : x;
+            y = y <= 0 ? 0 : y;
             int[] var16 = this.info.iOffs[this.iLayer];
             byte[] var17 = this.info.iMOffs;
 
-            for (int var5 = var2; var5 < var15; ++var5) {
-                int var6 = var11 * var5 + var1;
+            for (int var5 = y; var5 < var15; ++var5) {
+                int var6 = width * var5 + x;
                 int var18 = var13;
-                var13 += var12;
+                var13 += penWidth;
 
-                for (int var4 = var1; var4 < var14; ++var4) {
+                for (int var4 = x; var4 < var14; ++var4) {
                     if (this.isM(var16[var6])) {
                         ++var6;
                         ++var18;
@@ -1228,18 +1226,18 @@ public class Mg {
 
     }
 
-    private final void dPY(int var1, int var2) {
+    private final void dPY(int x, int y) {
         boolean var4 = false;
         int[] var6 = this.getPM();
-        int var7 = this.info.W;
-        int var8 = this.user.pW;
-        int var9 = var8 * Math.max(-var2, 0) + Math.max(-var1, 0);
+        int width = this.info.W;
+        int penWidth = this.user.pW;
+        int var9 = penWidth * Math.max(-y, 0) + Math.max(-x, 0);
         int var10 = var9;
-        int var11 = Math.min(var1 + var8, var7);
-        int var12 = Math.min(var2 + var8, this.info.H);
-        var1 = var1 <= 0 ? 0 : var1;
-        var2 = var2 <= 0 ? 0 : var2;
-        if (var11 - var1 > 0 && var12 - var2 > 0) {
+        int var11 = Math.min(x + penWidth, width);
+        int var12 = Math.min(y + penWidth, this.info.H);
+        x = x <= 0 ? 0 : x;
+        y = y <= 0 ? 0 : y;
+        if (var11 - x > 0 && var12 - y > 0) {
             int[] var13 = this.info.iOffs[this.iLayer];
             int var14 = 0;
             int var19 = 0;
@@ -1252,12 +1250,12 @@ public class Mg {
             int var25;
             int var26;
             int var29;
-            for (var25 = var2; var25 < var12; ++var25) {
-                var3 = var7 * var25 + var1;
+            for (var25 = y; var25 < var12; ++var25) {
+                var3 = width * var25 + x;
                 var29 = var10;
-                var10 += var8;
+                var10 += penWidth;
 
-                for (var26 = var1; var26 < var11; ++var26) {
+                for (var26 = x; var26 < var11; ++var26) {
                     int var10001 = var29++;
                     int var10000 = var6[var10001];
                     var10001 = var6[var10001];
@@ -1294,12 +1292,12 @@ public class Mg {
 
                 var10 = var9;
 
-                for (var25 = var2; var25 < var12; ++var25) {
-                    var3 = var7 * var25 + var1;
+                for (var25 = y; var25 < var12; ++var25) {
+                    var3 = width * var25 + x;
                     var29 = var10;
-                    var10 += var8;
+                    var10 += penWidth;
 
-                    for (var26 = var1; var26 < var11; ++var26) {
+                    for (var26 = x; var26 < var11; ++var26) {
                         int var5 = var6[var29++];
                         var23 = var13[var3];
                         float var24;
@@ -1719,12 +1717,12 @@ public class Mg {
     /** Draws text */
     private void dText(String text, String var2, int x, int y) {
         try {
-            int var4 = this.info.W;
-            int var5 = this.info.H;
+            int width = this.info.W;
+            int height = this.info.H;
             int[] var6 = this.info.iOffs[this.iLayer];
             byte[] var7 = this.info.iMOffs;
-            float var8 = b255[this.iAlpha];
-            if (var8 == 0.0F) {
+            float fAlpha = b255[this.iAlpha];
+            if (fAlpha == 0.0F) {
                 return;
             }
 
@@ -1734,47 +1732,46 @@ public class Mg {
 
             Font font = this.strHint != null ? Font.decode(new String(this.strHint, "UTF8")) : new Font("sansserif", 0, this.iSize);
             FontMetrics fontMetrics = this.info.component.getFontMetrics(font);
-            int var12 = fontMetrics.stringWidth(text) + text.length();
-            int var13 = fontMetrics.getMaxAscent() + fontMetrics.getMaxDescent() + 2;
-            int var14 = var13 - fontMetrics.getMaxDescent();
-            Image var15 = this.info.component.createImage(var12, var13);
-            Graphics var16 = var15.getGraphics();
-            var16.setFont(font);
-            var16.setColor(Color.black);
-            var16.fillRect(0, 0, var12, var13);
-            var16.setColor(Color.blue);
-            this.setD(x, y, x + var12, y + var13);
-            var16.drawRect(0, 0, var12 - 1, var13 - 1);
-            var16.drawString(text, fontMetrics.getLeading(), var14);
-            var16.dispose();
-            var16 = null;
+            int textWidth = fontMetrics.stringWidth(text) + text.length();
+            int textHeight = fontMetrics.getMaxAscent() + fontMetrics.getMaxDescent() + 2;
+            int offY = textHeight - fontMetrics.getMaxDescent();
+            Image imgText = this.info.component.createImage(textWidth, textHeight);
+            Graphics g = imgText.getGraphics();
+            g.setFont(font);
+            g.setColor(Color.black);
+            g.fillRect(0, 0, textWidth, textHeight);
+            g.setColor(Color.blue);
+            this.setD(x, y, x + textWidth, y + textHeight);
+            g.drawRect(0, 0, textWidth - 1, textHeight - 1);
+            g.drawString(text, fontMetrics.getLeading(), offY);
+            g.dispose();
+            g = null;
             font = null;
             fontMetrics = null;
-            PixelGrabber var17 = new PixelGrabber(var15, 0, 0, var12, var13, true);
-            var17.grabPixels();
-            int[] var18 = (int[]) var17.getPixels();
-            var17 = null;
-            var15.flush();
-            var15 = null;
-            boolean var19 = false;
-            int var21 = Math.min(var4 - x, var12);
-            int var22 = Math.min(var5 - y, var13);
+            PixelGrabber pg = new PixelGrabber(imgText, 0, 0, textWidth, textHeight, true);
+            pg.grabPixels();
+            int[] bmpText = (int[]) pg.getPixels();
+            pg = null;
+            imgText.flush();
+            imgText = null;
+            int clippedWidth = Math.min(width - x, textWidth);
+            int clippedHeight = Math.min(height - y, textHeight);
 
-            for (int var23 = 0; var23 < var22; ++var23) {
-                int var26 = var23 * var12;
-                int var20 = (var23 + y) * var4 + x;
+            for (int j = 0; j < clippedHeight; ++j) {
+                int srcOffset = j * textWidth;
+                int dstOffset = (j + y) * width + x;
 
-                for (int var24 = 0; var24 < var21; ++var24) {
-                    if (!this.isM(var6[var20])) {
-                        var7[var20] = (byte) ((int) ((float) (var18[var26] & 255) * var8));
+                for (int i = 0; i < clippedWidth; ++i) {
+                    if (!this.isM(var6[dstOffset])) {
+                        var7[dstOffset] = (byte) ((int) ((float) (bmpText[srcOffset] & 255) * fAlpha));
                     }
 
-                    ++var26;
-                    ++var20;
+                    ++srcOffset;
+                    ++dstOffset;
                 }
             }
 
-            this.setD(x, y, x + var12, y + var13);
+            this.setD(x, y, x + textWidth, y + textHeight);
             this.t();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -2026,7 +2023,6 @@ public class Mg {
             int pxR;
             int pxB;
             float fAlpha;
-            int var10000;
             switch (this.iPen) {
                 case P_WHITE:
                 case P_SWHITE:
@@ -2038,7 +2034,6 @@ public class Mg {
                     pxR = pixel >>> 16 & 255;
                     pxG = pixel >>> 8 & 255;
                     pxB = pixel & 255;
-                    var10000 = this.iColor;
                     fAlpha = b255[alpha];
                     return (pxAlpha << 24) + (Math.min(pxR + (int) ((float) pxR * fAlpha), 255) << 16) + (Math.min(pxG + (int) ((float) pxG * fAlpha), 255) << 8) + Math.min(pxB + (int) ((float) pxB * fAlpha), 255);
                 case P_DARK:
@@ -2046,15 +2041,9 @@ public class Mg {
                     pxR = pixel >>> 16 & 255;
                     pxG = pixel >>> 8 & 255;
                     pxB = pixel & 255;
-                    var10000 = this.iColor;
                     fAlpha = b255[alpha];
                     return (pxAlpha << 24) + (Math.max(pxR - (int) ((float) (255 - pxR) * fAlpha), 0) << 16) + (Math.max(pxG - (int) ((float) (255 - pxG) * fAlpha), 0) << 8) + Math.max(pxB - (int) ((float) (255 - pxB) * fAlpha), 0);
                 case P_BOKASHI:
-                    var10000 = pixel >>> 24;
-                    var10000 = pixel >>> 16 & 255;
-                    var10000 = pixel >>> 8 & 255;
-                    var10000 = pixel & 255;
-                    var10000 = this.iColor;
                     float var4 = b255[alpha];
                     int[] var5 = this.user.argb;
                     int[] var7 = this.info.iOffs[this.iLayer];
@@ -2072,7 +2061,6 @@ public class Mg {
                     for (i = -1; i < 2; ++i) {
                         for (int var10 = -1; var10 < 2; ++var10) {
                             pxG = var7[var3 + var10 + i * var8];
-                            var10000 = pxG >>> 24;
 
                             for (int var11 = 0; var11 < 4; ++var11) {
                                 var5[var11] += pxG >>> (var11 << 3) & 255;
@@ -2114,35 +2102,36 @@ public class Mg {
         return this.offset;
     }
 
+    /** Returns the brush mask and refreshes it if changed */
     private final int[] getPM() {
         if (this.iHint == H_TEXT) {
             return null;
         } else {
-            int[] var1 = this.user.p;
+            int[] brush = this.user.p;
             if (this.user.pM != this.iPenM || this.user.pA != this.iAlpha || this.user.pS != this.iSize) {
-                int[][] var2 = this.info.bPen[this.iPenM];
-                int[] var3 = var2[this.iSize];
-                int var4 = var3.length;
-                if (var1 == null || var1.length < var4) {
-                    var1 = new int[var4];
+                int[][] brushMasks = this.info.bPen[this.iPenM];
+                int[] brushMask = brushMasks[this.iSize];
+                int brushLength = brushMask.length;
+                if (brush == null || brush.length < brushLength) {
+                    brush = new int[brushLength];
                 }
 
-                float var5 = b255[this.iAlpha];
+                float fAlpha = b255[this.iAlpha];
 
-                for (int var6 = 0; var6 < var4; ++var6) {
-                    var1[var6] = (int) ((float) var3[var6] * var5);
+                for (int i = 0; i < brushLength; ++i) {
+                    brush[i] = (int) ((float) brushMask[i] * fAlpha);
                 }
 
-                this.user.pW = (int) Math.sqrt((double) var4);
+                this.user.pW = (int) Math.sqrt((double) brushLength);
                 this.user.pM = this.iPenM;
                 this.user.pA = this.iAlpha;
                 this.user.pS = this.iSize;
-                this.user.p = var1;
-                this.user.countMax = this.iCount >= 0 ? this.iCount : (int) ((float) this.user.pW / (float) Math.sqrt((double) var2[var2.length - 1].length) * (float) (-this.iCount));
+                this.user.p = brush;
+                this.user.countMax = this.iCount >= 0 ? this.iCount : (int) ((float) this.user.pW / (float) Math.sqrt((double) brushMasks[brushMasks.length - 1].length) * (float) (-this.iCount));
                 this.user.count = Math.min(this.user.countMax, this.user.count);
             }
 
-            return var1;
+            return brush;
         }
     }
 
@@ -2229,32 +2218,31 @@ public class Mg {
         return false;
     }
 
-    private int[] loadIm(Object var1, boolean var2) {
+    private int[] loadIm(Object obj, boolean doInvert) {
         try {
-            Component var3 = this.info.component;
-            Image var4 = var3.getToolkit().createImage((byte[]) this.info.cnf.getRes(var1));
-            this.info.cnf.remove(var1);
-            Awt.wait(var4);
-            PixelGrabber var5 = new PixelGrabber(var4, 0, 0, var4.getWidth((ImageObserver) null), var4.getHeight((ImageObserver) null), true);
-            var5.grabPixels();
-            int[] var6 = (int[]) var5.getPixels();
-            int var7 = var6.length;
-            var4.flush();
-            var4 = null;
-            int var8;
-            if (var2) {
-                for (var8 = 0; var8 < var7; ++var8) {
-                    var6[var8] = var6[var8] & 255 ^ 255;
+            Component cmp = this.info.component;
+            Image img = cmp.getToolkit().createImage((byte[]) this.info.cnf.getRes(obj));
+            this.info.cnf.remove(obj);
+            Awt.wait(img);
+            PixelGrabber pg = new PixelGrabber(img, 0, 0, img.getWidth((ImageObserver) null), img.getHeight((ImageObserver) null), true);
+            pg.grabPixels();
+            int[] imgData = (int[]) pg.getPixels();
+            int imgLength = imgData.length;
+            img.flush();
+            img = null;
+            if (doInvert) {
+                for (int i = 0; i < imgLength; ++i) {
+                    imgData[i] = imgData[i] & 255 ^ 255;
                 }
             } else {
-                for (var8 = 0; var8 < var7; ++var8) {
-                    var6[var8] &= 255;
+                for (int i = 0; i < imgLength; ++i) {
+                    imgData[i] &= 255;
                 }
             }
 
-            return var6;
-        } catch (RuntimeException var9) {
-        } catch (InterruptedException var10) {
+            return imgData;
+        } catch (RuntimeException ex) {
+        } catch (InterruptedException ex) {
         }
 
         return null;
@@ -2270,20 +2258,20 @@ public class Mg {
         this.dBuffer(false, x1, y1, x1 + x2, y1 + y2);
     }
 
-    public final void memset(float[] var1, float var2) {
-        int var3 = var1.length;
+    public final void memset(float[] dst, float val) {
+        int length = dst.length;
 
-        for (int var4 = 0; var4 < var3; ++var4) {
-            var1[var4] = var2;
+        for (int i = 0; i < length; ++i) {
+            dst[i] = val;
         }
 
     }
 
-    public final void memset(int[] var1, int var2) {
-        int var3 = var1.length;
+    public final void memset(int[] dst, int val) {
+        int length = dst.length;
 
-        for (int var4 = 0; var4 < var3; ++var4) {
-            var1[var4] = var2;
+        for (int i = 0; i < length; ++i) {
+            dst[i] = val;
         }
 
     }
@@ -2598,10 +2586,10 @@ public class Mg {
     public void reset() {
         byte[] var3 = this.info.iMOffs;
         int width = this.info.W;
-        int x1 = Math.max(this.user.dX, 0);
-        int y1 = Math.max(this.user.dY, 0);
-        int x2 = Math.min(this.user.dW, width);
-        int y2 = Math.min(this.user.dH, this.info.H);
+        int x1 = Math.max(this.user.X, 0);
+        int y1 = Math.max(this.user.Y, 0);
+        int x2 = Math.min(this.user.X2, width);
+        int y2 = Math.min(this.user.Y2, this.info.H);
 
         for (int i = y1; i < y2; ++i) {
             int offset = x1 + i * width;
@@ -2873,14 +2861,14 @@ public class Mg {
     }
 
     private final void addD(int x, int y, int x2, int y2) {
-        this.setD(Math.min(x, this.user.dX), Math.min(y, this.user.dY), Math.max(x2, this.user.dW), Math.max(y2, this.user.dH));
+        this.setD(Math.min(x, this.user.X), Math.min(y, this.user.Y), Math.max(x2, this.user.X2), Math.max(y2, this.user.Y2));
     }
 
     private final void setD(int x, int y, int x2, int y2) {
-        this.user.dX = x;
-        this.user.dY = y;
-        this.user.dW = x2;
-        this.user.dH = y2;
+        this.user.X = x;
+        this.user.Y = y;
+        this.user.X2 = x2;
+        this.user.Y2 = y2;
     }
 
     public void setInfo(Mg.Info info) {
@@ -2914,10 +2902,10 @@ public class Mg {
         if (this.iTT != 0) {
             byte[] mOffs = this.info.iMOffs;
             int width = this.info.W;
-            int x = this.user.dX;
-            int y = this.user.dY;
-            int x2 = this.user.dW;
-            int y2 = this.user.dH;
+            int x = this.user.X;
+            int y = this.user.Y;
+            int x2 = this.user.X2;
+            int y2 = this.user.Y2;
 
             for (int j = y; j < y2; ++j) {
                 int offset = width * j + x;
@@ -2967,10 +2955,10 @@ public class Mg {
         private float fX;
         private float fY;
         private int iDCount;
-        private int dX;
-        private int dY;
-        private int dW;
-        private int dH;
+        private int X;
+        private int Y;
+        private int X2;
+        private int Y2;
         private int count = 0;
         private int countMax;
 
@@ -3029,7 +3017,7 @@ public class Mg {
         }
 
         public long getRect() {
-            return (long) this.dX << 48 | (long) this.dY << 32 | (long) (this.dW << 16) | (long) this.dH;
+            return (long) this.X << 48 | (long) this.Y << 32 | (long) (this.X2 << 16) | (long) this.Y2;
         }
 
         public Image mkImage(int var1, int var2) {
@@ -3146,30 +3134,31 @@ public class Mg {
             }
         }
 
-        public boolean addScale(int var1, boolean var2) {
-            if (var2) {
-                if (var1 <= 0) {
+        /** Increases/decreases the canvas scale by an amount or overrides it */
+        public boolean addScale(int zoom, boolean override) {
+            if (override) {
+                if (zoom <= 0) {
                     this.scale = 1;
-                    this.setQuality(1 - var1);
+                    this.setQuality(1 - zoom);
                 } else {
                     this.setQuality(1);
-                    this.scale = var1;
+                    this.scale = zoom;
                 }
 
                 return true;
             } else {
-                int var3 = this.scale + var1;
-                if (var3 > 32) {
+                int newScale = this.scale + zoom;
+                if (newScale > 32) {
                     return false;
                 } else {
-                    if (var3 <= 0) {
+                    if (newScale <= 0) {
                         this.scale = 1;
-                        this.setQuality(this.Q + 1 - var3);
+                        this.setQuality(this.Q + 1 - newScale);
                     } else if (this.Q >= 2) {
                         this.setQuality(this.Q - 1);
                     } else {
                         this.setQuality(1);
-                        this.scale = var3;
+                        this.scale = newScale;
                     }
 
                     return true;
@@ -3203,7 +3192,7 @@ public class Mg {
         }
 
         public int getPMMax() {
-            return this.m.iHint == 8 ? 255 : this.bPen[this.m.iPenM].length;
+            return this.m.iHint == H_TEXT ? 255 : this.bPen[this.m.iPenM].length;
         }
 
         public int[][] getOffset() {
