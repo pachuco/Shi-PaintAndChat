@@ -14,14 +14,12 @@ public final class ResShiClient{
             snd_type;
 
     public ResShiClient() {
-        String PATH_SND  = "/res/snd/%s";
-
         langSP = Rez.loadLangFile(RFile.F_CP, "/res/lang/shiclient_%s.ini", null);
 
-        snd_join = Rez.loadAudio(RFile.F_CP, String.format(PATH_SND, "in.au"));
-        snd_leave = Rez.loadAudio(RFile.F_CP, String.format(PATH_SND, "out.au"));
-        snd_talk = Rez.loadAudio(RFile.F_CP, String.format(PATH_SND, "talk.au"));
-        snd_type = null; //Rez.loadAudio(RFile.F_CP, String.format(PATH_SND, "type.au"));
+        snd_join = Rez.loadAudio(RFile.F_CP, "/res/snd/in.au");
+        snd_leave = Rez.loadAudio(RFile.F_CP, "/res/snd/out.au");
+        snd_talk = Rez.loadAudio(RFile.F_CP, "/res/snd/talk.au");
+        snd_type = null; //Rez.loadAudio(RFile.F_CP, "/res/snd/type.au"));
         if (!RFile.isEnvironmentJar()) Rez.testAllLanguages("/res/lang/", "shiclient_", "shiclient_en.ini");
     }
 }
