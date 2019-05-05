@@ -427,9 +427,9 @@ public class M {
 
             while (var16 > 0) {
                 --var16;
-                int var9 = var7[var16];
-                x = var9 >>> 16;
-                y = var9 & 0xFFFF;
+                int coord = var7[var16];
+                x = coord >>> 16;
+                y = coord & 0xFFFF;
                 int var10 = width * y;
                 boolean var11 = false;
                 boolean var12 = false;
@@ -448,6 +448,7 @@ public class M {
                     if (y < height - 1 && this.pix(x, y + 1) == pixel && var6[var10 + width + x] == 0) {
                         if (!var12) {
                             var12 = true;
+                            // FIXME: the following can go out of bounds for bigger canvases
                             var7[var16++] = this.s(pixel, x, y + 1) << 16 | y + 1;
                         }
                     } else {
@@ -2251,97 +2252,97 @@ public class M {
             if (i != this.iLayer) {
                 layers[i].draw(buffer, x, y, x + width, y + height, width);
             } else {
-                byte[] var10 = this.info.iMOffs;
+                byte[] iMOffs = this.info.iMOffs;
                 int[] layerOffset = layers[i].offset;
-                int var19 = this.info.W;
-                float var22 = layers[i].iAlpha;
+                int infoWidth = this.info.W;
+                float layerAlpha = layers[i].iAlpha;
                 if (layerOffset != null) {
-                    int var11;
-                    int var12;
-                    int var13;
-                    int var15;
-                    int var16;
-                    int var17;
-                    int var18;
-                    int var20;
-                    int var21;
-                    float var23;
+                    int r;
+                    int g;
+                    int b;
+                    int srcOffset;
+                    int dstOffset;
+                    int j;
+                    int offY;
+                    int invertedColor;
+                    int color;
+                    float fAlpha;
                     switch (layers[i].iCopy) {
                         case M_M:
-                            var18 = 0;
+                            offY = 0;
 
                             while (true) {
-                                if (var18 >= height) {
+                                if (offY >= height) {
                                     continue label87;
                                 }
 
-                                var15 = var19 * (var18 + y) + x;
-                                var16 = width * var18;
+                                srcOffset = infoWidth * (offY + y) + x;
+                                dstOffset = width * offY;
 
-                                for (var17 = 0; var17 < width; ++var17) {
-                                    var21 = buffer[var16];
-                                    var20 = this.getM(layerOffset[var15], var10[var15] & 255, var15);
-                                    var23 = b255[var20 >>> 24] * var22;
-                                    if (var23 > 0.0F) {
-                                        buffer[var16] = ((var21 >>> 16 & 255) - (int) (b255[var21 >>> 16 & 255] * (float) (var20 >>> 16 & 255 ^ 255) * var23) << 16) + ((var21 >>> 8 & 255) - (int) (b255[var21 >>> 8 & 255] * (float) (var20 >>> 8 & 255 ^ 255) * var23) << 8) + ((var21 & 255) - (int) (b255[var21 & 255] * (float) (var20 & 255 ^ 255) * var23));
+                                for (j = 0; j < width; ++j) {
+                                    color = buffer[dstOffset];
+                                    invertedColor = this.getM(layerOffset[srcOffset], iMOffs[srcOffset] & 255, srcOffset);
+                                    fAlpha = b255[invertedColor >>> 24] * layerAlpha;
+                                    if (fAlpha > 0.0F) {
+                                        buffer[dstOffset] = ((color >>> 16 & 255) - (int) (b255[color >>> 16 & 255] * (float) (invertedColor >>> 16 & 255 ^ 255) * fAlpha) << 16) + ((color >>> 8 & 255) - (int) (b255[color >>> 8 & 255] * (float) (invertedColor >>> 8 & 255 ^ 255) * fAlpha) << 8) + ((color & 255) - (int) (b255[color & 255] * (float) (invertedColor & 255 ^ 255) * fAlpha));
                                     }
 
-                                    ++var16;
-                                    ++var15;
+                                    ++dstOffset;
+                                    ++srcOffset;
                                 }
 
-                                ++var18;
+                                ++offY;
                             }
                         case M_R:
-                            var18 = 0;
+                            offY = 0;
 
                             while (true) {
-                                if (var18 >= height) {
+                                if (offY >= height) {
                                     continue label87;
                                 }
 
-                                var15 = var19 * (var18 + y) + x;
-                                var16 = width * var18;
+                                srcOffset = infoWidth * (offY + y) + x;
+                                dstOffset = width * offY;
 
-                                for (var17 = 0; var17 < width; ++var17) {
-                                    var21 = buffer[var16];
-                                    var20 = this.getM(layerOffset[var15], var10[var15] & 255, var15);
-                                    var23 = b255[var20 >>> 24] * var22;
-                                    var20 ^= 0xFFFFFF;
-                                    var11 = var21 >>> 16 & 255;
-                                    var12 = var21 >>> 8 & 255;
-                                    var13 = var21 & 255;
-                                    buffer[var16++] = var23 == 1.0F ? var20 : var11 + (int) ((float) ((var20 >>> 16 & 255) - var11) * var23) << 16 | var12 + (int) ((float) ((var20 >>> 8 & 255) - var12) * var23) << 8 | var13 + (int) ((float) ((var20 & 255) - var13) * var23);
-                                    ++var15;
+                                for (j = 0; j < width; ++j) {
+                                    color = buffer[dstOffset];
+                                    invertedColor = this.getM(layerOffset[srcOffset], iMOffs[srcOffset] & 255, srcOffset);
+                                    fAlpha = b255[invertedColor >>> 24] * layerAlpha;
+                                    invertedColor ^= 0xFFFFFF;
+                                    r = color >>> 16 & 255;
+                                    g = color >>> 8 & 255;
+                                    b = color & 255;
+                                    buffer[dstOffset++] = fAlpha == 1.0F ? invertedColor : r + (int) ((float) ((invertedColor >>> 16 & 255) - r) * fAlpha) << 16 | g + (int) ((float) ((invertedColor >>> 8 & 255) - g) * fAlpha) << 8 | b + (int) ((float) ((invertedColor & 255) - b) * fAlpha);
+                                    ++srcOffset;
                                 }
 
-                                ++var18;
+                                ++offY;
                             }
                         default:
-                            var18 = 0;
+                            offY = 0;
                     }
 
-                    while (var18 < height) {
-                        var15 = var19 * (var18 + y) + x;
-                        var16 = width * var18;
+                    while (offY < height) {
+                        srcOffset = infoWidth * (offY + y) + x;
+                        dstOffset = width * offY;
 
-                        for (var17 = 0; var17 < width; ++var17) {
-                            var21 = buffer[var16];
-                            var20 = this.getM(layerOffset[var15], var10[var15] & 255, var15);
-                            var23 = b255[var20 >>> 24] * var22;
-                            if (var23 == 1.0F) {
-                                buffer[var16++] = var20;
+                        for (j = 0; j < width; ++j) {
+                            color = buffer[dstOffset];
+                            invertedColor = this.getM(layerOffset[srcOffset], iMOffs[srcOffset] & 255, srcOffset);
+                            fAlpha = b255[invertedColor >>> 24] * layerAlpha;
+                            if (fAlpha == 1.0F) {
+                                buffer[dstOffset++] = invertedColor;
                             } else {
-                                var11 = var21 >>> 16 & 255;
-                                var12 = var21 >>> 8 & 255;
-                                var13 = var21 & 255;
-                                buffer[var16++] = var11 + (int) ((float) ((var20 >>> 16 & 255) - var11) * var23) << 16 | var12 + (int) ((float) ((var20 >>> 8 & 255) - var12) * var23) << 8 | var13 + (int) ((float) ((var20 & 255) - var13) * var23);
+                                r = color >>> 16 & 255;
+                                g = color >>> 8 & 255;
+                                b = color & 255;
+                                buffer[dstOffset++] = r + (int) ((float) ((invertedColor >>> 16 & 255) - r) * fAlpha) << 16 | g + (int) ((float) ((invertedColor >>> 8 & 255) - g) * fAlpha) << 8 | b + (int) ((float) ((invertedColor & 255) - b) * fAlpha);
                             }
 
-                            ++var15;
+                            ++srcOffset;
                         }
 
-                        ++var18;
+                        ++offY;
                     }
                 }
             }
@@ -2370,117 +2371,125 @@ public class M {
 
             b255[0] = 0.0F;
             b255d[0] = 0.0F;
-            int[][][] var11 = this.info.bPen;
+            int[][][] bPen = this.info.bPen;
             boolean var15 = false;
-            int var17 = 1;
+            int nibSize = 1;
             short var19 = 255;
             mg.iAlpha = 255;
             this.set(mg);
-            int[][] var12 = new int[23][];
 
-            int var7;
-            int var8;
-            int var9;
-            int[] var13;
-            int var18;
+            // Normal nibs
+            int[][] nibs = new int[23][];
+
+            int k;
+            int nibLength;
+            int j;
+            int[] nibImage;
+            int nibSize2;
             for (i = 0; i < 23; ++i) {
-                var8 = var17 * var17;
-                if (var17 <= 6) {
-                    var12[i] = var13 = new int[var8];
-                    var7 = 0;
+                nibLength = nibSize * nibSize;
+                if (nibSize <= 6) {
+                    nibs[i] = nibImage = new int[nibLength];
+                    k = 0;
 
                     while (true) {
-                        if (var7 >= var8) {
-                            if (var17 >= 3) {
-                                var13[0] = var13[var17 - 1] = var13[var17 * (var17 - 1)] = var13[var8 - 1] = 0;
+                        if (k >= nibLength) {
+                            if (nibSize >= 3) {
+                                nibImage[0] = nibImage[nibSize - 1] = nibImage[nibSize * (nibSize - 1)] = nibImage[nibLength - 1] = 0;
                             }
                             break;
                         }
 
-                        var13[var7] = var7 >= var17 && var8 - var7 >= var17 && var7 % var17 != 0 && var7 % var17 != var17 - 1 ? mg.iAlpha : var19;
-                        ++var7;
+                        nibImage[k] = k >= nibSize && nibLength - k >= nibSize && k % nibSize != 0 && k % nibSize != nibSize - 1 ? mg.iAlpha : var19;
+                        ++k;
                     }
                 } else {
-                    var18 = var17 + 1;
-                    var12[i] = var13 = new int[var18 * var18];
-                    int var16 = (var17 - 1) / 2;
-                    var9 = (int) ((float) Math.round(2.0F * var10 * (float) var16) * 3.0F);
+                    nibSize2 = nibSize + 1;
+                    nibs[i] = nibImage = new int[nibSize2 * nibSize2];
+                    int var16 = (nibSize - 1) / 2;
+                    j = (int) ((float) Math.round(2.0F * var10 * (float) var16) * 3.0F);
 
-                    for (var7 = 0; var7 < var9; ++var7) {
-                        int var14 = Math.min(var16 + (int) Math.round((double) var16 * Math.cos((double) var7)), var17);
-                        int var29 = Math.min(var16 + (int) Math.round((double) var16 * Math.sin((double) var7)), var17);
-                        var13[var29 * var18 + var14] = var19;
+                    for (k = 0; k < j; ++k) {
+                        int nX = Math.min(var16 + (int) Math.round((double) var16 * Math.cos((double) k)), nibSize);
+                        int nY = Math.min(var16 + (int) Math.round((double) var16 * Math.sin((double) k)), nibSize);
+                        nibImage[nY * nibSize2 + nX] = var19;
                     }
 
-                    info.W = info.H = var18;
-                    this.dFill((int[]) var13, 0, 0, var18, var18);
+                    info.W = info.H = nibSize2;
+                    this.dFill((int[]) nibImage, 0, 0, nibSize2, nibSize2);
                 }
 
-                var17 += i <= 7 ? 1 : (i < 18 ? 2 : 4);
+                nibSize += i <= 7 ? 1 : (i < 18 ? 2 : 4);
             }
 
-            var11[0] = var12;
+            bPen[PM_PEN] = nibs;
+
+            // Watercolor nibs
             mg.iAlpha = 255;
-            var12 = new int[32][];
-            var12[0] = new int[]{128};
-            var12[1] = new int[]{255};
-            var12[2] = new int[]{0, 128, 0, 128, 255, 128, 0, 128, 0};
-            var12[3] = new int[]{128, 174, 128, 174, 255, 174, 128, 174, 128};
-            var12[4] = new int[]{174, 255, 174, 255, 255, 255, 174, 255, 174};
-            var12[5] = new int[9];
-            this.memset((int[]) var12[5], (int) 255);
-            var12[6] = new int[]{0, 128, 128, 0, 128, 255, 255, 128, 128, 255, 255, 128, 0, 128, 128, 0};
-            var13 = var12[7] = new int[16];
-            this.memset((int[]) var13, (int) 255);
-            var13[0] = var13[3] = var13[15] = var13[12] = 128;
-            this.memset((int[]) (var12[8] = new int[16]), (int) 255);
-            var17 = 3;
+            nibs = new int[32][];
+            // Smaller nibs are hardcoded
+            nibs[0] = new int[]{128};
+            nibs[1] = new int[]{255};
+            nibs[2] = new int[]{0, 128, 0, 128, 255, 128, 0, 128, 0};
+            nibs[3] = new int[]{128, 174, 128, 174, 255, 174, 128, 174, 128};
+            nibs[4] = new int[]{174, 255, 174, 255, 255, 255, 174, 255, 174};
+            nibs[5] = new int[9];
+            this.memset((int[]) nibs[5], (int) 255);
+            nibs[6] = new int[]{0, 128, 128, 0, 128, 255, 255, 128, 128, 255, 255, 128, 0, 128, 128, 0};
+            nibImage = nibs[7] = new int[16];
+            this.memset((int[]) nibImage, (int) 255);
+            nibImage[0] = nibImage[3] = nibImage[15] = nibImage[12] = 128;
+            this.memset((int[]) (nibs[8] = new int[16]), (int) 255);
+            nibSize = 3;
 
+            // Generate the bigger sizes
             for (i = 9; i < 32; ++i) {
-                var18 = var17 + 3;
-                float var24 = (float) var17 / 2.0F;
-                var12[i] = var13 = new int[var18 * var18];
-                var9 = (int) ((float) Math.round(2.0F * var10 * var24) * (float) (2 + i / 16)) + i * 2;
+                nibSize2 = nibSize + 3;
+                float var24 = (float) nibSize / 2.0F;
+                nibs[i] = nibImage = new int[nibSize2 * nibSize2];
+                j = (int) ((float) Math.round(2.0F * var10 * var24) * (float) (2 + i / 16)) + i * 2;
 
-                for (var7 = 0; var7 < var9; ++var7) {
+                for (k = 0; k < j; ++k) {
                     float var20;
-                    int var25 = (int) (var20 = var24 + 1.5F + var24 * (float) Math.cos((double) var7));
+                    int var25 = (int) (var20 = var24 + 1.5F + var24 * (float) Math.cos((double) k));
                     float var21;
-                    int var26 = (int) (var21 = var24 + 1.5F + var24 * (float) Math.sin((double) var7));
+                    int var26 = (int) (var21 = var24 + 1.5F + var24 * (float) Math.sin((double) k));
                     float var22 = var20 - (float) var25;
                     float var23 = var21 - (float) var26;
-                    int var27 = var26 * var18 + var25;
-                    var13[var27] += (int) ((1.0F - var22) * 255.0F);
-                    var13[var27 + 1] += (int) (var22 * 255.0F);
-                    var13[var27 + var18] += (int) ((1.0F - var23) * 255.0F);
-                    var13[var27 + var18 + 1] += (int) (var23 * 255.0F);
+                    int var27 = var26 * nibSize2 + var25;
+                    nibImage[var27] += (int) ((1.0F - var22) * 255.0F);
+                    nibImage[var27 + 1] += (int) (var22 * 255.0F);
+                    nibImage[var27 + nibSize2] += (int) ((1.0F - var23) * 255.0F);
+                    nibImage[var27 + nibSize2 + 1] += (int) (var23 * 255.0F);
                 }
 
-                var8 = var18 * var18;
+                nibLength = nibSize2 * nibSize2;
 
-                for (var7 = 0; var7 < var8; ++var7) {
-                    var13[var7] = Math.min(var13[var7], 255);
+                for (k = 0; k < nibLength; ++k) {
+                    nibImage[k] = Math.min(nibImage[k], 255);
                 }
 
-                var17 += 2;
-                info.W = info.H = var18;
-                this.dFill((int[]) var13, 0, 0, var18, var18);
+                nibSize += 2;
+                info.W = info.H = nibSize2;
+                this.dFill((int[]) nibImage, 0, 0, nibSize2, nibSize2);
             }
 
-            var11[1] = var12;
+            bPen[PM_SUISAI] = nibs;
             this.set((M) null);
             mg.set((M) null);
+
+            // Image-based nibs (Airbrush, EPen)
             if (cnf != null) {
                 for (i = 0; i < 16; ++i) {
-                    for (var9 = 0; cnf.get((Object) ("pm" + i + '/' + var9 + ".gif")) != null; ++var9) {
+                    for (j = 0; cnf.get((Object) ("pm" + i + '/' + j + ".gif")) != null; ++j) {
                         ;
                     }
 
-                    if (var9 > 0) {
-                        var11[i] = new int[var9][];
+                    if (j > 0) {
+                        bPen[i] = new int[j][];
 
-                        for (var7 = 0; var7 < var9; ++var7) {
-                            var11[i][var7] = this.loadIm("pm" + i + '/' + var7 + ".gif", true);
+                        for (k = 0; k < j; ++k) {
+                            bPen[i][k] = this.loadIm("pm" + i + '/' + k + ".gif", true);
                         }
                     }
                 }
@@ -2488,24 +2497,24 @@ public class M {
                 this.info.bTT = new float[cnf.getP("tt_size", 31)][];
             }
 
-            String var28 = app.getParameter("tt.zip");
-            if (var28 != null && var28.length() > 0) {
-                this.info.dirTT = var28;
+            String dirTT = app.getParameter("tt.zip");
+            if (dirTT != null && dirTT.length() > 0) {
+                this.info.dirTT = dirTT;
             }
 
             return this.info;
         }
     }
 
-    public M.User newUser(Component var1) {
+    public M.User newUser(Component cmp) {
         if (this.user == null) {
             this.user = new M.User();
             if (color_model == null) {
-                color_model = new DirectColorModel(24, 16711680, 65280, 255);
+                color_model = new DirectColorModel(24, 0xFF0000, 0xFF00, 0xFF);
             }
 
             this.user.raster = new SRaster(color_model, this.user.buffer, 128, 128);
-            this.user.image = var1.createImage(this.user.raster);
+            this.user.image = cmp.createImage(this.user.raster);
         }
 
         return this.user;
@@ -2567,7 +2576,7 @@ public class M {
     }
 
     public void reset(boolean doDrawBuffer) {
-        byte[] var3 = this.info.iMOffs;
+        byte[] mOffs = this.info.iMOffs;
         int width = this.info.W;
         int x1 = Math.max(this.user.X, 0);
         int y1 = Math.max(this.user.Y, 0);
@@ -2578,7 +2587,7 @@ public class M {
             int offset = x1 + i * width;
 
             for (int j = x1; j < x2; ++j) {
-                var3[offset++] = 0;
+                mOffs[offset++] = 0;
             }
         }
 
@@ -2601,23 +2610,25 @@ public class M {
         return this.r() & 255;
     }
 
-    private final int s(int var1, int var2, int var3) {
-        byte[] var4 = this.info.iMOffs;
-        int var5 = this.info.W - 1;
+    /** Support function for dFill, returns the first x coordinate of different color not yet in iMOffs */
+    private final int s(int pixel, int x, int y) {
+        byte[] mOffs = this.info.iMOffs;
+        int limit = this.info.W - 1;
 
-        for (int var6 = (var5 + 1) * var3 + var2; var2 < var5 && this.pix(var2 + 1, var3) == var1 && var4[var6 + 1] == 0; ++var2) {
-            ++var6;
+        for (int i = (limit + 1) * y + x; x < limit && this.pix(x + 1, y) == pixel && mOffs[i + 1] == 0; ++x) {
+            ++i;
         }
 
-        return var2;
+        return x;
     }
 
-    private final int sa(int var1) {
+    /** Returns opacity modulated by pressure */
+    private final int sa(int pressure) {
         if ((this.iSOB & F1_ALL_LAYERS) == 0) {
             return this.iAlpha;
         } else {
-            int var2 = this.iSA & 255;
-            return var2 + (int) (b255[(this.iSA >>> 8) - var2] * (float) var1);
+            int minAlpha = this.iSA & 255;
+            return minAlpha + (int) (b255[(this.iSA >>> 8) - minAlpha] * (float) pressure);
         }
     }
 
